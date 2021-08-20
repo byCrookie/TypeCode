@@ -92,6 +92,135 @@ Select parent directories of assemblies by using regex pattern and relative path
 </AssemblyRoot>
 ```
 
+### Features
+
+#### Specflow-Table Generation
+Generates specflow tables for classes using the required properties for the specflow test not failing.
+
+```C#
+| # | Name | Priority | Text |
+| AG1 | TODO | 0 | TODO |
+```
+
+#### Unit-Test Dependency Generation
+Generates the needed dependencies for the unit-test class. It uses FakeItEasy-Syntax.
+
+```C#
+private UnitTestDependencyTypeCodeStrategy _testee;
+
+private IWorkflowBuilder<UnitTestDependencyEvaluationContext> _workflowEvaluationBuilder;
+private IWorkflowBuilder<UnitTestDependencyGenerationContext> _workflowGenerationBuilder;
+private ITypeProvider _typeProvider;
+
+[TestInitialize]
+public void TestInitialize()
+{
+        _workflowEvaluationBuilder = A.Fake<IWorkflowBuilder<UnitTestDependencyEvaluationContext>>();
+        _workflowGenerationBuilder = A.Fake<IWorkflowBuilder<UnitTestDependencyGenerationContext>>();
+        _typeProvider = A.Fake<ITypeProvider>();
+
+        _testee = new UnitTestDependencyTypeCodeStrategy(
+                _workflowEvaluationBuilder,
+                _workflowGenerationBuilder,
+                _typeProvider
+        );
+}
+```
+
+#### Unit-Test Dependency Generation
+Generates the needed dependencies for the unit-test class. It uses FakeItEasy-Syntax.
+
+```C#
+private UnitTestDependencyTypeCodeStrategy _testee;
+
+private IWorkflowBuilder<UnitTestDependencyEvaluationContext> _workflowEvaluationBuilder;
+private IWorkflowBuilder<UnitTestDependencyGenerationContext> _workflowGenerationBuilder;
+private ITypeProvider _typeProvider;
+
+[TestInitialize]
+public void TestInitialize()
+{
+        _workflowEvaluationBuilder = A.Fake<IWorkflowBuilder<UnitTestDependencyEvaluationContext>>();
+        _workflowGenerationBuilder = A.Fake<IWorkflowBuilder<UnitTestDependencyGenerationContext>>();
+        _typeProvider = A.Fake<ITypeProvider>();
+
+        _testee = new UnitTestDependencyTypeCodeStrategy(
+                _workflowEvaluationBuilder,
+                _workflowGenerationBuilder,
+                _typeProvider
+        );
+}
+```
+
+#### Composer Generation
+Generates a composer with all subclasses by an interface. It uses factory design from https://github.com/byCrookie/Framework.NET.
+
+```C#
+private IFactory _factory;
+
+public Composer(IFactory factory)
+{
+        _factory = factory
+}
+
+public IEnumerable<ITypeCodeStrategy> Compose()
+{
+        yield return _factory.Create<IBuilderTypeCodeStrategy>();
+        yield return _factory.Create<BuilderTypeCodeStrategy>();
+        yield return _factory.Create<IComposerTypeCodeStrategy>();
+        yield return _factory.Create<ComposerTypeCodeStrategy>();
+        yield return _factory.Create<MapperTypeCodeStrategy>();
+        yield return _factory.Create<IMapperTypeCodeStrategy>();
+        yield return _factory.Create<SpecflowTypeCodeStrategy>();
+        yield return _factory.Create<ISpecflowTypeCodeStrategy>();
+        yield return _factory.Create<UnitTestDependencyTypeCodeStrategy>();
+        yield return _factory.Create<IUnitTestDependencyTypeCodeStrategy>();
+}
+```
+
+#### Mapper Generation
+Generates a mapper between two classes using properties with similar names.
+
+```C#
+```
+
+#### Builder Generation
+Generates a builder for a class using builder pattern.
+
+```C#
+public class TypeCodeConfigurationBuilder
+{
+        private static TypeCodeConfiguration _typeCodeConfiguration;
+
+        public TypeCodeConfigurationBuilder()
+        {
+                _typeCodeConfiguration = new TypeCodeConfiguration();
+        }
+
+        public TypeCodeConfigurationBuilder BaseUrl(string value)
+        {
+                _typeCodeConfiguration.BaseUrl = value;
+                return this;
+        }
+
+        public TypeCodeConfigurationBuilder AddAssemblyRoot(Action<AssemblyRootBuilder> configure)
+        {
+                var builder = new AssemblyRootBuilder();
+                configure(builder);
+                _typeCodeConfiguration.AssemblyRoot.Add(builder.Build());
+                return this;
+        }
+        
+        public TypeCodeConfiguration Build()
+        {
+                var typeCodeConfiguration = _typeCodeConfiguration;
+                _typeCodeConfiguration = new TypeCodeConfiguration();
+                return typeCodeConfiguration;
+        }
+}
+```
+
+
 
 
 
