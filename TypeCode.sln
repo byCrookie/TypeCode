@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{ECFF6A9C-9D23-4986-9A8F-D72E9DC0029C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{2823508B-B95C-4909-A4EB-B04225E9C935}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TypeCode.Console", "src\TypeCode.Console\TypeCode.Console.csproj", "{7AE25AE5-31C3-4E72-9949-128C11ED6C82}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TypeCode.Business", "src\TypeCode.Business\TypeCode.Business.csproj", "{50BBBE63-BE22-4006-97C4-FB93DCB46569}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TypeCode.Business.Tests", "tests\TypeCode.Business.Tests\TypeCode.Business.Tests.csproj", "{D203B343-81F6-47DA-A2FF-45C0BB42CA21}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{7AE25AE5-31C3-4E72-9949-128C11ED6C82} = {ECFF6A9C-9D23-4986-9A8F-D72E9DC0029C}
+		{50BBBE63-BE22-4006-97C4-FB93DCB46569} = {ECFF6A9C-9D23-4986-9A8F-D72E9DC0029C}
+		{D203B343-81F6-47DA-A2FF-45C0BB42CA21} = {2823508B-B95C-4909-A4EB-B04225E9C935}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7AE25AE5-31C3-4E72-9949-128C11ED6C82}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7AE25AE5-31C3-4E72-9949-128C11ED6C82}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7AE25AE5-31C3-4E72-9949-128C11ED6C82}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7AE25AE5-31C3-4E72-9949-128C11ED6C82}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50BBBE63-BE22-4006-97C4-FB93DCB46569}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50BBBE63-BE22-4006-97C4-FB93DCB46569}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50BBBE63-BE22-4006-97C4-FB93DCB46569}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50BBBE63-BE22-4006-97C4-FB93DCB46569}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D203B343-81F6-47DA-A2FF-45C0BB42CA21}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D203B343-81F6-47DA-A2FF-45C0BB42CA21}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D203B343-81F6-47DA-A2FF-45C0BB42CA21}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D203B343-81F6-47DA-A2FF-45C0BB42CA21}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
