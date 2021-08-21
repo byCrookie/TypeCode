@@ -11,12 +11,23 @@ Develop c# code faster by generating .NET specific boilerplate code using reflec
 * Generate mapper for two classes
 * Generate builder for class using builder pattern
 
+## Framework
+This project is built on top of https://github.com/byCrookie/Framework.NET.
+
 ## How to use
 
 1. Download github repository https://github.com/byCrookie/TypeCode.
 2. Build project using your favorite .NET IDE
 3. Change paths in Configuration.cfg.xml to reflect parent directories for your local assemblies
 4. Start TypeCode.exe
+
+## Contributing / Issues
+All contributions are welcome! If you have any issues or feature requests, either implement it yourself or create an issue, thank you.
+
+## Donation
+If you like this project, feel free to donate and support the further development. Thank you.
+
+Bitcoin (BTC) Donations using Bitcoin (BTC) Network -> 14vZ2rRTEWXhvfLrxSboTN15k5XuRL1AHq
 
 ## Docs
 
