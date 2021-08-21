@@ -182,6 +182,19 @@ public IEnumerable<ITypeCodeStrategy> Compose()
 Generates a mapper between two classes using properties with similar names.
 
 ```C#
+public TypeCodeConfiguration MapTo(XmlTypeCodeConfiguration xmlTypeCodeConfiguration)
+{
+        return new TypeCodeConfiguration
+        {
+                CloseCmd = xmlTypeCodeConfiguration.CloseCmd,
+                SpaceKey = xmlTypeCodeConfiguration.SpaceKey,
+                Username = xmlTypeCodeConfiguration.Username,
+                Password = xmlTypeCodeConfiguration.Password,
+                VersionPageName = xmlTypeCodeConfiguration.VersionPageName,
+                BaseUrl = xmlTypeCodeConfiguration.BaseUrl,
+                AssemblyRoot = xmlTypeCodeConfiguration.AssemblyRoot
+        }
+};
 ```
 
 #### Builder Generation
