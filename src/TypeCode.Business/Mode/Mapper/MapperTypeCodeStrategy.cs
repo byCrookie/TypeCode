@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Framework.Workflow;
 using TypeCode.Business.Format;
 using TypeCode.Business.Mode.Mapper.Style;
+using TypeCode.Business.Mode.MultipleTypes;
 using TypeCode.Business.TypeEvaluation;
 
 namespace TypeCode.Business.Mode.Mapper
@@ -43,7 +44,7 @@ namespace TypeCode.Business.Mode.Mapper
 
         public bool IsBeta()
         {
-            return true;
+            return false;
         }
 
         public bool IsResponsibleFor(string mode)
@@ -54,36 +55,19 @@ namespace TypeCode.Business.Mode.Mapper
         public async Task<string> GenerateAsync()
         {
             var workflow = _workflowBuilder
-                .WriteLine(context => $@"{Cuts.Point()} Seperate two types by ,")
-                .Then(context => context.Input, context => Console.ReadLine())
+                .WriteLine(_ => $@"{Cuts.Point()} Seperate two types by ,")
+                .Then(context => context.Input, _ => Console.ReadLine())
                 .If(context => !string.IsNullOrEmpty(context.Input), context => context.TypeNames, context => context.Input?.Split(',').Select(split => split.Trim()).ToList())
-                .If(context => context.TypeNames.Any(), context => context.Types, context => _typeProvider.TryGetByNames(context.TypeNames).Select(typ => new MappingType {Type = typ}).ToList())
-                .Then(context => context.TypesGrouped, context => context.Types.GroupBy(type => type.DataType()))
-                .Then(context => context.SelectedTypes, context => new List<MappingType>())
-                .IfElseFlow(context => context.TypesGrouped.Any(group => group.Count() > 1),
-                    ifFlow => ifFlow
-                        .IfElseFlow(context => context.TypesGrouped.First().Count() > 1,
-                            subIfFlow => subIfFlow
-                                .WriteLine(context => $@"{Cuts.Heading()} Multiple types found, select by seperating numbers using ,")
-                                .Then(context => WriteTypesToScreen(context.TypesGrouped.First()))
-                                .Then(context => context.ChoosenIndexes, context => Console.ReadLine()?.Split(',').Select(split => Convert.ToInt32(split.Trim())).ToList())
-                                .Then(context => context.SelectedTypes.Add(context.Types.Single(type => context.ChoosenIndexes.Contains(context.Types.IndexOf(type))))),
-                            subElseFlow => subElseFlow
-                                .Then(context => context.SelectedTypes.Add(context.TypesGrouped.First().Single()))
-                        )
-                        .IfElseFlow(context => context.TypesGrouped.Last().Count() > 1,
-                            subIfFlow => subIfFlow
-                                .WriteLine(context => $@"{Cuts.Heading()} Multiple types found, select by seperating numbers using ,")
-                                .Then(context => WriteTypesToScreen(context.TypesGrouped.Last()))
-                                .Then(context => context.ChoosenIndexes, context => Console.ReadLine()?.Split(',').Select(split => Convert.ToInt32(split.Trim())).ToList())
-                                .Then(context => context.SelectedTypes.Add(context.Types.Single(type => context.ChoosenIndexes.Contains(context.Types.IndexOf(type))))),
-                            subElseFlow => subElseFlow
-                                .Then(context => context.SelectedTypes.Add(context.TypesGrouped.Last().Single()))
-                        ),
-                    elseFlow => elseFlow
-                        .Then(context => context.SelectedTypes, context => context.Types))
+                .Then(context => context.FirstTypeNames, context => _typeProvider.TryGetByName(context.TypeNames.First()))
+                .Then(context => context.SelectedTypes, context => context.FirstTypeNames)
+                .ThenAsync<IMultipleTypeSelectionStep<MappingContext>>()
+                .Then(context => context.SelectedFirstType, context => new MappingType(context.SelectedType))
+                .Then(context => context.SecondTypeNames, context => _typeProvider.TryGetByName(context.TypeNames.Last()))
+                .Then(context => context.SelectedTypes, context => context.SecondTypeNames)
+                .ThenAsync<IMultipleTypeSelectionStep<MappingContext>>()
+                .Then(context => context.SelectedSecondType, context => new MappingType(context.SelectedType))
                 .Then(WriteMappingStyleToScreen)
-                .Then(context => context.MappingStyle, context => Console.ReadLine()?.Trim())
+                .ReadLine(context => context.MappingStyle)
                 .Then(context => context.MappingCode, GenerateMappingCode)
                 .Build();
 
@@ -99,7 +83,6 @@ namespace TypeCode.Business.Mode.Mapper
             {
                 stringBuilder.AppendLine($"{Cuts.Point()} {style.Number()} - {style.Description()}");
             }
-
             stringBuilder.AppendLine($@"{Cuts.Long()}");
             stringBuilder.Append($@"{Cuts.Point()} Select a style");
             Console.WriteLine(stringBuilder.ToString());
@@ -110,14 +93,6 @@ namespace TypeCode.Business.Mode.Mapper
             var styles = _mapperStyleComposer.ComposeOrdered();
             var selectedStyle = styles.SingleOrDefault(style => style.IsResponsibleFor(context.MappingStyle));
             return selectedStyle?.Generate(context) ?? string.Empty;
-        }
-
-        private static void WriteTypesToScreen(IGrouping<string, MappingType> context)
-        {
-            for (var index = 0; index < context.Count(); index++)
-            {
-                Console.WriteLine($@"{Cuts.Point()} {index + 1} - {context.ToList()[index].Type.FullName}");
-            }
         }
     }
 }

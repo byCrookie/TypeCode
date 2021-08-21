@@ -1,13 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Humanizer;
 using TypeCode.Business.StringProximity;
 
 namespace TypeCode.Business.Mode.Mapper
 {
     internal class MappingType
     {
-        public Type Type { get; set; }
+        public MappingType(Type type)
+        {
+            Type = type;
+        }
+        
+        public Type Type { get; }
 
         public string MostAccurateProperty(string property)
         {
@@ -52,37 +58,22 @@ namespace TypeCode.Business.Mode.Mapper
                 return "data";
             }
 
-            return IsEntity() ? "entity" : "TODO";
+            return IsEntity() ? "entity" : Type.Name.Camelize();
         }
 
-        public static string EvaluateMethodName(MappingType secondType)
+        public string EvaluateMethodName()
         {
-            if (secondType.IsDto())
+            if (IsDto())
             {
                 return "MapToDto";
             }
 
-            if (secondType.IsData())
+            if (IsData())
             {
                 return "MapToData";
             }
 
-            return secondType.IsEntity() ? "MapToEntity" : "TODO";
-        }
-
-        public string DataType()
-        {
-            if (IsData())
-            {
-                return "data";
-            }
-
-            if (IsDto())
-            {
-                return "dto";
-            }
-
-            return IsEntity() ? "entity" : string.Empty;
+            return IsEntity() ? "MapToEntity" : "MapTo";
         }
 
         private bool IsEntity()

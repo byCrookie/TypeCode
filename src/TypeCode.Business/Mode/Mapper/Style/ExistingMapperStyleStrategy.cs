@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Text;
+﻿using System.Text;
 using TypeCode.Business.Format;
 
 namespace TypeCode.Business.Mode.Mapper.Style
@@ -23,8 +22,8 @@ namespace TypeCode.Business.Mode.Mapper.Style
 
         public string Generate(MappingContext context)
         {
-            var firstType = context.SelectedTypes.First();
-            var secondType = context.SelectedTypes.Last();
+            var firstType = context.SelectedFirstType;
+            var secondType = context.SelectedSecondType;
 
             var stringBuilder = new StringBuilder();
             stringBuilder.AppendLine($"{Cuts.Long()}");
@@ -42,7 +41,7 @@ namespace TypeCode.Business.Mode.Mapper.Style
         
         private static void GenerateUsingStyle(StringBuilder stringBuilder, MappingType firstType, MappingType secondType)
         {
-            var methodName = MappingType.EvaluateMethodName(secondType);
+            var methodName = secondType.EvaluateMethodName();
 
             stringBuilder.AppendLine($"public void {methodName}({firstType.Type.Name} {firstType.ParameterName()}, {secondType.Type.Name} {secondType.ParameterName()})");
             stringBuilder.AppendLine("{");
