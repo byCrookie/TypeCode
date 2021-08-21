@@ -104,9 +104,10 @@ namespace TypeCode.Business.Mode.UnitTestDependency
                 : GenerateForSingleLineAsync(lines.Single());
         }
 
-        private static Task<string> GenerateForMultiLineAsync(IReadOnlyList<string> lines)
+        private static Task<string> GenerateForMultiLineAsync(IEnumerable<string> lines)
         {
-            return Task.FromResult(string.Empty);
+            var singleLine = string.Join("", lines.Select(line => line.Trim().TrimEnd('\r', '\n')));
+            return GenerateForSingleLineAsync(singleLine);
         }
 
         private static readonly Regex PartsRegex =
