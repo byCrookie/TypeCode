@@ -12,18 +12,18 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Set Sub 1 Output
-      id: vars1
-      run: |
-        echo ::set-env name=sub1::${GITHUB_REF//./-}
-        echo ::set-env name=sub2::${sub1#refs/tags/}
-        echo ::set-output name=tag::sub2
-    - name: Set Sub 2 Output
+    - name: Set output
       id: vars
-      run: echo ::set-output name=tag::${steps.vars.outputs.tag#"refs/tags/"}
+      run: echo ::set-output name=tag::${GITHUB_REF//./_}
+    - uses: bluwy/substitute-string-action@v1
+      id: sub
+      with:
+        _input-text: ${{ steps.vars.outputs.tag }}
+        World: refs/tags/
+    - run: echo ${{ steps.sub.outputs.result }}
     - name: Check output
       env:
-        RELEASE_VERSION: ${{ steps.vars.outputs.tag }}
+        RELEASE_VERSION: ${{ steps.sub.outputs.result }}
       run: |
         echo $RELEASE_VERSION
         echo ${{ steps.vars.outputs.tag }}
@@ -38,7 +38,7 @@ jobs:
     - name: Test
       run: dotnet test --verbosity normal
     - name: Zip the Build
-      run: zip -r ${{ secrets.ReleaseZipName }}_${{ steps.vars.outputs.tag }} ./src/TypeCode.Console/bin/Release/net5.0
+      run: zip -r ${{ secrets.ReleaseZipName }}_$RELEASE_VERSION ./src/TypeCode.Console/bin/Release/net5.0
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
@@ -56,6 +56,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-        asset_path: ./${{ secrets.ReleaseZipName }}_${{ steps.vars.outputs.tag }}.zip
-        asset_name: ${{ secrets.ReleaseZipName }}_${{ steps.vars.outputs.tag }}.zip
+        asset_path: ./${{ secrets.ReleaseZipName }}_$RELEASE_VERSION.zip
+        asset_name: ${{ secrets.ReleaseZipName }}_$RELEASE_VERSION.zip
         asset_content_type: application/zip
