@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>Framework</id>
+    <version>1.0.15</version>
+    <title>Framework.NET</title>
+    <authors>byCrookie</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <projectUrl>https://github.com/byCrookie/Framework.NET</projectUrl>
+    <description>base-framework for c# applications</description>
+    <dependencies>
+      <group targetFramework="net5.0">
+        <dependency id="AutoFixture" version="4.17.0" exclude="Build,Analyzers" />
+        <dependency id="Autofac" version="6.2.0" exclude="Build,Analyzers" />
+        <dependency id="Ben.Demystifier" version="0.4.1" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Http" version="5.0.0" exclude="Build,Analyzers" />
+        <dependency id="log4net" version="2.0.12" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+</package>
