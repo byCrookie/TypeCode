@@ -18,6 +18,9 @@ jobs:
     - name: Check output
       env:
         RELEASE_VERSION: ${{ steps.vars.outputs.tag }}
+      run: |
+        echo $RELEASE_VERSION
+        echo ${{ steps.vars.outputs.tag }}
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
