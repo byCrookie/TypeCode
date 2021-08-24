@@ -32,7 +32,7 @@ jobs:
     - name: Test
       run: dotnet test --verbosity normal
     - name: Zip the Build
-      run: zip -r ${{ secrets.ReleaseZipName }} ./src/TypeCode.Console/bin/Release/net5.0
+      run: zip -r ${{ secrets.ReleaseZipName }}_${{ steps.vars.outputs.tag }} ./src/TypeCode.Console/bin/Release/net5.0
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
