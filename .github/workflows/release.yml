@@ -22,7 +22,7 @@ jobs:
     - name: Build
       run: dotnet build --configuration Release --no-restore
     - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test --verbosity normal
     - name: Zip the Build
       run: zip -r ${{ secrets.ReleaseZipName }} ./src/TypeCode.Console/bin/Release/net5.0
     - name: Create Release
