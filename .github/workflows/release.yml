@@ -12,9 +12,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Set output
+    - name: Set Sub 1 Output
+      id: vars1
+      run: echo ::set-output name=tag::${GITHUB_REF//./-}
+    - name: Set Sub 2 Output
       id: vars
-      run: echo ::set-output name=tag::${${GITHUB_REF//./-}#"refs/tags"}
+      run: echo ::set-output name=tag::${steps.vars.outputs.tag#refs/tags/}
     - name: Check output
       env:
         RELEASE_VERSION: ${{ steps.vars.outputs.tag }}
