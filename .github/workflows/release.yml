@@ -19,7 +19,7 @@ jobs:
       id: sub
       with:
         _input-text: ${{ steps.vars.outputs.tag }}
-        World: refs/tags/
+        refs/tags/: ""
     - run: echo ${{ steps.sub.outputs.result }}
     - name: Check output
       env:
