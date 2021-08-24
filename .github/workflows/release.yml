@@ -15,8 +15,8 @@ jobs:
     - name: Set Sub 1 Output
       id: vars1
       run: |
-        sub1 = ${GITHUB_REF//./-}
-        sub2 = ${sub1#refs/tags/}
+        echo ::set-env name=sub1::${GITHUB_REF//./-}
+        echo ::set-env name=sub2::${sub1#refs/tags/}
         echo ::set-output name=tag::sub2
     - name: Set Sub 2 Output
       id: vars
