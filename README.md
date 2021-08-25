@@ -16,7 +16,9 @@ This project is built on top of https://github.com/byCrookie/Framework.NET.
 
 ## How to use
 
-1. Download github repository https://github.com/byCrookie/TypeCode.
+:warning: **Releases**: Releases are not working at the moment, please build the project yourself using the sourcecode
+
+1. Download github repository https://github.com/byCrookie/TypeCode
 2. Build project using your favorite .NET IDE
 3. Change paths in Configuration.cfg.xml to reflect parent directories for your local assemblies
 4. Start TypeCode.exe
