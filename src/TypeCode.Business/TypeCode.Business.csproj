@@ -5,9 +5,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Autofac" Version="6.2.0" />
-      <PackageReference Include="Framework" Version="1.0.15" />
-      <PackageReference Include="Humanizer.Core" Version="2.11.10" />
+        <PackageReference Include="Autofac" Version="6.2.0" />
+        <PackageReference Include="Framework.NET" Version="1.0.17" />
+        <PackageReference Include="Humanizer.Core" Version="2.11.10" />
     </ItemGroup>
 
     <ItemGroup>
