@@ -63,7 +63,7 @@ namespace TypeCode.Business.Mode.UnitTestDependency
                         config.Selections = new List<string>
                         {
                             "Input type by name",
-                            "Input dependencies manually (,)"
+                            "Input dependencies manually"
                         };
                     }
                 )
