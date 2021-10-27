@@ -1,30 +1,19 @@
-﻿using System.Linq;
-using System.Text;
+﻿using System.Text;
 using TypeCode.Business.Format;
 
 namespace TypeCode.Business.Mode.Mapper.Style
 {
     internal class NewMapperStyleStrategy : INewMapperStyleStrategy
     {
-        public int Number()
+        public bool IsResponsibleFor(MappingStyle style)
         {
-            return 2;
-        }
-        
-        public string Description()
-        {
-            return "Mapping To New";
+            return style == MappingStyle.New;
         }
 
-        public bool IsResponsibleFor(string style)
+        public string Generate(MapperTypeCodeGeneratorParameter parameter)
         {
-            return style == $"{Number()}";
-        }
-
-        public string Generate(MappingContext context)
-        {
-            var firstType = context.SelectedFirstType;
-            var secondType = context.SelectedSecondType;
+            var firstType = parameter.MapFrom;
+            var secondType = parameter.MapTo;
 
             var stringBuilder = new StringBuilder();
             stringBuilder.AppendLine($"{Cuts.Long()}");

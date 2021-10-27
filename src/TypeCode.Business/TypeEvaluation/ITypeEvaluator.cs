@@ -2,7 +2,7 @@
 
 namespace TypeCode.Business.TypeEvaluation
 {
-	internal interface ITypeEvaluator
+	public interface ITypeEvaluator
 	{
 		TypeCodeConfiguration EvaluateTypes(TypeCodeConfiguration assemblies);
 	}

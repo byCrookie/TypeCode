@@ -1,6 +1,6 @@
 ﻿namespace TypeCode.Business.Format
 {
-    internal static class Cuts
+    public static class Cuts
     {
         public static string Long()
         {

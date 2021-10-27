@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using Framework.Boot;
 using Framework.Extensions.List;
 using Framework.Workflow;
-using log4net;
 using TypeCode.Business.Configuration;
 using TypeCode.Business.Format;
 

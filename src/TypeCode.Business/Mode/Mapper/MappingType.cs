@@ -6,7 +6,7 @@ using TypeCode.Business.StringProximity;
 
 namespace TypeCode.Business.Mode.Mapper
 {
-    internal class MappingType
+    public class MappingType
     {
         public MappingType(Type type)
         {

@@ -4,6 +4,6 @@ namespace TypeCode.Business.Mode.Mapper.Style
 {
     internal interface IMapperStyleComposer
     {
-        IEnumerable<IMapperStyleStrategy> ComposeOrdered();
+        IEnumerable<IMapperStyleStrategy> Compose();
     }
 }

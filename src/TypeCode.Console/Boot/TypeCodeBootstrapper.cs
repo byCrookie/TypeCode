@@ -20,7 +20,10 @@ namespace TypeCode.Console.Boot
     {
         public static async Task BootAsync()
         {
-            var bootScope = BootConfiguration.Configure<BootContext>(new List<Module> {new BootstrappingModule()});
+            var bootScope = BootConfiguration.Configure<BootContext>(new List<Module>
+            {
+                new BootstrappingModule()
+            });
 
             var bootFlow = bootScope.WorkflowBuilder
                 .ThenAsync<IFrameworkConfigurationBootStep<BootContext, FrameworkBootStepOptions>,

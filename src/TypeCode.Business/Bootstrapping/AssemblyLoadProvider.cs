@@ -2,7 +2,7 @@
 
 namespace TypeCode.Business.Bootstrapping
 {
-	internal class AssemblyLoadProvider
+	public class AssemblyLoadProvider
 	{
 		public static TypeCodeConfiguration GetConfiguration()
 		{

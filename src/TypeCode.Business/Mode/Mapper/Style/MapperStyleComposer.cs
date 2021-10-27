@@ -12,13 +12,8 @@ namespace TypeCode.Business.Mode.Mapper.Style
         {
             _factory = factory;
         }
-		
-        public IEnumerable<IMapperStyleStrategy> ComposeOrdered()
-        {
-            return Compose().OrderBy(mode => mode.Number()).ToList();
-        }
-		
-        private IEnumerable<IMapperStyleStrategy> Compose()
+        
+        public IEnumerable<IMapperStyleStrategy> Compose()
         {
             yield return _factory.Create<IExistingMapperStyleStrategy>();
             yield return _factory.Create<INewMapperStyleStrategy>();

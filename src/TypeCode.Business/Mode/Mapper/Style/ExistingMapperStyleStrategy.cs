@@ -5,25 +5,15 @@ namespace TypeCode.Business.Mode.Mapper.Style
 {
     internal class ExistingMapperStyleStrategy : IExistingMapperStyleStrategy
     {
-        public int Number()
+        public bool IsResponsibleFor(MappingStyle style)
         {
-            return 1;
+            return style == MappingStyle.Existing;
         }
 
-        public string Description()
+        public string Generate(MapperTypeCodeGeneratorParameter parameter)
         {
-            return "Mapping To Existing";
-        }
-
-        public bool IsResponsibleFor(string style)
-        {
-            return style == $"{Number()}";
-        }
-
-        public string Generate(MappingContext context)
-        {
-            var firstType = context.SelectedFirstType;
-            var secondType = context.SelectedSecondType;
+            var firstType = parameter.MapFrom;
+            var secondType = parameter.MapTo;
 
             var stringBuilder = new StringBuilder();
             stringBuilder.AppendLine($"{Cuts.Long()}");
