@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using Framework.Workflow;
+using TypeCode.Console.Mode.ExitOrContinue;
 using TypeCode.Console.Mode.MultipleTypes;
 
 namespace TypeCode.Console.Mode.Builder
 {
-    internal class BuilderContext : WorkflowBaseContext, IMultipleTypesSelectionContext
+    internal class BuilderContext : WorkflowBaseContext, IMultipleTypesSelectionContext, IExitOrContinueContext
     {
         public string TypeName { get; set; }
         public string BuilderCode { get; set; }

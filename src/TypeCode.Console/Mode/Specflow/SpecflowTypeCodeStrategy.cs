@@ -6,6 +6,7 @@ using TypeCode.Business.Format;
 using TypeCode.Business.Mode;
 using TypeCode.Business.Mode.Specflow;
 using TypeCode.Business.TypeEvaluation;
+using TypeCode.Console.Mode.ExitOrContinue;
 
 namespace TypeCode.Console.Mode.Specflow
 {
@@ -58,12 +59,7 @@ namespace TypeCode.Console.Mode.Specflow
                 .While(context => string.IsNullOrEmpty(context.Input) || !context.Input.Split(',').Select(split => split.Trim()).Any(), step => step
                     .WriteLine(_ => $@"{Cuts.Point()} Please input types seperated by ,")
                     .ReadLine(context => context.Input)
-                    .IfFlow(context => string.IsNullOrEmpty(context.Input), ifFlow => ifFlow
-                        .WriteLine(_ => $@"{Cuts.Point()} Press enter to exit or space to continue")
-                        .IfFlow(_ => System.Console.ReadKey().Key == ConsoleKey.Enter, ifFlowLeave => ifFlowLeave
-                            .StopAsync()
-                        )
-                    )
+                    .ThenAsync<IExitOrContinueStep<SpecflowContext>>()
                 )
                 .Then(context => context.Types, context => _typeProvider.TryGetByNames(context.Input.Split(',').Select(split => split.Trim()).ToList()))
                 .ThenAsync(context => context.Tables, context => _specflowGenerator.GenerateAsync(new SpecflowTypeCodeGeneratorParameter

@@ -7,6 +7,8 @@ using TypeCode.Business.Mode;
 using TypeCode.Business.Mode.UnitTestDependency.Manually;
 using TypeCode.Business.Mode.UnitTestDependency.Type;
 using TypeCode.Business.TypeEvaluation;
+using TypeCode.Console.Mode.Builder;
+using TypeCode.Console.Mode.ExitOrContinue;
 using TypeCode.Console.Mode.MultipleTypes;
 using TypeCode.Console.Mode.Selection;
 
@@ -77,6 +79,7 @@ namespace TypeCode.Console.Mode.UnitTestDependency
                         .WriteLine(_ => $@"{Cuts.Point()} Type not found")
                         .WriteLine(_ => $@"{Cuts.Point()} Input type name")
                         .ReadLine(context => context.Input)
+                        .ThenAsync<IExitOrContinueStep<UnitTestDependencyEvaluationContext>>()
                     )
                     .If(context => !string.IsNullOrEmpty(context.Input), context => context.SelectedTypes,
                         context => _typeProvider.TryGetByName(context.Input.Trim()))

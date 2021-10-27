@@ -6,6 +6,8 @@ using TypeCode.Business.Format;
 using TypeCode.Business.Mode;
 using TypeCode.Business.Mode.Builder;
 using TypeCode.Business.TypeEvaluation;
+using TypeCode.Console.Mode.Composer;
+using TypeCode.Console.Mode.ExitOrContinue;
 using TypeCode.Console.Mode.MultipleTypes;
 
 namespace TypeCode.Console.Mode.Builder
@@ -61,12 +63,7 @@ namespace TypeCode.Console.Mode.Builder
                     .WriteLine(_ => $@"{Cuts.Point()} Type not found")
                     .WriteLine(_ => $@"{Cuts.Point()} Please input input type")
                     .ReadLine(c => c.TypeName)
-                    .IfFlow(c => string.IsNullOrEmpty(c.TypeName), ifFlow => ifFlow
-                        .WriteLine(_ => $@"{Cuts.Point()} Press enter to exit or space to continue")
-                        .IfFlow(_ => System.Console.ReadKey().Key == ConsoleKey.Enter, ifFlowLeave => ifFlowLeave
-                            .StopAsync()
-                        )
-                    )
+                    .ThenAsync<IExitOrContinueStep<BuilderContext>>()
                 )
                 .Then(c => c.SelectedTypes, c => _typeProvider.TryGetByName(c.TypeName.Trim()).ToList())
                 .ThenAsync<IMultipleTypeSelectionStep<BuilderContext>>()

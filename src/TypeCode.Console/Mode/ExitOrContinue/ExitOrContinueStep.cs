@@ -1,0 +1,41 @@
+﻿using System;
+using System.Threading.Tasks;
+using Framework.Workflow;
+using TypeCode.Business.Format;
+
+namespace TypeCode.Console.Mode.ExitOrContinue
+{
+    internal class ExitOrContinueStep<TContext> :
+        IExitOrContinueStep<TContext>
+        where TContext : WorkflowBaseContext, IExitOrContinueContext
+    {
+        private readonly IWorkflowBuilder<ExitOrContinueContext> _workflowBuilder;
+
+        public ExitOrContinueStep(IWorkflowBuilder<ExitOrContinueContext> workflowBuilder)
+        {
+            _workflowBuilder = workflowBuilder;
+        }
+
+        public async Task ExecuteAsync(TContext context)
+        {
+            var exitContext = new ExitOrContinueContext();
+
+            var workflow = _workflowBuilder
+                .IfFlow(c => string.IsNullOrEmpty(c.Input), ifFlow => ifFlow
+                    .WriteLine(_ => $@"{Cuts.Point()} Press enter to exit or space to continue")
+                    .IfFlow(_ => System.Console.ReadKey().Key == ConsoleKey.Enter, ifFlowLeave => ifFlowLeave
+                        .StopAsync()
+                    )
+                )
+                .Build();
+
+            var workflowContext = await workflow.RunAsync(exitContext).ConfigureAwait(false);
+            context.IsStop = workflowContext.IsStop;
+        }
+
+        public Task<bool> ShouldExecuteAsync(TContext context)
+        {
+            return Task.FromResult(context.ShouldExecute());
+        }
+    }
+}

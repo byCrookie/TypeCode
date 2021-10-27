@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using TypeCode.Console.Mode.Builder;
 using TypeCode.Console.Mode.Composer;
+using TypeCode.Console.Mode.ExitOrContinue;
 using TypeCode.Console.Mode.Mapper;
 using TypeCode.Console.Mode.MultipleTypes;
 using TypeCode.Console.Mode.Selection;
@@ -23,6 +24,7 @@ namespace TypeCode.Console.Mode
             builder.RegisterModule<MapperModule>();
             builder.RegisterModule<MultipleTypesModule>();
             builder.RegisterModule<SelectionModule>();
+            builder.RegisterModule<ExitOrContinueModule>();
             
             base.Load(builder);
         }

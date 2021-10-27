@@ -6,7 +6,9 @@ using TypeCode.Business.Format;
 using TypeCode.Business.Mode;
 using TypeCode.Business.Mode.Composer;
 using TypeCode.Business.TypeEvaluation;
+using TypeCode.Console.Mode.ExitOrContinue;
 using TypeCode.Console.Mode.MultipleTypes;
+using TypeCode.Console.Mode.Specflow;
 
 namespace TypeCode.Console.Mode.Composer
 {
@@ -61,12 +63,7 @@ namespace TypeCode.Console.Mode.Composer
                     .WriteLine(_ => $@"{Cuts.Point()} Interface not found")
                     .WriteLine(_ => $@"{Cuts.Point()} Please input strategy interface")
                     .ReadLine(c => c.TypeName)
-                    .IfFlow(c => string.IsNullOrEmpty(c.TypeName), ifFlow => ifFlow
-                        .WriteLine(_ => $@"{Cuts.Point()} Press enter to exit or space to continue")
-                        .IfFlow(_ => System.Console.ReadKey().Key == ConsoleKey.Enter, ifFlowLeave => ifFlowLeave
-                            .StopAsync()
-                        )
-                    )
+                    .ThenAsync<IExitOrContinueStep<ComposerContext>>()
                 )
                 .Then(c => c.SelectedTypes, c => _typeProvider.TryGetByName(c.TypeName.Trim()).ToList())
                 .ThenAsync<IMultipleTypeSelectionStep<ComposerContext>>()
