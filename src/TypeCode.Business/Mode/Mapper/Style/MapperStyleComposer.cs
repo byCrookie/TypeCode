@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Framework.Autofac.Factory;
 
 namespace TypeCode.Business.Mode.Mapper.Style

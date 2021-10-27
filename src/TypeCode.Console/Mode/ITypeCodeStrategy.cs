@@ -10,5 +10,6 @@ namespace TypeCode.Console.Mode
 		bool IsBeta();
 		bool IsResponsibleFor(string mode);
 		Task<string> GenerateAsync();
+		bool IsExit();
 	}
 }

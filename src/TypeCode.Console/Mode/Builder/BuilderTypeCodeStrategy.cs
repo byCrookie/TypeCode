@@ -1,12 +1,10 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Framework.Workflow;
 using TypeCode.Business.Format;
 using TypeCode.Business.Mode;
 using TypeCode.Business.Mode.Builder;
 using TypeCode.Business.TypeEvaluation;
-using TypeCode.Console.Mode.Composer;
 using TypeCode.Console.Mode.ExitOrContinue;
 using TypeCode.Console.Mode.MultipleTypes;
 
@@ -58,14 +56,14 @@ namespace TypeCode.Console.Mode.Builder
         {
             var workflow = _workflowBuilder
                 .WriteLine(_ => $@"{Cuts.Point()} Input type")
-                .ReadLine(c => c.TypeName)
-                .While(c => !_typeProvider.HasByName(c.TypeName.Trim()), whileFlow => whileFlow
+                .ReadLine(c => c.Input)
+                .While(c => !_typeProvider.HasByName(c.Input.Trim()), whileFlow => whileFlow
                     .WriteLine(_ => $@"{Cuts.Point()} Type not found")
                     .WriteLine(_ => $@"{Cuts.Point()} Please input input type")
-                    .ReadLine(c => c.TypeName)
+                    .ReadLine(c => c.Input)
                     .ThenAsync<IExitOrContinueStep<BuilderContext>>()
                 )
-                .Then(c => c.SelectedTypes, c => _typeProvider.TryGetByName(c.TypeName.Trim()).ToList())
+                .Then(c => c.SelectedTypes, c => _typeProvider.TryGetByName(c.Input.Trim()).ToList())
                 .ThenAsync<IMultipleTypeSelectionStep<BuilderContext>>()
                 .Stop(c => !c.SelectedType.IsClass, _ => System.Console.WriteLine($@"{Cuts.Point()} Type has to be a class"))
                 .ThenAsync(c => c.BuilderCode, c => _builderGenerator.GenerateAsync(new BuilderTypeCodeGeneratorParameter
@@ -76,6 +74,11 @@ namespace TypeCode.Console.Mode.Builder
 
             var workflowContext = await workflow.RunAsync(new BuilderContext()).ConfigureAwait(false);
             return workflowContext.BuilderCode;
+        }
+
+        public bool IsExit()
+        {
+            return false;
         }
     }
 }

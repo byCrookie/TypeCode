@@ -18,11 +18,16 @@ namespace TypeCode.Console.Mode.ExitOrContinue
 
         public async Task ExecuteAsync(TContext context)
         {
-            var exitContext = new ExitOrContinueContext();
+            var exitContext = new ExitOrContinueContext
+            {
+                Input = context.Input,
+                Exception = context.Exception,
+                IsStop = context.IsStop
+            };
 
             var workflow = _workflowBuilder
                 .IfFlow(c => string.IsNullOrEmpty(c.Input), ifFlow => ifFlow
-                    .WriteLine(_ => $@"{Cuts.Point()} Press enter to exit or space to continue")
+                    .WriteLine(_ => $@"{Cuts.Point()} Press enter to go to menu or space to continue")
                     .IfFlow(_ => System.Console.ReadKey().Key == ConsoleKey.Enter, ifFlowLeave => ifFlowLeave
                         .StopAsync()
                     )
@@ -31,6 +36,7 @@ namespace TypeCode.Console.Mode.ExitOrContinue
 
             var workflowContext = await workflow.RunAsync(exitContext).ConfigureAwait(false);
             context.IsStop = workflowContext.IsStop;
+            context.Exception = workflowContext.Exception;
         }
 
         public Task<bool> ShouldExecuteAsync(TContext context)

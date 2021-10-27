@@ -10,7 +10,7 @@ namespace TypeCode.Console
 	{
 		private static ILog _logger;
 
-		private static async Task<int> Main(string[] args)
+		private static async Task<int> Main()
 		{
 			var exitcode = 0;
 			

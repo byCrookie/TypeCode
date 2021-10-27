@@ -3,6 +3,7 @@ using System.Linq;
 using Framework.Autofac.Factory;
 using TypeCode.Console.Mode.Builder;
 using TypeCode.Console.Mode.Composer;
+using TypeCode.Console.Mode.Exit;
 using TypeCode.Console.Mode.Mapper;
 using TypeCode.Console.Mode.Specflow;
 using TypeCode.Console.Mode.UnitTestDependency;
@@ -30,6 +31,7 @@ namespace TypeCode.Console.Mode
 			yield return _factory.Create<IComposerTypeCodeStrategy>();
 			yield return _factory.Create<IMapperTypeCodeStrategy>();
 			yield return _factory.Create<IBuilderTypeCodeStrategy>();
+			yield return _factory.Create<IExitTypeCodeStrategy>();
 		}
 	}
 }

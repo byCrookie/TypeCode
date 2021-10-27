@@ -98,5 +98,10 @@ namespace TypeCode.Console.Mode.Mapper
             var workflowContext = await workflow.RunAsync(new MappingContext()).ConfigureAwait(false);
             return workflowContext.MappingCode;
         }
+
+        public bool IsExit()
+        {
+            return false;
+        }
     }
 }

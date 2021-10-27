@@ -7,7 +7,6 @@ using TypeCode.Business.Mode;
 using TypeCode.Business.Mode.UnitTestDependency.Manually;
 using TypeCode.Business.Mode.UnitTestDependency.Type;
 using TypeCode.Business.TypeEvaluation;
-using TypeCode.Console.Mode.Builder;
 using TypeCode.Console.Mode.ExitOrContinue;
 using TypeCode.Console.Mode.MultipleTypes;
 using TypeCode.Console.Mode.Selection;
@@ -106,6 +105,11 @@ namespace TypeCode.Console.Mode.UnitTestDependency
             var workflowContext =
                 await workflow.RunAsync(new UnitTestDependencyEvaluationContext()).ConfigureAwait(false);
             return workflowContext.UnitTestDependencyCode;
+        }
+
+        public bool IsExit()
+        {
+            return false;
         }
     }
 }

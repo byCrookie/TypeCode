@@ -100,7 +100,7 @@ namespace TypeCode.Business.TypeEvaluation
 
         private static string GetNameWithoutGeneric(Type type)
         {
-            return type.Name.Contains("`") ? type.Name.Remove(type.Name.IndexOf("`"), 2) : type.Name;
+            return type.Name.Contains("`") ? type.Name.Remove(type.Name.IndexOf("`", StringComparison.Ordinal), 2) : type.Name;
         }
 
         private static string GetNameWithNamespace(Type type)

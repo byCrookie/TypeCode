@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Autofac;
-using Framework;
 using Framework.Boot;
 using Framework.Boot.AssemblyLoad;
 using Framework.Boot.Autofac;

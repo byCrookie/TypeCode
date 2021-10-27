@@ -8,9 +8,9 @@ namespace TypeCode.Console.Mode.Builder
 {
     internal class BuilderContext : WorkflowBaseContext, IMultipleTypesSelectionContext, IExitOrContinueContext
     {
-        public string TypeName { get; set; }
         public string BuilderCode { get; set; }
         public List<Type> SelectedTypes { get; set; }
         public Type SelectedType { get; set; }
+        public string Input { get; set; }
     }
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Framework.Workflow;
 using TypeCode.Business.Format;
@@ -71,6 +70,11 @@ namespace TypeCode.Console.Mode.Specflow
 
             var workflowContext = await workflow.RunAsync(new SpecflowContext()).ConfigureAwait(false);
             return workflowContext.Tables;
+        }
+
+        public bool IsExit()
+        {
+            return false;
         }
     }
 }

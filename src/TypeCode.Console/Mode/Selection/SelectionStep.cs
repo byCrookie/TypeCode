@@ -4,6 +4,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Framework.Workflow;
 using TypeCode.Business.Format;
+using TypeCode.Console.Mode.Composer;
+using TypeCode.Console.Mode.ExitOrContinue;
 
 namespace TypeCode.Console.Mode.Selection
 {
@@ -24,24 +26,23 @@ namespace TypeCode.Console.Mode.Selection
             var selectionContext = new SelectionContext();
 
             var workflow = _workflowBuilder
-                .While(c => c.Selection == 0 || c.Selection > _options.Selections.Count, whileFlow => whileFlow
+                .While(c => string.IsNullOrEmpty(c.Input) || c.Selection == 0 || c.Selection > _options.Selections.Count, whileFlow => whileFlow
                     .WriteLine(_ => $@"{Cuts.Medium()}")
                     .WriteLine(_ => $@"{Cuts.Heading()} Select an option")
                     .WriteLine(_ => CreateSelectionMenu(_options.Selections))
                     .ReadLine(c => c.Input)
-                    .IfFlow(c => string.IsNullOrEmpty(c.Input.Trim()), ifFlow => ifFlow
-                        .WriteLine(_ => $@"{Cuts.Point()} Press enter to exit or space to continue")
-                        .IfFlow(_ => System.Console.ReadKey().Key == ConsoleKey.Enter, ifFlowLeave => ifFlowLeave
-                            .StopAsync(context)
-                        )
+                    .ThenAsync<IExitOrContinueStep<SelectionContext>>()
+                    .IfFlow(c => short.TryParse(c.Input.Trim(), out _), ifFlow => ifFlow
+                        .Then(c => c.Selection, c => Convert.ToInt16(c.Input.Trim()))
+                        .If(c => c.Selection > _options.Selections.Count || c.Selection < 1, _ => System.Console.WriteLine($@"{Cuts.Point()} Option is not valid"))
                     )
-                    .Then(c => c.Selection, c => Convert.ToInt16(c.Input.Trim()))
-                    .If(c => c.Selection > _options.Selections.Count || c.Selection < 1, _ => System.Console.WriteLine($@"{Cuts.Point()} Option is not valid"))
                 )
                 .Build();
 
             var workflowContext = await workflow.RunAsync(selectionContext).ConfigureAwait(false);
             context.Selection = workflowContext.Selection;
+            context.IsStop = workflowContext.IsStop;
+            context.Exception = workflowContext.Exception;
         }
 
         private static string CreateSelectionMenu(IReadOnlyList<string> selections)

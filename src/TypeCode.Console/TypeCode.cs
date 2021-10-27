@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -10,6 +9,7 @@ using TypeCode.Business.Bootstrapping;
 using TypeCode.Business.Format;
 using TypeCode.Business.TypeEvaluation;
 using TypeCode.Console.Mode;
+using TypeCode.Console.Mode.ExitOrContinue;
 
 namespace TypeCode.Console
 {
@@ -43,15 +43,20 @@ namespace TypeCode.Console
                 Task.Run(async () => mode = await EvaluateModeAsync().ConfigureAwait(false), cancellationToken)
             };
 
-           await Task.WhenAll(tasks).ConfigureAwait(false);
+            await Task.WhenAll(tasks).ConfigureAwait(false);
 
-           if (mode is not null)
-           {
-               var result = await mode.GenerateAsync().ConfigureAwait(false);
-               System.Console.WriteLine(result);
-           }
+            if (mode is not null)
+            {
+                while (!mode.IsExit())
+                {
+                    var result = await mode.GenerateAsync().ConfigureAwait(false);
+                    System.Console.WriteLine(result);
+                    System.Console.Read();
+                    mode = await EvaluateModeAsync().ConfigureAwait(false);
+                }
+            }
 
-           System.Console.Read();
+            System.Console.Read();
         }
 
         private async Task<ITypeCodeStrategy> EvaluateModeAsync()
@@ -62,13 +67,8 @@ namespace TypeCode.Console
                 .ReadLine(context => context.Input)
                 .While(context => !ModeExists(context.Modes, context), whileFlow => whileFlow
                     .WriteLine(_ => $@"{Cuts.Point()} Please select a valid mode")
-                        .ReadLine(context => context.Input)
-                        .IfFlow(context => string.IsNullOrEmpty(context.Input), ifFlow => ifFlow
-                            .WriteLine(_ => $@"{Cuts.Point()} Press enter to exit or space to continue")
-                            .IfFlow(_ => System.Console.ReadKey().Key == ConsoleKey.Enter, ifFlowLeave => ifFlowLeave
-                                .StopAsync()
-                            )
-                        )
+                    .ReadLine(context => context.Input)
+                    .ThenAsync<IExitOrContinueStep<TypeCodeContext>>()
                 )
                 .Then(context => context.Mode, context => context.Modes
                     .SingleOrDefault(strategy => strategy
@@ -104,8 +104,8 @@ namespace TypeCode.Console
             if (mode.IsPlanned())
             {
                 stringBuilder.AppendLine($@"{Cuts.Point()} (Planned) - {mode.Description()}");
-                
-            } else
+            }
+            else
             {
                 if (mode.IsBeta())
                 {

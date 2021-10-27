@@ -44,7 +44,7 @@ namespace TypeCode.Business.Format
             if (@interface.GetGenericArguments().Any())
             {
                 var genericNames = @interface.GetGenericArguments().Select(arg => arg.Name);
-                var parameterName = @interface.Name.Remove(@interface.Name.IndexOf("`"), 2);
+                var parameterName = @interface.Name.Remove(@interface.Name.IndexOf("`", StringComparison.Ordinal), 2);
                 return $"{parameterName}<{string.Join(",", genericNames)}>";
             }
 
@@ -53,7 +53,7 @@ namespace TypeCode.Business.Format
 
         public static string GetNameWithoutGeneric(Type type)
         {
-            return type.Name.Contains("`") ? type.Name.Remove(type.Name.IndexOf("`"), 2) : type.Name;
+            return type.Name.Contains("`") ? type.Name.Remove(type.Name.IndexOf("`", StringComparison.Ordinal), 2) : type.Name;
         }
     }
 }

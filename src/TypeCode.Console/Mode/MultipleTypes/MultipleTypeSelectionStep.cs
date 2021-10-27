@@ -23,7 +23,9 @@ namespace TypeCode.Console.Mode.MultipleTypes
         {
             var multipleContext = new MultipleTypesSelectionContext
             {
-                SelectedTypes = context.SelectedTypes
+                SelectedTypes = context.SelectedTypes,
+                IsStop = context.IsStop,
+                Exception = context.Exception
             };
 
             var workflow = _workflowBuilder
@@ -46,6 +48,8 @@ namespace TypeCode.Console.Mode.MultipleTypes
 
             var workflowContext = await workflow.RunAsync(multipleContext).ConfigureAwait(false);
             context.SelectedType = workflowContext.SelectedType;
+            context.IsStop = workflowContext.IsStop;
+            context.Exception = workflowContext.Exception;
         }
 
         public Task<bool> ShouldExecuteAsync(TContext context)

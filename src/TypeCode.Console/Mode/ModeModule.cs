@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using TypeCode.Console.Mode.Builder;
 using TypeCode.Console.Mode.Composer;
+using TypeCode.Console.Mode.Exit;
 using TypeCode.Console.Mode.ExitOrContinue;
 using TypeCode.Console.Mode.Mapper;
 using TypeCode.Console.Mode.MultipleTypes;
@@ -18,6 +19,7 @@ namespace TypeCode.Console.Mode
             builder.RegisterType<BuilderTypeCodeStrategy>().As<IBuilderTypeCodeStrategy>();
             builder.RegisterType<UnitTestDependencyTypeCodeStrategy>().As<IUnitTestDependencyTypeCodeStrategy>();
             builder.RegisterType<ComposerTypeCodeStrategy>().As<IComposerTypeCodeStrategy>();
+            builder.RegisterType<ExitTypeCodeStrategy>().As<IExitTypeCodeStrategy>();
             
             builder.RegisterType<ModeComposer>().As<IModeComposer>();
 

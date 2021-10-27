@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Framework.Workflow;
 using TypeCode.Business.Format;
@@ -8,7 +7,6 @@ using TypeCode.Business.Mode.Composer;
 using TypeCode.Business.TypeEvaluation;
 using TypeCode.Console.Mode.ExitOrContinue;
 using TypeCode.Console.Mode.MultipleTypes;
-using TypeCode.Console.Mode.Specflow;
 
 namespace TypeCode.Console.Mode.Composer
 {
@@ -58,14 +56,14 @@ namespace TypeCode.Console.Mode.Composer
         {
             var workflow = _workflowBuilder
                 .WriteLine(_ => $@"{Cuts.Point()} Input strategy interface")
-                .ReadLine(c => c.TypeName)
-                .While(c => !_typeProvider.HasByName(c.TypeName.Trim()), whileFlow => whileFlow
+                .ReadLine(c => c.Input)
+                .While(c => !_typeProvider.HasByName(c.Input.Trim()), whileFlow => whileFlow
                     .WriteLine(_ => $@"{Cuts.Point()} Interface not found")
                     .WriteLine(_ => $@"{Cuts.Point()} Please input strategy interface")
-                    .ReadLine(c => c.TypeName)
+                    .ReadLine(c => c.Input)
                     .ThenAsync<IExitOrContinueStep<ComposerContext>>()
                 )
-                .Then(c => c.SelectedTypes, c => _typeProvider.TryGetByName(c.TypeName.Trim()).ToList())
+                .Then(c => c.SelectedTypes, c => _typeProvider.TryGetByName(c.Input.Trim()).ToList())
                 .ThenAsync<IMultipleTypeSelectionStep<ComposerContext>>()
                 .Stop(c => !c.SelectedType.IsInterface, _ => System.Console.WriteLine($@"{Cuts.Point()} Type has to be an interface"))
                 .ThenAsync(c => c.ComposerCode, c => _composerGenerator.GenerateAsync(new ComposerTypeCodeGeneratorParameter
@@ -79,6 +77,11 @@ namespace TypeCode.Console.Mode.Composer
 
             var workflowContext = await workflow.RunAsync(new ComposerContext()).ConfigureAwait(false);
             return workflowContext.ComposerCode;
+        }
+
+        public bool IsExit()
+        {
+            return false;
         }
     }
 }
