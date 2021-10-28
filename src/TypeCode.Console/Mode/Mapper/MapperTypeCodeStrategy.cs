@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Framework.Workflow;
 using TypeCode.Business.Format;
 using TypeCode.Business.Mode;
 using TypeCode.Business.Mode.Mapper;
@@ -9,6 +8,7 @@ using TypeCode.Business.Mode.Mapper.Style;
 using TypeCode.Business.TypeEvaluation;
 using TypeCode.Console.Mode.MultipleTypes;
 using TypeCode.Console.Mode.Selection;
+using Workflow;
 
 namespace TypeCode.Console.Mode.Mapper
 {

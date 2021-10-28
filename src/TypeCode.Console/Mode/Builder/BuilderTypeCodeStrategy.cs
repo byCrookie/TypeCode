@@ -1,12 +1,12 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using Framework.Workflow;
 using TypeCode.Business.Format;
 using TypeCode.Business.Mode;
 using TypeCode.Business.Mode.Builder;
 using TypeCode.Business.TypeEvaluation;
 using TypeCode.Console.Mode.ExitOrContinue;
 using TypeCode.Console.Mode.MultipleTypes;
+using Workflow;
 
 namespace TypeCode.Console.Mode.Builder
 {

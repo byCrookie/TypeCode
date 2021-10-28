@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Framework.Workflow;
+using Workflow;
 
 namespace TypeCode.Console.Mode.MultipleTypes
 {

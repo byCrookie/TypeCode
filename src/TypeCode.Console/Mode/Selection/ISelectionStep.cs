@@ -1,4 +1,4 @@
-﻿using Framework.Workflow;
+﻿using Workflow;
 
 namespace TypeCode.Console.Mode.Selection
 {

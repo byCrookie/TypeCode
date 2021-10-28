@@ -7,9 +7,9 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Framework.Boot;
 using Framework.Extensions.List;
-using Framework.Workflow;
 using TypeCode.Business.Configuration;
 using TypeCode.Business.Format;
+using Workflow;
 
 namespace TypeCode.Business.Bootstrapping
 {

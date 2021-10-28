@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Framework.Workflow;
 using TypeCode.Business.Format;
+using Workflow;
 
 namespace TypeCode.Console.Mode.ExitOrContinue
 {
