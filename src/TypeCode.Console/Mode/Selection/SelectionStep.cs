@@ -23,6 +23,7 @@ namespace TypeCode.Console.Mode.Selection
         public async Task ExecuteAsync(TContext context)
         {
             var selectionContext = new SelectionContext();
+            context.MapTo(selectionContext);
 
             var workflow = _workflowBuilder
                 .While(c => string.IsNullOrEmpty(c.Input) || c.Selection == 0 || c.Selection > _options.Selections.Count, whileFlow => whileFlow
@@ -39,9 +40,8 @@ namespace TypeCode.Console.Mode.Selection
                 .Build();
 
             var workflowContext = await workflow.RunAsync(selectionContext).ConfigureAwait(false);
+            workflowContext.MapTo(context);
             context.Selection = workflowContext.Selection;
-            context.IsStop = workflowContext.IsStop;
-            context.Exception = workflowContext.Exception;
         }
 
         private static string CreateSelectionMenu(IReadOnlyList<string> selections)

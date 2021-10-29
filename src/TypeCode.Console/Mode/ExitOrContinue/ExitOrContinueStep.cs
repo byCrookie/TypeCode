@@ -20,10 +20,9 @@ namespace TypeCode.Console.Mode.ExitOrContinue
         {
             var exitContext = new ExitOrContinueContext
             {
-                Input = context.Input,
-                Exception = context.Exception,
-                IsStop = context.IsStop
+                Input = context.Input
             };
+            context.MapTo(exitContext);
 
             var workflow = _workflowBuilder
                 .IfFlow(c => string.IsNullOrEmpty(c.Input), ifFlow => ifFlow
@@ -35,8 +34,7 @@ namespace TypeCode.Console.Mode.ExitOrContinue
                 .Build();
 
             var workflowContext = await workflow.RunAsync(exitContext).ConfigureAwait(false);
-            context.IsStop = workflowContext.IsStop;
-            context.Exception = workflowContext.Exception;
+            workflowContext.MapTo(context);
         }
 
         public Task<bool> ShouldExecuteAsync(TContext context)
