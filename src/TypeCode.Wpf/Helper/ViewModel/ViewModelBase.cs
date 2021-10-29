@@ -1,10 +1,14 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace TypeCode.Wpf.Helper
+namespace TypeCode.Wpf.Helper.ViewModel
 {
 	public class ViewModelBase : INotifyPropertyChanged
 	{
+		public virtual void OnNavigateTo(object parameter)
+		{
+		}
+		
 		public event PropertyChangedEventHandler PropertyChanged;
 
 		[NotifyPropertyChangedInvocator]

@@ -6,5 +6,18 @@
         mc:Ignorable="d"
         Title="TypeCode" Height="450" Width="800">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="140" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        
+        <StackPanel Grid.Column="0">
+            <Button Command="{Binding SpecflowNavigationCommand}"
+                    Content="Specflow" />
+        </StackPanel>
+        
+        <Frame Name="NavigationFrame" Grid.Column="1"
+               Margin="0" Padding="0" HorizontalAlignment="Left" VerticalAlignment="Top"
+               NavigationUIVisibility="Hidden" />
     </Grid>
 </Window>

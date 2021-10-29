@@ -6,4 +6,8 @@
         <UseWPF>true</UseWPF>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Framework.NET" Version="1.0.20" />
+    </ItemGroup>
+
 </Project>

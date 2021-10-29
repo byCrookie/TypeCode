@@ -1,33 +1,37 @@
 ﻿using System.Windows.Input;
-using TypeCode.Wpf.Helper;
+using TypeCode.Wpf.Helper.Commands;
+using TypeCode.Wpf.Helper.Navigation;
+using TypeCode.Wpf.Helper.ViewModel;
+using TypeCode.Wpf.Specflow;
 
 namespace TypeCode.Wpf
 {
 	public class MainViewModel : ViewModelBase
 	{
+		private readonly INavigationService _navigationService;
 		private string _testProperty;
 
-		public MainViewModel()
+		public MainViewModel(INavigationService navigationService)
 		{
-			TestCommand = new RelayCommand(TestMethod);
+			_navigationService = navigationService;
+			SpecflowNavigationCommand = new RelayCommand(NavigateToSpecflow);
 		}
 
-		public ICommand TestCommand { get; set; }
-
-		private void TestMethod(object parameter)
-		{
-
-		}
+		public ICommand SpecflowNavigationCommand { get; set; }
 
 		public string TestProperty
 		{
-			get { return _testProperty; }
+			get => _testProperty;
 			set
 			{
-				if (value == _testProperty) return;
 				_testProperty = value;
 				OnPropertyChanged();
 			}
+		}
+		
+		private void NavigateToSpecflow(object parameter)
+		{
+			_navigationService.Navigate<SpecflowViewModel>(null);
 		}
 	}
 }
