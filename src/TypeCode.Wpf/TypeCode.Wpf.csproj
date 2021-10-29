@@ -10,4 +10,8 @@
       <PackageReference Include="Framework.NET" Version="1.0.20" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\TypeCode.Business\TypeCode.Business.csproj" />
+    </ItemGroup>
+
 </Project>

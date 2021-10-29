@@ -1,8 +1,6 @@
-﻿using System.Windows.Controls;
-
-namespace TypeCode.Wpf.Specflow
+﻿namespace TypeCode.Wpf.Specflow
 {
-    public partial class SpecflowView : UserControl
+    public partial class SpecflowView
     {
         public SpecflowView()
         {
