@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TypeCodeConfiguration>
+
+    <AssemblyRoot Path="M:\Development\Home\" Priority="1">
+        <IncludeAssemblyPattern>^(?=.*\bNonic\b)(?=.*\b.dll\b).*$</IncludeAssemblyPattern>
+        <IncludeAssemblyPattern>^(?=.*\bTypeCode\b)(?=.*\b.dll\b).*$</IncludeAssemblyPattern>
+        <IncludeAssemblyPattern>^(?=.*\bFramework\b)(?=.*\b.dll\b).*$</IncludeAssemblyPattern>
+        
+        <AssemblyGroup Name="TypeCode" Priority="1">
+            <AssemblyPath Priority="1">TypeCode\src\TypeCode.Console\bin\Debug\net5.0</AssemblyPath>
+        </AssemblyGroup>
+        <AssemblyGroup Name="Nonic-Bot" Priority="2">
+            <AssemblyPath Priority="2">nonic-bot\Nonic\Nonic.Bot\bin\Debug\net5.0</AssemblyPath>
+        </AssemblyGroup>
+    </AssemblyRoot>
+    
+</TypeCodeConfiguration>

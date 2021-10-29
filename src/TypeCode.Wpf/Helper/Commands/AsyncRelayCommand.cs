@@ -1,14 +1,15 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace TypeCode.Wpf.Helper.Commands
 {
-	public class RelayCommand : ICommand
+	public class AsyncRelayCommand : ICommand
 	{
-		private readonly Action<object> _execute;
+		private readonly Func<object, Task> _execute;
 		private readonly Predicate<object> _canExecute;
 
-		public RelayCommand(Action<object> execute, Predicate<object> canExecute = null)
+		public AsyncRelayCommand(Func<object, Task> execute, Predicate<object> canExecute = null)
 		{
 			_canExecute = canExecute;
 			_execute = execute;

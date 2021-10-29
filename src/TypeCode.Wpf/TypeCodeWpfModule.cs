@@ -1,15 +1,20 @@
 ﻿using Autofac;
+using Framework.Boot;
 using TypeCode.Wpf.Helper;
+using TypeCode.Wpf.Helper.Boot;
 using TypeCode.Wpf.Specflow;
 
 namespace TypeCode.Wpf
 {
-    public class TypeCodeModule : Module
+    public class TypeCodeWpfModule : Module
     {
         protected override void Load(ContainerBuilder builder)
         {
+            builder.RegisterType<Application>().As<IApplication>();
+            
             builder.RegisterModule<SpecflowModule>();
             builder.RegisterModule<HelperModule>();
+            builder.RegisterModule<BootModule>();
             
             base.Load(builder);
         }

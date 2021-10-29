@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using Nito.AsyncEx;
 using TypeCode.Wpf.Helper.Boot;
 
 namespace TypeCode.Wpf
@@ -11,7 +12,8 @@ namespace TypeCode.Wpf
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            Bootstrapper.Boot();
+
+            Dispatcher.Invoke(() => AsyncContext.Run(Bootstrapper.BootAsync));
         }
     }
 }

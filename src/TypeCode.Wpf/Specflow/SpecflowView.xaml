@@ -6,6 +6,9 @@
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        <Label>Hello</Label>
+        <Label>Specflow</Label>
+        <TextBox Text="{Binding Input}" />
+        <TextBlock Text="{Binding Output}"></TextBlock>
+        <Button Command="{Binding GenerateCommand}"/>
     </Grid>
 </UserControl>
