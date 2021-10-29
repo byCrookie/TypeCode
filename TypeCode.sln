@@ -12,7 +12,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TypeCode.Business.Tests", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Packages", "Packages", "{A86ABA31-2C79-405F-907D-88886FE44AA5}"
 ProjectSection(SolutionItems) = preProject
-	Packages\Framework.NET.1.0.19.nupkg = Packages\Framework.NET.1.0.19.nupkg
+	Packages\Framework.NET.1.0.20.nupkg = Packages\Framework.NET.1.0.20.nupkg
 EndProjectSection
 EndProject
 Global
