@@ -24,7 +24,6 @@ namespace TypeCode.Wpf.Helper.Boot
             });
 
             var bootFlow = bootScope.WorkflowBuilder
-                // .ThenAsync<IDisposeBootLifeTimeScopeStep<BootContext>>()
                 .ThenAsync<IFrameworkConfigurationBootStep<BootContext, FrameworkBootStepOptions>,
                     FrameworkBootStepOptions>(
                     config => { config.ConfigurationFile = "TypeCode.Wpf.cfg.xml"; }
@@ -36,7 +35,6 @@ namespace TypeCode.Wpf.Helper.Boot
                     config => { config.Log4NetConfigurationFile = "TypeCode.Wpf.cfg.xml"; }
                 )
                 .ThenAsync<ISetupWpfApplicationStep<BootContext>>()
-                // .ThenAsync<IBeginLifeTimeScopeBootStep<BootContext>>()
                 .ThenAsync<IAssemblyLoadBootStep<BootContext>>()
                 .ThenAsync<IStartBootStep<BootContext>>()
                 .Build();
