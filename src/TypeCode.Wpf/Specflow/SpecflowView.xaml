@@ -5,10 +5,25 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
-        <Label>Specflow</Label>
-        <TextBox Text="{Binding Input}" />
-        <TextBlock Text="{Binding Output}"></TextBlock>
-        <Button Command="{Binding GenerateCommand}"/>
+    <Grid Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        
+        <GroupBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Header="Input">
+            <TextBox Padding="2" Text="{Binding Input}" HorizontalAlignment="Stretch"
+                     HorizontalContentAlignment="Stretch" />
+        </GroupBox>
+        <GroupBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Header="Output">
+            <TextBlock Padding="2" Text="{Binding Output}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
+        </GroupBox>
+
+        <Button Grid.Row="2" Grid.Column="1" Margin="5" Padding="2" Command="{Binding GenerateCommand}">Generate</Button>
     </Grid>
 </UserControl>

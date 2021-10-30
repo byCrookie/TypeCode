@@ -5,7 +5,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Framework.NET" Version="1.0.33" />
+        <PackageReference Include="Framework.NET" Version="1.0.34" />
         <PackageReference Include="Humanizer.Core" Version="2.11.10" />
     </ItemGroup>
 
