@@ -5,6 +5,9 @@
         None,
         Specflow,
         UnitTestType,
-        UnitTestManually
+        UnitTestManually,
+        Composer,
+        Mapper,
+        Builder
     }
 }

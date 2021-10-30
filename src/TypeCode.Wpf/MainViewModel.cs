@@ -1,8 +1,11 @@
 ﻿using System.Threading.Tasks;
 using System.Windows.Input;
 using AsyncAwaitBestPractices.MVVM;
+using TypeCode.Wpf.Builder;
+using TypeCode.Wpf.Composer;
 using TypeCode.Wpf.Helper.Navigation;
 using TypeCode.Wpf.Helper.ViewModel;
+using TypeCode.Wpf.Mapper;
 using TypeCode.Wpf.Specflow;
 using TypeCode.Wpf.UnitTestDependencyManually;
 using TypeCode.Wpf.UnitTestDependencyType;
@@ -19,6 +22,9 @@ namespace TypeCode.Wpf
 			SpecflowNavigationCommand = new AsyncCommand(NavigateToSpecflowAsync);
 			UnitTestDependencyTypeNavigationCommand = new AsyncCommand(NavigateToUnitTestDependencyTypeAsync);
 			UnitTestDependencyManuallyNavigationCommand = new AsyncCommand(NavigateToUnitTestDependencyManuallyAsync);
+			ComposerNavigationCommand = new AsyncCommand(NavigateToComposerAsync);
+			MapperNavigationCommand = new AsyncCommand(NavigateToMapperAsync);
+			BuilderNavigationCommand = new AsyncCommand(NavigateToBuilderAsync);
 
 			ActiveItem = ActiveItem.None;
 		}
@@ -26,6 +32,9 @@ namespace TypeCode.Wpf
 		public ICommand SpecflowNavigationCommand { get; }
 		public ICommand UnitTestDependencyTypeNavigationCommand { get; }
 		public ICommand UnitTestDependencyManuallyNavigationCommand { get; }
+		public ICommand ComposerNavigationCommand { get; }
+		public ICommand MapperNavigationCommand { get; }
+		public ICommand BuilderNavigationCommand { get; }
 		
 		public ActiveItem ActiveItem {
 			get => Get<ActiveItem>();
@@ -48,6 +57,24 @@ namespace TypeCode.Wpf
 		{
 			ActiveItem = ActiveItem.UnitTestManually;
 			return _navigationService.NavigateAsync<UnitTestDependencyManuallyViewModel>();
+		}
+		
+		private Task NavigateToComposerAsync()
+		{
+			ActiveItem = ActiveItem.Composer;
+			return _navigationService.NavigateAsync<ComposerViewModel>();
+		}
+		
+		private Task NavigateToMapperAsync()
+		{
+			ActiveItem = ActiveItem.Mapper;
+			return _navigationService.NavigateAsync<MapperViewModel>();
+		}
+		
+		private Task NavigateToBuilderAsync()
+		{
+			ActiveItem = ActiveItem.Builder;
+			return _navigationService.NavigateAsync<BuilderViewModel>();
 		}
 	}
 }

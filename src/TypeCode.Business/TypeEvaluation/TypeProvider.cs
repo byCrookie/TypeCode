@@ -53,12 +53,12 @@ namespace TypeCode.Business.TypeEvaluation
 
         public bool HasByName(string name)
         {
-            return GetTypesByName(name).Any();
+            return !string.IsNullOrEmpty(name) && GetTypesByName(name).Any();
         }
 
         public IEnumerable<Type> TryGetByName(string name)
         {
-            return GetTypesByName(name);
+            return !string.IsNullOrEmpty(name) ? GetTypesByName(name) : new List<Type>();
         }
 
         public IEnumerable<Type> TryGetByNames(IEnumerable<string> names)

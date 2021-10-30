@@ -31,6 +31,18 @@
                 Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static wpf:ActiveItem.UnitTestManually}}"
                 Command="{Binding UnitTestDependencyManuallyNavigationCommand}"
                 Content="Unit-Test (manually)" />
+            <Button
+                Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static wpf:ActiveItem.Composer}}"
+                Command="{Binding ComposerNavigationCommand}"
+                Content="Composer" />
+            <Button
+                Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static wpf:ActiveItem.Mapper}}"
+                Command="{Binding MapperNavigationCommand}"
+                Content="Mapper" />
+            <Button
+                Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static wpf:ActiveItem.Builder}}"
+                Command="{Binding BuilderNavigationCommand}"
+                Content="Builder" />
         </StackPanel>
 
         <Frame Name="NavigationFrame" Grid.Column="1"
