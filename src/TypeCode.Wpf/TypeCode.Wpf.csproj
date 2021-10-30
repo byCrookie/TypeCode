@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Framework.NET" Version="1.0.32" />
+      <PackageReference Include="Framework.NET" Version="1.0.33" />
       <PackageReference Include="Nito.AsyncEx.Context" Version="5.1.2" />
     </ItemGroup>
 

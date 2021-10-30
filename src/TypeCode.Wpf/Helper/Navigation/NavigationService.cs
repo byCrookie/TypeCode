@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Threading;
 using Autofac;
@@ -9,34 +10,41 @@ namespace TypeCode.Wpf.Helper.Navigation
 {
 	public class NavigationService : INavigationService
 	{
-		private readonly Frame _frame;
+		private readonly MainWindow _mainWindow;
 		private readonly IFactory _factory;
 
-		public NavigationService(Frame frame, IFactory factory)
+		public NavigationService(MainWindow mainWindow, IFactory factory)
 		{
-			_frame = frame;
+			_mainWindow = mainWindow;
 			_factory = factory;
 		}
 
-		public void Navigate<T>(object parameter)
+		public async Task NavigateAsync<T>(object parameter) where T : ViewModelBase
 		{
 			var viewModelType = typeof(T);
 			var viewModelInstance = _factory.Create<T>();
+			
+			if (viewModelInstance is null)
+			{
+				throw new ApplicationException($"ViewModel of {viewModelType.Name} not found");
+			}
 
 			var viewName = viewModelType.Name[..^"Model".Length];
 			var viewType = Type.GetType($"{viewModelType.Namespace}.{viewName}");
 
 			if (viewType is null || Activator.CreateInstance(viewType) is not UserControl viewInstance)
 			{
-				throw new ApplicationException($"View zu {viewModelType.Name} nicht gefunden");
+				throw new ApplicationException($"View of {viewModelType.Name} not found");
 			}
 
 			viewInstance.DataContext = viewModelInstance;
 
-			_frame.Navigate(viewInstance);
+			if (!_mainWindow.NavigationFrame.Navigate(viewInstance))
+			{
+				throw new ApplicationException($"Navigation to {viewModelType.Name} failed");
+			}
 
-			var viewModelBase = viewModelInstance as ViewModelBase;
-			viewModelBase?.OnNavigateTo(parameter);
+			await viewModelInstance.OnNavigateToAsync(parameter).ConfigureAwait(true);
 		}
 	}
 }

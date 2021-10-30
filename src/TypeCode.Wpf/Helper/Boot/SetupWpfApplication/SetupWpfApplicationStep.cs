@@ -16,11 +16,13 @@ namespace TypeCode.Wpf.Helper.Boot.SetupWpfApplication
 
             if (frame is null)
             {
-                throw new ApplicationException("MainView doesn't implement navigation frame");
+                throw new ApplicationException("MainView does not implement navigation frame");
             }
 
-            context.RegistrationActions.Add(builder => builder.RegisterInstance(frame).AsSelf().SingleInstance());
-            context.RegistrationActions.Add(builder => builder.RegisterType<MainViewModel>().AsSelf());
+            context.RegistrationActions
+                .Add(builder => builder.RegisterInstance(mainView).AsSelf().SingleInstance());
+            context.RegistrationActions
+                .Add(builder => builder.RegisterType<MainViewModel>().AsSelf());
 
             return Task.CompletedTask;
         }

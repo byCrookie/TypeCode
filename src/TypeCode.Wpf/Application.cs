@@ -12,34 +12,33 @@ namespace TypeCode.Wpf
         private readonly IFactory<MainViewModel> _mainViewModelFactory;
         private readonly ITypeEvaluator _typeEvaluator;
         private readonly ITypeProvider _typeProvider;
+        private readonly MainWindow _mainWindow;
 
         public Application(
             IFactory<MainViewModel> mainViewModelFactory,
             ITypeEvaluator typeEvaluator,
-            ITypeProvider typeProvider
+            ITypeProvider typeProvider,
+            MainWindow mainWindow
         )
         {
             _mainViewModelFactory = mainViewModelFactory;
             _typeEvaluator = typeEvaluator;
             _typeProvider = typeProvider;
+            _mainWindow = mainWindow;
         }
 
         public Task RunAsync(CancellationToken cancellationToken)
         {
-            var mainView = new MainWindow
-            {
-                DataContext = _mainViewModelFactory.Create()
-            };
-            
+            _mainWindow.DataContext = _mainViewModelFactory.Create();
+
             Task.Run(() =>
             {
                 var configuration = _typeEvaluator.EvaluateTypes(AssemblyLoadProvider.GetConfiguration());
                 _typeProvider.Initalize(configuration);
             }, cancellationToken);
-            
-            mainView.ShowDialog();
 
-            // Task.Delay(Timeout.Infinite, cancellationToken)
+            _mainWindow.ShowDialog();
+
             return Task.CompletedTask;
         }
     }

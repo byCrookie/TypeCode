@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System.Threading.Tasks;
+using System.Windows.Input;
 using TypeCode.Wpf.Helper.Commands;
 using TypeCode.Wpf.Helper.Navigation;
 using TypeCode.Wpf.Helper.ViewModel;
@@ -13,14 +14,14 @@ namespace TypeCode.Wpf
 		public MainViewModel(INavigationService navigationService)
 		{
 			_navigationService = navigationService;
-			SpecflowNavigationCommand = new RelayCommand(NavigateToSpecflow);
+			SpecflowNavigationCommand = new AsyncRelayCommand(NavigateToSpecflowAsync);
 		}
 
 		public ICommand SpecflowNavigationCommand { get; }
 
-		private void NavigateToSpecflow(object parameter)
+		private Task NavigateToSpecflowAsync(object parameter)
 		{
-			_navigationService.Navigate<SpecflowViewModel>(null);
+			return _navigationService.NavigateAsync<SpecflowViewModel>(null);
 		}
 	}
 }
