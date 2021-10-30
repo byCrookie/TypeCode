@@ -63,6 +63,11 @@
         <Style TargetType="{x:Type RadioButton}">
             <Setter Property="Background" Value="{StaticResource PrimaryText}" />
             <Setter Property="Foreground" Value="{StaticResource PrimaryText}" />
+        </Style> 
+        <Style TargetType="{x:Type ProgressBar}">
+            <Setter Property="Background" Value="{StaticResource Secondary}" />
+            <Setter Property="Foreground" Value="{StaticResource Accent}" />
+            <Setter Property="BorderThickness" Value="0"></Setter>
         </Style>
     </Application.Resources>
 </Application>
