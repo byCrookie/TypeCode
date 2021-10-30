@@ -1,10 +1,8 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Windows.Input;
+using AsyncAwaitBestPractices.MVVM;
 using TypeCode.Business.Mode;
 using TypeCode.Business.Mode.UnitTestDependency.Manually;
-using TypeCode.Business.Mode.UnitTestDependency.Type;
-using TypeCode.Wpf.Helper.Commands;
 using TypeCode.Wpf.Helper.ViewModel;
 
 namespace TypeCode.Wpf.UnitTestDependencyManually
@@ -19,10 +17,10 @@ namespace TypeCode.Wpf.UnitTestDependencyManually
         {
             _unitTestDependencyManuallyGenerator = unitTestDependencyManuallyGenerator;
 
-            GenerateCommand = new AsyncRelayCommand(GenerateAsync);
+            GenerateCommand = new AsyncCommand(GenerateAsync);
         }
 
-        private async Task GenerateAsync(object arg)
+        private async Task GenerateAsync()
         {
             var parameter = new UnitTestDependencyManuallyGeneratorParameter
             {

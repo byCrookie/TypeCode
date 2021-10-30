@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using System.Windows.Input;
-using TypeCode.Wpf.Helper.Commands;
+using AsyncAwaitBestPractices.MVVM;
 using TypeCode.Wpf.Helper.Navigation;
 using TypeCode.Wpf.Helper.ViewModel;
 using TypeCode.Wpf.Specflow;
@@ -16,9 +16,9 @@ namespace TypeCode.Wpf
 		public MainViewModel(INavigationService navigationService)
 		{
 			_navigationService = navigationService;
-			SpecflowNavigationCommand = new AsyncRelayCommand(NavigateToSpecflowAsync);
-			UnitTestDependencyTypeNavigationCommand = new AsyncRelayCommand(NavigateToUnitTestDependencyTypeAsync);
-			UnitTestDependencyManuallyNavigationCommand = new AsyncRelayCommand(NavigateToUnitTestDependencyManuallyAsync);
+			SpecflowNavigationCommand = new AsyncCommand(NavigateToSpecflowAsync);
+			UnitTestDependencyTypeNavigationCommand = new AsyncCommand(NavigateToUnitTestDependencyTypeAsync);
+			UnitTestDependencyManuallyNavigationCommand = new AsyncCommand(NavigateToUnitTestDependencyManuallyAsync);
 
 			ActiveItem = ActiveItem.None;
 		}
@@ -32,19 +32,19 @@ namespace TypeCode.Wpf
 			set => Set(value);
 		}
 
-		private Task NavigateToSpecflowAsync(object parameter)
+		private Task NavigateToSpecflowAsync()
 		{
 			ActiveItem = ActiveItem.Specflow;
 			return _navigationService.NavigateAsync<SpecflowViewModel>();
 		}
 		
-		private Task NavigateToUnitTestDependencyTypeAsync(object parameter)
+		private Task NavigateToUnitTestDependencyTypeAsync()
 		{
 			ActiveItem = ActiveItem.UnitTestType;
 			return _navigationService.NavigateAsync<UnitTestDependencyTypeViewModel>();
 		}
 		
-		private Task NavigateToUnitTestDependencyManuallyAsync(object parameter)
+		private Task NavigateToUnitTestDependencyManuallyAsync()
 		{
 			ActiveItem = ActiveItem.UnitTestManually;
 			return _navigationService.NavigateAsync<UnitTestDependencyManuallyViewModel>();

@@ -5,7 +5,7 @@ namespace TypeCode.Wpf.Helper.MessageBoxes
 {
     public class InteractionBox
     {
-        public static MessageBoxResult AllowAction(string message,string title, MessageBoxButton buttons = MessageBoxButton.YesNo, MessageBoxImage image = MessageBoxImage.Question)
+        public static MessageBoxResult Show(string message,string title, MessageBoxButton buttons = MessageBoxButton.YesNo, MessageBoxImage image = MessageBoxImage.Question)
         {
             var messageBoxResult = MessageBox.Show(message, title, buttons, image);
 

@@ -1,10 +1,11 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using AsyncAwaitBestPractices.MVVM;
 using TypeCode.Business.Mode;
 using TypeCode.Business.Mode.Specflow;
 using TypeCode.Business.TypeEvaluation;
-using TypeCode.Wpf.Helper.Commands;
 using TypeCode.Wpf.Helper.ViewModel;
 
 namespace TypeCode.Wpf.Specflow
@@ -22,11 +23,13 @@ namespace TypeCode.Wpf.Specflow
             _specflowGenerator = specflowGenerator;
             _typeProvider = typeProvider;
 
-            GenerateCommand = new AsyncRelayCommand(GenerateAsync);
+            GenerateCommand = new AsyncCommand(GenerateAsync);
         }
 
-        private async Task GenerateAsync(object arg)
+        private async Task GenerateAsync()
         {
+            throw new Exception("Hello");
+            
             var inputNames = Input.Split(',').Select(name => name.Trim()).ToList();
             
             var parameter = new SpecflowTypeCodeGeneratorParameter
