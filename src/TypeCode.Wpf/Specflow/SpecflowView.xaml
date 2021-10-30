@@ -3,8 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:specflow="clr-namespace:TypeCode.Wpf.Specflow"
              mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance specflow:SpecflowViewModel}">
+    
     <Grid Margin="5">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -15,13 +17,22 @@
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
-        
+
         <GroupBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Header="Input">
-            <TextBox Padding="2" Text="{Binding Input}" HorizontalAlignment="Stretch"
-                     HorizontalContentAlignment="Stretch" />
+            <TextBox Padding="2" Text="{Binding Input, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Stretch"
+                     HorizontalContentAlignment="Stretch">
+                <TextBox.InputBindings>
+                    <KeyBinding Key="Enter" Command="{Binding GenerateCommand}" />
+                </TextBox.InputBindings>
+            </TextBox>
         </GroupBox>
         <GroupBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Header="Output">
-            <TextBlock Padding="2" Text="{Binding Output}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
+            <TextBox Padding="2" Background="Transparent"
+                     BorderThickness="0"
+                     Text="{Binding Output, Mode=OneWay}"
+                     IsReadOnly="True"
+                     TextWrapping="Wrap"
+                     VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
         </GroupBox>
 
         <Button Grid.Row="2" Grid.Column="1" Margin="5" Padding="2" Command="{Binding GenerateCommand}">Generate</Button>
