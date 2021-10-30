@@ -13,8 +13,6 @@ namespace TypeCode.Wpf.Specflow
     {
         private readonly ITypeCodeGenerator<SpecflowTypeCodeGeneratorParameter> _specflowGenerator;
         private readonly ITypeProvider _typeProvider;
-        private string _input;
-        private string _output;
 
         public SpecflowViewModel(
             ITypeCodeGenerator<SpecflowTypeCodeGeneratorParameter> specflowGenerator,
@@ -41,25 +39,15 @@ namespace TypeCode.Wpf.Specflow
         }
         
         public ICommand GenerateCommand { get; }
-
-        public string Input
-        {
-            get => _input;
-            set
-            {
-                _input = value;
-                OnPropertyChanged();
-            }
+        
+        public string Input {
+            get => Get<string>();
+            set => Set(value);
         }
 
-        public string Output
-        {
-            get => _output;
-            set
-            {
-                _output = value;
-                OnPropertyChanged();
-            }
+        public string Output {
+            get => Get<string>();
+            private set => Set(value);
         }
     }
 }
