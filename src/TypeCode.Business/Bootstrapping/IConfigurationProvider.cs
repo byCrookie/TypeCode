@@ -2,7 +2,7 @@
 
 namespace TypeCode.Business.Bootstrapping
 {
-    internal interface IConfigurationProvider
+    public interface IConfigurationProvider
     {
         void SetConfiguration(TypeCodeConfiguration configuration);
         TypeCodeConfiguration GetConfiguration();

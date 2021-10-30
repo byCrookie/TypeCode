@@ -2,9 +2,7 @@
 {
     internal interface IMapperStyleStrategy
     {
-        int Number();
-        string Description();
-        bool IsResponsibleFor(string style);
-        string Generate(MappingContext context);
+        bool IsResponsibleFor(MappingStyle style);
+        string Generate(MapperTypeCodeGeneratorParameter parameter);
     }
 }

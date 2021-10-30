@@ -53,12 +53,12 @@ namespace TypeCode.Business.TypeEvaluation
 
         public bool HasByName(string name)
         {
-            return GetTypesByName(name).Any();
+            return !string.IsNullOrEmpty(name) && GetTypesByName(name).Any();
         }
 
         public IEnumerable<Type> TryGetByName(string name)
         {
-            return GetTypesByName(name);
+            return !string.IsNullOrEmpty(name) ? GetTypesByName(name) : new List<Type>();
         }
 
         public IEnumerable<Type> TryGetByNames(IEnumerable<string> names)
@@ -100,7 +100,7 @@ namespace TypeCode.Business.TypeEvaluation
 
         private static string GetNameWithoutGeneric(Type type)
         {
-            return type.Name.Contains("`") ? type.Name.Remove(type.Name.IndexOf("`"), 2) : type.Name;
+            return type.Name.Contains("`") ? type.Name.Remove(type.Name.IndexOf("`", StringComparison.Ordinal), 2) : type.Name;
         }
 
         private static string GetNameWithNamespace(Type type)

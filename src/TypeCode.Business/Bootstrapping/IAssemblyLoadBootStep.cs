@@ -1,5 +1,5 @@
 ﻿using Framework.Boot;
-using Framework.Workflow;
+using Workflow;
 
 namespace TypeCode.Business.Bootstrapping
 {

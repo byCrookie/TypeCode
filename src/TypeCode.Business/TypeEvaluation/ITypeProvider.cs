@@ -4,7 +4,7 @@ using TypeCode.Business.Configuration;
 
 namespace TypeCode.Business.TypeEvaluation
 {
-    internal interface ITypeProvider
+    public interface ITypeProvider
     {
         void Initalize(TypeCodeConfiguration configuration);
         bool HasByName(string name);
