@@ -3,6 +3,8 @@
     public enum ActiveItem
     {
         None,
-        Specflow
+        Specflow,
+        UnitTestType,
+        UnitTestManually
     }
 }

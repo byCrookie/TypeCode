@@ -3,6 +3,8 @@ using Framework.Boot;
 using TypeCode.Wpf.Helper;
 using TypeCode.Wpf.Helper.Boot;
 using TypeCode.Wpf.Specflow;
+using TypeCode.Wpf.UnitTestDependencyManually;
+using TypeCode.Wpf.UnitTestDependencyType;
 
 namespace TypeCode.Wpf
 {
@@ -13,6 +15,8 @@ namespace TypeCode.Wpf
             builder.RegisterType<Application>().As<IApplication>();
             
             builder.RegisterModule<SpecflowModule>();
+            builder.RegisterModule<UnitTestDependencyTypeModule>();
+            builder.RegisterModule<UnitTestDependencyManuallyModule>();
             builder.RegisterModule<HelperModule>();
             builder.RegisterModule<BootModule>();
             

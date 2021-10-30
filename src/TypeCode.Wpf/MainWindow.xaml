@@ -6,7 +6,7 @@
         xmlns:converters="clr-namespace:TypeCode.Wpf.Helper.Converters"
         xmlns:wpf="clr-namespace:TypeCode.Wpf"
         mc:Ignorable="d"
-        Title="TypeCode" Height="450" Width="800">
+        Title="TypeCode" Height="450" Width="800" d:DataContext="{d:DesignInstance wpf:MainViewModel}">
 
     <Window.Resources>
         <converters:ItemToActiveConverter x:Key="ToActiveConverter" Active="CornflowerBlue" NotActive="Gray" />
@@ -23,6 +23,14 @@
                 Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static wpf:ActiveItem.Specflow}}"
                 Command="{Binding SpecflowNavigationCommand}"
                 Content="Specflow" />
+            <Button
+                Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static wpf:ActiveItem.UnitTestType}}"
+                Command="{Binding UnitTestDependencyTypeNavigationCommand}"
+                Content="Unit-Test (type)" />
+            <Button
+                Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static wpf:ActiveItem.UnitTestManually}}"
+                Command="{Binding UnitTestDependencyManuallyNavigationCommand}"
+                Content="Unit-Test (manually)" />
         </StackPanel>
 
         <Frame Name="NavigationFrame" Grid.Column="1"
