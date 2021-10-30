@@ -10,6 +10,7 @@
 
     <Window.Resources>
         <converters:ItemToActiveConverter x:Key="ToActiveConverter" Active="{StaticResource Secondary}" NotActive="{StaticResource Primary}" />
+        <converters:BooleanToVisibilityConverterSelf x:Key="BooleanToVisibilityConverter" True="Visible" False="Collapsed"></converters:BooleanToVisibilityConverterSelf>
     </Window.Resources>
 
     <Grid>
@@ -17,8 +18,12 @@
             <ColumnDefinition Width="140" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
 
-        <StackPanel Grid.Column="0" Background="{StaticResource Secondary}">
+        <StackPanel Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Background="{StaticResource Secondary}">
             <Button
                 Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static wpf:ActiveItem.Specflow}}"
                 Command="{Binding SpecflowNavigationCommand}"
@@ -45,9 +50,11 @@
                 Content="Builder" />
         </StackPanel>
 
-        <Frame Name="NavigationFrame" Grid.Column="1"
+        <Frame Name="NavigationFrame" Grid.Column="1" Grid.Row="0"
                Margin="0" Padding="0"
                Background="{StaticResource Primary}"
                NavigationUIVisibility="Hidden" />
+        
+        <ProgressBar Grid.Column="1" Grid.Row="1" IsIndeterminate="True" Visibility="{Binding AreAssembliesLoading, Converter={StaticResource BooleanToVisibilityConverter}}" />
     </Grid>
 </Window>
