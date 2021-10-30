@@ -9,7 +9,7 @@
         Title="TypeCode" Height="450" Width="800" d:DataContext="{d:DesignInstance wpf:MainViewModel}">
 
     <Window.Resources>
-        <converters:ItemToActiveConverter x:Key="ToActiveConverter" Active="CornflowerBlue" NotActive="Gray" />
+        <converters:ItemToActiveConverter x:Key="ToActiveConverter" Active="{StaticResource Secondary}" NotActive="{StaticResource Primary}" />
     </Window.Resources>
 
     <Grid>
@@ -18,7 +18,7 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Column="0">
+        <StackPanel Grid.Column="0" Background="{StaticResource Secondary}">
             <Button
                 Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static wpf:ActiveItem.Specflow}}"
                 Command="{Binding SpecflowNavigationCommand}"
@@ -47,6 +47,7 @@
 
         <Frame Name="NavigationFrame" Grid.Column="1"
                Margin="0" Padding="0"
+               Background="{StaticResource Primary}"
                NavigationUIVisibility="Hidden" />
     </Grid>
 </Window>

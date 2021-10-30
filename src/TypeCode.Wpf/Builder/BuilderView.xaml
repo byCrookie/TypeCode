@@ -40,6 +40,6 @@
                      VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
         </GroupBox>
 
-        <Button Grid.Row="2" Grid.Column="1" Margin="5" Padding="2" Command="{Binding GenerateCommand}">Generate</Button>
+        <Button Margin="0,5,0,0" Grid.Row="2" Grid.Column="1" Command="{Binding GenerateCommand}">Generate</Button>
     </Grid>
 </UserControl>
