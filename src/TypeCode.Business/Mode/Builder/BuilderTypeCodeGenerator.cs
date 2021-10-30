@@ -12,7 +12,9 @@ namespace TypeCode.Business.Mode.Builder
     {
         public Task<string> GenerateAsync(BuilderTypeCodeGeneratorParameter parameter)
         {
-            return Task.FromResult(GenerateBuilderCode(parameter.Type));
+            return parameter.Type is not null
+                ? Task.FromResult(GenerateBuilderCode(parameter.Type))
+                : Task.FromResult<string>(null);
         }
 
         private static string GenerateBuilderCode(Type type)

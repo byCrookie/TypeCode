@@ -12,7 +12,9 @@ namespace TypeCode.Business.Mode.UnitTestDependency.Manually
     {
         public Task<string> GenerateAsync(UnitTestDependencyManuallyGeneratorParameter parameter)
         {
-            return GenerateUnitTestDependenciesManuallyAsync(parameter.Input);
+            return !string.IsNullOrEmpty(parameter.Input)
+                ? GenerateUnitTestDependenciesManuallyAsync(parameter.Input)
+                : Task.FromResult<string>(null);
         }
 
         private static Task<string> GenerateUnitTestDependenciesManuallyAsync(string input)

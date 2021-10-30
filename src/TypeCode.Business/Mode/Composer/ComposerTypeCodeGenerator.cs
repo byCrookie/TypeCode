@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TypeCode.Business.Format;
@@ -10,10 +11,15 @@ namespace TypeCode.Business.Mode.Composer
     {
         public Task<string> GenerateAsync(ComposerTypeCodeGeneratorParameter parameter)
         {
-            return Task.FromResult(GenerateComposerCode(parameter.Type, parameter.Interfaces));
+            if (parameter.Type is not null && parameter.Interfaces.Any())
+            {
+                return Task.FromResult(GenerateComposerCode(parameter.Type, parameter.Interfaces)); 
+            }
+
+            return Task.FromResult<string>(null);
         }
 
-        private string GenerateComposerCode(Type type, List<Type> interfaces)
+        private static string GenerateComposerCode(Type type, List<Type> interfaces)
         {
             var stringBuilder = new StringBuilder();
 

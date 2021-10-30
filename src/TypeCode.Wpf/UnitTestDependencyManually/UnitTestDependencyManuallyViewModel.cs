@@ -3,11 +3,12 @@ using System.Windows.Input;
 using AsyncAwaitBestPractices.MVVM;
 using TypeCode.Business.Mode;
 using TypeCode.Business.Mode.UnitTestDependency.Manually;
+using TypeCode.Wpf.Helper.Navigation;
 using TypeCode.Wpf.Helper.ViewModel;
 
 namespace TypeCode.Wpf.UnitTestDependencyManually
 {
-    public class UnitTestDependencyManuallyViewModel : Reactive
+    public class UnitTestDependencyManuallyViewModel : Reactive, IAsyncNavigatedTo
     {
         private readonly ITypeCodeGenerator<UnitTestDependencyManuallyGeneratorParameter> _unitTestDependencyManuallyGenerator;
 
@@ -16,8 +17,12 @@ namespace TypeCode.Wpf.UnitTestDependencyManually
         )
         {
             _unitTestDependencyManuallyGenerator = unitTestDependencyManuallyGenerator;
-
+        }
+        
+        public Task OnNavigatedToAsync(NavigationContext context)
+        {
             GenerateCommand = new AsyncCommand(GenerateAsync);
+            return Task.CompletedTask;
         }
 
         private async Task GenerateAsync()
@@ -31,7 +36,7 @@ namespace TypeCode.Wpf.UnitTestDependencyManually
             Output = result;
         }
         
-        public ICommand GenerateCommand { get; }
+        public ICommand GenerateCommand { get; set; }
         
         public string Input {
             get => Get<string>();

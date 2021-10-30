@@ -1,15 +1,17 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using AsyncAwaitBestPractices.MVVM;
 using TypeCode.Business.Mode;
 using TypeCode.Business.Mode.UnitTestDependency.Type;
 using TypeCode.Business.TypeEvaluation;
+using TypeCode.Wpf.Helper.Navigation;
 using TypeCode.Wpf.Helper.ViewModel;
 
 namespace TypeCode.Wpf.UnitTestDependencyType
 {
-    public class UnitTestDependencyTypeViewModel : Reactive
+    public class UnitTestDependencyTypeViewModel : Reactive, IAsyncNavigatedTo
     {
         private readonly ITypeCodeGenerator<UnitTestDependencyTypeGeneratorParameter> _unitTestDependencyTypeGenerator;
         private readonly ITypeProvider _typeProvider;
@@ -21,13 +23,17 @@ namespace TypeCode.Wpf.UnitTestDependencyType
         {
             _unitTestDependencyTypeGenerator = unitTestDependencyTypeGenerator;
             _typeProvider = typeProvider;
-
+        }
+        
+        public Task OnNavigatedToAsync(NavigationContext context)
+        {
             GenerateCommand = new AsyncCommand(GenerateAsync);
+            return Task.CompletedTask;
         }
 
         private async Task GenerateAsync()
         {
-            var inputNames = Input.Split(',').Select(name => name.Trim()).ToList();
+            var inputNames = Input?.Split(',').Select(name => name.Trim()).ToList() ?? new List<string>();
             
             var parameter = new UnitTestDependencyTypeGeneratorParameter
             {
@@ -38,7 +44,7 @@ namespace TypeCode.Wpf.UnitTestDependencyType
             Output = result;
         }
         
-        public ICommand GenerateCommand { get; }
+        public ICommand GenerateCommand { get; set; }
         
         public string Input {
             get => Get<string>();

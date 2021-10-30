@@ -14,7 +14,9 @@ namespace TypeCode.Business.Mode.Specflow
     {
         public Task<string> GenerateAsync(SpecflowTypeCodeGeneratorParameter parameter)
         {
-            return Task.FromResult(GenerateTable(parameter.Types));
+            return parameter.Types.Any() 
+                ? Task.FromResult(GenerateTable(parameter.Types)) 
+                : Task.FromResult<string>(null);
         }
 
         private static string GenerateTable(IEnumerable<Type> types)

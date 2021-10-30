@@ -10,7 +10,9 @@ namespace TypeCode.Business.Mode.UnitTestDependency.Type
     {
         public Task<string> GenerateAsync(UnitTestDependencyTypeGeneratorParameter parameter)
         {
-            return GenerateUnitTestDependenciesAsync(parameter.Types);
+            return parameter.Types.Any() 
+                ? GenerateUnitTestDependenciesAsync(parameter.Types) 
+                : Task.FromResult<string>(null);
         }
 
         private static Task<string> GenerateUnitTestDependenciesAsync(List<System.Type> types)

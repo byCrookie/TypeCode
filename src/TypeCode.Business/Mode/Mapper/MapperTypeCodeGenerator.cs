@@ -15,14 +15,19 @@ namespace TypeCode.Business.Mode.Mapper
 
         public Task<string> GenerateAsync(MapperTypeCodeGeneratorParameter parameter)
         {
-            return Task.FromResult(GenerateMappingCode(parameter));
+            if (parameter.MapFrom is not null && parameter.MapTo is not null)
+            {
+                return Task.FromResult(GenerateMappingCode(parameter));
+            }
+
+            return Task.FromResult<string>(null);
         }
 
         private string GenerateMappingCode(MapperTypeCodeGeneratorParameter parameter)
         {
             var styles = _mapperStyleComposer.Compose();
             var selectedStyle = styles.SingleOrDefault(style => style.IsResponsibleFor(parameter.MappingStyle));
-            return selectedStyle?.Generate(parameter) ?? string.Empty;
+            return selectedStyle?.Generate(parameter);
         }
     }
 }
