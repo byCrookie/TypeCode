@@ -9,7 +9,7 @@ using TypeCode.Wpf.Helper.ViewModel;
 
 namespace TypeCode.Wpf.Specflow
 {
-    public class SpecflowViewModel : ViewModelBase
+    public class SpecflowViewModel : Reactive
     {
         private readonly ITypeCodeGenerator<SpecflowTypeCodeGeneratorParameter> _specflowGenerator;
         private readonly ITypeProvider _typeProvider;

@@ -7,7 +7,7 @@ using TypeCode.Wpf.Specflow;
 
 namespace TypeCode.Wpf
 {
-	public class MainViewModel : ViewModelBase
+	public class MainViewModel : Reactive
 	{
 		private readonly INavigationService _navigationService;
 
@@ -29,7 +29,7 @@ namespace TypeCode.Wpf
 		private Task NavigateToSpecflowAsync(object parameter)
 		{
 			ActiveItem = ActiveItem.Specflow;
-			return _navigationService.NavigateAsync<SpecflowViewModel>(null);
+			return _navigationService.NavigateAsync<SpecflowViewModel>();
 		}
 	}
 }

@@ -6,7 +6,7 @@ namespace TypeCode.Wpf.Helper.Navigation
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<NavigationService>().As<INavigationService>();
+            builder.RegisterType<NavigationService>().As<INavigationService>().SingleInstance();
             
             base.Load(builder);
         }
