@@ -11,6 +11,7 @@ using TypeCode.Wpf.Helper.Navigation.Service;
 using TypeCode.Wpf.Helper.Navigation.Wizard.Service;
 using TypeCode.Wpf.Helper.ViewModel;
 using TypeCode.Wpf.Pages.Specflow;
+using TypeCode.Wpf.Pages.TypeSelection;
 
 namespace TypeCode.Wpf.Pages.Builder
 {
@@ -39,11 +40,22 @@ namespace TypeCode.Wpf.Pages.Builder
 
         private async Task GenerateAsync()
         {
-            await _wizardNavigationService.OpenWizard(new WizardParameter<SpecflowViewModel>());
+            var navigationContext = new NavigationContext();
+            navigationContext.AddParameter(new TypeSelectionParameter
+            {
+                AllowMultiSelection = false,
+                Types =_typeProvider.TryGetByName(Input?.Trim())
+            });
+            
+            var selectionViewModel = await _wizardNavigationService
+                .OpenWizard(new WizardParameter<TypeSelectionViewModel>
+                {
+                    FinishButtonText = "Save"
+                }, navigationContext);
             
             var parameter = new BuilderTypeCodeGeneratorParameter
             {
-                Type = _typeProvider.TryGetByName(Input?.Trim()).FirstOrDefault()
+                Type = selectionViewModel.SelectedTypes.Single()
             };
             
             var result = await _builderGenerator.GenerateAsync(parameter);

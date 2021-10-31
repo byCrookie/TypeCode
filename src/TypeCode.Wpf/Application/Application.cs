@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Threading;
 using Framework.Autofac.Factory;
@@ -59,7 +60,11 @@ namespace TypeCode.Wpf.Application
             AsyncContext.Run(() => _modalNavigationService.OpenModal(new ModalParameter
             {
                 Title = "ERROR", 
-                Text = e.Exception.Message
+                Text = $"{e.Exception.Message}" +
+                       $"{Environment.NewLine}" +
+                       $"{e.Exception.InnerException?.Message}" +
+                       $"{Environment.NewLine}" +
+                       $"{e.Exception.StackTrace}"
             }));
         }
 

@@ -3,6 +3,7 @@ using TypeCode.Wpf.Pages.Builder;
 using TypeCode.Wpf.Pages.Composer;
 using TypeCode.Wpf.Pages.Mapper;
 using TypeCode.Wpf.Pages.Specflow;
+using TypeCode.Wpf.Pages.TypeSelection;
 using TypeCode.Wpf.Pages.UnitTestDependencyManually;
 using TypeCode.Wpf.Pages.UnitTestDependencyType;
 
@@ -18,6 +19,8 @@ namespace TypeCode.Wpf.Pages
             builder.RegisterModule<ComposerModule>();
             builder.RegisterModule<MapperModule>();
             builder.RegisterModule<BuilderModule>();
+
+            builder.RegisterModule<TypeSelectionModule>();
             
             base.Load(builder);
         }
