@@ -18,6 +18,7 @@ namespace TypeCode.Business.Configuration
         public string Name { get; set; }
         public int Priority { get; set; }
         public string Text { get; set; }
+        public List<PriorityString> PriorityAssemblyList { get; set; }
     }
     
     public class AssemblyRoot

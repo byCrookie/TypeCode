@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Threading;
 using Nito.AsyncEx;
-using TypeCode.Wpf.Helper.Boot;
+using TypeCode.Wpf.Application.Boot;
 
 namespace TypeCode.Wpf
 {

@@ -1,13 +1,8 @@
 ﻿using Autofac;
-using Framework.Boot;
-using TypeCode.Wpf.Builder;
-using TypeCode.Wpf.Composer;
+using TypeCode.Wpf.Application;
 using TypeCode.Wpf.Helper;
-using TypeCode.Wpf.Helper.Boot;
-using TypeCode.Wpf.Mapper;
-using TypeCode.Wpf.Specflow;
-using TypeCode.Wpf.UnitTestDependencyManually;
-using TypeCode.Wpf.UnitTestDependencyType;
+using TypeCode.Wpf.Main;
+using TypeCode.Wpf.Pages;
 
 namespace TypeCode.Wpf
 {
@@ -15,17 +10,10 @@ namespace TypeCode.Wpf
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<Application>().As<IApplication>();
-            
-            builder.RegisterModule<SpecflowModule>();
-            builder.RegisterModule<UnitTestDependencyTypeModule>();
-            builder.RegisterModule<UnitTestDependencyManuallyModule>();
-            builder.RegisterModule<ComposerModule>();
-            builder.RegisterModule<MapperModule>();
-            builder.RegisterModule<BuilderModule>();
-            
+            builder.RegisterModule<AppModule>();
             builder.RegisterModule<HelperModule>();
-            builder.RegisterModule<BootModule>();
+            builder.RegisterModule<MainModule>();
+            builder.RegisterModule<PagesModule>();
             
             base.Load(builder);
         }

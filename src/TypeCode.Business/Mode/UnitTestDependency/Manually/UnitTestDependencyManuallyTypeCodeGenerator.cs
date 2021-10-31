@@ -39,7 +39,7 @@ namespace TypeCode.Business.Mode.UnitTestDependency.Manually
         {
             var matches = PartsRegex.Split(line);
 
-            if (matches.Length != 2)
+            if (matches.Length < 2)
             {
                 throw new FormatException("Not valid constructor pattern");
             }
