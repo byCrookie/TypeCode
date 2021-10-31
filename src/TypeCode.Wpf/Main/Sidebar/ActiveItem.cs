@@ -8,6 +8,7 @@
         UnitTestManually,
         Composer,
         Mapper,
-        Builder
+        Builder,
+        Assembly
     }
 }

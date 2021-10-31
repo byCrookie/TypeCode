@@ -1,6 +1,6 @@
 ﻿namespace TypeCode.Business.Bootstrapping
 {
-    internal class PriorityString
+    public class PriorityString
     {
         public int Priority { get; }
         public string Message { get; }

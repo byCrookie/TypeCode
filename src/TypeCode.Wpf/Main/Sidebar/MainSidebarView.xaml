@@ -58,6 +58,11 @@
             Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.Builder}}"
             Command="{Binding BuilderNavigationCommand}"
             Content="Builder" />
+        <Button
+            Style="{StaticResource TabButtonStyle}"
+            Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.Assembly}}"
+            Command="{Binding AssemblyNavigationCommand}"
+            Content="Assemblies" />
     </StackPanel>
 
 </UserControl>

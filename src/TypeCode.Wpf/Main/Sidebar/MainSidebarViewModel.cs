@@ -4,6 +4,7 @@ using AsyncAwaitBestPractices.MVVM;
 using TypeCode.Wpf.Helper.Navigation;
 using TypeCode.Wpf.Helper.Navigation.Service;
 using TypeCode.Wpf.Helper.ViewModel;
+using TypeCode.Wpf.Pages.Assemblies;
 using TypeCode.Wpf.Pages.Builder;
 using TypeCode.Wpf.Pages.Composer;
 using TypeCode.Wpf.Pages.Mapper;
@@ -27,6 +28,7 @@ namespace TypeCode.Wpf.Main.Sidebar
             ComposerNavigationCommand = new AsyncCommand(NavigateToComposerAsync);
             MapperNavigationCommand = new AsyncCommand(NavigateToMapperAsync);
             BuilderNavigationCommand = new AsyncCommand(NavigateToBuilderAsync);
+            AssemblyNavigationCommand = new AsyncCommand(NavigateToAssemblyAsync);
 
             ActiveItem = ActiveItem.None;
         }
@@ -37,6 +39,7 @@ namespace TypeCode.Wpf.Main.Sidebar
         public ICommand ComposerNavigationCommand { get; }
         public ICommand MapperNavigationCommand { get; }
         public ICommand BuilderNavigationCommand { get; }
+        public ICommand AssemblyNavigationCommand { get; }
 		
         public ActiveItem ActiveItem {
             get => Get<ActiveItem>();
@@ -77,6 +80,12 @@ namespace TypeCode.Wpf.Main.Sidebar
         {
             ActiveItem = ActiveItem.Builder;
             return _navigationService.NavigateAsync<BuilderViewModel>();
+        }
+        
+        private Task NavigateToAssemblyAsync()
+        {
+            ActiveItem = ActiveItem.Assembly;
+            return _navigationService.NavigateAsync<AssemblyViewModel>();
         }
     }
 }

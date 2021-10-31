@@ -48,13 +48,15 @@ namespace TypeCode.Business.Bootstrapping
                     {
                         path.AssemblyDirectories
                             .ForEach(directory => messages
-                                .Add(new PriorityString(path.Priority, $@"{Cuts.Point()} {directory.AbsolutPath}")));
+                                .Add(new PriorityString(path.Priority, $@"{directory.AbsolutPath}")));
                     });
 
                     foreach (var message in messages.OrderBy(message => message.Priority).ToList())
                     {
                         Console.WriteLine(message.Message);
                     }
+
+                    group.PriorityAssemblyList = messages;
                 }
             }
 
