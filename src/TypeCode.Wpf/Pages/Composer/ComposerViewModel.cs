@@ -6,6 +6,8 @@ using TypeCode.Business.Mode;
 using TypeCode.Business.Mode.Composer;
 using TypeCode.Business.TypeEvaluation;
 using TypeCode.Wpf.Helper.Navigation;
+using TypeCode.Wpf.Helper.Navigation.Contract;
+using TypeCode.Wpf.Helper.Navigation.Service;
 using TypeCode.Wpf.Helper.ViewModel;
 
 namespace TypeCode.Wpf.Pages.Composer
