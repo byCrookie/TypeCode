@@ -7,22 +7,18 @@ using TypeCode.Wpf.Helper.Navigation.Contract;
 using TypeCode.Wpf.Helper.Navigation.Modal.View;
 using TypeCode.Wpf.Helper.Navigation.Service;
 using TypeCode.Wpf.Main;
-using TypeCode.Wpf.Main.Content;
 
 namespace TypeCode.Wpf.Helper.Navigation.Modal.Service
 {
     public class ModalNavigationService : IModalNavigationService
     {
         private readonly MainWindow _mainWindow;
-        private readonly MainContentView _mainContentView;
         private readonly IFactory _factory;
-        private object _lastViewModel;
         private ModalParameter _lastModalParameter;
 
-        public ModalNavigationService(MainWindow mainWindow, MainContentView mainContentView, IFactory factory)
+        public ModalNavigationService(MainWindow mainWindow, IFactory factory)
         {
             _mainWindow = mainWindow;
-            _mainContentView = mainContentView;
             _factory = factory;
         }
 

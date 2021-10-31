@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace TypeCode.Business.Format
 {
-    internal class NameBuilder
+    public class NameBuilder
     {
         public static string VariableNameFromInterface(Type @interface)
         {

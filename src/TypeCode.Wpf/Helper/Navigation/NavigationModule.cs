@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using TypeCode.Wpf.Helper.Navigation.Modal;
 using TypeCode.Wpf.Helper.Navigation.Service;
+using TypeCode.Wpf.Helper.Navigation.Wizard;
 
 namespace TypeCode.Wpf.Helper.Navigation
 {
@@ -11,6 +12,7 @@ namespace TypeCode.Wpf.Helper.Navigation
             builder.RegisterType<NavigationService>().As<INavigationService>().SingleInstance();
 
             builder.RegisterModule<ModalModule>();
+            builder.RegisterModule<WizardModule>();
             
             base.Load(builder);
         }

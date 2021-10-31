@@ -6,9 +6,14 @@
         xmlns:sidebar="clr-namespace:TypeCode.Wpf.Main.Sidebar"
         xmlns:main="clr-namespace:TypeCode.Wpf.Main"
         xmlns:content="clr-namespace:TypeCode.Wpf.Main.Content"
+        xmlns:converters="clr-namespace:TypeCode.Wpf.Helper.Converters"
         mc:Ignorable="d"
         Title="TypeCode" Height="450" Width="800" d:DataContext="{d:DesignInstance main:MainViewModel}"
         Background="{StaticResource Primary}">
+    
+    <Window.Resources>
+        <converters:ApplyNumberConverter x:Key="ApplyNumberConverter" Number="-30"/>
+    </Window.Resources>
 
     <Grid>
         <Grid x:Name="Main">
@@ -17,22 +22,24 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <sidebar:MainSidebarView x:Name="Sidebar" DataContext="{Binding MainSidebarViewModel}" Grid.Column="0" Grid.Row="0" />
+            <sidebar:MainSidebarView x:Name="Sidebar" DataContext="{Binding MainSidebarViewModel}" Grid.Column="0"
+                                     Grid.Row="0" />
 
-            <content:MainContentView x:Name="MainContent" DataContext="{Binding MainContentViewModel}" Grid.Column="1" Grid.Row="0" />
+            <content:MainContentView x:Name="MainContent" DataContext="{Binding MainContentViewModel}" Grid.Column="1"
+                                     Grid.Row="0" />
         </Grid>
 
         <Grid x:Name="ModalOverlay" Visibility="Collapsed" HorizontalAlignment="Center" VerticalAlignment="Center">
             <Frame x:Name="ModalFrame"
-                   Background="{StaticResource Primary}"
+                   Background="Transparent"
                    Margin="0" Padding="0" Height="300" Width="600"
                    NavigationUIVisibility="Hidden" />
         </Grid>
-        
-        <Grid x:Name="WizardOverlay" Visibility="Collapsed" HorizontalAlignment="Center" VerticalAlignment="Center">
+
+        <Grid x:Name="WizardOverlay" Visibility="Collapsed" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <Frame x:Name="WizardFrame"
-                   Background="{StaticResource Primary}"
-                   Margin="50" Padding="0"
+                   Background="Transparent"
+                   Margin="30" Padding="0"
                    NavigationUIVisibility="Hidden" />
         </Grid>
     </Grid>

@@ -8,7 +8,9 @@ using TypeCode.Business.TypeEvaluation;
 using TypeCode.Wpf.Helper.Navigation;
 using TypeCode.Wpf.Helper.Navigation.Contract;
 using TypeCode.Wpf.Helper.Navigation.Service;
+using TypeCode.Wpf.Helper.Navigation.Wizard.Service;
 using TypeCode.Wpf.Helper.ViewModel;
+using TypeCode.Wpf.Pages.Specflow;
 
 namespace TypeCode.Wpf.Pages.Builder
 {
@@ -16,14 +18,17 @@ namespace TypeCode.Wpf.Pages.Builder
     {
         private readonly ITypeCodeGenerator<BuilderTypeCodeGeneratorParameter> _builderGenerator;
         private readonly ITypeProvider _typeProvider;
+        private readonly IWizardNavigationService _wizardNavigationService;
 
         public BuilderViewModel(
             ITypeCodeGenerator<BuilderTypeCodeGeneratorParameter> builderGenerator,
-            ITypeProvider typeProvider
+            ITypeProvider typeProvider,
+            IWizardNavigationService wizardNavigationService
         )
         {
             _builderGenerator = builderGenerator;
             _typeProvider = typeProvider;
+            _wizardNavigationService = wizardNavigationService;
         }
         
         public Task OnNavigatedToAsync(NavigationContext context)
@@ -34,6 +39,8 @@ namespace TypeCode.Wpf.Pages.Builder
 
         private async Task GenerateAsync()
         {
+            await _wizardNavigationService.OpenWizard(new WizardParameter<SpecflowViewModel>());
+            
             var parameter = new BuilderTypeCodeGeneratorParameter
             {
                 Type = _typeProvider.TryGetByName(Input?.Trim()).FirstOrDefault()
