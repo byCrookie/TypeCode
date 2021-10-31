@@ -32,6 +32,7 @@
             <Setter Property="BorderBrush" Value="{StaticResource Primary}"></Setter>
             <Setter Property="BorderThickness" Value="2"></Setter>
             <Setter Property="Padding" Value="5"></Setter>
+            <Setter Property="MinWidth" Value="80"></Setter>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">

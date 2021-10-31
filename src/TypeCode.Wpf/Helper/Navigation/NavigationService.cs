@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using Framework.Autofac.Factory;
+using TypeCode.Wpf.Helper.Modal;
 
 namespace TypeCode.Wpf.Helper.Navigation
 {
@@ -10,11 +12,56 @@ namespace TypeCode.Wpf.Helper.Navigation
         private readonly MainWindow _mainWindow;
         private readonly IFactory _factory;
         private object _lastViewModel;
+        private ModalParameter _lastModalParameter;
 
         public NavigationService(MainWindow mainWindow, IFactory factory)
         {
             _mainWindow = mainWindow;
             _factory = factory;
+        }
+
+        public async Task OpenModal(ModalParameter modalParameter)
+        {
+            var viewModelType = typeof(ModalViewModel);
+            var viewModelInstance = _factory.Create<ModalViewModel>();
+
+            if (viewModelInstance is null)
+            {
+                throw new ApplicationException($"ViewModel of {viewModelType.Name} not found");
+            }
+
+            var viewName = viewModelType.Name[..^"Model".Length];
+            var viewType = Type.GetType($"{viewModelType.Namespace}.{viewName}");
+
+            if (viewType is null || Activator.CreateInstance(viewType) is not UserControl viewInstance)
+            {
+                throw new ApplicationException($"View of {viewModelType.Name} not found");
+            }
+
+            viewInstance.DataContext = viewModelInstance;
+
+            _mainWindow.MainContent.Opacity = 0.5;
+            _mainWindow.MainContent.IsEnabled = false;
+            _mainWindow.ModalContent.Visibility = Visibility.Visible;
+            if (!_mainWindow.ModalFrame.Navigate(viewInstance))
+            {
+                throw new ApplicationException($"Navigation to modal {viewModelType.Name} failed");
+            }
+
+            var context = new NavigationContext();
+            context.AddParameter(modalParameter);
+            await CallOnNavigatedToOnCurrentViewModelAsync(context, viewModelInstance).ConfigureAwait(true);
+
+            SetLastModalParameterToCurrent(modalParameter);
+        }
+
+        public Task CloseModal()
+        {
+            _mainWindow.MainContent.Opacity = 1;
+            _mainWindow.MainContent.IsEnabled = true;
+            _mainWindow.ModalContent.Visibility = Visibility.Collapsed;
+
+            return _lastModalParameter.OnCloseAsync?.Invoke() ?? Task.CompletedTask;
         }
 
         public async Task NavigateAsync<T>(NavigationContext context = null)
@@ -47,6 +94,11 @@ namespace TypeCode.Wpf.Helper.Navigation
             await CallOnNavigatedToOnCurrentViewModelAsync(context, viewModelInstance).ConfigureAwait(true);
             
             SetCurrentViewModelToLastViewModel(viewModelInstance);
+        }
+        
+        private void SetLastModalParameterToCurrent(ModalParameter parameter)
+        {
+            _lastModalParameter = parameter;
         }
 
         private void SetCurrentViewModelToLastViewModel<T>(T viewModelInstance)
