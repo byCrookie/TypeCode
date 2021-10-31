@@ -44,6 +44,7 @@ namespace TypeCode.Business.Mode.Builder
                 CreatePropertyMethod(stringBuilder, typeName, classFieldName, property);
             }
 
+            stringBuilder.AppendLine();
             stringBuilder.AppendLine($@"{Cuts.Tab()}public {typeName} Build()");
             stringBuilder.AppendLine($@"{Cuts.Tab()}{{");
             stringBuilder.AppendLine($@"{Cuts.Tab()}{Cuts.Tab()}var {classVariableName} = {classFieldName};");

@@ -21,10 +21,8 @@ namespace TypeCode.Business.Mode.UnitTestDependency.Type
 
             foreach (var type in types)
             {
-                stringBuilder.AppendLine(Cuts.Long());
                 stringBuilder.AppendLine(GenerateDependencies(type));
             }
-            stringBuilder.AppendLine(Cuts.Long());
 
             return Task.FromResult(stringBuilder.ToString());
         }
