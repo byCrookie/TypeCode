@@ -24,7 +24,7 @@
                  Padding="2" Text="{Binding Input, UpdateSourceTrigger=PropertyChanged}"
                  HorizontalAlignment="Stretch"
                  HorizontalContentAlignment="Stretch"
-                 ToolTip="Input type name.">
+                 ToolTip="Input type name">
             <TextBox.InputBindings>
                 <KeyBinding Key="Enter" Command="{Binding GenerateCommand}" />
             </TextBox.InputBindings>
