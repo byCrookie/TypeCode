@@ -5,7 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:modal="clr-namespace:TypeCode.Wpf.Helper.Modal"
              mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance modal:ModalViewModel }">
+             d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance modal:ModalViewModel }"
+             Background="{StaticResource Secondary}">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"></ColumnDefinition>
@@ -25,6 +26,6 @@
                  IsReadOnly="True"
                  TextWrapping="Wrap"
                  VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
-        <Button Grid.Row="2" Grid.Column="1" Command="{Binding OkCommand}">Ok</Button>
+        <Button Margin="0,0,5,5" Grid.Row="2" Grid.Column="1" Command="{Binding OkCommand}" BorderBrush="{StaticResource Secondary}">Ok</Button>
     </Grid>
 </UserControl>

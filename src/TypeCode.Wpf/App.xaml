@@ -23,7 +23,7 @@
             <Setter Property="Foreground" Value="{StaticResource PrimaryText}" />
         </Style>
         <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
-            <Setter Property="Background" Value="{StaticResource Primary}" />
+            <Setter Property="Background" Value="Transparent" />
             <Setter Property="Foreground" Value="{StaticResource PrimaryText}" />
         </Style>
         <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
@@ -53,7 +53,7 @@
             </Style.Triggers>
         </Style>
         <Style TargetType="{x:Type Label}" BasedOn="{StaticResource {x:Type Label}}">
-            <Setter Property="Background" Value="{StaticResource Primary}" />
+            <Setter Property="Background" Value="Transparent" />
             <Setter Property="Foreground" Value="{StaticResource PrimaryText}" />
         </Style>
         <Style TargetType="{x:Type GroupBox}" BasedOn="{StaticResource {x:Type GroupBox}}">

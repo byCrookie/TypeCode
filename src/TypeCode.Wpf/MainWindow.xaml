@@ -6,13 +6,27 @@
         xmlns:converters="clr-namespace:TypeCode.Wpf.Helper.Converters"
         xmlns:wpf="clr-namespace:TypeCode.Wpf"
         mc:Ignorable="d"
-        Title="TypeCode" Height="450" Width="800" d:DataContext="{d:DesignInstance wpf:MainViewModel}">
+        Title="TypeCode" Height="450" Width="800" d:DataContext="{d:DesignInstance wpf:MainViewModel}"
+        Background="{StaticResource Primary}">
 
     <Window.Resources>
-        <converters:ItemToActiveConverter x:Key="ToActiveConverter" Active="{StaticResource Secondary}"
-                                          NotActive="{StaticResource Primary}" />
+        <converters:ItemToActiveConverter x:Key="ToActiveConverter" Active="{StaticResource Primary}"
+                                          NotActive="{StaticResource Secondary}" />
         <converters:BooleanToVisibilityConverterSelf x:Key="BooleanToVisibilityConverter" True="Visible"
                                                      False="Collapsed" />
+        
+        <Style x:Key="TabButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Background" Value="{StaticResource Secondary}" />
+            <Setter Property="BorderThickness" Value="0"></Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{StaticResource Secondary}"/>
+                    <Setter Property="BorderBrush" Value="{StaticResource Primary}"></Setter>
+                    <Setter Property="BorderThickness" Value="0,2,0,2"></Setter>
+                    <Setter Property="Padding" Value="3"></Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </Window.Resources>
 
     <Grid>
@@ -28,26 +42,32 @@
 
             <StackPanel Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Background="{StaticResource Secondary}">
                 <Button
+                    Style="{StaticResource TabButtonStyle}"
                     Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static wpf:ActiveItem.Specflow}}"
                     Command="{Binding SpecflowNavigationCommand}"
                     Content="Specflow" />
                 <Button
+                    Style="{StaticResource TabButtonStyle}"
                     Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static wpf:ActiveItem.UnitTestType}}"
                     Command="{Binding UnitTestDependencyTypeNavigationCommand}"
                     Content="Unit-Test (type)" />
                 <Button
+                    Style="{StaticResource TabButtonStyle}"
                     Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static wpf:ActiveItem.UnitTestManually}}"
                     Command="{Binding UnitTestDependencyManuallyNavigationCommand}"
                     Content="Unit-Test (manually)" />
                 <Button
+                    Style="{StaticResource TabButtonStyle}"
                     Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static wpf:ActiveItem.Composer}}"
                     Command="{Binding ComposerNavigationCommand}"
                     Content="Composer" />
                 <Button
+                    Style="{StaticResource TabButtonStyle}"
                     Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static wpf:ActiveItem.Mapper}}"
                     Command="{Binding MapperNavigationCommand}"
                     Content="Mapper" />
                 <Button
+                    Style="{StaticResource TabButtonStyle}"
                     Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static wpf:ActiveItem.Builder}}"
                     Command="{Binding BuilderNavigationCommand}"
                     Content="Builder" />

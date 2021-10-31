@@ -40,7 +40,7 @@ namespace TypeCode.Wpf.Helper.Navigation
 
             viewInstance.DataContext = viewModelInstance;
 
-            _mainWindow.MainContent.Opacity = 0.5;
+            _mainWindow.MainContent.Opacity = 0.1;
             _mainWindow.MainContent.IsEnabled = false;
             _mainWindow.ModalContent.Visibility = Visibility.Visible;
             if (!_mainWindow.ModalFrame.Navigate(viewInstance))
