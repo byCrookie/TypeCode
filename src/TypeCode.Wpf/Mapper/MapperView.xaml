@@ -15,39 +15,44 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
-        <GroupBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Header="Input">
-            <StackPanel>
-                <Label>Input two type names seperated by ','.</Label>
-                <TextBox Padding="2" Text="{Binding Input, UpdateSourceTrigger=PropertyChanged}"
-                         HorizontalAlignment="Stretch"
-                         HorizontalContentAlignment="Stretch">
-                    <TextBox.InputBindings>
-                        <KeyBinding Key="Enter" Command="{Binding GenerateCommand}" />
-                    </TextBox.InputBindings>
-                </TextBox>
-            </StackPanel>
-        </GroupBox>
-        <GroupBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Header="Style">
-            <StackPanel>
-                <RadioButton IsChecked="True" Command="{Binding StyleCommand}" CommandParameter="{x:Static style:MappingStyle.New}">Map to new</RadioButton>
-                <RadioButton Command="{Binding StyleCommand}" CommandParameter="{x:Static style:MappingStyle.Existing}">Map to existing</RadioButton>
-            </StackPanel>
-        </GroupBox>
-        <GroupBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Header="Output">
-            <TextBox Padding="2" Background="Transparent"
-                     BorderThickness="0"
-                     Text="{Binding Output, Mode=OneWay}"
-                     IsReadOnly="True"
-                     TextWrapping="Wrap"
-                     VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
-        </GroupBox>
+        <TextBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+                 Padding="2" Text="{Binding Input, UpdateSourceTrigger=PropertyChanged}"
+                 HorizontalAlignment="Stretch"
+                 HorizontalContentAlignment="Stretch"
+                 ToolTip="Input two type names seperated by ','.">
+            <TextBox.InputBindings>
+                <KeyBinding Key="Enter" Command="{Binding GenerateCommand}" />
+            </TextBox.InputBindings>
+        </TextBox>
 
-        <Button Margin="0,5,0,0" Grid.Row="3" Grid.Column="1" Command="{Binding GenerateCommand}">Generate</Button>
+        <StackPanel Margin="0,5,0,0" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+            <RadioButton GroupName="Style" IsChecked="True" Command="{Binding StyleCommand}"
+                         CommandParameter="{x:Static style:MappingStyle.New}">
+                Map to new
+            </RadioButton>
+            <RadioButton GroupName="Style" Command="{Binding StyleCommand}"
+                         CommandParameter="{x:Static style:MappingStyle.Existing}">
+                Map to existing
+            </RadioButton>
+        </StackPanel>
+
+        <TextBox Margin="0,5,0,0" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+                 Padding="2" Background="Transparent"
+                 BorderThickness="0"
+                 Text="{Binding Output, Mode=OneWay}"
+                 IsReadOnly="True"
+                 TextWrapping="Wrap"
+                 VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
+
+        <Separator Margin="0,5,0,5" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" />
+
+        <Button Grid.Row="4" Grid.Column="1" Command="{Binding GenerateCommand}">Generate</Button>
     </Grid>
 </UserControl>

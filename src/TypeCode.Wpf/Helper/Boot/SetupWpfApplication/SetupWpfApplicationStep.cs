@@ -23,7 +23,7 @@ namespace TypeCode.Wpf.Helper.Boot.SetupWpfApplication
                 .Add(builder => builder.RegisterInstance(mainView).AsSelf().SingleInstance());
             context.RegistrationActions
                 .Add(builder => builder.RegisterType<MainViewModel>().AsSelf());
-
+            
             return Task.CompletedTask;
         }
 

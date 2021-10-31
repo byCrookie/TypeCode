@@ -38,6 +38,12 @@ namespace TypeCode.Business.Mode.UnitTestDependency.Manually
         private static Task<string> GenerateForSingleLineAsync(string line)
         {
             var matches = PartsRegex.Split(line);
+
+            if (matches.Length != 2)
+            {
+                throw new FormatException("Not valid constructor pattern");
+            }
+            
             var accessorAndName = matches[0];
             var dependencies = matches[1];
 

@@ -7,42 +7,45 @@
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance unitTestDependency:UnitTestDependencyManuallyViewModel}">
+    
+    <UserControl.InputBindings>
+        <KeyBinding Key="Enter" Command="{Binding GenerateCommand}" />
+    </UserControl.InputBindings>
 
     <Grid Margin="5">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
+        
+        <TextBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+                 Padding="2" Text="{Binding Input, UpdateSourceTrigger=PropertyChanged}"
+                 HorizontalAlignment="Stretch"
+                 HorizontalContentAlignment="Stretch"
+                 AcceptsReturn="True"
+                 TextWrapping="Wrap"
+                 AcceptsTab="True"
+                 MinLines="5"
+                 MaxLines="5"
+                 ToolTip="Input constructor from access modifier to end of constructor dependencies including ')'.">
+        </TextBox>
 
-        <GroupBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Header="Input">
-            <StackPanel>
-                <Label>Input constructor from access modifier to end of constructor dependencies including ')'.</Label>
-                <TextBox Padding="2" Text="{Binding Input, UpdateSourceTrigger=PropertyChanged}"
-                         HorizontalAlignment="Stretch"
-                         HorizontalContentAlignment="Stretch"
-                         AcceptsReturn="True"
-                         TextWrapping="Wrap"
-                         AcceptsTab="True">
-                    <TextBox.InputBindings>
-                        <KeyBinding Key="Enter" Command="{Binding GenerateCommand}" />
-                    </TextBox.InputBindings>
-                </TextBox>
-            </StackPanel>
-        </GroupBox>
-        <GroupBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Header="Output">
-            <TextBox Padding="2" Background="Transparent"
-                     BorderThickness="0"
-                     Text="{Binding Output, Mode=OneWay}"
-                     IsReadOnly="True"
-                     TextWrapping="Wrap"
-                     VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
-        </GroupBox>
+        <TextBox Margin="0,5,0,0" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                 Padding="2" Background="Transparent"
+                 BorderThickness="0"
+                 Text="{Binding Output, Mode=OneWay}"
+                 IsReadOnly="True"
+                 TextWrapping="Wrap"
+                 VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
 
-        <Button Margin="0,5,0,0" Grid.Row="2" Grid.Column="1" Command="{Binding GenerateCommand}">Generate</Button>
+        <Separator Margin="0,5,0,5" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" />
+
+        <Button Grid.Row="3" Grid.Column="1" Command="{Binding GenerateCommand}">Generate</Button>
     </Grid>
 </UserControl>
