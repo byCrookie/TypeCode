@@ -1,8 +1,6 @@
-﻿using System.Windows.Controls;
-
-namespace TypeCode.Wpf.Helper.Modal
+﻿namespace TypeCode.Wpf.Helper.Modal
 {
-    public partial class ModalView : UserControl
+    public partial class ModalView
     {
         public ModalView()
         {

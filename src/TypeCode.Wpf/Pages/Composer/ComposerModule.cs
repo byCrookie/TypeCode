@@ -1,12 +1,12 @@
 ﻿using Autofac;
 
-namespace TypeCode.Wpf.Mapper
+namespace TypeCode.Wpf.Pages.Composer
 {
-    public class MapperModule : Module
+    public class ComposerModule : Module
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<MapperViewModel>().AsSelf();
+            builder.RegisterType<ComposerViewModel>().AsSelf();
             
             base.Load(builder);
         }

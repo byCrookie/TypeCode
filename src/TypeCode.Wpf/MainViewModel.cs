@@ -1,15 +1,15 @@
 ﻿using System.Threading.Tasks;
 using System.Windows.Input;
 using AsyncAwaitBestPractices.MVVM;
-using TypeCode.Wpf.Builder;
-using TypeCode.Wpf.Composer;
 using TypeCode.Wpf.Helper.Event;
 using TypeCode.Wpf.Helper.Navigation;
 using TypeCode.Wpf.Helper.ViewModel;
-using TypeCode.Wpf.Mapper;
-using TypeCode.Wpf.Specflow;
-using TypeCode.Wpf.UnitTestDependencyManually;
-using TypeCode.Wpf.UnitTestDependencyType;
+using TypeCode.Wpf.Pages.Builder;
+using TypeCode.Wpf.Pages.Composer;
+using TypeCode.Wpf.Pages.Mapper;
+using TypeCode.Wpf.Pages.Specflow;
+using TypeCode.Wpf.Pages.UnitTestDependencyManually;
+using TypeCode.Wpf.Pages.UnitTestDependencyType;
 
 namespace TypeCode.Wpf
 {

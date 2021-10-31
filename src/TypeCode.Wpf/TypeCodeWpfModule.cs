@@ -1,13 +1,13 @@
 ﻿using Autofac;
 using Framework.Boot;
-using TypeCode.Wpf.Builder;
-using TypeCode.Wpf.Composer;
 using TypeCode.Wpf.Helper;
 using TypeCode.Wpf.Helper.Boot;
-using TypeCode.Wpf.Mapper;
-using TypeCode.Wpf.Specflow;
-using TypeCode.Wpf.UnitTestDependencyManually;
-using TypeCode.Wpf.UnitTestDependencyType;
+using TypeCode.Wpf.Pages.Builder;
+using TypeCode.Wpf.Pages.Composer;
+using TypeCode.Wpf.Pages.Mapper;
+using TypeCode.Wpf.Pages.Specflow;
+using TypeCode.Wpf.Pages.UnitTestDependencyManually;
+using TypeCode.Wpf.Pages.UnitTestDependencyType;
 
 namespace TypeCode.Wpf
 {

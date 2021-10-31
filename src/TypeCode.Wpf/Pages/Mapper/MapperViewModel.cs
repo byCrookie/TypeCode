@@ -10,7 +10,7 @@ using TypeCode.Business.TypeEvaluation;
 using TypeCode.Wpf.Helper.Navigation;
 using TypeCode.Wpf.Helper.ViewModel;
 
-namespace TypeCode.Wpf.Mapper
+namespace TypeCode.Wpf.Pages.Mapper
 {
     public class MapperViewModel : Reactive, IAsyncNavigatedTo
     {

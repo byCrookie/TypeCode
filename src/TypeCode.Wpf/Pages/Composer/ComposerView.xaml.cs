@@ -1,4 +1,4 @@
-﻿namespace TypeCode.Wpf.Composer
+﻿namespace TypeCode.Wpf.Pages.Composer
 {
     public partial class ComposerView
     {

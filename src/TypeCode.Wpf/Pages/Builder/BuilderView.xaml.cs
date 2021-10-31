@@ -1,4 +1,4 @@
-﻿namespace TypeCode.Wpf.Builder
+﻿namespace TypeCode.Wpf.Pages.Builder
 {
     public partial class BuilderView
     {

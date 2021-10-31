@@ -1,12 +1,12 @@
 ﻿using Autofac;
 
-namespace TypeCode.Wpf.Builder
+namespace TypeCode.Wpf.Pages.Specflow
 {
-    public class BuilderModule : Module
+    public class SpecflowModule : Module
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<BuilderViewModel>().AsSelf();
+            builder.RegisterType<SpecflowViewModel>().AsSelf();
             
             base.Load(builder);
         }

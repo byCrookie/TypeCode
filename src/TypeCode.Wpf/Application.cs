@@ -9,7 +9,6 @@ using TypeCode.Business.TypeEvaluation;
 using TypeCode.Wpf.Helper.Event;
 using TypeCode.Wpf.Helper.Modal;
 using TypeCode.Wpf.Helper.Navigation;
-using TypeCode.Wpf.Specflow;
 
 namespace TypeCode.Wpf
 {

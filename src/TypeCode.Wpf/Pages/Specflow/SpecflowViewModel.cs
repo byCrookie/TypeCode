@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -10,7 +9,7 @@ using TypeCode.Business.TypeEvaluation;
 using TypeCode.Wpf.Helper.Navigation;
 using TypeCode.Wpf.Helper.ViewModel;
 
-namespace TypeCode.Wpf.Specflow
+namespace TypeCode.Wpf.Pages.Specflow
 {
     public class SpecflowViewModel : Reactive, IAsyncNavigatedTo
     {

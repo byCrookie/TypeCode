@@ -8,7 +8,7 @@ using TypeCode.Business.TypeEvaluation;
 using TypeCode.Wpf.Helper.Navigation;
 using TypeCode.Wpf.Helper.ViewModel;
 
-namespace TypeCode.Wpf.Builder
+namespace TypeCode.Wpf.Pages.Builder
 {
     public class BuilderViewModel : Reactive, IAsyncNavigatedTo
     {

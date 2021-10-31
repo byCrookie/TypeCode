@@ -6,7 +6,7 @@ using TypeCode.Business.Mode.UnitTestDependency.Manually;
 using TypeCode.Wpf.Helper.Navigation;
 using TypeCode.Wpf.Helper.ViewModel;
 
-namespace TypeCode.Wpf.UnitTestDependencyManually
+namespace TypeCode.Wpf.Pages.UnitTestDependencyManually
 {
     public class UnitTestDependencyManuallyViewModel : Reactive, IAsyncNavigatedTo
     {

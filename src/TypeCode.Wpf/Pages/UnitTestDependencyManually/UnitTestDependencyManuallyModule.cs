@@ -1,6 +1,6 @@
 ﻿using Autofac;
 
-namespace TypeCode.Wpf.UnitTestDependencyManually
+namespace TypeCode.Wpf.Pages.UnitTestDependencyManually
 {
     public class UnitTestDependencyManuallyModule : Module
     {

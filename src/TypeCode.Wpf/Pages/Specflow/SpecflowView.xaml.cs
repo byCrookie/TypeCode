@@ -1,4 +1,4 @@
-﻿namespace TypeCode.Wpf.Specflow
+﻿namespace TypeCode.Wpf.Pages.Specflow
 {
     public partial class SpecflowView
     {

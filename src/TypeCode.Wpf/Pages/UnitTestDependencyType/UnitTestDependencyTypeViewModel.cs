@@ -4,25 +4,24 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using AsyncAwaitBestPractices.MVVM;
 using TypeCode.Business.Mode;
-using TypeCode.Business.Mode.Composer;
 using TypeCode.Business.Mode.UnitTestDependency.Type;
 using TypeCode.Business.TypeEvaluation;
 using TypeCode.Wpf.Helper.Navigation;
 using TypeCode.Wpf.Helper.ViewModel;
 
-namespace TypeCode.Wpf.Composer
+namespace TypeCode.Wpf.Pages.UnitTestDependencyType
 {
-    public class ComposerViewModel : Reactive, IAsyncNavigatedTo
+    public class UnitTestDependencyTypeViewModel : Reactive, IAsyncNavigatedTo
     {
-        private readonly ITypeCodeGenerator<ComposerTypeCodeGeneratorParameter> _composerTypeGenerator;
+        private readonly ITypeCodeGenerator<UnitTestDependencyTypeGeneratorParameter> _unitTestDependencyTypeGenerator;
         private readonly ITypeProvider _typeProvider;
 
-        public ComposerViewModel(
-            ITypeCodeGenerator<ComposerTypeCodeGeneratorParameter> composerTypeGenerator,
+        public UnitTestDependencyTypeViewModel(
+            ITypeCodeGenerator<UnitTestDependencyTypeGeneratorParameter> unitTestDependencyTypeGenerator,
             ITypeProvider typeProvider
         )
         {
-            _composerTypeGenerator = composerTypeGenerator;
+            _unitTestDependencyTypeGenerator = unitTestDependencyTypeGenerator;
             _typeProvider = typeProvider;
         }
         
@@ -34,19 +33,14 @@ namespace TypeCode.Wpf.Composer
 
         private async Task GenerateAsync()
         {
-            var type = _typeProvider.TryGetByName(Input).FirstOrDefault();
-
-            var interfaceTypes = _typeProvider
-                .TryGetTypesByCondition(typ => typ.GetInterface(type?.Name ?? string.Empty) != null)
-                .ToList();
-
-            var parameter = new ComposerTypeCodeGeneratorParameter
+            var inputNames = Input?.Split(',').Select(name => name.Trim()).ToList() ?? new List<string>();
+            
+            var parameter = new UnitTestDependencyTypeGeneratorParameter
             {
-                Type = type,
-                Interfaces = interfaceTypes
+                Types = _typeProvider.TryGetByNames(inputNames).ToList()
             };
             
-            var result = await _composerTypeGenerator.GenerateAsync(parameter);
+            var result = await _unitTestDependencyTypeGenerator.GenerateAsync(parameter);
             Output = result;
         }
         

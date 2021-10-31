@@ -1,12 +1,12 @@
-﻿<UserControl x:Class="TypeCode.Wpf.Builder.BuilderView"
+﻿<UserControl x:Class="TypeCode.Wpf.Pages.UnitTestDependencyType.UnitTestDependencyTypeView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:builder="clr-namespace:TypeCode.Wpf.Builder"
+             xmlns:unitTestDependencyType="clr-namespace:TypeCode.Wpf.Pages.UnitTestDependencyType"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
-             d:DataContext="{d:DesignInstance builder:BuilderViewModel}">
+             d:DataContext="{d:DesignInstance unitTestDependencyType:UnitTestDependencyTypeViewModel}">
 
     <Grid Margin="5">
         <Grid.RowDefinitions>
@@ -24,7 +24,7 @@
                  Padding="2" Text="{Binding Input, UpdateSourceTrigger=PropertyChanged}"
                  HorizontalAlignment="Stretch"
                  HorizontalContentAlignment="Stretch"
-                 ToolTip="Input type name">
+                 ToolTip="Input type name. Multiple type names can be seperated by using ','">
             <TextBox.InputBindings>
                 <KeyBinding Key="Enter" Command="{Binding GenerateCommand}" />
             </TextBox.InputBindings>

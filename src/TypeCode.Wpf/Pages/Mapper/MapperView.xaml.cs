@@ -1,4 +1,4 @@
-﻿namespace TypeCode.Wpf.Mapper
+﻿namespace TypeCode.Wpf.Pages.Mapper
 {
     public partial class MapperView
     {
