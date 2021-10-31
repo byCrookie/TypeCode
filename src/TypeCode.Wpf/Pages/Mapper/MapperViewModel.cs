@@ -7,10 +7,11 @@ using TypeCode.Business.Mode;
 using TypeCode.Business.Mode.Mapper;
 using TypeCode.Business.Mode.Mapper.Style;
 using TypeCode.Business.TypeEvaluation;
-using TypeCode.Wpf.Helper.Navigation;
 using TypeCode.Wpf.Helper.Navigation.Contract;
 using TypeCode.Wpf.Helper.Navigation.Service;
+using TypeCode.Wpf.Helper.Navigation.Wizard.Service;
 using TypeCode.Wpf.Helper.ViewModel;
+using TypeCode.Wpf.Pages.TypeSelection;
 
 namespace TypeCode.Wpf.Pages.Mapper
 {
@@ -18,17 +19,20 @@ namespace TypeCode.Wpf.Pages.Mapper
     {
         private readonly ITypeCodeGenerator<MapperTypeCodeGeneratorParameter> _mapperGenerator;
         private readonly ITypeProvider _typeProvider;
+        private readonly IWizardNavigationService _wizardNavigationService;
         private MappingStyle _mappingStyle;
 
         public MapperViewModel(
             ITypeCodeGenerator<MapperTypeCodeGeneratorParameter> mapperGenerator,
-            ITypeProvider typeProvider
+            ITypeProvider typeProvider,
+            IWizardNavigationService wizardNavigationService
         )
         {
             _mapperGenerator = mapperGenerator;
             _typeProvider = typeProvider;
+            _wizardNavigationService = wizardNavigationService;
         }
-        
+
         public Task OnNavigatedToAsync(NavigationContext context)
         {
             GenerateCommand = new AsyncCommand(GenerateAsync);
@@ -47,18 +51,32 @@ namespace TypeCode.Wpf.Pages.Mapper
         private async Task GenerateAsync()
         {
             var inputNames = Input?.Split(',').Select(name => name.Trim()).ToList() ?? new List<string>();
-            var mapFromType = _typeProvider.TryGetByName(inputNames.FirstOrDefault()).FirstOrDefault();
-            var mapToType = _typeProvider.TryGetByName(inputNames.LastOrDefault()).FirstOrDefault();
+            var types = _typeProvider.TryGetByName(inputNames.FirstOrDefault())
+                .Union(_typeProvider.TryGetByName(inputNames.LastOrDefault()))
+                .ToList();
 
-            if (mapFromType is not null && mapToType is not null)
+            if (types.Any())
             {
+                var navigationContext = new NavigationContext();
+                navigationContext.AddParameter(new TypeSelectionParameter
+                {
+                    AllowMultiSelection = true,
+                    Types = types
+                });
+
+                var selectionViewModel = await _wizardNavigationService
+                    .OpenWizard(new WizardParameter<TypeSelectionViewModel>
+                    {
+                        FinishButtonText = "Select"
+                    }, navigationContext);
+
                 var parameter = new MapperTypeCodeGeneratorParameter
                 {
-                    MapFrom = new MappingType(mapFromType),
-                    MapTo = new MappingType(mapToType),
+                    MapFrom = new MappingType(selectionViewModel.SelectedTypes.First()),
+                    MapTo = new MappingType(selectionViewModel.SelectedTypes.Last()),
                     MappingStyle = _mappingStyle
                 };
-            
+
                 var result = await _mapperGenerator.GenerateAsync(parameter);
                 Output = result;
             }
@@ -66,23 +84,27 @@ namespace TypeCode.Wpf.Pages.Mapper
 
         public ICommand GenerateCommand { get; set; }
         public ICommand StyleCommand { get; set; }
-        
-        public string Input {
+
+        public string Input
+        {
             get => Get<string>();
             set => Set(value);
         }
 
-        public string Output {
+        public string Output
+        {
             get => Get<string>();
             private set => Set(value);
         }
-        
-        public bool NewStyle {
+
+        public bool NewStyle
+        {
             get => Get<bool>();
             private set => Set(value);
         }
-        
-        public bool ExistingStyle {
+
+        public bool ExistingStyle
+        {
             get => Get<bool>();
             private set => Set(value);
         }

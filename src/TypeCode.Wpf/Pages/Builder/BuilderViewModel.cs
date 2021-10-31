@@ -40,22 +40,30 @@ namespace TypeCode.Wpf.Pages.Builder
 
         private async Task GenerateAsync()
         {
-            var navigationContext = new NavigationContext();
-            navigationContext.AddParameter(new TypeSelectionParameter
+            var types = _typeProvider.TryGetByName(Input?.Trim()).ToList();
+            var selectedType = types.FirstOrDefault();
+
+            if (types.Count > 1)
             {
-                AllowMultiSelection = false,
-                Types =_typeProvider.TryGetByName(Input?.Trim())
-            });
-            
-            var selectionViewModel = await _wizardNavigationService
-                .OpenWizard(new WizardParameter<TypeSelectionViewModel>
+                var navigationContext = new NavigationContext();
+                navigationContext.AddParameter(new TypeSelectionParameter
                 {
-                    FinishButtonText = "Save"
-                }, navigationContext);
+                    AllowMultiSelection = false,
+                    Types = types
+                });
             
+                var selectionViewModel = await _wizardNavigationService
+                    .OpenWizard(new WizardParameter<TypeSelectionViewModel>
+                    {
+                        FinishButtonText = "Select"
+                    }, navigationContext);
+
+                selectedType = selectionViewModel.SelectedTypes.Single();
+            }
+
             var parameter = new BuilderTypeCodeGeneratorParameter
             {
-                Type = selectionViewModel.SelectedTypes.Single()
+                Type = selectedType
             };
             
             var result = await _builderGenerator.GenerateAsync(parameter);
