@@ -19,17 +19,16 @@
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
-
-        <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
-            <TextBox Padding="2" Text="{Binding Input, UpdateSourceTrigger=PropertyChanged}"
-                     HorizontalAlignment="Stretch"
-                     HorizontalContentAlignment="Stretch"
-                     ToolTip="Input type name.">
-                <TextBox.InputBindings>
-                    <KeyBinding Key="Enter" Command="{Binding GenerateCommand}" />
-                </TextBox.InputBindings>
-            </TextBox>
-        </StackPanel>
+        
+        <TextBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+                 Padding="2" Text="{Binding Input, UpdateSourceTrigger=PropertyChanged}"
+                 HorizontalAlignment="Stretch"
+                 HorizontalContentAlignment="Stretch"
+                 ToolTip="Input type name.">
+            <TextBox.InputBindings>
+                <KeyBinding Key="Enter" Command="{Binding GenerateCommand}" />
+            </TextBox.InputBindings>
+        </TextBox>
 
         <TextBox Margin="0,5,0,0" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
                  Padding="2" Background="Transparent"
