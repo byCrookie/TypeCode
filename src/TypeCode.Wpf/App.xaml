@@ -70,5 +70,9 @@
             <Setter Property="Foreground" Value="{StaticResource Accent}" />
             <Setter Property="BorderThickness" Value="0"></Setter>
         </Style>
+        <Style TargetType="{x:Type ToolTip}" BasedOn="{StaticResource {x:Type ToolTip}}">
+            <Setter Property="Background" Value="{StaticResource Shadow}" />
+            <Setter Property="Foreground" Value="{StaticResource PrimaryText}" />
+        </Style>
     </Application.Resources>
 </Application>

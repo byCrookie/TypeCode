@@ -33,7 +33,7 @@
                  AcceptsTab="True"
                  MinLines="5"
                  MaxLines="5"
-                 ToolTip="Input constructor from access modifier to end of constructor dependencies including ')'.">
+                 ToolTip="Input constructor from access modifier to end of constructor dependencies including ')'">
         </TextBox>
 
         <TextBox Margin="0,5,0,0" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
