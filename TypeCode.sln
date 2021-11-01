@@ -13,6 +13,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Packages", "Packages", "{A86ABA31-2C79-405F-907D-88886FE44AA5}"
 ProjectSection(SolutionItems) = preProject
 	Packages\Framework.NET.1.0.35.nupkg = Packages\Framework.NET.1.0.35.nupkg
+	Packages\Workflow.Autofac.1.0.11.nupkg = Packages\Workflow.Autofac.1.0.11.nupkg
+	Packages\Workflow.1.0.11.nupkg = Packages\Workflow.1.0.11.nupkg
 EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TypeCode.Wpf", "src\TypeCode.Wpf\TypeCode.Wpf.csproj", "{31CB4C50-DFDE-485C-AF0F-A340C2FABD2B}"
