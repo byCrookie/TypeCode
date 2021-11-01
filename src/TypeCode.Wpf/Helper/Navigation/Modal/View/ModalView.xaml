@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:view="clr-namespace:TypeCode.Wpf.Helper.Navigation.Modal.View"
+             xmlns:c="clr-namespace:TypeCode.Wpf.Helper.Controls"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance view:ModalViewModel }"
              Background="{StaticResource Secondary}">
@@ -26,6 +27,7 @@
                  IsReadOnly="True"
                  TextWrapping="Wrap"
                  VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
-        <Button Margin="0,0,5,5" Grid.Row="2" Grid.Column="1" Command="{Binding OkCommand}" BorderBrush="{StaticResource Secondary}">Ok</Button>
+        
+        <c:CustomButton Margin="0,0,5,5" Grid.Row="2" Grid.Column="1" Command="{Binding OkCommand}" BorderBrush="{StaticResource Secondary}">Ok</c:CustomButton>
     </Grid>
 </UserControl>

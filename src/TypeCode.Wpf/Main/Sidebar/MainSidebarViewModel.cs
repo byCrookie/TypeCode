@@ -3,6 +3,7 @@ using System.Windows.Input;
 using AsyncAwaitBestPractices.MVVM;
 using TypeCode.Wpf.Helper.Navigation;
 using TypeCode.Wpf.Helper.Navigation.Service;
+using TypeCode.Wpf.Helper.Navigation.Wizard.Service;
 using TypeCode.Wpf.Helper.ViewModel;
 using TypeCode.Wpf.Pages.Assemblies;
 using TypeCode.Wpf.Pages.Builder;
@@ -17,11 +18,13 @@ namespace TypeCode.Wpf.Main.Sidebar
     public class MainSidebarViewModel : Reactive
     {
         private readonly INavigationService _navigationService;
+        private readonly IWizardNavigationService _wizardNavigationService;
 
-        public MainSidebarViewModel(INavigationService navigationService)
+        public MainSidebarViewModel(INavigationService navigationService, IWizardNavigationService wizardNavigationService)
         {
             _navigationService = navigationService;
-            
+            _wizardNavigationService = wizardNavigationService;
+
             SpecflowNavigationCommand = new AsyncCommand(NavigateToSpecflowAsync);
             UnitTestDependencyTypeNavigationCommand = new AsyncCommand(NavigateToUnitTestDependencyTypeAsync);
             UnitTestDependencyManuallyNavigationCommand = new AsyncCommand(NavigateToUnitTestDependencyManuallyAsync);
@@ -29,6 +32,7 @@ namespace TypeCode.Wpf.Main.Sidebar
             MapperNavigationCommand = new AsyncCommand(NavigateToMapperAsync);
             BuilderNavigationCommand = new AsyncCommand(NavigateToBuilderAsync);
             AssemblyNavigationCommand = new AsyncCommand(NavigateToAssemblyAsync);
+            OpenSettingsCommand = new AsyncCommand(OpenSettingsAsync);
 
             ActiveItem = ActiveItem.None;
         }
@@ -40,6 +44,7 @@ namespace TypeCode.Wpf.Main.Sidebar
         public ICommand MapperNavigationCommand { get; }
         public ICommand BuilderNavigationCommand { get; }
         public ICommand AssemblyNavigationCommand { get; }
+        public ICommand OpenSettingsCommand { get; }
 		
         public ActiveItem ActiveItem {
             get => Get<ActiveItem>();
@@ -86,6 +91,11 @@ namespace TypeCode.Wpf.Main.Sidebar
         {
             ActiveItem = ActiveItem.Assembly;
             return _navigationService.NavigateAsync<AssemblyViewModel>();
+        }
+        
+        private Task OpenSettingsAsync()
+        {
+            return _wizardNavigationService.OpenWizard( new WizardParameter<AssemblyViewModel>());
         }
     }
 }
