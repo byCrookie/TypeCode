@@ -9,7 +9,7 @@ using TypeCode.Wpf.Helper.Navigation.Service;
 using TypeCode.Wpf.Helper.Navigation.Wizard.View;
 using TypeCode.Wpf.Main;
 
-namespace TypeCode.Wpf.Helper.Navigation.Wizard.Service
+namespace TypeCode.Wpf.Helper.Navigation.Wizard.WizardSimple
 {
     public class WizardNavigationService : IWizardNavigationService
     {
@@ -29,8 +29,8 @@ namespace TypeCode.Wpf.Helper.Navigation.Wizard.Service
         {
             // Wizard
 
-            var wizardViewModelType = typeof(WizardViewModel<T>);
-            var wizardViewModelInstance = _factory.Create<WizardViewModel<T>>();
+            var wizardViewModelType = typeof(WizardSimpleViewModel<T>);
+            var wizardViewModelInstance = _factory.Create<WizardSimpleViewModel<T>>();
 
             if (wizardViewModelInstance is null)
             {

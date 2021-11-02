@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace TypeCode.Wpf.Helper.Navigation.Wizard.Service
+namespace TypeCode.Wpf.Helper.Navigation.Wizard.WizardSimple
 {
     public class WizardParameter<T>
     {

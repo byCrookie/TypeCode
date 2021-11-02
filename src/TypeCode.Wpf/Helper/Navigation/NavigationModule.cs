@@ -2,6 +2,7 @@
 using TypeCode.Wpf.Helper.Navigation.Modal;
 using TypeCode.Wpf.Helper.Navigation.Service;
 using TypeCode.Wpf.Helper.Navigation.Wizard;
+using TypeCode.Wpf.Helper.Navigation.Wizard.Steps;
 
 namespace TypeCode.Wpf.Helper.Navigation
 {
@@ -10,6 +11,7 @@ namespace TypeCode.Wpf.Helper.Navigation
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterType<NavigationService>().As<INavigationService>().SingleInstance();
+            builder.RegisterType<WizardNavigator>().As<IWizardNavigator>();
 
             builder.RegisterModule<ModalModule>();
             builder.RegisterModule<WizardModule>();

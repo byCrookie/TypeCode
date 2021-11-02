@@ -18,10 +18,34 @@ namespace TypeCode.Wpf.Helper.Navigation.Service
         {
             _parametersKey.Add(key, parameter);
         }
+        
+        public void AddOrUpdateParameter(string key, object parameter)
+        {
+            if (_parametersKey.ContainsKey(key))
+            {
+                _parametersKey.Remove(key);
+            }
+            else
+            {
+                _parametersKey.Add(key, parameter);
+            }
+        }
 
         public void AddParameter(object parameter)
         {
             _parameters.Add(parameter.GetType(), parameter);
+        }
+        
+        public void AddOrUpdateParameter(object parameter)
+        {
+            if (_parameters.ContainsKey(parameter.GetType()))
+            {
+                _parameters.Remove(parameter.GetType());
+            }
+            else
+            {
+                _parameters.Add(parameter.GetType(), parameter);
+            }
         }
         
         public T GetParameter<T>()
