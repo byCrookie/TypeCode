@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using Framework.Autofac.Factory;
-using TypeCode.Business.Format;
+using TypeCode.Wpf.Helper.Autofac;
 using TypeCode.Wpf.Helper.Navigation.Contract;
 using TypeCode.Wpf.Helper.Navigation.Service;
 using TypeCode.Wpf.Helper.Navigation.Wizard.Steps.WizardEndStep;
@@ -33,7 +33,7 @@ namespace TypeCode.Wpf.Helper.Navigation.Wizard
             endStep.SetOptions(new WizardEndStepOptions());
             wizardFlow.AddStep(endStep);
 
-            context.Wizard = CreateInstances<WizardViewModel>();
+            context.Wizard = CreateInstances<WizardSimpleViewModel>();
             context.NavigationContext.GetParameter<WizardNavigatorParameter>().NavigationFrame.Navigate(context.Wizard.ViewInstance);
 
             var wizardContext = await wizardFlow.RunAsync(context).ConfigureAwait(true);
@@ -107,7 +107,7 @@ namespace TypeCode.Wpf.Helper.Navigation.Wizard
 
             return Task.CompletedTask;
         }
-
+        
         private InstanceResult CreateInstances<T>()
         {
             var viewModelType = typeof(T);
@@ -118,10 +118,9 @@ namespace TypeCode.Wpf.Helper.Navigation.Wizard
                 throw new ApplicationException($"ViewModel of {viewModelType.Name} not found");
             }
 
-            var viewName = NameBuilder.GetNameWithoutGeneric(viewModelType)[..^"Model".Length];
-            var viewType = Type.GetType($"{viewModelType.Namespace}.{viewName}");
-
-            if (viewType is null || Activator.CreateInstance(viewType) is not UserControl viewInstance)
+            var viewType = viewModelType.GetViewType();
+            
+            if (viewType is null || _factory.Create(viewType) is not UserControl viewInstance)
             {
                 throw new ApplicationException($"View of {viewModelType.Name} not found");
             }

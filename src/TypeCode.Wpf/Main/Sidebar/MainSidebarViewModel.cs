@@ -2,45 +2,38 @@
 using System.Windows.Input;
 using AsyncAwaitBestPractices.MVVM;
 using Framework.Autofac.Factory;
-using TypeCode.Wpf.Helper.Navigation;
 using TypeCode.Wpf.Helper.Navigation.Service;
-using TypeCode.Wpf.Helper.Navigation.Wizard;
-using TypeCode.Wpf.Helper.Navigation.Wizard.Steps.WizardEndStep;
-using TypeCode.Wpf.Helper.Navigation.Wizard.Steps.WizardStep;
-using TypeCode.Wpf.Helper.Navigation.Wizard.WizardSimple;
+using TypeCode.Wpf.Helper.Navigation.Wizard.Complex;
 using TypeCode.Wpf.Helper.ViewModel;
-using TypeCode.Wpf.Main.Content;
 using TypeCode.Wpf.Pages.Assemblies;
 using TypeCode.Wpf.Pages.Builder;
 using TypeCode.Wpf.Pages.Composer;
 using TypeCode.Wpf.Pages.Mapper;
-using TypeCode.Wpf.Pages.Settings;
 using TypeCode.Wpf.Pages.Settings.First;
 using TypeCode.Wpf.Pages.Settings.Second;
 using TypeCode.Wpf.Pages.Specflow;
 using TypeCode.Wpf.Pages.UnitTestDependencyManually;
 using TypeCode.Wpf.Pages.UnitTestDependencyType;
-using Workflow;
 
 namespace TypeCode.Wpf.Main.Sidebar
 {
     public class MainSidebarViewModel : Reactive
     {
         private readonly INavigationService _navigationService;
-        private readonly IWizardNavigator _wizardNavigator;
-        private readonly IWorkflowBuilder<SettingWizardContext> _settingsWizardBuilder;
+        private readonly IWizardBuilder _settingsWizardBuilder;
+        private readonly IWizardRunner _settingsWizardRunner;
         private readonly IFactory _factory;
 
         public MainSidebarViewModel(
             INavigationService navigationService,
-            IWizardNavigator wizardNavigator,
-            IWorkflowBuilder<SettingWizardContext> settingsWizardBuilder,
+            IWizardBuilder settingsWizardBuilder,
+            IWizardRunner settingsWizardRunner,
             IFactory factory
         )
         {
             _navigationService = navigationService;
-            _wizardNavigator = wizardNavigator;
             _settingsWizardBuilder = settingsWizardBuilder;
+            _settingsWizardRunner = settingsWizardRunner;
             _factory = factory;
 
             SpecflowNavigationCommand = new AsyncCommand(NavigateToSpecflowAsync);
@@ -112,21 +105,15 @@ namespace TypeCode.Wpf.Main.Sidebar
             return _navigationService.NavigateAsync<AssemblyViewModel>();
         }
 
-        private async Task OpenSettingsAsync()
+        private Task OpenSettingsAsync()
         {
-            var workflow = _settingsWizardBuilder
-                .ThenAsync<IWizardStep<SettingFirstWizardViewModel, SettingWizardContext, WizardStepOptions>, WizardStepOptions>(_ => { })
-                .ThenAsync<IWizardStep<SettingSecondWizardViewModel, SettingWizardContext, WizardStepOptions>, WizardStepOptions>(_ => { })
-                // .ThenAsync<IWizardStep<SettingFirstWizardViewModel, SettingWizardContext, WizardStepOptions>, WizardStepOptions>(_ => { })
-                .Build();
-
             var mainWindow = _factory.Create<MainWindow>();
-            await _wizardNavigator.StartAsync(new WizardNavigatorParameter(
-                    mainWindow.WizardFrame,
-                    mainWindow.Main,
-                    mainWindow.WizardOverlay
-                ), new SettingWizardContext(), workflow)
-                .ConfigureAwait(true);
+            var wizard = _settingsWizardBuilder
+                .Init(new NavigationContext(), mainWindow.WizardFrame, mainWindow.Main, mainWindow.WizardOverlay)
+                .Then<SettingFirstWizardViewModel>()
+                .Then<SettingSecondWizardViewModel>()
+                .Build();
+            return _settingsWizardRunner.RunAsync(wizard);
         }
     }
 }

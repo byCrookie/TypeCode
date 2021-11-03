@@ -1,4 +1,4 @@
-﻿namespace TypeCode.Wpf.Helper.Navigation.Wizard.View
+﻿namespace TypeCode.Wpf.Helper.Navigation.Wizard.Complex
 {
     public partial class WizardView
     {

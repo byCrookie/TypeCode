@@ -8,12 +8,12 @@ using TypeCode.Wpf.Helper.ViewModel;
 
 namespace TypeCode.Wpf.Helper.Navigation.Wizard.View
 {
-    public class WizardViewModel : Reactive, IAsyncNavigatedTo
+    public class WizardSimpleViewModel : Reactive, IAsyncNavigatedTo
     {
         private readonly IWizardNavigator _wizardNavigator;
         private NavigationContext _context;
 
-        public WizardViewModel(IWizardNavigator wizardNavigator)
+        public WizardSimpleViewModel(IWizardNavigator wizardNavigator)
         {
             _wizardNavigator = wizardNavigator;
         }

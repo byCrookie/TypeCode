@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using TypeCode.Wpf.Helper.Autofac;
 using TypeCode.Wpf.Main.Content;
 using TypeCode.Wpf.Main.Sidebar;
 
@@ -8,10 +9,10 @@ namespace TypeCode.Wpf.Main
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<MainViewModel>().AsSelf();
-            builder.RegisterType<MainContentViewModel>().AsSelf();
-            builder.RegisterType<MainSidebarViewModel>().AsSelf();
-            
+            // builder.AddViewModelAndViewAsSingleInstance<MainViewModel, MainWindow>();
+            // builder.AddViewModelAndViewAsSingleInstance<MainContentViewModel, MainContentView>();
+            // builder.AddViewModelAndViewAsSingleInstance<MainSidebarViewModel, MainSidebarView>();
+
             base.Load(builder);
         }
     }

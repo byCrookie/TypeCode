@@ -10,11 +10,17 @@ namespace TypeCode.Wpf
     {
         protected override void OnStartup(StartupEventArgs e)
         {
-            base.OnStartup(e);
-            
             Current.DispatcherUnhandledException += HandleDispatcherUnhandledException;
 
             AsyncContext.Run(Bootstrapper.BootAsync);
+            
+            base.OnStartup(e);
+        }
+
+        protected override void OnExit(ExitEventArgs e)
+        {
+            Console.WriteLine($@"Application exited with {e.ApplicationExitCode}");
+            base.OnExit(e);
         }
 
         private static void HandleDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)

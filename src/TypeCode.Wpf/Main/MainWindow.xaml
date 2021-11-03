@@ -22,7 +22,7 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <sidebar:MainSidebarView x:Name="Sidebar" DataContext="{Binding MainSidebarViewModel}" Grid.Column="0"
+            <sidebar:MainSidebarView x:Name="MainSidebar" DataContext="{Binding MainSidebarViewModel}" Grid.Column="0"
                                      Grid.Row="0" />
 
             <content:MainContentView x:Name="MainContent" DataContext="{Binding MainContentViewModel}" Grid.Column="1"

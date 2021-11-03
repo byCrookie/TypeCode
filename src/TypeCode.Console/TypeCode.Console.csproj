@@ -8,7 +8,7 @@
 
     <ItemGroup>
         <PackageReference Include="AsyncAwaitBestPractices.MVVM" Version="6.0.2" />
-        <PackageReference Include="Framework.NET" Version="1.0.35" />
+        <PackageReference Include="Framework.NET" Version="1.0.39" />
         <PackageReference Include="log4net" Version="2.0.12" />
     </ItemGroup>
 

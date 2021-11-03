@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using TypeCode.Wpf.Helper.Autofac;
 
 namespace TypeCode.Wpf.Pages.TypeSelection
 {
@@ -6,8 +7,8 @@ namespace TypeCode.Wpf.Pages.TypeSelection
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<TypeSelectionViewModel>().AsSelf();
-            
+            builder.AddViewModelAndView<TypeSelectionViewModel, TypeSelectionView>();
+
             base.Load(builder);
         }
     }

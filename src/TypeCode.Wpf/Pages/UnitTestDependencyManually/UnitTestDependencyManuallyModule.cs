@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using TypeCode.Wpf.Helper.Autofac;
 
 namespace TypeCode.Wpf.Pages.UnitTestDependencyManually
 {
@@ -6,8 +7,8 @@ namespace TypeCode.Wpf.Pages.UnitTestDependencyManually
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<UnitTestDependencyManuallyViewModel>().AsSelf();
-            
+            builder.AddViewModelAndView<UnitTestDependencyManuallyViewModel, UnitTestDependencyManuallyView>();
+
             base.Load(builder);
         }
     }
