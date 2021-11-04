@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using TypeCode.Wpf.Helper.Autofac;
 
 namespace TypeCode.Wpf.Pages.Specflow
 {
@@ -6,8 +7,8 @@ namespace TypeCode.Wpf.Pages.Specflow
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<SpecflowViewModel>().AsSelf();
-            
+            builder.AddViewModelAndView<SpecflowViewModel, SpecflowView>();
+
             base.Load(builder);
         }
     }

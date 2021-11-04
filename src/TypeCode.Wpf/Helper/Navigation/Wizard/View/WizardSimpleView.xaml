@@ -1,0 +1,35 @@
+﻿<UserControl x:Class="TypeCode.Wpf.Helper.Navigation.Wizard.View.WizardSimpleView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:c="clr-namespace:TypeCode.Wpf.Helper.Controls"
+             xmlns:view="clr-namespace:TypeCode.Wpf.Helper.Navigation.Wizard.View"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="300"
+             Background="{StaticResource Secondary}" d:DataContext="{d:DesignInstance view:WizardSimpleViewModel}">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <ContentControl Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Content="{Binding WizardPage}" />
+
+        <StackPanel Margin="0,5,5,5" Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
+            <c:CustomButton Content="Back"
+                            Command="{Binding BackCommand}" />
+            <c:CustomButton Content="Next"
+                            Command="{Binding NextCommand}" />
+            <c:CustomButton Content="Cancel"
+                            Command="{Binding CancelCommand}" />
+            <c:CustomButton Content="Finish"
+                            Command="{Binding FinishCommand}" />
+        </StackPanel>
+
+    </Grid>
+</UserControl>

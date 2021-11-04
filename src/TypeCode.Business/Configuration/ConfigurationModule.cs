@@ -6,9 +6,10 @@ namespace TypeCode.Business.Configuration
     {
         protected override void Load(ContainerBuilder builder)
         {
-            base.Load(builder);
-
             builder.RegisterType<GenericXmlSerializer>().As<IGenericXmlSerializer>();
+            builder.RegisterType<ConfigurationMapper>().As<IConfigurationMapper>();
+            
+            base.Load(builder);
         }
     }
 }

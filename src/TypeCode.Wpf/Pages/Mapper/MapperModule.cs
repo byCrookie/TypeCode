@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using TypeCode.Wpf.Helper.Autofac;
 
 namespace TypeCode.Wpf.Pages.Mapper
 {
@@ -6,8 +7,8 @@ namespace TypeCode.Wpf.Pages.Mapper
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<MapperViewModel>().AsSelf();
-            
+            builder.AddViewModelAndView<MapperViewModel, MapperView>();
+
             base.Load(builder);
         }
     }

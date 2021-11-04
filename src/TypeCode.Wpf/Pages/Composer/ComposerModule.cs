@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using TypeCode.Wpf.Helper.Autofac;
 
 namespace TypeCode.Wpf.Pages.Composer
 {
@@ -6,8 +7,8 @@ namespace TypeCode.Wpf.Pages.Composer
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<ComposerViewModel>().AsSelf();
-            
+            builder.AddViewModelAndView<ComposerViewModel, ComposerView>();
+
             base.Load(builder);
         }
     }

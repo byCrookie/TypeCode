@@ -10,6 +10,7 @@ using Framework.Boot.Logger;
 using Framework.Boot.Start;
 using Framework.Boot.TypeLoad;
 using TypeCode.Business.Bootstrapping;
+using TypeCode.Wpf.Application.Boot.SetupWpfApplication;
 
 namespace TypeCode.Wpf.Application.Boot
 {
@@ -33,7 +34,7 @@ namespace TypeCode.Wpf.Application.Boot
                 .ThenAsync<ILoggerBootStep<BootContext, LoggerBootStepOptions>, LoggerBootStepOptions>(
                     config => { config.Log4NetConfigurationFile = "TypeCode.Wpf.cfg.xml"; }
                 )
-                .ThenAsync<SetupWpfApplication.ISetupWpfApplicationStep<BootContext>>()
+                .ThenAsync<ISetupWpfApplicationStep<BootContext>>()
                 .ThenAsync<IAssemblyLoadBootStep<BootContext>>()
                 .ThenAsync<IStartBootStep<BootContext>>()
                 .Build();

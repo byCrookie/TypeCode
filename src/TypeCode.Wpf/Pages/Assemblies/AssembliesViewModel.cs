@@ -18,7 +18,7 @@ namespace TypeCode.Wpf.Pages.Assemblies
                 .SelectMany(r => r.AssemblyGroup)
                 .SelectMany(r => r.PriorityAssemblyList)
                 .OrderBy(r => r.Priority)
-                .Select(r => r.Message)
+                .Select(r => $"{r.Priority} {r.Message}")
                 .ToList();
             
             return Task.CompletedTask;

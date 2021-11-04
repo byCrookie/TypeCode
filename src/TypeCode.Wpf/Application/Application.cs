@@ -8,35 +8,30 @@ using Nito.AsyncEx;
 using TypeCode.Business.Bootstrapping;
 using TypeCode.Business.TypeEvaluation;
 using TypeCode.Wpf.Helper.Event;
-using TypeCode.Wpf.Helper.Navigation.Modal;
 using TypeCode.Wpf.Helper.Navigation.Modal.Service;
 using TypeCode.Wpf.Main;
-using INavigationService = TypeCode.Wpf.Helper.Navigation.Service.INavigationService;
 
 namespace TypeCode.Wpf.Application
 {
     public class Application : IApplication
     {
-        private readonly IFactory<MainViewModel> _mainViewModelFactory;
+        private readonly IFactory _factory;
         private readonly ITypeEvaluator _typeEvaluator;
         private readonly ITypeProvider _typeProvider;
-        private readonly MainWindow _mainWindow;
         private readonly IEventAggregator _eventAggregator;
         private readonly IModalNavigationService _modalNavigationService;
 
         public Application(
-            IFactory<MainViewModel> mainViewModelFactory,
+            IFactory factory,
             ITypeEvaluator typeEvaluator,
             ITypeProvider typeProvider,
-            MainWindow mainWindow,
             IEventAggregator eventAggregator,
             IModalNavigationService modalNavigationService
         )
         {
-            _mainViewModelFactory = mainViewModelFactory;
+            _factory = factory;
             _typeEvaluator = typeEvaluator;
             _typeProvider = typeProvider;
-            _mainWindow = mainWindow;
             _eventAggregator = eventAggregator;
             _modalNavigationService = modalNavigationService;
         }
@@ -45,11 +40,14 @@ namespace TypeCode.Wpf.Application
         {
             System.Windows.Application.Current.DispatcherUnhandledException += HandleDispatcherUnhandledException;
 
-            _mainWindow.DataContext = _mainViewModelFactory.Create();
+            var mainWindow = _factory.Create<MainWindow>();
+            var mainViewModel = _factory.Create<MainViewModel>();
+
+            mainWindow.DataContext = mainViewModel;
 
             Task.Run(LoadAssemblies, cancellationToken);
 
-            _mainWindow.ShowDialog();
+            mainWindow.ShowDialog();
 
             return Task.CompletedTask;
         }

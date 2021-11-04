@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using TypeCode.Wpf.Helper.Navigation.Service;
 
-namespace TypeCode.Wpf.Helper.Navigation.Wizard.Service
+namespace TypeCode.Wpf.Helper.Navigation.Wizard.WizardSimple
 {
 	public interface IWizardNavigationService
 	{

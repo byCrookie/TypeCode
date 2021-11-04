@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:specflow="clr-namespace:TypeCode.Wpf.Pages.Specflow"
+             xmlns:c="clr-namespace:TypeCode.Wpf.Helper.Controls"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance specflow:SpecflowViewModel}">
 
@@ -39,6 +40,6 @@
 
         <Separator Margin="0,5,0,5" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" />
 
-        <Button Grid.Row="3" Grid.Column="1" Command="{Binding GenerateCommand}">Generate</Button>
+        <c:CustomButton Grid.Row="3" Grid.Column="1" Command="{Binding GenerateCommand}">Generate</c:CustomButton>
     </Grid>
 </UserControl>

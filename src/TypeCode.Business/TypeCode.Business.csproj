@@ -6,7 +6,7 @@
 
     <ItemGroup>
         <PackageReference Include="AsyncAwaitBestPractices.MVVM" Version="6.0.2" />
-        <PackageReference Include="Framework.NET" Version="1.0.35" />
+        <PackageReference Include="Framework.NET" Version="1.0.39" />
         <PackageReference Include="Humanizer.Core" Version="2.11.10" />
     </ItemGroup>
 

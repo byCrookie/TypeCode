@@ -16,15 +16,22 @@ namespace TypeCode.Business.Bootstrapping
     internal class AssemblyLoadBootStep<TContext> : IAssemblyLoadBootStep<TContext>
         where TContext : WorkflowBaseContext, IBootContext
     {
+        private readonly IConfigurationMapper _configurationMapper;
+
         private IEnumerable<Regex> _includeFileRegexPatterns;
         // private readonly ILog _logger = LogManager.GetLogger(typeof(AssemblyLoadBootStep<TContext>));
+
+        public AssemblyLoadBootStep(IConfigurationMapper configurationMapper)
+        {
+            _configurationMapper = configurationMapper;
+        }
 
         public Task ExecuteAsync(TContext context)
         {
             // _logger.Info("Evaluating .dll files");
 
             var xmlConfiguration = ReadXmlConfiguration();
-            var configuration = MapToConfiguration(xmlConfiguration);
+            var configuration = _configurationMapper.MapToConfiguration(xmlConfiguration);
 
             Parallel.ForEach(configuration.AssemblyRoot, EvaluateAssemblyRoot);
 
@@ -40,7 +47,7 @@ namespace TypeCode.Business.Bootstrapping
                     {
                         selector.AssemblyDirectories
                             .ForEach(directory => messages
-                                .Add(new PriorityString(selector.Priority,
+                                .Add(new PriorityString($"{root.Priority}.{group.Priority}.{selector.Priority}",
                                     $@"{Cuts.Point()} {directory.AbsolutPath}")));
                     });
 
@@ -48,7 +55,8 @@ namespace TypeCode.Business.Bootstrapping
                     {
                         path.AssemblyDirectories
                             .ForEach(directory => messages
-                                .Add(new PriorityString(path.Priority, $@"{directory.AbsolutPath}")));
+                                .Add(new PriorityString($"{root.Priority}.{group.Priority}.{path.Priority}",
+                                    $@"{directory.AbsolutPath}")));
                     });
 
                     foreach (var message in messages.OrderBy(message => message.Priority).ToList())
@@ -149,64 +157,6 @@ namespace TypeCode.Business.Bootstrapping
 
                 assemblyHolder.AssemblyDirectories.Add(assemblyDirectory);
             }
-        }
-
-        private static TypeCodeConfiguration MapToConfiguration(XmlTypeCodeConfiguration xmlConfiguration)
-        {
-            return new()
-            {
-                AssemblyRoot = MapToConfiguration(xmlConfiguration.AssemblyRoot).ToList(),
-                VersionPageName = xmlConfiguration.VersionPageName,
-                SpaceKey = xmlConfiguration.SpaceKey,
-                CloseCmd = xmlConfiguration.CloseCmd,
-                BaseUrl = xmlConfiguration.BaseUrl,
-                Username = xmlConfiguration.Username,
-                Password = xmlConfiguration.Password
-            };
-        }
-
-        private static IEnumerable<AssemblyRoot> MapToConfiguration(IEnumerable<XmlAssemblyRoot> xmlAssemblyRoots)
-        {
-            return xmlAssemblyRoots.Select(root => new AssemblyRoot
-            {
-                Priority = root.Priority,
-                Path = root.Path,
-                Text = root.Text,
-                AssemblyGroup = MapToConfiguration(root.AssemblyGroup).ToList(),
-                IncludeAssemblyPattern = root.IncludeAssemblyPattern
-            });
-        }
-
-        private static IEnumerable<AssemblyGroup> MapToConfiguration(
-            IEnumerable<XmlAssemblyGroup> xmlConfigurationAssemblyGroups)
-        {
-            return xmlConfigurationAssemblyGroups.Select(xmlConfigurationAssemblyGroup => new AssemblyGroup
-            {
-                Name = xmlConfigurationAssemblyGroup.Name,
-                Priority = xmlConfigurationAssemblyGroup.Priority,
-                AssemblyPath = MapToConfiguration(xmlConfigurationAssemblyGroup.AssemblyPath).ToList(),
-                AssemblyPathSelector = MapToConfiguration(xmlConfigurationAssemblyGroup.AssemblyPathSelector).ToList()
-            });
-        }
-
-        private static IEnumerable<AssemblyPathSelector> MapToConfiguration(
-            IEnumerable<XmlAssemblyPathSelector> xmlAssemblyPathSelectors)
-        {
-            return xmlAssemblyPathSelectors.Select(xmlAssemblyPathSelector => new AssemblyPathSelector
-            {
-                Path = xmlAssemblyPathSelector.Text,
-                Priority = xmlAssemblyPathSelector.Priority,
-                Selector = xmlAssemblyPathSelector.Selector
-            });
-        }
-
-        private static IEnumerable<AssemblyPath> MapToConfiguration(IEnumerable<XmlAssemblyPath> xmlAssemblyPaths)
-        {
-            return xmlAssemblyPaths.Select(xmlAssemblyPath => new AssemblyPath
-            {
-                Path = xmlAssemblyPath.Text,
-                Priority = xmlAssemblyPath.Priority
-            });
         }
 
         private static XmlTypeCodeConfiguration ReadXmlConfiguration()

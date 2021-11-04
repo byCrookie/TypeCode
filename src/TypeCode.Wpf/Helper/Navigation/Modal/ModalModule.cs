@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using TypeCode.Wpf.Helper.Autofac;
 using TypeCode.Wpf.Helper.Navigation.Modal.Service;
 using TypeCode.Wpf.Helper.Navigation.Modal.View;
 
@@ -10,7 +11,7 @@ namespace TypeCode.Wpf.Helper.Navigation.Modal
         {
             builder.RegisterType<ModalNavigationService>().As<IModalNavigationService>().SingleInstance();
             
-            builder.RegisterType<ModalViewModel>().AsSelf();
+            builder.AddViewModelAndView<ModalViewModel, ModalView>();
             
             base.Load(builder);
         }

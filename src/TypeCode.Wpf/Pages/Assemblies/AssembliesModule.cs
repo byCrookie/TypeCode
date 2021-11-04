@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using TypeCode.Wpf.Helper.Autofac;
 
 namespace TypeCode.Wpf.Pages.Assemblies
 {
@@ -6,8 +7,8 @@ namespace TypeCode.Wpf.Pages.Assemblies
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<AssemblyViewModel>().AsSelf();
-            
+            builder.AddViewModelAndView<AssemblyViewModel, AssemblyView>();
+
             base.Load(builder);
         }
     }

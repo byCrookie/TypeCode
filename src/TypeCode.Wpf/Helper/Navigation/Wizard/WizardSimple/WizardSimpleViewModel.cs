@@ -4,16 +4,15 @@ using System.Windows.Input;
 using AsyncAwaitBestPractices.MVVM;
 using TypeCode.Wpf.Helper.Navigation.Contract;
 using TypeCode.Wpf.Helper.Navigation.Service;
-using TypeCode.Wpf.Helper.Navigation.Wizard.Service;
 using TypeCode.Wpf.Helper.ViewModel;
 
-namespace TypeCode.Wpf.Helper.Navigation.Wizard.View
+namespace TypeCode.Wpf.Helper.Navigation.Wizard.WizardSimple
 {
-    public class WizardViewModel<T> : Reactive, IAsyncNavigatedTo
+    public class WizardSimpleViewModel<T> : Reactive, IAsyncNavigatedTo
     {
         private readonly IWizardNavigationService _wizardNavigationService;
 
-        public WizardViewModel(IWizardNavigationService wizardNavigationService)
+        public WizardSimpleViewModel(IWizardNavigationService wizardNavigationService)
         {
             _wizardNavigationService = wizardNavigationService;
         }
