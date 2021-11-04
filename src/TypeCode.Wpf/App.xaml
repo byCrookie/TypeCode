@@ -21,11 +21,12 @@
         
         <Style TargetType="{x:Type Control}" BasedOn="{StaticResource {x:Type Control}}">
             <Setter Property="Background" Value="{StaticResource Primary}" />
-            <Setter Property="Foreground" Value="{StaticResource PrimaryText}" />
+            <Setter Property="Foreground" Value="{StaticResource PrimaryText}"/>
         </Style>
         <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="Foreground" Value="{StaticResource PrimaryText}" />
+            <Setter Property="CaretBrush" Value="{StaticResource PrimaryText}" />
         </Style>
         <Style TargetType="{x:Type c:CustomButton}" BasedOn="{StaticResource {x:Type Button}}">
             <Setter Property="Background" Value="{StaticResource Accent}" />
