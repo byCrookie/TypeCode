@@ -43,12 +43,6 @@ namespace TypeCode.Business.Configuration
             AssemblyRoot = new List<AssemblyRoot>();
         }
         
-        public bool CloseCmd { get; set; }
-        public string SpaceKey { get; set; }
-        public string Username { get; set; }
-        public string Password { get; set; }
-        public string VersionPageName { get; set; }
-        public string BaseUrl { get; set; }
         public List<AssemblyRoot> AssemblyRoot { get; set; }
     }
 

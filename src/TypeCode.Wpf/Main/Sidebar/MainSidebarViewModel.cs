@@ -7,10 +7,10 @@ using TypeCode.Wpf.Helper.Navigation.Wizard.Complex;
 using TypeCode.Wpf.Helper.ViewModel;
 using TypeCode.Wpf.Pages.Assemblies;
 using TypeCode.Wpf.Pages.Builder;
+using TypeCode.Wpf.Pages.Common.Assembly;
+using TypeCode.Wpf.Pages.Common.Configuration;
 using TypeCode.Wpf.Pages.Composer;
 using TypeCode.Wpf.Pages.Mapper;
-using TypeCode.Wpf.Pages.Settings.First;
-using TypeCode.Wpf.Pages.Settings.Second;
 using TypeCode.Wpf.Pages.Specflow;
 using TypeCode.Wpf.Pages.UnitTestDependencyManually;
 using TypeCode.Wpf.Pages.UnitTestDependencyType;
@@ -110,8 +110,8 @@ namespace TypeCode.Wpf.Main.Sidebar
             var mainWindow = _factory.Create<MainWindow>();
             var wizard = _settingsWizardBuilder
                 .Init(new NavigationContext(), mainWindow.WizardFrame, mainWindow.Main, mainWindow.WizardOverlay)
-                .Then<SettingFirstWizardViewModel>()
-                .Then<SettingSecondWizardViewModel>()
+                .Then<ConfigurationWizardViewModel>()
+                .Then<AssemblyWizardViewModel>()
                 .Build();
             return _settingsWizardRunner.RunAsync(wizard);
         }

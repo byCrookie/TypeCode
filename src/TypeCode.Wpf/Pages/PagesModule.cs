@@ -1,9 +1,9 @@
 ﻿using Autofac;
 using TypeCode.Wpf.Pages.Assemblies;
 using TypeCode.Wpf.Pages.Builder;
+using TypeCode.Wpf.Pages.Common;
 using TypeCode.Wpf.Pages.Composer;
 using TypeCode.Wpf.Pages.Mapper;
-using TypeCode.Wpf.Pages.Settings;
 using TypeCode.Wpf.Pages.Specflow;
 using TypeCode.Wpf.Pages.TypeSelection;
 using TypeCode.Wpf.Pages.UnitTestDependencyManually;
@@ -24,7 +24,7 @@ namespace TypeCode.Wpf.Pages
 
             builder.RegisterModule<AssemblyModule>();
             builder.RegisterModule<TypeSelectionModule>();
-            builder.RegisterModule<SettingWizardModule>();
+            builder.RegisterModule<CommonWizardModule>();
             
             base.Load(builder);
         }
