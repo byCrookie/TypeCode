@@ -18,8 +18,16 @@ namespace TypeCode.Wpf.Helper.Navigation.Wizard.Complex
             _wizardNavigator = wizardNavigator;
         }
 
-        public async Task NavigateToAsync(Wizard wizard)
+        public async Task NavigateToAsync(Wizard wizard, NavigationAction navigationAction)
         {
+            wizard.NavigationContext.AddOrUpdateParameter(navigationAction);
+            
+            if (!wizard.CurrentStepConfiguration.Initialized && wizard.CurrentStepConfiguration.Instances.ViewModelInstance is IAsyncInitialNavigated asyncInitialNavigated)
+            {
+                await asyncInitialNavigated.OnInititalNavigationAsync(wizard.NavigationContext).ConfigureAwait(true);
+                wizard.CurrentStepConfiguration.Initialized = true;
+            }
+
             await wizard.CurrentStepConfiguration.BeforeAction(wizard.NavigationContext).ConfigureAwait(true);
 
             BackCommand = new AsyncCommand(Back, _ => wizard.CurrentStepConfiguration != wizard.StepConfigurations.FirstOrDefault()
@@ -40,8 +48,10 @@ namespace TypeCode.Wpf.Helper.Navigation.Wizard.Complex
             _wizard = wizard;
         }
 
-        public async Task NavigateFromAsync(Wizard wizard)
+        public async Task NavigateFromAsync(Wizard wizard, NavigationAction navigationAction)
         {
+            wizard.NavigationContext.AddOrUpdateParameter(navigationAction);
+
             if (wizard.CurrentStepConfiguration.Instances.ViewModelInstance is IAsyncNavigatedFrom asyncNavigatedFrom)
             {
                 await asyncNavigatedFrom.OnNavigatedFromAsync(wizard.NavigationContext).ConfigureAwait(true);

@@ -14,7 +14,7 @@ namespace TypeCode.Wpf.Helper.Navigation.Wizard.Complex
             wizard.NavigationFrame.Navigate(wizard.WizardInstances.ViewInstance);
 
             var wizardHost = (IWizardHost)wizard.WizardInstances.ViewModelInstance;
-            wizardHost.NavigateToAsync(wizard);
+            wizardHost.NavigateToAsync(wizard, NavigationAction.Next);
             
             return Task.CompletedTask;
         }

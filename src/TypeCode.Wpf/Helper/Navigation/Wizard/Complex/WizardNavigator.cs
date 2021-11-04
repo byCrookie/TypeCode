@@ -9,12 +9,12 @@ namespace TypeCode.Wpf.Helper.Navigation.Wizard.Complex
         public async Task Next(Wizard wizard)
         {
             var wizardHost = (IWizardHost)wizard.WizardInstances.ViewModelInstance;
-            await wizardHost.NavigateFromAsync(wizard).ConfigureAwait(true);
+            await wizardHost.NavigateFromAsync(wizard, NavigationAction.Next).ConfigureAwait(true);
 
             var currentStepConfigurationIndex = wizard.StepConfigurations.IndexOf(wizard.CurrentStepConfiguration);
             wizard.CurrentStepConfiguration = wizard.StepConfigurations[currentStepConfigurationIndex + 1];
             
-            await wizardHost.NavigateToAsync(wizard).ConfigureAwait(true);
+            await wizardHost.NavigateToAsync(wizard, NavigationAction.Next).ConfigureAwait(true);
         }
 
         public async Task Back(Wizard wizard)
@@ -25,12 +25,12 @@ namespace TypeCode.Wpf.Helper.Navigation.Wizard.Complex
             }
             
             var wizardHost = (IWizardHost)wizard.WizardInstances.ViewModelInstance;
-            await wizardHost.NavigateFromAsync(wizard).ConfigureAwait(true);
+            await wizardHost.NavigateFromAsync(wizard, NavigationAction.Back).ConfigureAwait(true);
             
             var currentStepConfigurationIndex = wizard.StepConfigurations.IndexOf(wizard.CurrentStepConfiguration);
             wizard.CurrentStepConfiguration = wizard.StepConfigurations[currentStepConfigurationIndex - 1];
             
-            await wizardHost.NavigateToAsync(wizard).ConfigureAwait(true);
+            await wizardHost.NavigateToAsync(wizard, NavigationAction.Back).ConfigureAwait(true);
         }
 
         public Task Cancel(Wizard wizard)

@@ -21,5 +21,6 @@ namespace TypeCode.Wpf.Helper.Navigation.Wizard.Complex
         public Func<NavigationContext, bool> AllowBack { get; set; }
         public Func<NavigationContext, bool> AllowNext { get; set; }
         public InstanceResult Instances { get; set; }
+        public bool Initialized { get; set; }
     }
 }
