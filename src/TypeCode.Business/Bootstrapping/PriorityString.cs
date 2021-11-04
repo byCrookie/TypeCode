@@ -2,10 +2,10 @@
 {
     public class PriorityString
     {
-        public int Priority { get; }
+        public string Priority { get; }
         public string Message { get; }
 
-        public PriorityString(int priority, string message)
+        public PriorityString(string priority, string message)
         {
             Priority = priority;
             Message = message;

@@ -47,7 +47,7 @@ namespace TypeCode.Business.Bootstrapping
                     {
                         selector.AssemblyDirectories
                             .ForEach(directory => messages
-                                .Add(new PriorityString(selector.Priority,
+                                .Add(new PriorityString($"{root.Priority}.{group.Priority}.{selector.Priority}",
                                     $@"{Cuts.Point()} {directory.AbsolutPath}")));
                     });
 
@@ -55,7 +55,8 @@ namespace TypeCode.Business.Bootstrapping
                     {
                         path.AssemblyDirectories
                             .ForEach(directory => messages
-                                .Add(new PriorityString(path.Priority, $@"{directory.AbsolutPath}")));
+                                .Add(new PriorityString($"{root.Priority}.{group.Priority}.{path.Priority}",
+                                    $@"{directory.AbsolutPath}")));
                     });
 
                     foreach (var message in messages.OrderBy(message => message.Priority).ToList())
