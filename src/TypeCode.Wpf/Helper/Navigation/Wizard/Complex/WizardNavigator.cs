@@ -1,11 +1,19 @@
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using TypeCode.Wpf.Helper.Event;
 
 namespace TypeCode.Wpf.Helper.Navigation.Wizard.Complex
 {
     public class WizardNavigator : IWizardNavigator
     {
+        private readonly IEventAggregator _eventAggregator;
+
+        public WizardNavigator(IEventAggregator eventAggregator)
+        {
+            _eventAggregator = eventAggregator;
+        }
+        
         public async Task Next(Wizard wizard)
         {
             var wizardHost = (IWizardHost)wizard.WizardInstances.ViewModelInstance;
@@ -44,6 +52,7 @@ namespace TypeCode.Wpf.Helper.Navigation.Wizard.Complex
         public async Task Finish(Wizard wizard)
         {
             await wizard.CompletedAction(wizard.NavigationContext).ConfigureAwait(true);
+            await _eventAggregator.PublishAsync(wizard.CompletedEvent).ConfigureAwait(true);
             
             wizard.Content.Opacity = 1;
             wizard.Content.IsEnabled = true;

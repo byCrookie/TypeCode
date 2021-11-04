@@ -10,7 +10,8 @@ namespace TypeCode.Wpf.Helper.Navigation.Wizard.Complex
     {
         IWizardBuilder Init(NavigationContext context, Frame navigationFrame, UIElement content, UIElement wizardOverlay);
         IWizardBuilder Then<TViewModel>(Action<WizardParameterBuilder, NavigationContext> configureParameter = null);
-        IWizardBuilder Finish(Func<NavigationContext, Task> completedAction);
+        IWizardBuilder FinishAsync(Func<NavigationContext, Task> completedAction);
+        IWizardBuilder PublishAsync<TEvent>();
         Wizard Build();
     }
 }

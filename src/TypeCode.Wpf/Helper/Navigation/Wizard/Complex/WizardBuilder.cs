@@ -60,9 +60,15 @@ namespace TypeCode.Wpf.Helper.Navigation.Wizard.Complex
             return this;
         }
 
-        public IWizardBuilder Finish(Func<NavigationContext, Task> completedAction)
+        public IWizardBuilder FinishAsync(Func<NavigationContext, Task> completedAction)
         {
             _wizard.CompletedAction = completedAction;
+            return this;
+        }
+
+        public IWizardBuilder PublishAsync<TEvent>()
+        {
+            _wizard.CompletedEvent = typeof(TEvent);
             return this;
         }
 

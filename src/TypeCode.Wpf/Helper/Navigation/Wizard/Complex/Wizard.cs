@@ -23,5 +23,6 @@ namespace TypeCode.Wpf.Helper.Navigation.Wizard.Complex
         public InstanceResult WizardInstances { get; set; }
         public NavigationContext NavigationContext { get; set; }
         public Func<NavigationContext,Task> CompletedAction { get; set; }
+        public object CompletedEvent { get; set; }
     }
 }

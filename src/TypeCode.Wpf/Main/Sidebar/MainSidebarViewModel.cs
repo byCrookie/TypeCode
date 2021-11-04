@@ -7,7 +7,6 @@ using TypeCode.Wpf.Helper.Navigation.Wizard.Complex;
 using TypeCode.Wpf.Helper.ViewModel;
 using TypeCode.Wpf.Pages.Assemblies;
 using TypeCode.Wpf.Pages.Builder;
-using TypeCode.Wpf.Pages.Common.Assembly;
 using TypeCode.Wpf.Pages.Common.Configuration;
 using TypeCode.Wpf.Pages.Composer;
 using TypeCode.Wpf.Pages.Mapper;
@@ -111,7 +110,6 @@ namespace TypeCode.Wpf.Main.Sidebar
             var wizard = _settingsWizardBuilder
                 .Init(new NavigationContext(), mainWindow.WizardFrame, mainWindow.Main, mainWindow.WizardOverlay)
                 .Then<ConfigurationWizardViewModel>()
-                .Then<AssemblyWizardViewModel>()
                 .Build();
             return _settingsWizardRunner.RunAsync(wizard);
         }
