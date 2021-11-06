@@ -1,5 +1,5 @@
 # TypeCode
-Develop c# code faster by generating .NET specific boilerplate code using reflection on assemblies.
+Develop c# code faster by generating .NET specific boilerplate code using reflection on assemblies. Available a console or wpf application.
 
 ## Features
 
