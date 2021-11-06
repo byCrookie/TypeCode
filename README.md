@@ -1,6 +1,4 @@
 # TypeCode
-
-## About
 Develop c# code faster by generating .NET specific boilerplate code using reflection on assemblies.
 
 ## Features
