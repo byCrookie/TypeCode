@@ -1,7 +1,5 @@
 # TypeCode
-
-## About
-Develop c# code faster by generating .NET specific boilerplate code using reflection on assemblies.
+Develop c# code faster by generating .NET specific boilerplate code using reflection on assemblies. Available a console or wpf application.
 
 ## Features
 
@@ -16,12 +14,7 @@ This project is built on top of https://github.com/byCrookie/Framework.NET.
 
 ## How to use
 
-:warning: **Releases**: Releases are not working at the moment, please build the project yourself using the sourcecode
-
-1. Download github repository https://github.com/byCrookie/TypeCode
-2. Build project using your favorite .NET IDE
-3. Change paths in Configuration.cfg.xml to reflect parent directories for your local assemblies
-4. Start TypeCode.exe
+:warning: **Releases**: Releases are not working at the moment, please build the project yourself using the sourcecode.
 
 ## Contributing / Issues
 All contributions are welcome! If you have any issues or feature requests, either implement it yourself or create an issue, thank you.
