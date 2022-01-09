@@ -1,8 +1,8 @@
-﻿using Framework.Boot.Autofac.ModuleCatalog;
+﻿using Framework.Boot.Autofac;
 
 namespace TypeCode.Business.Modules
 {
-	internal class TypeCodeBusinessModuleCatalog : ModuleCatalog
+	public class TypeCodeBusinessModuleCatalog : ModuleCatalog
 	{
 		public TypeCodeBusinessModuleCatalog()
 		{

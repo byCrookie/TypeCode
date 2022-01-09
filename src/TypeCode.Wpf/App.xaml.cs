@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Threading;
 using Nito.AsyncEx;
+using Serilog;
 using TypeCode.Wpf.Application.Boot;
 
 namespace TypeCode.Wpf
@@ -10,6 +11,11 @@ namespace TypeCode.Wpf
     {
         protected override void OnStartup(StartupEventArgs e)
         {
+            Log.Logger = new LoggerConfiguration()
+                .WriteTo.Console()
+                .MinimumLevel.Debug()
+                .CreateLogger();
+            
             Current.DispatcherUnhandledException += HandleDispatcherUnhandledException;
 
             AsyncContext.Run(Bootstrapper.BootAsync);
@@ -19,13 +25,13 @@ namespace TypeCode.Wpf
 
         protected override void OnExit(ExitEventArgs e)
         {
-            Console.WriteLine($@"Application exited with {e.ApplicationExitCode}");
+            Log.Debug($@"Application exited with {e.ApplicationExitCode}");
             base.OnExit(e);
         }
 
         private static void HandleDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
-            Console.WriteLine(e.Exception?.Message ?? "Unhandled error occured. The application will be exited.");
+            Log.Fatal(e.Exception, "Unhandled error occured. The application will be exited.");
         }
     }
 }

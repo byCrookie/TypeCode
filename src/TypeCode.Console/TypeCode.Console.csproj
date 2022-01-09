@@ -7,9 +7,10 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="AsyncAwaitBestPractices.MVVM" Version="6.0.2" />
-        <PackageReference Include="Framework.NET" Version="1.0.39" />
-        <PackageReference Include="log4net" Version="2.0.12" />
+        <PackageReference Include="AsyncAwaitBestPractices.MVVM" Version="6.0.4" />
+        <PackageReference Include="Framework.NET" Version="1.0.48" />
+        <PackageReference Include="Serilog.Sinks.Console" Version="4.0.1" />
+        <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
     </ItemGroup>
 
     <ItemGroup>
@@ -18,9 +19,6 @@
 
     <ItemGroup>
         <None Remove="TypeCode.Console.cfg.xml" />
-        <Content Include="TypeCode.Console.cfg.xml">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Content>
         <None Remove="Configuration.cfg.xml" />
         <Content Include="Configuration.cfg.xml">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Framework.Boot;
 using Framework.Extensions.List;
+using Serilog;
 using TypeCode.Business.Configuration;
 using TypeCode.Business.Format;
 using Workflow;
@@ -19,7 +20,6 @@ namespace TypeCode.Business.Bootstrapping
         private readonly IConfigurationMapper _configurationMapper;
 
         private IEnumerable<Regex> _includeFileRegexPatterns;
-        // private readonly ILog _logger = LogManager.GetLogger(typeof(AssemblyLoadBootStep<TContext>));
 
         public AssemblyLoadBootStep(IConfigurationMapper configurationMapper)
         {
@@ -28,7 +28,7 @@ namespace TypeCode.Business.Bootstrapping
 
         public Task ExecuteAsync(TContext context)
         {
-            // _logger.Info("Evaluating .dll files");
+            Log.Debug("Evaluating .dll files");
 
             var xmlConfiguration = ReadXmlConfiguration();
             var configuration = _configurationMapper.MapToConfiguration(xmlConfiguration);
@@ -68,7 +68,7 @@ namespace TypeCode.Business.Bootstrapping
                 }
             }
 
-            // _logger.Info($"Total of {CountAssemblies(configuration)} assemblies have been loaded");
+            Log.Debug($"Total of {CountAssemblies(configuration)} assemblies have been loaded");
             var assemblyProvider = new ConfigurationProvider();
             assemblyProvider.SetConfiguration(configuration);
             AssemblyLoadProvider.SetAssemblyProvider(assemblyProvider);
@@ -106,20 +106,20 @@ namespace TypeCode.Business.Bootstrapping
             Parallel.ForEach(directories, directory => LoadAssemblies(directory, assemblyPathSelector));
         }
 
-        // private static int CountAssemblies(TypeCodeConfiguration configuration)
-        // {
-        //     return configuration.AssemblyRoot
-        //                .Sum(root => root.AssemblyGroup
-        //                    .Sum(group => group.AssemblyPath
-        //                        .Sum(path => path.AssemblyDirectories
-        //                            .Sum(directory => directory.Assemblies.Count))))
-        //            +
-        //            configuration.AssemblyRoot
-        //                .Sum(root => root.AssemblyGroup
-        //                    .Sum(group => group.AssemblyPathSelector
-        //                        .Sum(path => path.AssemblyDirectories
-        //                            .Sum(directory => directory.Assemblies.Count))));
-        // }
+        private static int CountAssemblies(TypeCodeConfiguration configuration)
+        {
+            return configuration.AssemblyRoot
+                       .Sum(root => root.AssemblyGroup
+                           .Sum(group => group.AssemblyPath
+                               .Sum(path => path.AssemblyDirectories
+                                   .Sum(directory => directory.Assemblies.Count))))
+                   +
+                   configuration.AssemblyRoot
+                       .Sum(root => root.AssemblyGroup
+                           .Sum(group => group.AssemblyPathSelector
+                               .Sum(path => path.AssemblyDirectories
+                                   .Sum(directory => directory.Assemblies.Count))));
+        }
 
         private void LoadAssemblies(string absolutPath, IAssemblyHolder assemblyHolder)
         {
@@ -138,7 +138,7 @@ namespace TypeCode.Business.Bootstrapping
                         .Any(pattern => pattern.IsMatch(file)))
                     .ToList();
 
-                // _logger.Info($"Loading {filteredFiles.Count} assemblies");
+                Log.Debug($"Loading {filteredFiles.Count} assemblies");
 
                 Parallel.ForEach(filteredFiles, file =>
                 {
@@ -153,7 +153,7 @@ namespace TypeCode.Business.Bootstrapping
                     }
                 });
 
-                // _logger.Info($"Loaded {assemblyDirectory.Assemblies.Count} assemblies");
+                Log.Debug($"Loaded {assemblyDirectory.Assemblies.Count} assemblies");
 
                 assemblyHolder.AssemblyDirectories.Add(assemblyDirectory);
             }

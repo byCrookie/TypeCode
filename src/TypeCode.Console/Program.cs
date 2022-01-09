@@ -1,43 +1,41 @@
 ﻿using System;
 using System.Reflection;
 using System.Threading.Tasks;
-using log4net;
+using Serilog;
+using TypeCode.Business.Logging;
 using TypeCode.Console.Boot;
 
 namespace TypeCode.Console
 {
 	internal class Program
 	{
-		private static ILog _logger;
-
 		private static async Task<int> Main()
 		{
-			var exitcode = 0;
+			Log.Logger = LoggerConfigurationProvider.Create().CreateLogger();
 			
 			try
 			{
-				_logger = LogManager.GetLogger(typeof(Program));
-				await TypeCodeBootstrapper.BootAsync().ConfigureAwait(false);
+				Log.Debug("Boot");
+				await Bootstrapper.BootAsync().ConfigureAwait(false);
 			}
 			catch (Exception exception)
 			{
-				exitcode = 1;
 				WriteExceptionToLog(exception);
-				System.Console.WriteLine(exception.Message);
+				return 1;
 			}
 
-			return exitcode;
+			return 0;
 		}
 
 		private static void WriteExceptionToLog(Exception exception)
 		{
-			_logger.Error(exception.Message, exception);
+			Log.Error(exception, exception.Message);
 
 			if (exception is ReflectionTypeLoadException reflectionTypeLoadException)
 			{
 				foreach (var loaderException in reflectionTypeLoadException.LoaderExceptions)
 				{
-					_logger.Error(loaderException?.Message, loaderException);
+					Log.Error(loaderException, loaderException?.Message);
 				}
 			}
 		}

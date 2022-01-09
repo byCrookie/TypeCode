@@ -1,4 +1,4 @@
-﻿using Framework.Boot.Autofac.ModuleCatalog;
+﻿using Framework.Boot.Autofac;
 
 namespace TypeCode.Wpf
 {

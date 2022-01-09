@@ -2,14 +2,14 @@
 using System.Threading.Tasks;
 using Autofac;
 using Framework.Boot;
-using Framework.Boot.AssemblyLoad;
 using Framework.Boot.Autofac;
-using Framework.Boot.Autofac.ModuleCatalog;
-using Framework.Boot.Configuration;
+using Framework.Boot.Autofac.Registration;
 using Framework.Boot.Logger;
 using Framework.Boot.Start;
-using Framework.Boot.TypeLoad;
+using Serilog;
 using TypeCode.Business.Bootstrapping;
+using TypeCode.Business.Logging;
+using TypeCode.Business.Modules;
 using TypeCode.Wpf.Application.Boot.SetupWpfApplication;
 
 namespace TypeCode.Wpf.Application.Boot
@@ -24,17 +24,15 @@ namespace TypeCode.Wpf.Application.Boot
             });
 
             var bootFlow = bootScope.WorkflowBuilder
-                .ThenAsync<IFrameworkConfigurationBootStep<BootContext, FrameworkBootStepOptions>,
-                    FrameworkBootStepOptions>(
-                    config => { config.ConfigurationFile = "TypeCode.Wpf.cfg.xml"; }
-                )
-                .ThenAsync<IAssemblyBootStep<BootContext>>()
-                .ThenAsync<ITypeBootStep<BootContext>>()
-                .ThenAsync<IModuleCatalogBootStep<BootContext>>()
                 .ThenAsync<ILoggerBootStep<BootContext, LoggerBootStepOptions>, LoggerBootStepOptions>(
-                    config => { config.Log4NetConfigurationFile = "TypeCode.Wpf.cfg.xml"; }
+                    options => LoggerConfigurationProvider.Create(options).WriteTo.Console()
                 )
                 .ThenAsync<ISetupWpfApplicationStep<BootContext>>()
+                .ThenAsync<IAutofacBootStep<BootContext, AutofacBootStepOptions>, AutofacBootStepOptions>(
+                    options => options.Autofac
+                        .AddModuleCatalog(new TypeCodeWpfModuleCatalog())
+                        .AddModuleCatalog(new TypeCodeBusinessModuleCatalog())
+                )
                 .ThenAsync<IAssemblyLoadBootStep<BootContext>>()
                 .ThenAsync<IStartBootStep<BootContext>>()
                 .Build();
