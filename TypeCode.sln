@@ -10,13 +10,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TypeCode.Business", "src\Ty
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TypeCode.Business.Tests", "tests\TypeCode.Business.Tests\TypeCode.Business.Tests.csproj", "{459BFD2C-C4DF-408E-9C10-A55A43308B9E}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Packages", "Packages", "{A86ABA31-2C79-405F-907D-88886FE44AA5}"
-	ProjectSection(SolutionItems) = preProject
-		Packages\Workflow.1.0.12.nupkg = Packages\Workflow.1.0.12.nupkg
-		Packages\Framework.NET.1.0.48.nupkg = Packages\Framework.NET.1.0.48.nupkg
-		Packages\Workflow.Autofac.1.0.13.nupkg = Packages\Workflow.Autofac.1.0.13.nupkg
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TypeCode.Wpf", "src\TypeCode.Wpf\TypeCode.Wpf.csproj", "{31CB4C50-DFDE-485C-AF0F-A340C2FABD2B}"
 EndProject
 Global
