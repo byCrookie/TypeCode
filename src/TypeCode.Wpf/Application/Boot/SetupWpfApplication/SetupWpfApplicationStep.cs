@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Autofac;
-using Framework.Boot;
+using Framework.Autofac.Boot;
 using TypeCode.Wpf.Main;
 using TypeCode.Wpf.Main.Content;
 using TypeCode.Wpf.Main.Sidebar;

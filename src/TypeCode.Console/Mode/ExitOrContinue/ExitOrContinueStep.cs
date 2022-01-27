@@ -39,7 +39,7 @@ namespace TypeCode.Console.Mode.ExitOrContinue
 
         public Task<bool> ShouldExecuteAsync(TContext context)
         {
-            return Task.FromResult(context.ShouldExecute());
+            return context.ShouldExecuteAsync();
         }
     }
 }

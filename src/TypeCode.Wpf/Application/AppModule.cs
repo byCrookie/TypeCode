@@ -1,5 +1,5 @@
 ﻿using Autofac;
-using Framework.Boot;
+using Framework.Autofac.Boot;
 using TypeCode.Wpf.Application.Boot;
 
 namespace TypeCode.Wpf.Application

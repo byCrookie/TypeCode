@@ -1,4 +1,4 @@
-﻿using Framework.Boot;
+﻿using Framework.Autofac.Boot;
 using Workflow;
 
 namespace TypeCode.Wpf.Application.Boot.SetupWpfApplication

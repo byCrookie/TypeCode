@@ -1,4 +1,4 @@
-﻿using Framework.Boot;
+﻿using Framework.Autofac.Boot;
 
 namespace TypeCode.Console
 {

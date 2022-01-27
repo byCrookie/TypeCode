@@ -1,4 +1,4 @@
-﻿using Framework.Boot.Logger;
+﻿using Framework.Autofac.Boot.Logger;
 using Serilog;
 using Serilog.Events;
 

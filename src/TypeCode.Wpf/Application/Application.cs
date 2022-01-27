@@ -2,8 +2,8 @@
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Threading;
-using Framework.Autofac.Factory;
-using Framework.Boot;
+using Framework.Autofac.Boot;
+using Framework.Jab.Jab.Factory;
 using Nito.AsyncEx;
 using TypeCode.Business.Bootstrapping;
 using TypeCode.Business.TypeEvaluation;
@@ -45,7 +45,7 @@ namespace TypeCode.Wpf.Application
 
             mainWindow.DataContext = mainViewModel;
 
-            Task.Run(LoadAssemblies, cancellationToken);
+            Task.Run(LoadAssembliesAsync, cancellationToken);
 
             mainWindow.ShowDialog();
 
@@ -66,7 +66,7 @@ namespace TypeCode.Wpf.Application
             }));
         }
 
-        private Task LoadAssemblies()
+        private Task LoadAssembliesAsync()
         {
             var configuration = _typeEvaluator.EvaluateTypes(AssemblyLoadProvider.GetConfiguration());
             _typeProvider.Initalize(configuration);

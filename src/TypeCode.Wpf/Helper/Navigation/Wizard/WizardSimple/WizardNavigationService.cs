@@ -2,11 +2,10 @@
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using Framework.Autofac.Factory;
+using Framework.Jab.Jab.Factory;
 using TypeCode.Business.Format;
 using TypeCode.Wpf.Helper.Navigation.Contract;
 using TypeCode.Wpf.Helper.Navigation.Service;
-using TypeCode.Wpf.Helper.Navigation.Wizard.View;
 using TypeCode.Wpf.Main;
 
 namespace TypeCode.Wpf.Helper.Navigation.Wizard.WizardSimple

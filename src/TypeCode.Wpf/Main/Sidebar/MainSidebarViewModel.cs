@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using System.Windows.Input;
 using AsyncAwaitBestPractices.MVVM;
-using Framework.Autofac.Factory;
+using Framework.Jab.Jab.Factory;
 using TypeCode.Wpf.Helper.Navigation.Service;
 using TypeCode.Wpf.Helper.Navigation.Wizard.Complex;
 using TypeCode.Wpf.Helper.ViewModel;

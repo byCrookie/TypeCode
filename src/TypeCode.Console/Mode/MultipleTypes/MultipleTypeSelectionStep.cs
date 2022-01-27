@@ -52,7 +52,7 @@ namespace TypeCode.Console.Mode.MultipleTypes
 
         public Task<bool> ShouldExecuteAsync(TContext context)
         {
-            return Task.FromResult(context.ShouldExecute());
+            return context.ShouldExecuteAsync();
         }
 
         private static string CreateTypeSelectionMenu(IReadOnlyCollection<Type> types)

@@ -59,7 +59,7 @@ namespace TypeCode.Console.Mode.Selection
 
         public Task<bool> ShouldExecuteAsync(TContext context)
         {
-            return Task.FromResult(context.ShouldExecute());
+            return context.ShouldExecuteAsync();
         }
 
         public void SetOptions(TOptions options)

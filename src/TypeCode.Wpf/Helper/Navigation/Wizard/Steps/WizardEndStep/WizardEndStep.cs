@@ -22,7 +22,7 @@ namespace TypeCode.Wpf.Helper.Navigation.Wizard.Steps.WizardEndStep
 
         public Task<bool> ShouldExecuteAsync(TContext context)
         {
-            return Task.FromResult(context.ShouldExecute());
+            return context.ShouldExecuteAsync();
         }
 
         public void SetOptions(TOptions options)

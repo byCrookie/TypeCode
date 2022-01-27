@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Framework.Autofac.Factory;
+using Framework.Jab.Jab.Factory;
 
 namespace TypeCode.Business.Mode.Mapper.Style
 {

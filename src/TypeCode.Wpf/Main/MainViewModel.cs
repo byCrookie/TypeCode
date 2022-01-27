@@ -1,4 +1,4 @@
-﻿using Framework.Autofac.Factory;
+﻿using Framework.Jab.Jab.Factory;
 using TypeCode.Wpf.Main.Content;
 using TypeCode.Wpf.Main.Sidebar;
 

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Framework.Boot;
+using Framework.Autofac.Boot;
 using Framework.Extensions.List;
 using Serilog;
 using TypeCode.Business.Configuration;

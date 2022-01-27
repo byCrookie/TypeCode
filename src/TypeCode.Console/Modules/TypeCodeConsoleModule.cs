@@ -1,5 +1,5 @@
 ﻿using Autofac;
-using Framework.Boot;
+using Framework.Autofac.Boot;
 using TypeCode.Console.Mode;
 
 namespace TypeCode.Console.Modules
