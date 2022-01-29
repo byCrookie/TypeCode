@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Threading;
 using Framework.Autofac.Boot;
-using Framework.Jab.Jab.Factory;
+using Framework.DependencyInjection.Factory;
 using Nito.AsyncEx;
 using TypeCode.Business.Bootstrapping;
 using TypeCode.Business.TypeEvaluation;

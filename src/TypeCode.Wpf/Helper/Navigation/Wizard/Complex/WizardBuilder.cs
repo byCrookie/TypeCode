@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using Framework.Jab.Jab.Factory;
+using Framework.DependencyInjection.Factory;
 using TypeCode.Wpf.Helper.Autofac;
 using TypeCode.Wpf.Helper.Navigation.Service;
 

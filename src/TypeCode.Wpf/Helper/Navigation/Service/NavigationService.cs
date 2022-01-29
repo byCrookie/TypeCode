@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Controls;
-using Framework.Jab.Jab.Factory;
+using Framework.DependencyInjection.Factory;
 using TypeCode.Wpf.Helper.Navigation.Contract;
 using TypeCode.Wpf.Main.Content;
 

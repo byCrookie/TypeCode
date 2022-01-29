@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Framework.Jab.Jab.Factory;
+using Framework.DependencyInjection.Factory;
 using TypeCode.Console.Mode.Builder;
 using TypeCode.Console.Mode.Composer;
 using TypeCode.Console.Mode.Exit;

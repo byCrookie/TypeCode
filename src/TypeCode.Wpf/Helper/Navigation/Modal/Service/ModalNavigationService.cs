@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using Framework.Jab.Jab.Factory;
+using Framework.DependencyInjection.Factory;
 using TypeCode.Wpf.Helper.Navigation.Contract;
 using TypeCode.Wpf.Helper.Navigation.Modal.View;
 using TypeCode.Wpf.Helper.Navigation.Service;
