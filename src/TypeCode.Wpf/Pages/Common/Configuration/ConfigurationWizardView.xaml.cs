@@ -1,10 +1,9 @@
-﻿namespace TypeCode.Wpf.Pages.Common.Configuration
+﻿namespace TypeCode.Wpf.Pages.Common.Configuration;
+
+public partial class ConfigurationWizardView
 {
-    public partial class ConfigurationWizardView
+    public ConfigurationWizardView()
     {
-        public ConfigurationWizardView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

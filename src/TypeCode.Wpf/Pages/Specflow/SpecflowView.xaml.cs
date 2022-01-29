@@ -1,10 +1,9 @@
-﻿namespace TypeCode.Wpf.Pages.Specflow
+﻿namespace TypeCode.Wpf.Pages.Specflow;
+
+public partial class SpecflowView
 {
-    public partial class SpecflowView
+    public SpecflowView()
     {
-        public SpecflowView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

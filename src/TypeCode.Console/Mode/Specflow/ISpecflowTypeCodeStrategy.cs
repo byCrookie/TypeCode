@@ -1,6 +1,5 @@
-﻿namespace TypeCode.Console.Mode.Specflow
+﻿namespace TypeCode.Console.Mode.Specflow;
+
+internal interface ISpecflowTypeCodeStrategy : ITypeCodeStrategy
 {
-	internal interface ISpecflowTypeCodeStrategy : ITypeCodeStrategy
-	{
-	}
 }

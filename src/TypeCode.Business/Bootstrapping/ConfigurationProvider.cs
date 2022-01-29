@@ -2,25 +2,24 @@
 using System.Reflection;
 using TypeCode.Business.Configuration;
 
-namespace TypeCode.Business.Bootstrapping
+namespace TypeCode.Business.Bootstrapping;
+
+internal class ConfigurationProvider : IConfigurationProvider
 {
-	internal class ConfigurationProvider : IConfigurationProvider
+	private static TypeCodeConfiguration _configuration;
+
+	public void SetConfiguration(TypeCodeConfiguration configuration)
 	{
-		private static TypeCodeConfiguration _configuration;
+		_configuration = configuration;
+	}
 
-		public void SetConfiguration(TypeCodeConfiguration configuration)
-		{
-			_configuration = configuration;
-		}
+	public TypeCodeConfiguration GetConfiguration()
+	{
+		return _configuration;
+	}
 
-		public TypeCodeConfiguration GetConfiguration()
-		{
-			return _configuration;
-		}
-
-		public IEnumerable<Assembly> GetAssemblies()
-		{
-			yield break;
-		}
+	public IEnumerable<Assembly> GetAssemblies()
+	{
+		yield break;
 	}
 }

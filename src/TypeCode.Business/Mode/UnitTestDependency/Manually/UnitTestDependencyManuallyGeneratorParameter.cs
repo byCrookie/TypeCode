@@ -1,7 +1,6 @@
-﻿namespace TypeCode.Business.Mode.UnitTestDependency.Manually
+﻿namespace TypeCode.Business.Mode.UnitTestDependency.Manually;
+
+public class UnitTestDependencyManuallyGeneratorParameter : ITypeCodeGeneratorParameter
 {
-    public class UnitTestDependencyManuallyGeneratorParameter : ITypeCodeGeneratorParameter
-    {
-        public string Input { get; set; }
-    }
+    public string Input { get; set; }
 }

@@ -1,4 +1,4 @@
-﻿using Autofac;
+﻿using Jab;
 using TypeCode.Wpf.Pages.Assemblies;
 using TypeCode.Wpf.Pages.Builder;
 using TypeCode.Wpf.Pages.Common;
@@ -9,24 +9,18 @@ using TypeCode.Wpf.Pages.TypeSelection;
 using TypeCode.Wpf.Pages.UnitTestDependencyManually;
 using TypeCode.Wpf.Pages.UnitTestDependencyType;
 
-namespace TypeCode.Wpf.Pages
-{
-    public class PagesModule : Module
-    {
-        protected override void Load(ContainerBuilder builder)
-        {
-            builder.RegisterModule<SpecflowModule>();
-            builder.RegisterModule<UnitTestDependencyTypeModule>();
-            builder.RegisterModule<UnitTestDependencyManuallyModule>();
-            builder.RegisterModule<ComposerModule>();
-            builder.RegisterModule<MapperModule>();
-            builder.RegisterModule<BuilderModule>();
+namespace TypeCode.Wpf.Pages;
 
-            builder.RegisterModule<AssemblyModule>();
-            builder.RegisterModule<TypeSelectionModule>();
-            builder.RegisterModule<CommonWizardModule>();
-            
-            base.Load(builder);
-        }
-    }
+[ServiceProviderModule]
+[Import(typeof(ISpecflowModule))]
+[Import(typeof(IUnitTestDependencyTypeModule))]
+[Import(typeof(IUnitTestDependencyManuallyModule))]
+[Import(typeof(IComposerModule))]
+[Import(typeof(IMapperModule))]
+[Import(typeof(IBuilderModule))]
+[Import(typeof(IAssemblyModule))]
+[Import(typeof(ITypeSelectionModule))]
+[Import(typeof(ICommonWizardModule))]
+public partial interface IPagesModule
+{
 }

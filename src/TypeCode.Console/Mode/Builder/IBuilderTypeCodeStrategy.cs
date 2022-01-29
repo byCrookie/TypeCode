@@ -1,6 +1,5 @@
-﻿namespace TypeCode.Console.Mode.Builder
+﻿namespace TypeCode.Console.Mode.Builder;
+
+internal interface IBuilderTypeCodeStrategy : ITypeCodeStrategy
 {
-    internal interface IBuilderTypeCodeStrategy : ITypeCodeStrategy
-    {
-    }
 }

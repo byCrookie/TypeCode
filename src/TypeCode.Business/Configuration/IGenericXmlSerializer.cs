@@ -1,7 +1,6 @@
-﻿namespace TypeCode.Business.Configuration
+﻿namespace TypeCode.Business.Configuration;
+
+public interface IGenericXmlSerializer
 {
-    public interface IGenericXmlSerializer
-    {
-        string Serialize<T>(T objectToParse) where T : class, new();
-    }
+    string Serialize<T>(T objectToParse) where T : class, new();
 }

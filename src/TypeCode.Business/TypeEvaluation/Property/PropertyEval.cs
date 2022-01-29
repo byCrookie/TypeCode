@@ -2,56 +2,55 @@
 using System.Collections;
 using System.Reflection;
 
-namespace TypeCode.Business.TypeEvaluation.Property
+namespace TypeCode.Business.TypeEvaluation.Property;
+
+internal class PropertyEval
 {
-    internal class PropertyEval
+    public static bool IsSimple(Type type)
     {
-        public static bool IsSimple(Type type)
+        var typeInfo = type.GetTypeInfo();
+        if (typeInfo.IsGenericType && typeInfo.GetGenericTypeDefinition() == typeof(Nullable<>))
         {
-            var typeInfo = type.GetTypeInfo();
-            if (typeInfo.IsGenericType && typeInfo.GetGenericTypeDefinition() == typeof(Nullable<>))
-            {
-                return IsSimple(typeInfo.GetGenericArguments()[0]);
-            }
-
-            return typeInfo.IsPrimitive
-                   || typeInfo.IsEnum
-                   || type == typeof(string)
-                   || type == typeof(DateTime)
-                   || type == typeof(decimal);
+            return IsSimple(typeInfo.GetGenericArguments()[0]);
         }
 
-        public static string GetNestedPropertyTypeNameIfAvailable(Type type)
-        {
-            var dataType = GetNestedTypeIfAvailable(type).Name;
+        return typeInfo.IsPrimitive
+               || typeInfo.IsEnum
+               || type == typeof(string)
+               || type == typeof(DateTime)
+               || type == typeof(decimal);
+    }
 
-            switch (dataType)
-            {
-                case "Int64":
-                    return "long";
-                case "Int32":
-                    return "int";
-                case "Int16":
-                    return "short";
-                case "String":
-                    return "string";
-                case "Boolean":
-                    return "bool";
-                default:
-                    return dataType;
-            }
-        }
+    public static string GetNestedPropertyTypeNameIfAvailable(Type type)
+    {
+        var dataType = GetNestedTypeIfAvailable(type).Name;
 
-        public static bool IsList(Type type)
+        switch (dataType)
         {
-            return typeof(IEnumerable).IsAssignableFrom(type)
-                   && type != typeof(string);
+            case "Int64":
+                return "long";
+            case "Int32":
+                return "int";
+            case "Int16":
+                return "short";
+            case "String":
+                return "string";
+            case "Boolean":
+                return "bool";
+            default:
+                return dataType;
         }
+    }
 
-        public static Type GetNestedTypeIfAvailable(Type type)
-        {
-            var typeInfo = type.GetTypeInfo();
-            return typeInfo.IsGenericType ? type.GetGenericArguments()[0] : type;
-        }
+    public static bool IsList(Type type)
+    {
+        return typeof(IEnumerable).IsAssignableFrom(type)
+               && type != typeof(string);
+    }
+
+    public static Type GetNestedTypeIfAvailable(Type type)
+    {
+        var typeInfo = type.GetTypeInfo();
+        return typeInfo.IsGenericType ? type.GetGenericArguments()[0] : type;
     }
 }

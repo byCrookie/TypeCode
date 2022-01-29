@@ -1,6 +1,5 @@
-﻿namespace TypeCode.Wpf.Helper.Navigation.Wizard.Steps.WizardStep
+﻿namespace TypeCode.Wpf.Helper.Navigation.Wizard.Steps.WizardStep;
+
+internal class WizardStepOptions
 {
-    internal class WizardStepOptions
-    {
-    }
 }

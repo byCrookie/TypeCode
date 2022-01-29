@@ -1,10 +1,9 @@
-﻿namespace TypeCode.Wpf.Helper.Navigation.Modal.View
+﻿namespace TypeCode.Wpf.Helper.Navigation.Modal.View;
+
+public partial class ModalView
 {
-    public partial class ModalView
+    public ModalView()
     {
-        public ModalView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

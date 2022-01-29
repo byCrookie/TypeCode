@@ -1,6 +1,5 @@
-﻿namespace TypeCode.Business.Mode.UnitTestDependency.Manually
+﻿namespace TypeCode.Business.Mode.UnitTestDependency.Manually;
+
+internal interface IUnitTestDependencyManuallyTypeCodeGenerator : ITypeCodeGenerator<UnitTestDependencyManuallyGeneratorParameter>
 {
-	internal interface IUnitTestDependencyManuallyTypeCodeGenerator : ITypeCodeGenerator<UnitTestDependencyManuallyGeneratorParameter>
-	{
-	}
 }

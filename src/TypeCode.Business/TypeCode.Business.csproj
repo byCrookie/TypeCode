@@ -7,15 +7,21 @@
 
     <ItemGroup>
         <PackageReference Include="AsyncAwaitBestPractices.MVVM" Version="6.0.4" />
-        <PackageReference Include="framework.autofac" Version="1.0.0-pre-202201272450" />
+        <PackageReference Include="framework.jab" Version="1.0.1-pre-20220128095906" />
         <PackageReference Include="Humanizer.Core" Version="2.13.14" />
-        <PackageReference Include="Serilog.Sinks.Console" Version="4.0.1" />
-        <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
+        <PackageReference Include="Serilog.Sinks.Console" Version="4.0.2-dev-00890" />
+        <PackageReference Include="Serilog.Sinks.File" Version="5.0.1-dev-00947" />
     </ItemGroup>
 
     <ItemGroup>
         <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
             <_Parameter1>$(AssemblyName).Tests</_Parameter1>
+        </AssemblyAttribute>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+            <_Parameter1>TypeCode.Wpf</_Parameter1>
+        </AssemblyAttribute>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+            <_Parameter1>TypeCode.Console</_Parameter1>
         </AssemblyAttribute>
     </ItemGroup>
 

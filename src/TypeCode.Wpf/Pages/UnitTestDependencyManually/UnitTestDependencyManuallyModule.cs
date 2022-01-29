@@ -1,15 +1,10 @@
-﻿using Autofac;
-using TypeCode.Wpf.Helper.Autofac;
+﻿using Jab;
 
-namespace TypeCode.Wpf.Pages.UnitTestDependencyManually
+namespace TypeCode.Wpf.Pages.UnitTestDependencyManually;
+
+[ServiceProviderModule]
+[Transient(typeof(UnitTestDependencyManuallyView))]
+[Transient(typeof(UnitTestDependencyManuallyViewModel))]
+public partial interface IUnitTestDependencyManuallyModule
 {
-    public class UnitTestDependencyManuallyModule : Module
-    {
-        protected override void Load(ContainerBuilder builder)
-        {
-            builder.AddViewModelAndView<UnitTestDependencyManuallyViewModel, UnitTestDependencyManuallyView>();
-
-            base.Load(builder);
-        }
-    }
 }

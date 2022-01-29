@@ -1,15 +1,10 @@
-﻿using Autofac;
-using TypeCode.Wpf.Helper.Autofac;
+﻿using Jab;
 
-namespace TypeCode.Wpf.Pages.TypeSelection
+namespace TypeCode.Wpf.Pages.TypeSelection;
+
+[ServiceProviderModule]
+[Transient(typeof(TypeSelectionView))]
+[Transient(typeof(TypeSelectionViewModel))]
+public partial interface ITypeSelectionModule
 {
-    public class TypeSelectionModule : Module
-    {
-        protected override void Load(ContainerBuilder builder)
-        {
-            builder.AddViewModelAndView<TypeSelectionViewModel, TypeSelectionView>();
-
-            base.Load(builder);
-        }
-    }
 }

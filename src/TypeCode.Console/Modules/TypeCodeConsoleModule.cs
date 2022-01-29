@@ -1,17 +1,14 @@
-﻿using Autofac;
-using Framework.Autofac.Boot;
+﻿using Framework.Jab.Boot;
+using Jab;
 using TypeCode.Console.Mode;
+using Workflow;
 
-namespace TypeCode.Console.Modules
+namespace TypeCode.Console.Modules;
+
+[ServiceProviderModule]
+[Import(typeof(IModeModule))]
+[Transient(typeof(IWorkflowBuilder<TypeCodeContext>), typeof(WorkflowBuilder<TypeCodeContext>))]
+[Singleton(typeof(IApplication), typeof(TypeCode))]
+internal partial interface ITypeCodeConsoleModule
 {
-    internal class TypeCodeConsoleModule : Module
-    {
-        protected override void Load(ContainerBuilder builder)
-        {
-            builder.RegisterType<TypeCode>().As<IApplication>();
-            builder.RegisterModule<ModeModule>();
-
-            base.Load(builder);
-        }
-    }
 }

@@ -1,15 +1,10 @@
-﻿using Autofac;
-using TypeCode.Wpf.Helper.Autofac;
+﻿using Jab;
 
-namespace TypeCode.Wpf.Pages.Composer
+namespace TypeCode.Wpf.Pages.Composer;
+
+[ServiceProviderModule]
+[Transient(typeof(ComposerView))]
+[Transient(typeof(ComposerViewModel))]
+public partial interface IComposerModule
 {
-    public class ComposerModule : Module
-    {
-        protected override void Load(ContainerBuilder builder)
-        {
-            builder.AddViewModelAndView<ComposerViewModel, ComposerView>();
-
-            base.Load(builder);
-        }
-    }
 }

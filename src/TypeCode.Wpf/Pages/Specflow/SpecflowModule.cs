@@ -1,15 +1,10 @@
-﻿using Autofac;
-using TypeCode.Wpf.Helper.Autofac;
+﻿using Jab;
 
-namespace TypeCode.Wpf.Pages.Specflow
+namespace TypeCode.Wpf.Pages.Specflow;
+
+[ServiceProviderModule]
+[Transient(typeof(SpecflowView))]
+[Transient(typeof(SpecflowViewModel))]
+public partial interface ISpecflowModule
 {
-    public class SpecflowModule : Module
-    {
-        protected override void Load(ContainerBuilder builder)
-        {
-            builder.AddViewModelAndView<SpecflowViewModel, SpecflowView>();
-
-            base.Load(builder);
-        }
-    }
 }

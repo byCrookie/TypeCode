@@ -1,14 +1,13 @@
-﻿namespace TypeCode.Wpf.Main.Sidebar
+﻿namespace TypeCode.Wpf.Main.Sidebar;
+
+public enum ActiveItem
 {
-    public enum ActiveItem
-    {
-        None,
-        Specflow,
-        UnitTestType,
-        UnitTestManually,
-        Composer,
-        Mapper,
-        Builder,
-        Assembly
-    }
+    None,
+    Specflow,
+    UnitTestType,
+    UnitTestManually,
+    Composer,
+    Mapper,
+    Builder,
+    Assembly
 }

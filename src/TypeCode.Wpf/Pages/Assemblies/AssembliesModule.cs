@@ -1,15 +1,10 @@
-﻿using Autofac;
-using TypeCode.Wpf.Helper.Autofac;
+﻿using Jab;
 
-namespace TypeCode.Wpf.Pages.Assemblies
+namespace TypeCode.Wpf.Pages.Assemblies;
+
+[ServiceProviderModule]
+[Transient(typeof(AssemblyView))]
+[Transient(typeof(AssemblyViewModel))]
+public partial interface IAssemblyModule
 {
-    public class AssemblyModule : Module
-    {
-        protected override void Load(ContainerBuilder builder)
-        {
-            builder.AddViewModelAndView<AssemblyViewModel, AssemblyView>();
-
-            base.Load(builder);
-        }
-    }
 }

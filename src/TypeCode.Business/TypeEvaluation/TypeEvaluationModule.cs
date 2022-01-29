@@ -1,15 +1,10 @@
-﻿using Autofac;
+﻿using Jab;
 
-namespace TypeCode.Business.TypeEvaluation
+namespace TypeCode.Business.TypeEvaluation;
+
+[ServiceProviderModule]
+[Singleton(typeof(ITypeProvider), typeof(TypeProvider))]
+[Transient(typeof(ITypeEvaluator), typeof(TypeEvaluator))]
+internal partial interface ITypeEvaluationModule
 {
-    internal class TypeEvaluationModule : Module
-    {
-        protected override void Load(ContainerBuilder builder)
-        {
-            builder.RegisterType<TypeEvaluator>().As<ITypeEvaluator>();
-            builder.RegisterType<TypeProvider>().As<ITypeProvider>().SingleInstance();
-            
-            base.Load(builder);
-        }
-    }
 }

@@ -1,10 +1,9 @@
-﻿namespace TypeCode.Wpf.Pages.Assemblies
+﻿namespace TypeCode.Wpf.Pages.Assemblies;
+
+public partial class AssemblyView
 {
-    public partial class AssemblyView
+    public AssemblyView()
     {
-        public AssemblyView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

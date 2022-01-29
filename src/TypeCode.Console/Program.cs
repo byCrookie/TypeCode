@@ -5,38 +5,37 @@ using Serilog;
 using TypeCode.Business.Logging;
 using TypeCode.Console.Boot;
 
-namespace TypeCode.Console
-{
-	internal class Program
-	{
-		private static async Task<int> Main()
-		{
-			Log.Logger = LoggerConfigurationProvider.Create().CreateLogger();
-			
-			try
-			{
-				Log.Debug("Boot");
-				await Bootstrapper.BootAsync().ConfigureAwait(false);
-			}
-			catch (Exception exception)
-			{
-				WriteExceptionToLog(exception);
-				return 1;
-			}
+namespace TypeCode.Console;
 
-			return 0;
+internal class Program
+{
+	private static async Task<int> Main()
+	{
+		Log.Logger = LoggerConfigurationProvider.Create().CreateLogger();
+			
+		try
+		{
+			Log.Debug("Boot");
+			await Bootstrapper.BootAsync().ConfigureAwait(false);
+		}
+		catch (Exception exception)
+		{
+			WriteExceptionToLog(exception);
+			return 1;
 		}
 
-		private static void WriteExceptionToLog(Exception exception)
-		{
-			Log.Error(exception, exception.Message);
+		return 0;
+	}
 
-			if (exception is ReflectionTypeLoadException reflectionTypeLoadException)
+	private static void WriteExceptionToLog(Exception exception)
+	{
+		Log.Error(exception, exception.Message);
+
+		if (exception is ReflectionTypeLoadException reflectionTypeLoadException)
+		{
+			foreach (var loaderException in reflectionTypeLoadException.LoaderExceptions)
 			{
-				foreach (var loaderException in reflectionTypeLoadException.LoaderExceptions)
-				{
-					Log.Error(loaderException, loaderException?.Message);
-				}
+				Log.Error(loaderException, loaderException?.Message);
 			}
 		}
 	}

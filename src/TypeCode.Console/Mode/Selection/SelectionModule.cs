@@ -1,14 +1,9 @@
-﻿using Autofac;
+﻿using Jab;
 
-namespace TypeCode.Console.Mode.Selection
+namespace TypeCode.Console.Mode.Selection;
+
+[ServiceProviderModule]
+[Transient(typeof(ISelectionStep<,>), typeof(SelectionStep<,>))]
+internal partial interface ISelectionModule
 {
-    internal class SelectionModule : Module
-    {
-        protected override void Load(ContainerBuilder builder)
-        {
-            builder.RegisterGeneric(typeof(SelectionStep<,>)).As(typeof(ISelectionStep<,>));
-
-            base.Load(builder);
-        }
-    }
 }

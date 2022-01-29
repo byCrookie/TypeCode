@@ -1,15 +1,10 @@
-﻿using Autofac;
-using TypeCode.Wpf.Helper.Autofac;
+﻿using Jab;
 
-namespace TypeCode.Wpf.Pages.Mapper
+namespace TypeCode.Wpf.Pages.Mapper;
+
+[ServiceProviderModule]
+[Transient(typeof(MapperView))]
+[Transient(typeof(MapperViewModel))]
+public partial interface IMapperModule
 {
-    public class MapperModule : Module
-    {
-        protected override void Load(ContainerBuilder builder)
-        {
-            builder.AddViewModelAndView<MapperViewModel, MapperView>();
-
-            base.Load(builder);
-        }
-    }
 }

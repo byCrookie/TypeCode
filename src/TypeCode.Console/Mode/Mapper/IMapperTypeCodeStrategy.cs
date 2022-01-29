@@ -1,6 +1,5 @@
-﻿namespace TypeCode.Console.Mode.Mapper
+﻿namespace TypeCode.Console.Mode.Mapper;
+
+internal interface IMapperTypeCodeStrategy : ITypeCodeStrategy
 {
-    internal interface IMapperTypeCodeStrategy : ITypeCodeStrategy
-    {
-    }
 }

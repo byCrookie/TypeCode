@@ -1,6 +1,5 @@
-﻿namespace TypeCode.Console.Mode.Composer
+﻿namespace TypeCode.Console.Mode.Composer;
+
+internal interface IComposerTypeCodeStrategy : ITypeCodeStrategy
 {
-    internal interface IComposerTypeCodeStrategy : ITypeCodeStrategy
-    {
-    }
 }

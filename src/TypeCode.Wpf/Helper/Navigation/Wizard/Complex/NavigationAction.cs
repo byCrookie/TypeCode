@@ -1,8 +1,7 @@
-﻿namespace TypeCode.Wpf.Helper.Navigation.Wizard.Complex
+﻿namespace TypeCode.Wpf.Helper.Navigation.Wizard.Complex;
+
+public enum NavigationAction
 {
-    public enum NavigationAction
-    {
-        Back,
-        Next
-    }
+    Back,
+    Next
 }

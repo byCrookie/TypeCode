@@ -1,10 +1,9 @@
-﻿namespace TypeCode.Wpf.Main.Sidebar
+﻿namespace TypeCode.Wpf.Main.Sidebar;
+
+public partial class MainSidebarView
 {
-    public partial class MainSidebarView
+    public MainSidebarView()
     {
-        public MainSidebarView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

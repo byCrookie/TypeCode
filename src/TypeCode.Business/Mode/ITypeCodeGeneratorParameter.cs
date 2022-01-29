@@ -1,6 +1,5 @@
-﻿namespace TypeCode.Business.Mode
+﻿namespace TypeCode.Business.Mode;
+
+public interface ITypeCodeGeneratorParameter
 {
-	public interface ITypeCodeGeneratorParameter
-	{
-	}
 }

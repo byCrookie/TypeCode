@@ -1,9 +1,8 @@
 ﻿using System.Threading.Tasks;
 
-namespace TypeCode.Wpf.Helper.Navigation.Wizard.Complex
+namespace TypeCode.Wpf.Helper.Navigation.Wizard.Complex;
+
+public interface IWizardRunner
 {
-    public interface IWizardRunner
-    {
-        public Task RunAsync(Wizard wizard);
-    }
+    public Task RunAsync(Wizard wizard);
 }

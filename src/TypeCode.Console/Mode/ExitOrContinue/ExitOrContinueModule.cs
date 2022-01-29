@@ -1,14 +1,9 @@
-﻿using Autofac;
+﻿using Jab;
 
-namespace TypeCode.Console.Mode.ExitOrContinue
+namespace TypeCode.Console.Mode.ExitOrContinue;
+
+[ServiceProviderModule]
+[Transient(typeof(IExitOrContinueStep<>), typeof(ExitOrContinueStep<>))]
+internal partial interface IExitOrContinueModule
 {
-    internal class ExitOrContinueModule : Module
-    {
-        protected override void Load(ContainerBuilder builder)
-        {
-            builder.RegisterGeneric(typeof(ExitOrContinueStep<>)).As(typeof(IExitOrContinueStep<>));
-
-            base.Load(builder);
-        }
-    }
 }

@@ -1,10 +1,9 @@
-﻿namespace TypeCode.Wpf.Main.Content
+﻿namespace TypeCode.Wpf.Main.Content;
+
+public partial class MainContentView
 {
-    public partial class MainContentView
+    public MainContentView()
     {
-        public MainContentView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

@@ -1,7 +1,6 @@
-﻿namespace TypeCode.Wpf.Application
+﻿namespace TypeCode.Wpf.Application;
+
+public class AssemblyLoadedEvent
 {
-    public class AssemblyLoadedEvent
-    {
         
-    }
 }
