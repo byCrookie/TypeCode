@@ -1,7 +1,6 @@
 ﻿using Autofac;
 using TypeCode.Wpf.Application;
 using TypeCode.Wpf.Helper;
-using TypeCode.Wpf.Main;
 using TypeCode.Wpf.Pages;
 
 namespace TypeCode.Wpf
@@ -12,7 +11,6 @@ namespace TypeCode.Wpf
         {
             builder.RegisterModule<AppModule>();
             builder.RegisterModule<HelperModule>();
-            builder.RegisterModule<MainModule>();
             builder.RegisterModule<PagesModule>();
             
             base.Load(builder);

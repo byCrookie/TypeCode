@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:c="clr-namespace:TypeCode.Wpf.Helper.Controls"
-             xmlns:wizardSimple="clr-namespace:TypeCode.Wpf.Helper.Navigation.Wizard.WizardSimple"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
              Background="{StaticResource Secondary}">

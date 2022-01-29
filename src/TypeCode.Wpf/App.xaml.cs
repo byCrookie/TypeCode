@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Threading;
 using Nito.AsyncEx;
 using Serilog;
@@ -25,13 +24,13 @@ namespace TypeCode.Wpf
 
         protected override void OnExit(ExitEventArgs e)
         {
-            Log.Debug($@"Application exited with {e.ApplicationExitCode}");
+            Log.Debug("Application exited with {0}", e.ApplicationExitCode);
             base.OnExit(e);
         }
 
         private static void HandleDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
-            Log.Fatal(e.Exception, "Unhandled error occured. The application will be exited.");
+            Log.Fatal(e.Exception, "Unhandled error occured - Exit application");
         }
     }
 }

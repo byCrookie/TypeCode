@@ -12,13 +12,13 @@ namespace TypeCode.Wpf.Pages.Common.Configuration
 {
     public class ConfigurationWizardViewModel : Reactive, IAsyncInitialNavigated
     {
-        public async Task OnInititalNavigationAsync(NavigationContext context)
+        public Task OnInititalNavigationAsync(NavigationContext context)
         {
             ReloadCommand = new AsyncCommand(ReloadAsync);
             SaveCommand = new AsyncCommand(SaveAsync);
             FormatCommand = new AsyncCommand(FormatAsync);
             
-            await ReloadAsync().ConfigureAwait(true);
+            return ReloadAsync();
         }
 
         private Task FormatAsync()

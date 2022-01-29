@@ -29,13 +29,13 @@ namespace TypeCode.Console
 
 		private static void WriteExceptionToLog(Exception exception)
 		{
-			Log.Error(exception, exception.Message);
+			Log.Error(exception, "{0}", exception.Message);
 
 			if (exception is ReflectionTypeLoadException reflectionTypeLoadException)
 			{
 				foreach (var loaderException in reflectionTypeLoadException.LoaderExceptions)
 				{
-					Log.Error(loaderException, loaderException?.Message);
+					Log.Error(loaderException, "{0}", loaderException?.Message);
 				}
 			}
 		}

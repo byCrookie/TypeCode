@@ -22,31 +22,31 @@ namespace TypeCode.Wpf.Helper.Navigation.Wizard.View
         {
             _context = context;
             
-            BackCommand = new AsyncCommand(Back);
-            NextCommand = new AsyncCommand(Next);
-            CancelCommand = new AsyncCommand(Cancel);
-            FinishCommand = new AsyncCommand(Finish);
+            BackCommand = new AsyncCommand(BackAsync);
+            NextCommand = new AsyncCommand(NextAsync);
+            CancelCommand = new AsyncCommand(CancelAsync);
+            FinishCommand = new AsyncCommand(FinishAsync);
             
             WizardPage = context.GetParameter<UserControl>("View");
             return Task.CompletedTask;
         }
         
-        private Task Next()
+        private Task NextAsync()
         {
             return _wizardNavigator.CloseCurrentAsync(_context.GetParameter<WizardContext>("WizardContext"));
         }
         
-        private Task Back()
+        private Task BackAsync()
         {
             return _wizardNavigator.BackAsync(_context.GetParameter<WizardContext>("WizardContext"));
         }
         
-        private Task Cancel()
+        private Task CancelAsync()
         {
             return _wizardNavigator.CloseAsync(_context.GetParameter<WizardContext>("WizardContext"));
         }
 
-        private Task Finish()
+        private Task FinishAsync()
         {
             return _wizardNavigator.CloseAsync(_context.GetParameter<WizardContext>("WizardContext"));
         }

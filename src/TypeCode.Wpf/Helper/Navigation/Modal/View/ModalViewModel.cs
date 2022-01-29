@@ -19,16 +19,16 @@ namespace TypeCode.Wpf.Helper.Navigation.Modal.View
         
         public Task OnNavigatedToAsync(NavigationContext context)
         {
-            OkCommand = new AsyncCommand(Ok);
+            OkCommand = new AsyncCommand(OkAsync);
             var parameter = context.GetParameter<ModalParameter>();
             Title = parameter.Title;
             Text = parameter.Text;
             return Task.CompletedTask;
         }
 
-        private Task Ok()
+        private Task OkAsync()
         {
-            return _modalNavigationService.CloseModal();
+            return _modalNavigationService.CloseModalAsync();
         }
 
         public ICommand OkCommand { get; set; }

@@ -3,7 +3,6 @@ using System.Windows.Input;
 using AsyncAwaitBestPractices.MVVM;
 using TypeCode.Business.Mode;
 using TypeCode.Business.Mode.UnitTestDependency.Manually;
-using TypeCode.Wpf.Helper.Navigation;
 using TypeCode.Wpf.Helper.Navigation.Contract;
 using TypeCode.Wpf.Helper.Navigation.Service;
 using TypeCode.Wpf.Helper.ViewModel;
@@ -34,7 +33,7 @@ namespace TypeCode.Wpf.Pages.UnitTestDependencyManually
                 Input = Input
             };
             
-            var result = await _unitTestDependencyManuallyGenerator.GenerateAsync(parameter);
+            var result = await _unitTestDependencyManuallyGenerator.GenerateAsync(parameter).ConfigureAwait(true);
             Output = result;
         }
         

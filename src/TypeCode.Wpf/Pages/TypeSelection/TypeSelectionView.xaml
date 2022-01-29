@@ -12,11 +12,6 @@
     <ListBox ItemsSource="{Binding Types}" SelectionMode="{Binding SelectionMode}"
              Background="{StaticResource Secondary}"
              BorderThickness="0">
-        <!-- <ListBox.ItemTemplate> -->
-        <!--     <DataTemplate DataType="{x:Type typeSelection:TypeItemViewModel}"> -->
-        <!--         <TextBlock Foreground="{StaticResource PrimaryText}" Text="{Binding TypeName}"/> -->
-        <!--     </DataTemplate> -->
-        <!-- </ListBox.ItemTemplate> -->
         <ListBox.ItemContainerStyle>
             <Style TargetType="{x:Type typeSelection:TypeItemViewModel}">
                 <Setter Property="Background" Value="{StaticResource Secondary}"></Setter>

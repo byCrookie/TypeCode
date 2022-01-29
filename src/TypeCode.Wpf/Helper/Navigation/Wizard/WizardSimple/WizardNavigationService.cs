@@ -24,7 +24,7 @@ namespace TypeCode.Wpf.Helper.Navigation.Wizard.WizardSimple
             _factory = factory;
         }
 
-        public async Task<T> OpenWizard<T>(WizardParameter<T> parameter, NavigationContext context = null)
+        public async Task<T> OpenWizardAsync<T>(WizardParameter<T> parameter, NavigationContext context = null)
         {
             // Wizard
 
@@ -95,7 +95,7 @@ namespace TypeCode.Wpf.Helper.Navigation.Wizard.WizardSimple
             return viewModelInstance;
         }
 
-        public async Task CloseWizard<T>()
+        public async Task CloseWizardAsync<T>()
         {
             _mainWindow.Main.Opacity = 1;
             _mainWindow.Main.IsEnabled = true;

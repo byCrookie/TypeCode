@@ -55,7 +55,7 @@ namespace TypeCode.Wpf.Application
         private void HandleDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
             e.Handled = true;
-            AsyncContext.Run(() => _modalNavigationService.OpenModal(new ModalParameter
+            AsyncContext.Run(() => _modalNavigationService.OpenModalAsync(new ModalParameter
             {
                 Title = "ERROR", 
                 Text = $"{e.Exception.Message}" +

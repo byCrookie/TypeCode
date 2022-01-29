@@ -5,7 +5,7 @@ namespace TypeCode.Wpf.Helper.Navigation.Wizard.WizardSimple
 {
 	public interface IWizardNavigationService
 	{
-		Task<T> OpenWizard<T>(WizardParameter<T> parameter, NavigationContext context = null);
-		Task CloseWizard<T>();
+		Task<T> OpenWizardAsync<T>(WizardParameter<T> parameter, NavigationContext context = null);
+		Task CloseWizardAsync<T>();
 	}
 }

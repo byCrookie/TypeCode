@@ -30,12 +30,12 @@ namespace TypeCode.Wpf.Helper.Navigation.Wizard.Complex
 
             await wizard.CurrentStepConfiguration.BeforeAction(wizard.NavigationContext).ConfigureAwait(true);
 
-            BackCommand = new AsyncCommand(Back, _ => wizard.CurrentStepConfiguration != wizard.StepConfigurations.FirstOrDefault()
+            BackCommand = new AsyncCommand(BackAsync, _ => wizard.CurrentStepConfiguration != wizard.StepConfigurations.FirstOrDefault()
                                                       && wizard.CurrentStepConfiguration.AllowBack(wizard.NavigationContext));
-            NextCommand = new AsyncCommand(Next, _ => wizard.CurrentStepConfiguration != wizard.StepConfigurations.LastOrDefault()
+            NextCommand = new AsyncCommand(NextAsync, _ => wizard.CurrentStepConfiguration != wizard.StepConfigurations.LastOrDefault()
                                                       && wizard.CurrentStepConfiguration.AllowNext(wizard.NavigationContext));
-            CancelCommand = new AsyncCommand(Cancel);
-            FinishCommand = new AsyncCommand(Finish, _ => wizard.CurrentStepConfiguration == wizard.StepConfigurations.LastOrDefault()
+            CancelCommand = new AsyncCommand(CancelAsync);
+            FinishCommand = new AsyncCommand(FinishAsync, _ => wizard.CurrentStepConfiguration == wizard.StepConfigurations.LastOrDefault()
                                                           && wizard.CurrentStepConfiguration.AllowNext(wizard.NavigationContext));
 
             WizardPage = wizard.CurrentStepConfiguration.Instances.ViewInstance as UserControl;
@@ -60,24 +60,24 @@ namespace TypeCode.Wpf.Helper.Navigation.Wizard.Complex
             await wizard.CurrentStepConfiguration.AfterAction(wizard.NavigationContext).ConfigureAwait(true);
         }
 
-        private Task Next()
+        private Task NextAsync()
         {
-            return _wizardNavigator.Next(_wizard);
+            return _wizardNavigator.NextAsync(_wizard);
         }
 
-        private Task Back()
+        private Task BackAsync()
         {
-            return _wizardNavigator.Back(_wizard);
+            return _wizardNavigator.BackAsync(_wizard);
         }
 
-        private Task Cancel()
+        private Task CancelAsync()
         {
-            return _wizardNavigator.Cancel(_wizard);
+            return _wizardNavigator.CancelAsync(_wizard);
         }
 
-        private Task Finish()
+        private Task FinishAsync()
         {
-            return _wizardNavigator.Finish(_wizard);
+            return _wizardNavigator.FinishAsync(_wizard);
         }
 
         public UserControl WizardPage

@@ -19,16 +19,16 @@ namespace TypeCode.Wpf.Helper.Navigation.Wizard.WizardSimple
         
         public Task OnNavigatedToAsync(NavigationContext context)
         {
-            FinishCommand = new AsyncCommand(Finish);
+            FinishCommand = new AsyncCommand(FinishAsync);
             var parameter = context.GetParameter<WizardParameter<T>>();
             FinishText = parameter.FinishButtonText ?? "Close";
             WizardPage = context.GetParameter<UserControl>("View");
             return Task.CompletedTask;
         }
 
-        private Task Finish()
+        private Task FinishAsync()
         {
-            return _wizardNavigationService.CloseWizard<T>();
+            return _wizardNavigationService.CloseWizardAsync<T>();
         }
 
         public ICommand FinishCommand { get; set; }

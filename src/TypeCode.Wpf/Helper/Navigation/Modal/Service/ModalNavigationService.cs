@@ -22,7 +22,7 @@ namespace TypeCode.Wpf.Helper.Navigation.Modal.Service
             _factory = factory;
         }
 
-        public async Task OpenModal(ModalParameter modalParameter)
+        public async Task OpenModalAsync(ModalParameter modalParameter)
         {
             var viewModelType = typeof(ModalViewModel);
             var viewModelInstance = _factory.Create<ModalViewModel>();
@@ -57,7 +57,7 @@ namespace TypeCode.Wpf.Helper.Navigation.Modal.Service
             _lastModalParameter = modalParameter;
         }
 
-        public Task CloseModal()
+        public Task CloseModalAsync()
         {
             _mainWindow.Main.Opacity = 1;
             _mainWindow.Main.IsEnabled = true;

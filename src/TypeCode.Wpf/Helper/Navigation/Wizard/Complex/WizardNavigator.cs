@@ -14,7 +14,7 @@ namespace TypeCode.Wpf.Helper.Navigation.Wizard.Complex
             _eventAggregator = eventAggregator;
         }
         
-        public async Task Next(Wizard wizard)
+        public async Task NextAsync(Wizard wizard)
         {
             var wizardHost = (IWizardHost)wizard.WizardInstances.ViewModelInstance;
             await wizardHost.NavigateFromAsync(wizard, NavigationAction.Next).ConfigureAwait(true);
@@ -25,7 +25,7 @@ namespace TypeCode.Wpf.Helper.Navigation.Wizard.Complex
             await wizardHost.NavigateToAsync(wizard, NavigationAction.Next).ConfigureAwait(true);
         }
 
-        public async Task Back(Wizard wizard)
+        public async Task BackAsync(Wizard wizard)
         {
             if (wizard.CurrentStepConfiguration == wizard.StepConfigurations.First())
             {
@@ -41,7 +41,7 @@ namespace TypeCode.Wpf.Helper.Navigation.Wizard.Complex
             await wizardHost.NavigateToAsync(wizard, NavigationAction.Back).ConfigureAwait(true);
         }
 
-        public Task Cancel(Wizard wizard)
+        public Task CancelAsync(Wizard wizard)
         {
             wizard.Content.Opacity = 1;
             wizard.Content.IsEnabled = true;
@@ -49,7 +49,7 @@ namespace TypeCode.Wpf.Helper.Navigation.Wizard.Complex
             return Task.CompletedTask;
         }
 
-        public async Task Finish(Wizard wizard)
+        public async Task FinishAsync(Wizard wizard)
         {
             await wizard.CompletedAction(wizard.NavigationContext).ConfigureAwait(true);
             await _eventAggregator.PublishAsync(wizard.CompletedEvent).ConfigureAwait(true);

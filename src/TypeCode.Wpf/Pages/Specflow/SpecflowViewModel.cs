@@ -6,7 +6,6 @@ using AsyncAwaitBestPractices.MVVM;
 using TypeCode.Business.Mode;
 using TypeCode.Business.Mode.Specflow;
 using TypeCode.Business.TypeEvaluation;
-using TypeCode.Wpf.Helper.Navigation;
 using TypeCode.Wpf.Helper.Navigation.Contract;
 using TypeCode.Wpf.Helper.Navigation.Service;
 using TypeCode.Wpf.Helper.Navigation.Wizard.WizardSimple;
@@ -53,10 +52,10 @@ namespace TypeCode.Wpf.Pages.Specflow
                 });
 
                 var selectionViewModel = await _wizardNavigationService
-                    .OpenWizard(new WizardParameter<TypeSelectionViewModel>
+                    .OpenWizardAsync(new WizardParameter<TypeSelectionViewModel>
                     {
                         FinishButtonText = "Select"
-                    }, navigationContext);
+                    }, navigationContext).ConfigureAwait(true);
 
                 types = selectionViewModel.SelectedTypes.ToList();
             }
@@ -66,7 +65,7 @@ namespace TypeCode.Wpf.Pages.Specflow
                 Types = types
             };
 
-            var result = await _specflowGenerator.GenerateAsync(parameter);
+            var result = await _specflowGenerator.GenerateAsync(parameter).ConfigureAwait(true);
             Output = result;
         }
 

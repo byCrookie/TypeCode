@@ -5,12 +5,10 @@ using AsyncAwaitBestPractices.MVVM;
 using TypeCode.Business.Mode;
 using TypeCode.Business.Mode.Builder;
 using TypeCode.Business.TypeEvaluation;
-using TypeCode.Wpf.Helper.Navigation;
 using TypeCode.Wpf.Helper.Navigation.Contract;
 using TypeCode.Wpf.Helper.Navigation.Service;
 using TypeCode.Wpf.Helper.Navigation.Wizard.WizardSimple;
 using TypeCode.Wpf.Helper.ViewModel;
-using TypeCode.Wpf.Pages.Specflow;
 using TypeCode.Wpf.Pages.TypeSelection;
 
 namespace TypeCode.Wpf.Pages.Builder
@@ -53,10 +51,10 @@ namespace TypeCode.Wpf.Pages.Builder
                 });
             
                 var selectionViewModel = await _wizardNavigationService
-                    .OpenWizard(new WizardParameter<TypeSelectionViewModel>
+                    .OpenWizardAsync(new WizardParameter<TypeSelectionViewModel>
                     {
                         FinishButtonText = "Select"
-                    }, navigationContext);
+                    }, navigationContext).ConfigureAwait(true);
 
                 selectedType = selectionViewModel.SelectedTypes.Single();
             }
@@ -66,7 +64,7 @@ namespace TypeCode.Wpf.Pages.Builder
                 Type = selectedType
             };
             
-            var result = await _builderGenerator.GenerateAsync(parameter);
+            var result = await _builderGenerator.GenerateAsync(parameter).ConfigureAwait(true);
             Output = result;
         }
         

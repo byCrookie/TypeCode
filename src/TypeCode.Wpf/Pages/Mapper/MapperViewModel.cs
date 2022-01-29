@@ -65,10 +65,10 @@ namespace TypeCode.Wpf.Pages.Mapper
                 });
 
                 var selectionViewModel = await _wizardNavigationService
-                    .OpenWizard(new WizardParameter<TypeSelectionViewModel>
+                    .OpenWizardAsync(new WizardParameter<TypeSelectionViewModel>
                     {
                         FinishButtonText = "Select"
-                    }, navigationContext);
+                    }, navigationContext).ConfigureAwait(true);
 
                 var parameter = new MapperTypeCodeGeneratorParameter
                 {
@@ -77,7 +77,7 @@ namespace TypeCode.Wpf.Pages.Mapper
                     MappingStyle = _mappingStyle
                 };
 
-                var result = await _mapperGenerator.GenerateAsync(parameter);
+                var result = await _mapperGenerator.GenerateAsync(parameter).ConfigureAwait(true);
                 Output = result;
             }
         }
