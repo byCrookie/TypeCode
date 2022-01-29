@@ -7,6 +7,7 @@
 
     <ItemGroup>
         <PackageReference Include="AsyncAwaitBestPractices.MVVM" Version="6.0.4" />
+        <PackageReference Include="framework.autofac" Version="1.0.1-pre-20220129084440" />
         <PackageReference Include="framework.jab" Version="1.0.1-pre-20220128095906" />
         <PackageReference Include="Humanizer.Core" Version="2.13.14" />
         <PackageReference Include="Serilog.Sinks.Console" Version="4.0.2-dev-00890" />
