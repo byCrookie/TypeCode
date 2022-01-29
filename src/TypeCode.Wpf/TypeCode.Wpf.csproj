@@ -10,10 +10,12 @@
 
     <ItemGroup>
       <PackageReference Include="AsyncAwaitBestPractices.MVVM" Version="6.0.4" />
-      <PackageReference Include="framework.jab" Version="1.0.1-pre-20220128095906" />
+      <PackageReference Include="framework.jab" Version="1.0.1-pre-20220129095139" />
       <PackageReference Include="Nito.AsyncEx.Context" Version="5.1.2" />
       <PackageReference Include="Serilog.Sinks.Console" Version="4.0.2-dev-00890" />
       <PackageReference Include="Serilog.Sinks.File" Version="5.0.1-dev-00947" />
+      <PackageReference Include="workflow" Version="1.0.1-pre-20220129083508" />
+      <PackageReference Include="workflow.jab" Version="1.0.1-pre-20220129083706" />
     </ItemGroup>
 
     <ItemGroup>

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Reflection;
 using System.Threading.Tasks;
-using Autofac.Util;
 using Framework.Extensions.List;
 using TypeCode.Business.Bootstrapping;
 using TypeCode.Business.Configuration;

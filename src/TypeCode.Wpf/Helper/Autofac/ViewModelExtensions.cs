@@ -1,5 +1,4 @@
 ﻿using System;
-using Autofac;
 using TypeCode.Business.Format;
 
 namespace TypeCode.Wpf.Helper.Autofac;
@@ -11,6 +10,7 @@ public static class ViewModelExtensions
         var viewName = NameBuilder.GetNameWithoutGeneric(viewModelType)[..^"Model".Length];
         return Type.GetType($"{viewModelType.Namespace}.{viewName}");
     }
+    
     //
     // public static void AddViewModelAndViewAsSingleInstance<TViewModel, TView>(this ContainerBuilder containerBuilder)
     // {
