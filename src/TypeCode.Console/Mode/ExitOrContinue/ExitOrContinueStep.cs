@@ -3,43 +3,42 @@ using System.Threading.Tasks;
 using TypeCode.Business.Format;
 using Workflow;
 
-namespace TypeCode.Console.Mode.ExitOrContinue
+namespace TypeCode.Console.Mode.ExitOrContinue;
+
+internal class ExitOrContinueStep<TContext> :
+    IExitOrContinueStep<TContext>
+    where TContext : WorkflowBaseContext, IExitOrContinueContext
 {
-    internal class ExitOrContinueStep<TContext> :
-        IExitOrContinueStep<TContext>
-        where TContext : WorkflowBaseContext, IExitOrContinueContext
+    private readonly IWorkflowBuilder<ExitOrContinueContext> _workflowBuilder;
+
+    public ExitOrContinueStep(IWorkflowBuilder<ExitOrContinueContext> workflowBuilder)
     {
-        private readonly IWorkflowBuilder<ExitOrContinueContext> _workflowBuilder;
+        _workflowBuilder = workflowBuilder;
+    }
 
-        public ExitOrContinueStep(IWorkflowBuilder<ExitOrContinueContext> workflowBuilder)
+    public async Task ExecuteAsync(TContext context)
+    {
+        var exitContext = new ExitOrContinueContext
         {
-            _workflowBuilder = workflowBuilder;
-        }
+            Input = context.Input
+        };
+        context.MapTo(exitContext);
 
-        public async Task ExecuteAsync(TContext context)
-        {
-            var exitContext = new ExitOrContinueContext
-            {
-                Input = context.Input
-            };
-            context.MapTo(exitContext);
-
-            var workflow = _workflowBuilder
-                .IfFlow(c => string.IsNullOrEmpty(c.Input), ifFlow => ifFlow
-                    .WriteLine(_ => $@"{Cuts.Point()} Press enter to go to menu or space to continue")
-                    .IfFlow(_ => System.Console.ReadKey().Key == ConsoleKey.Enter, ifFlowLeave => ifFlowLeave
-                        .StopAsync()
-                    )
+        var workflow = _workflowBuilder
+            .IfFlow(c => string.IsNullOrEmpty(c.Input), ifFlow => ifFlow
+                .WriteLine(_ => $@"{Cuts.Point()} Press enter to go to menu or space to continue")
+                .IfFlow(_ => System.Console.ReadKey().Key == ConsoleKey.Enter, ifFlowLeave => ifFlowLeave
+                    .StopAsync()
                 )
-                .Build();
+            )
+            .Build();
 
-            var workflowContext = await workflow.RunAsync(exitContext).ConfigureAwait(false);
-            workflowContext.MapTo(context);
-        }
+        var workflowContext = await workflow.RunAsync(exitContext).ConfigureAwait(false);
+        workflowContext.MapTo(context);
+    }
 
-        public Task<bool> ShouldExecuteAsync(TContext context)
-        {
-            return context.ShouldExecuteAsync();
-        }
+    public Task<bool> ShouldExecuteAsync(TContext context)
+    {
+        return context.ShouldExecuteAsync();
     }
 }

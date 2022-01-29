@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using TypeCode.Business.Configuration;
 
-namespace TypeCode.Business.TypeEvaluation
+namespace TypeCode.Business.TypeEvaluation;
+
+public interface ITypeProvider
 {
-    public interface ITypeProvider
-    {
-        void Initalize(TypeCodeConfiguration configuration);
-        bool HasByName(string name);
-        IEnumerable<Type> TryGetByName(string name);
-        IEnumerable<Type> TryGetByNames(IEnumerable<string> names);
-        IEnumerable<Type> TryGetTypesByCondition(Func<Type, bool> condition);
-    }
+    void Initalize(TypeCodeConfiguration configuration);
+    bool HasByName(string name);
+    IEnumerable<Type> TryGetByName(string name);
+    IEnumerable<Type> TryGetByNames(IEnumerable<string> names);
+    IEnumerable<Type> TryGetTypesByCondition(Func<Type, bool> condition);
 }

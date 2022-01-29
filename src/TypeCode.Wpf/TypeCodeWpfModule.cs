@@ -3,17 +3,16 @@ using TypeCode.Wpf.Application;
 using TypeCode.Wpf.Helper;
 using TypeCode.Wpf.Pages;
 
-namespace TypeCode.Wpf
+namespace TypeCode.Wpf;
+
+public class TypeCodeWpfModule : Module
 {
-    public class TypeCodeWpfModule : Module
+    protected override void Load(ContainerBuilder builder)
     {
-        protected override void Load(ContainerBuilder builder)
-        {
-            builder.RegisterModule<AppModule>();
-            builder.RegisterModule<HelperModule>();
-            builder.RegisterModule<PagesModule>();
+        builder.RegisterModule<AppModule>();
+        builder.RegisterModule<HelperModule>();
+        builder.RegisterModule<PagesModule>();
             
-            base.Load(builder);
-        }
+        base.Load(builder);
     }
 }

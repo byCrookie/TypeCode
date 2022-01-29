@@ -1,9 +1,8 @@
 ﻿using TypeCode.Business.Configuration;
 
-namespace TypeCode.Business.TypeEvaluation
+namespace TypeCode.Business.TypeEvaluation;
+
+public interface ITypeEvaluator
 {
-	public interface ITypeEvaluator
-	{
-		TypeCodeConfiguration EvaluateTypes(TypeCodeConfiguration assemblies);
-	}
+	TypeCodeConfiguration EvaluateTypes(TypeCodeConfiguration assemblies);
 }

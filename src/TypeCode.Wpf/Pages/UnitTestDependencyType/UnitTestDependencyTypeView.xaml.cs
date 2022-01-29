@@ -1,10 +1,9 @@
-﻿namespace TypeCode.Wpf.Pages.UnitTestDependencyType
+﻿namespace TypeCode.Wpf.Pages.UnitTestDependencyType;
+
+public partial class UnitTestDependencyTypeView
 {
-    public partial class UnitTestDependencyTypeView
+    public UnitTestDependencyTypeView()
     {
-        public UnitTestDependencyTypeView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

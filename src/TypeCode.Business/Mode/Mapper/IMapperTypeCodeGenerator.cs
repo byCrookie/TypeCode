@@ -1,6 +1,5 @@
-﻿namespace TypeCode.Business.Mode.Mapper
+﻿namespace TypeCode.Business.Mode.Mapper;
+
+internal interface IMapperTypeCodeGenerator : ITypeCodeGenerator<MapperTypeCodeGeneratorParameter>
 {
-    internal interface IMapperTypeCodeGenerator : ITypeCodeGenerator<MapperTypeCodeGeneratorParameter>
-    {
-    }
 }

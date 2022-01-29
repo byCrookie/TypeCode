@@ -1,9 +1,8 @@
 ﻿using System;
 
-namespace TypeCode.Business.Mode.Builder
+namespace TypeCode.Business.Mode.Builder;
+
+public class BuilderTypeCodeGeneratorParameter : ITypeCodeGeneratorParameter
 {
-    public class BuilderTypeCodeGeneratorParameter : ITypeCodeGeneratorParameter
-    {
-        public Type Type { get; set; }
-    }
+    public Type Type { get; set; }
 }

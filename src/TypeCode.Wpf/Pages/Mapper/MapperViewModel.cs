@@ -13,100 +13,99 @@ using TypeCode.Wpf.Helper.Navigation.Wizard.WizardSimple;
 using TypeCode.Wpf.Helper.ViewModel;
 using TypeCode.Wpf.Pages.TypeSelection;
 
-namespace TypeCode.Wpf.Pages.Mapper
+namespace TypeCode.Wpf.Pages.Mapper;
+
+public class MapperViewModel : Reactive, IAsyncNavigatedTo
 {
-    public class MapperViewModel : Reactive, IAsyncNavigatedTo
+    private readonly ITypeCodeGenerator<MapperTypeCodeGeneratorParameter> _mapperGenerator;
+    private readonly ITypeProvider _typeProvider;
+    private readonly IWizardNavigationService _wizardNavigationService;
+    private MappingStyle _mappingStyle;
+
+    public MapperViewModel(
+        ITypeCodeGenerator<MapperTypeCodeGeneratorParameter> mapperGenerator,
+        ITypeProvider typeProvider,
+        IWizardNavigationService wizardNavigationService
+    )
     {
-        private readonly ITypeCodeGenerator<MapperTypeCodeGeneratorParameter> _mapperGenerator;
-        private readonly ITypeProvider _typeProvider;
-        private readonly IWizardNavigationService _wizardNavigationService;
-        private MappingStyle _mappingStyle;
+        _mapperGenerator = mapperGenerator;
+        _typeProvider = typeProvider;
+        _wizardNavigationService = wizardNavigationService;
+    }
 
-        public MapperViewModel(
-            ITypeCodeGenerator<MapperTypeCodeGeneratorParameter> mapperGenerator,
-            ITypeProvider typeProvider,
-            IWizardNavigationService wizardNavigationService
-        )
+    public Task OnNavigatedToAsync(NavigationContext context)
+    {
+        GenerateCommand = new AsyncCommand(GenerateAsync);
+        StyleCommand = new AsyncCommand<MappingStyle>(StyleAsync);
+        NewStyle = true;
+        ExistingStyle = false;
+        return Task.CompletedTask;
+    }
+
+    private Task StyleAsync(MappingStyle style)
+    {
+        _mappingStyle = style;
+        return Task.CompletedTask;
+    }
+
+    private async Task GenerateAsync()
+    {
+        var inputNames = Input?.Split(',').Select(name => name.Trim()).ToList() ?? new List<string>();
+        var types = _typeProvider.TryGetByName(inputNames.FirstOrDefault())
+            .Union(_typeProvider.TryGetByName(inputNames.LastOrDefault()))
+            .ToList();
+
+        if (types.Any())
         {
-            _mapperGenerator = mapperGenerator;
-            _typeProvider = typeProvider;
-            _wizardNavigationService = wizardNavigationService;
-        }
-
-        public Task OnNavigatedToAsync(NavigationContext context)
-        {
-            GenerateCommand = new AsyncCommand(GenerateAsync);
-            StyleCommand = new AsyncCommand<MappingStyle>(StyleAsync);
-            NewStyle = true;
-            ExistingStyle = false;
-            return Task.CompletedTask;
-        }
-
-        private Task StyleAsync(MappingStyle style)
-        {
-            _mappingStyle = style;
-            return Task.CompletedTask;
-        }
-
-        private async Task GenerateAsync()
-        {
-            var inputNames = Input?.Split(',').Select(name => name.Trim()).ToList() ?? new List<string>();
-            var types = _typeProvider.TryGetByName(inputNames.FirstOrDefault())
-                .Union(_typeProvider.TryGetByName(inputNames.LastOrDefault()))
-                .ToList();
-
-            if (types.Any())
+            var navigationContext = new NavigationContext();
+            navigationContext.AddParameter(new TypeSelectionParameter
             {
-                var navigationContext = new NavigationContext();
-                navigationContext.AddParameter(new TypeSelectionParameter
+                AllowMultiSelection = true,
+                Types = types
+            });
+
+            var selectionViewModel = await _wizardNavigationService
+                .OpenWizardAsync(new WizardParameter<TypeSelectionViewModel>
                 {
-                    AllowMultiSelection = true,
-                    Types = types
-                });
+                    FinishButtonText = "Select"
+                }, navigationContext).ConfigureAwait(true);
 
-                var selectionViewModel = await _wizardNavigationService
-                    .OpenWizardAsync(new WizardParameter<TypeSelectionViewModel>
-                    {
-                        FinishButtonText = "Select"
-                    }, navigationContext).ConfigureAwait(true);
+            var parameter = new MapperTypeCodeGeneratorParameter
+            {
+                MapFrom = new MappingType(selectionViewModel.SelectedTypes.First()),
+                MapTo = new MappingType(selectionViewModel.SelectedTypes.Last()),
+                MappingStyle = _mappingStyle
+            };
 
-                var parameter = new MapperTypeCodeGeneratorParameter
-                {
-                    MapFrom = new MappingType(selectionViewModel.SelectedTypes.First()),
-                    MapTo = new MappingType(selectionViewModel.SelectedTypes.Last()),
-                    MappingStyle = _mappingStyle
-                };
-
-                var result = await _mapperGenerator.GenerateAsync(parameter).ConfigureAwait(true);
-                Output = result;
-            }
+            var result = await _mapperGenerator.GenerateAsync(parameter).ConfigureAwait(true);
+            Output = result;
         }
+    }
 
-        public ICommand GenerateCommand { get; set; }
-        public ICommand StyleCommand { get; set; }
+    public ICommand GenerateCommand { get; set; }
+    public ICommand StyleCommand { get; set; }
 
-        public string Input
-        {
-            get => Get<string>();
-            set => Set(value);
-        }
+    public string Input
+    {
+        get => Get<string>();
+        set => Set(value);
+    }
 
-        public string Output
-        {
-            get => Get<string>();
-            private set => Set(value);
-        }
+    public string Output
+    {
+        get => Get<string>();
+        private set => Set(value);
+    }
 
-        public bool NewStyle
-        {
-            get => Get<bool>();
-            private set => Set(value);
-        }
+    public bool NewStyle
+    {
+        get => Get<bool>();
+        private set => Set(value);
+    }
 
-        public bool ExistingStyle
-        {
-            get => Get<bool>();
-            private set => Set(value);
-        }
+    public bool ExistingStyle
+    {
+        get => Get<bool>();
+        private set => Set(value);
     }
 }

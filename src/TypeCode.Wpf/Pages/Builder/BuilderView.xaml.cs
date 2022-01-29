@@ -1,10 +1,9 @@
-﻿namespace TypeCode.Wpf.Pages.Builder
+﻿namespace TypeCode.Wpf.Pages.Builder;
+
+public partial class BuilderView
 {
-    public partial class BuilderView
+    public BuilderView()
     {
-        public BuilderView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

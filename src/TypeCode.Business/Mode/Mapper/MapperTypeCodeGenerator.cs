@@ -2,32 +2,31 @@
 using System.Threading.Tasks;
 using TypeCode.Business.Mode.Mapper.Style;
 
-namespace TypeCode.Business.Mode.Mapper
+namespace TypeCode.Business.Mode.Mapper;
+
+internal class MapperTypeCodeGenerator : IMapperTypeCodeGenerator
 {
-    internal class MapperTypeCodeGenerator : IMapperTypeCodeGenerator
+    private readonly IMapperStyleComposer _mapperStyleComposer;
+
+    public MapperTypeCodeGenerator(IMapperStyleComposer mapperStyleComposer)
     {
-        private readonly IMapperStyleComposer _mapperStyleComposer;
+        _mapperStyleComposer = mapperStyleComposer;
+    }
 
-        public MapperTypeCodeGenerator(IMapperStyleComposer mapperStyleComposer)
+    public Task<string> GenerateAsync(MapperTypeCodeGeneratorParameter parameter)
+    {
+        if (parameter.MapFrom is not null && parameter.MapTo is not null)
         {
-            _mapperStyleComposer = mapperStyleComposer;
+            return Task.FromResult(GenerateMappingCode(parameter));
         }
 
-        public Task<string> GenerateAsync(MapperTypeCodeGeneratorParameter parameter)
-        {
-            if (parameter.MapFrom is not null && parameter.MapTo is not null)
-            {
-                return Task.FromResult(GenerateMappingCode(parameter));
-            }
+        return Task.FromResult<string>(null);
+    }
 
-            return Task.FromResult<string>(null);
-        }
-
-        private string GenerateMappingCode(MapperTypeCodeGeneratorParameter parameter)
-        {
-            var styles = _mapperStyleComposer.Compose();
-            var selectedStyle = styles.SingleOrDefault(style => style.IsResponsibleFor(parameter.MappingStyle));
-            return selectedStyle?.Generate(parameter);
-        }
+    private string GenerateMappingCode(MapperTypeCodeGeneratorParameter parameter)
+    {
+        var styles = _mapperStyleComposer.Compose();
+        var selectedStyle = styles.SingleOrDefault(style => style.IsResponsibleFor(parameter.MappingStyle));
+        return selectedStyle?.Generate(parameter);
     }
 }

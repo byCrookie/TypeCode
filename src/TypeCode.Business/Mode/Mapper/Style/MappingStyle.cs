@@ -1,8 +1,7 @@
-﻿namespace TypeCode.Business.Mode.Mapper.Style
+﻿namespace TypeCode.Business.Mode.Mapper.Style;
+
+public enum MappingStyle
 {
-    public enum MappingStyle
-    {
-        New,
-        Existing
-    }
+    New,
+    Existing
 }

@@ -1,6 +1,5 @@
-﻿namespace TypeCode.Business.Mode.Builder
+﻿namespace TypeCode.Business.Mode.Builder;
+
+internal interface IBuilderTypeCodeGenerator : ITypeCodeGenerator<BuilderTypeCodeGeneratorParameter>
 {
-    internal interface IBuilderTypeCodeGenerator : ITypeCodeGenerator<BuilderTypeCodeGeneratorParameter>
-    {
-    }
 }

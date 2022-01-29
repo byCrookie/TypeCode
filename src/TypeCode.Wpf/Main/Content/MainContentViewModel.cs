@@ -3,26 +3,25 @@ using TypeCode.Wpf.Application;
 using TypeCode.Wpf.Helper.Event;
 using TypeCode.Wpf.Helper.ViewModel;
 
-namespace TypeCode.Wpf.Main.Content
+namespace TypeCode.Wpf.Main.Content;
+
+public class MainContentViewModel : Reactive, IAsyncEventHandler<AssemblyLoadedEvent>
 {
-    public class MainContentViewModel : Reactive, IAsyncEventHandler<AssemblyLoadedEvent>
+    public MainContentViewModel(IEventAggregator eventAggregator)
     {
-        public MainContentViewModel(IEventAggregator eventAggregator)
-        {
-            AreAssembliesLoading = true;
+        AreAssembliesLoading = true;
             
-            eventAggregator.Subscribe<AssemblyLoadedEvent>(this);
-        }
+        eventAggregator.Subscribe<AssemblyLoadedEvent>(this);
+    }
         
-        public bool AreAssembliesLoading {
-            get => Get<bool>();
-            set => Set(value);
-        }
+    public bool AreAssembliesLoading {
+        get => Get<bool>();
+        set => Set(value);
+    }
         
-        public Task HandleAsync(AssemblyLoadedEvent e)
-        {
-            AreAssembliesLoading = false;
-            return Task.CompletedTask;
-        }
+    public Task HandleAsync(AssemblyLoadedEvent e)
+    {
+        AreAssembliesLoading = false;
+        return Task.CompletedTask;
     }
 }

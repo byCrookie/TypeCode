@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace TypeCode.Console.Mode
+namespace TypeCode.Console.Mode;
+
+internal interface IModeComposer
 {
-	internal interface IModeComposer
-	{
-		IEnumerable<ITypeCodeStrategy> ComposeOrdered();
-	}
+	IEnumerable<ITypeCodeStrategy> ComposeOrdered();
 }

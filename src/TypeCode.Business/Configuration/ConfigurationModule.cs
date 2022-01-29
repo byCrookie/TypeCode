@@ -1,15 +1,14 @@
 ﻿using Autofac;
 
-namespace TypeCode.Business.Configuration
+namespace TypeCode.Business.Configuration;
+
+internal class ConfigurationModule : Module
 {
-    internal class ConfigurationModule : Module
+    protected override void Load(ContainerBuilder builder)
     {
-        protected override void Load(ContainerBuilder builder)
-        {
-            builder.RegisterType<GenericXmlSerializer>().As<IGenericXmlSerializer>();
-            builder.RegisterType<ConfigurationMapper>().As<IConfigurationMapper>();
+        builder.RegisterType<GenericXmlSerializer>().As<IGenericXmlSerializer>();
+        builder.RegisterType<ConfigurationMapper>().As<IConfigurationMapper>();
             
-            base.Load(builder);
-        }
+        base.Load(builder);
     }
 }

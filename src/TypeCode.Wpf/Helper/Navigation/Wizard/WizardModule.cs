@@ -6,21 +6,20 @@ using TypeCode.Wpf.Helper.Navigation.Wizard.WizardSimple;
 using WizardSimpleView = TypeCode.Wpf.Helper.Navigation.Wizard.WizardSimple.WizardSimpleView;
 using WizardView = TypeCode.Wpf.Helper.Navigation.Wizard.Complex.WizardView;
 
-namespace TypeCode.Wpf.Helper.Navigation.Wizard
+namespace TypeCode.Wpf.Helper.Navigation.Wizard;
+
+public class WizardModule : Module
 {
-    public class WizardModule : Module
+    protected override void Load(ContainerBuilder builder)
     {
-        protected override void Load(ContainerBuilder builder)
-        {
-            builder.RegisterType<WizardNavigator>().As<IWizardNavigator>();
-            builder.AddViewModelAndView<WizardSimpleViewModel, WizardView>();
+        builder.RegisterType<WizardNavigator>().As<IWizardNavigator>();
+        builder.AddViewModelAndView<WizardSimpleViewModel, WizardView>();
             
-            builder.RegisterType<WizardNavigationService>().As<IWizardNavigationService>();
-            builder.AddGenericViewModelAndView(typeof(WizardSimpleViewModel<>), typeof(WizardSimpleView));
+        builder.RegisterType<WizardNavigationService>().As<IWizardNavigationService>();
+        builder.AddGenericViewModelAndView(typeof(WizardSimpleViewModel<>), typeof(WizardSimpleView));
 
-            builder.RegisterModule<StepsModule>();
+        builder.RegisterModule<StepsModule>();
 
-            base.Load(builder);
-        }
+        base.Load(builder);
     }
 }

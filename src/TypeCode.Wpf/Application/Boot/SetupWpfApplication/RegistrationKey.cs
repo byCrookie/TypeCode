@@ -1,8 +1,7 @@
-﻿namespace TypeCode.Wpf.Application.Boot.SetupWpfApplication
+﻿namespace TypeCode.Wpf.Application.Boot.SetupWpfApplication;
+
+public enum RegistrationKey
 {
-    public enum RegistrationKey
-    {
-        MainWindow,
-        NavigationFrame
-    }
+    MainWindow,
+    NavigationFrame
 }

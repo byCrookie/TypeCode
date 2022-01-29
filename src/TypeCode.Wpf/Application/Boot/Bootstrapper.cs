@@ -12,32 +12,31 @@ using TypeCode.Business.Logging;
 using TypeCode.Business.Modules;
 using TypeCode.Wpf.Application.Boot.SetupWpfApplication;
 
-namespace TypeCode.Wpf.Application.Boot
+namespace TypeCode.Wpf.Application.Boot;
+
+public static class Bootstrapper
 {
-    public static class Bootstrapper
+    public static Task BootAsync()
     {
-        public static Task BootAsync()
+        var bootScope = BootConfiguration.Configure<BootContext>(new List<Module>
         {
-            var bootScope = BootConfiguration.Configure<BootContext>(new List<Module>
-            {
-                new BootModule()
-            });
+            new BootModule()
+        });
 
-            var bootFlow = bootScope.WorkflowBuilder
-                .ThenAsync<ILoggerBootStep<BootContext, LoggerBootStepOptions>, LoggerBootStepOptions>(
-                    options => LoggerConfigurationProvider.Create(options).WriteTo.Console()
-                )
-                .ThenAsync<ISetupWpfApplicationStep<BootContext>>()
-                .ThenAsync<IAutofacBootStep<BootContext, AutofacBootStepOptions>, AutofacBootStepOptions>(
-                    options => options.Autofac
-                        .AddModule(new TypeCodeWpfModule())
-                        .AddModule(new TypeCodeBusinessModule())
-                )
-                .ThenAsync<IAssemblyLoadBootStep<BootContext>>()
-                .ThenAsync<IStartBootStep<BootContext>>()
-                .Build();
+        var bootFlow = bootScope.WorkflowBuilder
+            .ThenAsync<ILoggerBootStep<BootContext, LoggerBootStepOptions>, LoggerBootStepOptions>(
+                options => LoggerConfigurationProvider.Create(options).WriteTo.Console()
+            )
+            .ThenAsync<ISetupWpfApplicationStep<BootContext>>()
+            .ThenAsync<IAutofacBootStep<BootContext, AutofacBootStepOptions>, AutofacBootStepOptions>(
+                options => options.Autofac
+                    .AddModule(new TypeCodeWpfModule())
+                    .AddModule(new TypeCodeBusinessModule())
+            )
+            .ThenAsync<IAssemblyLoadBootStep<BootContext>>()
+            .ThenAsync<IStartBootStep<BootContext>>()
+            .Build();
 
-            return bootFlow.RunAsync(new BootContext(bootScope.Container, bootScope.LifeTimeScope));
-        }
+        return bootFlow.RunAsync(new BootContext(bootScope.Container, bootScope.LifeTimeScope));
     }
 }

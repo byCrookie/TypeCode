@@ -1,6 +1,5 @@
-﻿namespace TypeCode.Console.Mode.UnitTestDependency
+﻿namespace TypeCode.Console.Mode.UnitTestDependency;
+
+internal interface IUnitTestDependencyTypeCodeStrategy : ITypeCodeStrategy
 {
-	internal interface IUnitTestDependencyTypeCodeStrategy : ITypeCodeStrategy
-	{
-	}
 }

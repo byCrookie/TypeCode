@@ -5,47 +5,46 @@ using Framework.Extensions.List;
 using TypeCode.Business.Bootstrapping;
 using TypeCode.Business.Configuration;
 
-namespace TypeCode.Business.TypeEvaluation
+namespace TypeCode.Business.TypeEvaluation;
+
+internal class TypeEvaluator : ITypeEvaluator
 {
-    internal class TypeEvaluator : ITypeEvaluator
+    public TypeCodeConfiguration EvaluateTypes(TypeCodeConfiguration configuration)
     {
-        public TypeCodeConfiguration EvaluateTypes(TypeCodeConfiguration configuration)
+        try
         {
-            try
-            {
-                return LoadTypes(configuration);
-            }
-            catch (Exception ex)
-            {
-                throw new TypeLoadException("Loading types failed. " + ex.Message);
-            }
+            return LoadTypes(configuration);
         }
-
-        private static TypeCodeConfiguration LoadTypes(TypeCodeConfiguration configuration)
+        catch (Exception ex)
         {
-            Parallel.ForEach(configuration.AssemblyRoot, root =>
-            {
-                Parallel.ForEach(root.AssemblyGroup, group =>
-                {
-                    Parallel.ForEach(group.AssemblyPath, path =>
-                    {
-                        Parallel.ForEach(path.AssemblyDirectories, assemblyDirectory => { Parallel.ForEach(assemblyDirectory.Assemblies, assembly => Load(assembly, assemblyDirectory)); });
-                    });
+            throw new TypeLoadException("Loading types failed. " + ex.Message);
+        }
+    }
 
-                    Parallel.ForEach(group.AssemblyPathSelector, selector =>
-                    {
-                        Parallel.ForEach(selector.AssemblyDirectories, assemblyDirectory => { Parallel.ForEach(assemblyDirectory.Assemblies, assembly => Load(assembly, assemblyDirectory)); });
-                    });
+    private static TypeCodeConfiguration LoadTypes(TypeCodeConfiguration configuration)
+    {
+        Parallel.ForEach(configuration.AssemblyRoot, root =>
+        {
+            Parallel.ForEach(root.AssemblyGroup, group =>
+            {
+                Parallel.ForEach(group.AssemblyPath, path =>
+                {
+                    Parallel.ForEach(path.AssemblyDirectories, assemblyDirectory => { Parallel.ForEach(assemblyDirectory.Assemblies, assembly => Load(assembly, assemblyDirectory)); });
+                });
+
+                Parallel.ForEach(group.AssemblyPathSelector, selector =>
+                {
+                    Parallel.ForEach(selector.AssemblyDirectories, assemblyDirectory => { Parallel.ForEach(assemblyDirectory.Assemblies, assembly => Load(assembly, assemblyDirectory)); });
                 });
             });
+        });
 
-            return configuration;
-        }
+        return configuration;
+    }
 
-        private static void Load(Assembly assembly, AssemblyDirectory assemblyDirectory)
-        {
-            var loadedTypes = assembly.GetLoadableTypes();
-            loadedTypes.ForEach(type => assemblyDirectory.Types.Add(type));
-        }
+    private static void Load(Assembly assembly, AssemblyDirectory assemblyDirectory)
+    {
+        var loadedTypes = assembly.GetLoadableTypes();
+        loadedTypes.ForEach(type => assemblyDirectory.Types.Add(type));
     }
 }

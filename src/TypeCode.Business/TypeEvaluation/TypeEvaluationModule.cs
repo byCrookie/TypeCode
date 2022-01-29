@@ -1,15 +1,14 @@
 ﻿using Autofac;
 
-namespace TypeCode.Business.TypeEvaluation
+namespace TypeCode.Business.TypeEvaluation;
+
+internal class TypeEvaluationModule : Module
 {
-    internal class TypeEvaluationModule : Module
+    protected override void Load(ContainerBuilder builder)
     {
-        protected override void Load(ContainerBuilder builder)
-        {
-            builder.RegisterType<TypeEvaluator>().As<ITypeEvaluator>();
-            builder.RegisterType<TypeProvider>().As<ITypeProvider>().SingleInstance();
+        builder.RegisterType<TypeEvaluator>().As<ITypeEvaluator>();
+        builder.RegisterType<TypeProvider>().As<ITypeProvider>().SingleInstance();
             
-            base.Load(builder);
-        }
+        base.Load(builder);
     }
 }

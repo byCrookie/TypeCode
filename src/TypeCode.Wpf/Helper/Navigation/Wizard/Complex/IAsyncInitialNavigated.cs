@@ -1,10 +1,9 @@
 ﻿using System.Threading.Tasks;
 using TypeCode.Wpf.Helper.Navigation.Service;
 
-namespace TypeCode.Wpf.Helper.Navigation.Wizard.Complex
+namespace TypeCode.Wpf.Helper.Navigation.Wizard.Complex;
+
+public interface IAsyncInitialNavigated
 {
-    public interface IAsyncInitialNavigated
-    {
-        Task OnInititalNavigationAsync(NavigationContext context);
-    }
+    Task OnInititalNavigationAsync(NavigationContext context);
 }

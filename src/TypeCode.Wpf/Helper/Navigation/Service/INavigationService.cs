@@ -1,9 +1,8 @@
 ﻿using System.Threading.Tasks;
 
-namespace TypeCode.Wpf.Helper.Navigation.Service
+namespace TypeCode.Wpf.Helper.Navigation.Service;
+
+public interface INavigationService
 {
-	public interface INavigationService
-	{
-		Task NavigateAsync<T>(NavigationContext context = null);
-	}
+	Task NavigateAsync<T>(NavigationContext context = null);
 }

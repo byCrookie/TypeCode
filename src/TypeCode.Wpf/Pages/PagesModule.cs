@@ -9,24 +9,23 @@ using TypeCode.Wpf.Pages.TypeSelection;
 using TypeCode.Wpf.Pages.UnitTestDependencyManually;
 using TypeCode.Wpf.Pages.UnitTestDependencyType;
 
-namespace TypeCode.Wpf.Pages
-{
-    public class PagesModule : Module
-    {
-        protected override void Load(ContainerBuilder builder)
-        {
-            builder.RegisterModule<SpecflowModule>();
-            builder.RegisterModule<UnitTestDependencyTypeModule>();
-            builder.RegisterModule<UnitTestDependencyManuallyModule>();
-            builder.RegisterModule<ComposerModule>();
-            builder.RegisterModule<MapperModule>();
-            builder.RegisterModule<BuilderModule>();
+namespace TypeCode.Wpf.Pages;
 
-            builder.RegisterModule<AssemblyModule>();
-            builder.RegisterModule<TypeSelectionModule>();
-            builder.RegisterModule<CommonWizardModule>();
+public class PagesModule : Module
+{
+    protected override void Load(ContainerBuilder builder)
+    {
+        builder.RegisterModule<SpecflowModule>();
+        builder.RegisterModule<UnitTestDependencyTypeModule>();
+        builder.RegisterModule<UnitTestDependencyManuallyModule>();
+        builder.RegisterModule<ComposerModule>();
+        builder.RegisterModule<MapperModule>();
+        builder.RegisterModule<BuilderModule>();
+
+        builder.RegisterModule<AssemblyModule>();
+        builder.RegisterModule<TypeSelectionModule>();
+        builder.RegisterModule<CommonWizardModule>();
             
-            base.Load(builder);
-        }
+        base.Load(builder);
     }
 }

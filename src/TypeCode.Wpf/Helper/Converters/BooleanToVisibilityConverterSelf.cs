@@ -1,9 +1,8 @@
 ﻿using System.Windows;
 
-namespace TypeCode.Wpf.Helper.Converters
+namespace TypeCode.Wpf.Helper.Converters;
+
+public class BooleanToVisibilityConverterSelf : BooleanConverter<Visibility>
 {
-	public class BooleanToVisibilityConverterSelf : BooleanConverter<Visibility>
-	{
-		public BooleanToVisibilityConverterSelf() : base(Visibility.Visible, Visibility.Collapsed) { }
-	}
+	public BooleanToVisibilityConverterSelf() : base(Visibility.Visible, Visibility.Collapsed) { }
 }

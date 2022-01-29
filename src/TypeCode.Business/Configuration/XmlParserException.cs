@@ -1,9 +1,8 @@
 ﻿using System;
 
-namespace TypeCode.Business.Configuration
+namespace TypeCode.Business.Configuration;
+
+public class XmlParserException : Exception
 {
-	public class XmlParserException : Exception
-	{
-		public XmlParserException(string message, Exception argumentException) : base(message, argumentException) { }
-	}
+	public XmlParserException(string message, Exception argumentException) : base(message, argumentException) { }
 }
