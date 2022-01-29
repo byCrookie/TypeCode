@@ -8,59 +8,60 @@ using TypeCode.Wpf.Helper.Navigation.Service;
 using TypeCode.Wpf.Helper.Navigation.Wizard.Complex;
 using TypeCode.Wpf.Helper.ViewModel;
 
-namespace TypeCode.Wpf.Pages.Common.Configuration;
-
-public class ConfigurationWizardViewModel : Reactive, IAsyncInitialNavigated
+namespace TypeCode.Wpf.Pages.Common.Configuration
 {
-    public Task OnInititalNavigationAsync(NavigationContext context)
+    public class ConfigurationWizardViewModel : Reactive, IAsyncInitialNavigated
     {
-        ReloadCommand = new AsyncCommand(ReloadAsync);
-        SaveCommand = new AsyncCommand(SaveAsync);
-        FormatCommand = new AsyncCommand(FormatAsync);
+        public async Task OnInititalNavigationAsync(NavigationContext context)
+        {
+            ReloadCommand = new AsyncCommand(ReloadAsync);
+            SaveCommand = new AsyncCommand(SaveAsync);
+            FormatCommand = new AsyncCommand(FormatAsync);
             
-        return ReloadAsync();
-    }
+            await ReloadAsync().ConfigureAwait(true);
+        }
 
-    private Task FormatAsync()
-    {
-        Configuration = FormatXml(Configuration);
-        return Task.CompletedTask;
-    }
+        private Task FormatAsync()
+        {
+            Configuration = FormatXml(Configuration);
+            return Task.CompletedTask;
+        }
 
-    private async Task SaveAsync()
-    {
-        var cfg = $@"{Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location)}\Configuration.cfg.xml";
-        await File.WriteAllTextAsync(cfg, FormatXml(Configuration)).ConfigureAwait(true);
-        await ReloadAsync().ConfigureAwait(true);
-    }
+        private async Task SaveAsync()
+        {
+            var cfg = $@"{Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location)}\Configuration.cfg.xml";
+            await File.WriteAllTextAsync(cfg, FormatXml(Configuration)).ConfigureAwait(true);
+            await ReloadAsync().ConfigureAwait(true);
+        }
 
-    private async Task ReloadAsync()
-    {
-        var cfg = $@"{Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location)}\Configuration.cfg.xml";
-        var xml = await File.ReadAllTextAsync(cfg).ConfigureAwait(true);
-        Configuration = FormatXml(xml);
-    }
+        private async Task ReloadAsync()
+        {
+            var cfg = $@"{Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location)}\Configuration.cfg.xml";
+            var xml = await File.ReadAllTextAsync(cfg).ConfigureAwait(true);
+            Configuration = FormatXml(xml);
+        }
         
-    private static string FormatXml(string xml)
-    {
-        try
+        private static string FormatXml(string xml)
         {
-            var doc = XDocument.Parse(xml);
-            return doc.ToString();
+            try
+            {
+                var doc = XDocument.Parse(xml);
+                return doc.ToString();
+            }
+            catch (Exception)
+            {
+                return xml;
+            }
         }
-        catch (Exception)
+
+        public ICommand ReloadCommand { get; set; }
+        public ICommand SaveCommand { get; set; }
+        public ICommand FormatCommand { get; set; }
+
+        public string Configuration
         {
-            return xml;
+            get => Get<string>();
+            set => Set(value);
         }
-    }
-
-    public ICommand ReloadCommand { get; set; }
-    public ICommand SaveCommand { get; set; }
-    public ICommand FormatCommand { get; set; }
-
-    public string Configuration
-    {
-        get => Get<string>();
-        set => Set(value);
     }
 }

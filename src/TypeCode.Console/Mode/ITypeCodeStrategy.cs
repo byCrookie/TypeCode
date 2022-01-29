@@ -1,14 +1,15 @@
 ﻿using System.Threading.Tasks;
 
-namespace TypeCode.Console.Mode;
-
-internal interface ITypeCodeStrategy
+namespace TypeCode.Console.Mode
 {
-	int Number();
-	string Description();
-	bool IsPlanned();
-	bool IsBeta();
-	bool IsResponsibleFor(string mode);
-	Task<string> GenerateAsync();
-	bool IsExit();
+	internal interface ITypeCodeStrategy
+	{
+		int Number();
+		string Description();
+		bool IsPlanned();
+		bool IsBeta();
+		bool IsResponsibleFor(string mode);
+		Task<string> GenerateAsync();
+		bool IsExit();
+	}
 }

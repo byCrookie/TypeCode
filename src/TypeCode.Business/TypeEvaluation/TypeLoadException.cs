@@ -1,11 +1,12 @@
 ﻿using System;
 
-namespace TypeCode.Business.TypeEvaluation;
-
-internal class TypeLoadException : Exception
+namespace TypeCode.Business.TypeEvaluation
 {
-	public TypeLoadException(string message)
-		: base(message)
+	internal class TypeLoadException : Exception
 	{
+		public TypeLoadException(string message)
+			: base(message)
+		{
+		}
 	}
 }

@@ -1,35 +1,37 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Threading;
 using Nito.AsyncEx;
 using Serilog;
 using TypeCode.Wpf.Application.Boot;
 
-namespace TypeCode.Wpf;
-
-public partial class App
+namespace TypeCode.Wpf
 {
-    protected override void OnStartup(StartupEventArgs e)
+    public partial class App
     {
-        Log.Logger = new LoggerConfiguration()
-            .WriteTo.Console()
-            .MinimumLevel.Debug()
-            .CreateLogger();
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            Log.Logger = new LoggerConfiguration()
+                .WriteTo.Console()
+                .MinimumLevel.Debug()
+                .CreateLogger();
             
-        Current.DispatcherUnhandledException += HandleDispatcherUnhandledException;
+            Current.DispatcherUnhandledException += HandleDispatcherUnhandledException;
 
-        AsyncContext.Run(Bootstrapper.BootAsync);
+            AsyncContext.Run(Bootstrapper.BootAsync);
             
-        base.OnStartup(e);
-    }
+            base.OnStartup(e);
+        }
 
-    protected override void OnExit(ExitEventArgs e)
-    {
-        Log.Debug($@"Application exited with {e.ApplicationExitCode}");
-        base.OnExit(e);
-    }
+        protected override void OnExit(ExitEventArgs e)
+        {
+            Log.Debug($@"Application exited with {e.ApplicationExitCode}");
+            base.OnExit(e);
+        }
 
-    private static void HandleDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
-    {
-        Log.Fatal(e.Exception, "Unhandled error occured. The application will be exited.");
+        private static void HandleDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+        {
+            Log.Fatal(e.Exception, "Unhandled error occured. The application will be exited.");
+        }
     }
 }

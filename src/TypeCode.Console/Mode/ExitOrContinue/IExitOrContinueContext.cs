@@ -1,6 +1,7 @@
-namespace TypeCode.Console.Mode.ExitOrContinue;
-
-internal interface IExitOrContinueContext
+namespace TypeCode.Console.Mode.ExitOrContinue
 {
-    public string Input { get; set; }
+    internal interface IExitOrContinueContext
+    {
+        public string Input { get; set; }
+    }
 }

@@ -1,7 +1,8 @@
-﻿namespace TypeCode.Business.Tests.Test2;
-
-public class TestClass
+﻿namespace TypeCode.Business.Tests.Test2
 {
-    public string String { get; set; }
-    public double Double { get; set; }
+    public class TestClass
+    {
+        public string String { get; set; }
+        public double Double { get; set; }
+    }
 }

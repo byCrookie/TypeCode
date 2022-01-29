@@ -1,7 +1,8 @@
-﻿namespace TypeCode.Wpf.Helper.Navigation.Wizard;
-
-public class NavigationJournalEntry
+﻿namespace TypeCode.Wpf.Helper.Navigation.Wizard
 {
-    public InstanceResult InstanceResult { get; set; }
-    public bool IsOpen { get; set; }
+    public class NavigationJournalEntry
+    {
+        public InstanceResult InstanceResult { get; set; }
+        public bool IsOpen { get; set; }
+    }
 }

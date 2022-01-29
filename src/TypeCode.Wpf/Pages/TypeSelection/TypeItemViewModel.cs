@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Windows.Controls;
 
-namespace TypeCode.Wpf.Pages.TypeSelection;
-
-public class TypeItemViewModel : ListBoxItem
+namespace TypeCode.Wpf.Pages.TypeSelection
 {
-    public TypeItemViewModel(Type type)
+    public class TypeItemViewModel : ListBoxItem
     {
-        Content = type.FullName ?? $"{type.Namespace}.{type.Name}";
-        Type = type;
-        IsSelected = false;
+        public TypeItemViewModel(Type type)
+        {
+            Content = type.FullName ?? $"{type.Namespace}.{type.Name}";
+            Type = type;
+            IsSelected = false;
+        }
+        public Type Type { get; set; }
     }
-    public Type Type { get; set; }
 }

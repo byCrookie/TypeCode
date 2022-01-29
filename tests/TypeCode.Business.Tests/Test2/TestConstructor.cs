@@ -1,11 +1,12 @@
-﻿namespace TypeCode.Business.Tests.Test2;
-
-public class TestConstructor
+﻿namespace TypeCode.Business.Tests.Test2
 {
-    private readonly ITestInterface _testInterface;
-
-    public TestConstructor(ITestInterface testInterface)
+    public class TestConstructor
     {
-        _testInterface = testInterface;
+        private readonly ITestInterface _testInterface;
+
+        public TestConstructor(ITestInterface testInterface)
+        {
+            _testInterface = testInterface;
+        }
     }
 }

@@ -1,11 +1,12 @@
 ﻿using System.Threading.Tasks;
 
-namespace TypeCode.Wpf.Helper.Navigation.Wizard.Complex;
-
-public interface IWizardNavigator
+namespace TypeCode.Wpf.Helper.Navigation.Wizard.Complex
 {
-    Task NextAsync(Wizard wizard);
-    Task BackAsync(Wizard wizard);
-    Task CancelAsync(Wizard wizard);
-    Task FinishAsync(Wizard wizard);
+    public interface IWizardNavigator
+    {
+        Task Next(Wizard wizard);
+        Task Back(Wizard wizard);
+        Task Cancel(Wizard wizard);
+        Task Finish(Wizard wizard);
+    }
 }

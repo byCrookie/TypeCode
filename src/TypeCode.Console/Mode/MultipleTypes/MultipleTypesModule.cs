@@ -1,9 +1,14 @@
-﻿using Jab;
+﻿using Autofac;
 
-namespace TypeCode.Console.Mode.MultipleTypes;
-
-[ServiceProviderModule]
-[Transient(typeof(IMultipleTypeSelectionStep<>), typeof(MultipleTypeSelectionStep<>))]
-internal partial interface IMultipleTypesModule
+namespace TypeCode.Console.Mode.MultipleTypes
 {
+    internal class MultipleTypesModule : Module
+    {
+        protected override void Load(ContainerBuilder builder)
+        {
+            builder.RegisterGeneric(typeof(MultipleTypeSelectionStep<>)).As(typeof(IMultipleTypeSelectionStep<>));
+
+            base.Load(builder);
+        }
+    }
 }

@@ -1,7 +1,8 @@
-﻿namespace TypeCode.Business.Mode.Mapper.Style;
-
-internal interface IMapperStyleStrategy
+﻿namespace TypeCode.Business.Mode.Mapper.Style
 {
-    bool IsResponsibleFor(MappingStyle style);
-    string Generate(MapperTypeCodeGeneratorParameter parameter);
+    internal interface IMapperStyleStrategy
+    {
+        bool IsResponsibleFor(MappingStyle style);
+        string Generate(MapperTypeCodeGeneratorParameter parameter);
+    }
 }

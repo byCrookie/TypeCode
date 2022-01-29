@@ -1,5 +1,6 @@
-﻿namespace TypeCode.Business.Mode.Composer;
-
-internal interface IComposerTypeCodeGenerator : ITypeCodeGenerator<ComposerTypeCodeGeneratorParameter>
+﻿namespace TypeCode.Business.Mode.Composer
 {
+    internal interface IComposerTypeCodeGenerator : ITypeCodeGenerator<ComposerTypeCodeGeneratorParameter>
+    {
+    }
 }

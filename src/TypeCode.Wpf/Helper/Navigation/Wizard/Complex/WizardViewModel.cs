@@ -6,107 +6,108 @@ using AsyncAwaitBestPractices.MVVM;
 using TypeCode.Wpf.Helper.Navigation.Contract;
 using TypeCode.Wpf.Helper.ViewModel;
 
-namespace TypeCode.Wpf.Helper.Navigation.Wizard.Complex;
-
-public class WizardViewModel : Reactive, IWizardHost
+namespace TypeCode.Wpf.Helper.Navigation.Wizard.Complex
 {
-    private readonly IWizardNavigator _wizardNavigator;
-    private Wizard _wizard;
-
-    public WizardViewModel(IWizardNavigator wizardNavigator)
+    public class WizardViewModel : Reactive, IWizardHost
     {
-        _wizardNavigator = wizardNavigator;
-    }
+        private readonly IWizardNavigator _wizardNavigator;
+        private Wizard _wizard;
 
-    public async Task NavigateToAsync(Wizard wizard, NavigationAction navigationAction)
-    {
-        wizard.NavigationContext.AddOrUpdateParameter(navigationAction);
+        public WizardViewModel(IWizardNavigator wizardNavigator)
+        {
+            _wizardNavigator = wizardNavigator;
+        }
+
+        public async Task NavigateToAsync(Wizard wizard, NavigationAction navigationAction)
+        {
+            wizard.NavigationContext.AddOrUpdateParameter(navigationAction);
             
-        if (!wizard.CurrentStepConfiguration.Initialized && wizard.CurrentStepConfiguration.Instances.ViewModelInstance is IAsyncInitialNavigated asyncInitialNavigated)
-        {
-            await asyncInitialNavigated.OnInititalNavigationAsync(wizard.NavigationContext).ConfigureAwait(true);
-            wizard.CurrentStepConfiguration.Initialized = true;
-        }
+            if (!wizard.CurrentStepConfiguration.Initialized && wizard.CurrentStepConfiguration.Instances.ViewModelInstance is IAsyncInitialNavigated asyncInitialNavigated)
+            {
+                await asyncInitialNavigated.OnInititalNavigationAsync(wizard.NavigationContext).ConfigureAwait(true);
+                wizard.CurrentStepConfiguration.Initialized = true;
+            }
 
-        await wizard.CurrentStepConfiguration.BeforeAction(wizard.NavigationContext).ConfigureAwait(true);
+            await wizard.CurrentStepConfiguration.BeforeAction(wizard.NavigationContext).ConfigureAwait(true);
 
-        BackCommand = new AsyncCommand(BackAsync, _ => wizard.CurrentStepConfiguration != wizard.StepConfigurations.FirstOrDefault()
-                                                  && wizard.CurrentStepConfiguration.AllowBack(wizard.NavigationContext));
-        NextCommand = new AsyncCommand(NextAsync, _ => wizard.CurrentStepConfiguration != wizard.StepConfigurations.LastOrDefault()
-                                                  && wizard.CurrentStepConfiguration.AllowNext(wizard.NavigationContext));
-        CancelCommand = new AsyncCommand(CancelAsync);
-        FinishCommand = new AsyncCommand(FinishAsync, _ => wizard.CurrentStepConfiguration == wizard.StepConfigurations.LastOrDefault()
+            BackCommand = new AsyncCommand(Back, _ => wizard.CurrentStepConfiguration != wizard.StepConfigurations.FirstOrDefault()
+                                                      && wizard.CurrentStepConfiguration.AllowBack(wizard.NavigationContext));
+            NextCommand = new AsyncCommand(Next, _ => wizard.CurrentStepConfiguration != wizard.StepConfigurations.LastOrDefault()
                                                       && wizard.CurrentStepConfiguration.AllowNext(wizard.NavigationContext));
+            CancelCommand = new AsyncCommand(Cancel);
+            FinishCommand = new AsyncCommand(Finish, _ => wizard.CurrentStepConfiguration == wizard.StepConfigurations.LastOrDefault()
+                                                          && wizard.CurrentStepConfiguration.AllowNext(wizard.NavigationContext));
 
-        WizardPage = wizard.CurrentStepConfiguration.Instances.ViewInstance as UserControl;
+            WizardPage = wizard.CurrentStepConfiguration.Instances.ViewInstance as UserControl;
 
-        if (wizard.CurrentStepConfiguration.Instances.ViewModelInstance is IAsyncNavigatedTo asyncNavigatedTo)
-        {
-            await asyncNavigatedTo.OnNavigatedToAsync(wizard.NavigationContext).ConfigureAwait(true);
+            if (wizard.CurrentStepConfiguration.Instances.ViewModelInstance is IAsyncNavigatedTo asyncNavigatedTo)
+            {
+                await asyncNavigatedTo.OnNavigatedToAsync(wizard.NavigationContext).ConfigureAwait(true);
+            }
+
+            _wizard = wizard;
         }
 
-        _wizard = wizard;
-    }
-
-    public async Task NavigateFromAsync(Wizard wizard, NavigationAction navigationAction)
-    {
-        wizard.NavigationContext.AddOrUpdateParameter(navigationAction);
-
-        if (wizard.CurrentStepConfiguration.Instances.ViewModelInstance is IAsyncNavigatedFrom asyncNavigatedFrom)
+        public async Task NavigateFromAsync(Wizard wizard, NavigationAction navigationAction)
         {
-            await asyncNavigatedFrom.OnNavigatedFromAsync(wizard.NavigationContext).ConfigureAwait(true);
+            wizard.NavigationContext.AddOrUpdateParameter(navigationAction);
+
+            if (wizard.CurrentStepConfiguration.Instances.ViewModelInstance is IAsyncNavigatedFrom asyncNavigatedFrom)
+            {
+                await asyncNavigatedFrom.OnNavigatedFromAsync(wizard.NavigationContext).ConfigureAwait(true);
+            }
+
+            await wizard.CurrentStepConfiguration.AfterAction(wizard.NavigationContext).ConfigureAwait(true);
         }
 
-        await wizard.CurrentStepConfiguration.AfterAction(wizard.NavigationContext).ConfigureAwait(true);
-    }
+        private Task Next()
+        {
+            return _wizardNavigator.Next(_wizard);
+        }
 
-    private Task NextAsync()
-    {
-        return _wizardNavigator.NextAsync(_wizard);
-    }
+        private Task Back()
+        {
+            return _wizardNavigator.Back(_wizard);
+        }
 
-    private Task BackAsync()
-    {
-        return _wizardNavigator.BackAsync(_wizard);
-    }
+        private Task Cancel()
+        {
+            return _wizardNavigator.Cancel(_wizard);
+        }
 
-    private Task CancelAsync()
-    {
-        return _wizardNavigator.CancelAsync(_wizard);
-    }
+        private Task Finish()
+        {
+            return _wizardNavigator.Finish(_wizard);
+        }
 
-    private Task FinishAsync()
-    {
-        return _wizardNavigator.FinishAsync(_wizard);
-    }
+        public UserControl WizardPage
+        {
+            get => Get<UserControl>();
+            set => Set(value);
+        }
 
-    public UserControl WizardPage
-    {
-        get => Get<UserControl>();
-        set => Set(value);
-    }
+        public ICommand BackCommand
+        {
+            get => Get<ICommand>();
+            set => Set(value);
+        }
 
-    public ICommand BackCommand
-    {
-        get => Get<ICommand>();
-        set => Set(value);
-    }
+        public ICommand NextCommand
+        {
+            get => Get<ICommand>();
+            set => Set(value);
+        }
 
-    public ICommand NextCommand
-    {
-        get => Get<ICommand>();
-        set => Set(value);
-    }
+        public ICommand CancelCommand
+        {
+            get => Get<ICommand>();
+            set => Set(value);
+        }
 
-    public ICommand CancelCommand
-    {
-        get => Get<ICommand>();
-        set => Set(value);
-    }
-
-    public ICommand FinishCommand
-    {
-        get => Get<ICommand>();
-        set => Set(value);
+        public ICommand FinishCommand
+        {
+            get => Get<ICommand>();
+            set => Set(value);
+        }
     }
 }

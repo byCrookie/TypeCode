@@ -1,7 +1,8 @@
-﻿namespace TypeCode.Business.StringProximity;
-
-internal class ProximityProperty
+﻿namespace TypeCode.Business.StringProximity
 {
-    public string Property { get; set; }
-    public double Jaro { get; set; }
+    internal class ProximityProperty
+    {
+        public string Property { get; set; }
+        public double Jaro { get; set; }
+    }
 }

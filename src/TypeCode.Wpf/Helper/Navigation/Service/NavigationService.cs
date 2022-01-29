@@ -1,70 +1,71 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Controls;
-using Framework.DependencyInjection.Factory;
-using TypeCode.Wpf.Application.Boot.SetupWpfApplication;
+using Framework.Jab.Jab.Factory;
 using TypeCode.Wpf.Helper.Navigation.Contract;
+using TypeCode.Wpf.Main.Content;
 
-namespace TypeCode.Wpf.Helper.Navigation.Service;
-
-public class NavigationService : INavigationService
+namespace TypeCode.Wpf.Helper.Navigation.Service
 {
-    private readonly IFactory _factory;
-    private readonly IWpfWindowProvider _wpfWindowProvider;
-    private object _lastViewModel;
-
-    public NavigationService(IFactory factory, IWpfWindowProvider wpfWindowProvider)
+    public class NavigationService : INavigationService
     {
-        _factory = factory;
-        _wpfWindowProvider = wpfWindowProvider;
-    }
+        private readonly MainContentView _mainContentView;
+        private readonly IFactory _factory;
+        private object _lastViewModel;
 
-    public async Task NavigateAsync<T>(NavigationContext context = null)
-    {
-        await CallNavigatedFromOnLastViewModelAsync(context).ConfigureAwait(true);
-
-        var viewModelType = typeof(T);
-        var viewModelInstance = _factory.Create<T>();
-
-        if (viewModelInstance is null)
+        public NavigationService(MainContentView mainContentView, IFactory factory)
         {
-            throw new ApplicationException($"ViewModel of {viewModelType.Name} not found");
+            _mainContentView = mainContentView;
+            _factory = factory;
         }
 
-        var viewName = viewModelType.Name[..^"Model".Length];
-        var viewType = Type.GetType($"{viewModelType.Namespace}.{viewName}");
-
-        if (viewType is null || Activator.CreateInstance(viewType) is not UserControl viewInstance)
+        public async Task NavigateAsync<T>(NavigationContext context = null)
         {
-            throw new ApplicationException($"View of {viewModelType.Name} not found");
-        }
+            await CallNavigatedFromOnLastViewModelAsync(context).ConfigureAwait(true);
 
-        viewInstance.DataContext = viewModelInstance;
+            var viewModelType = typeof(T);
+            var viewModelInstance = _factory.Create<T>();
 
-        if (!_wpfWindowProvider.Get().MainContentView.NavigationFrame.Navigate(viewInstance))
-        {
-            throw new ApplicationException($"Navigation to {viewModelType.Name} failed");
-        }
+            if (viewModelInstance is null)
+            {
+                throw new ApplicationException($"ViewModel of {viewModelType.Name} not found");
+            }
 
-        await CallOnNavigatedToOnCurrentViewModelAsync(context, viewModelInstance).ConfigureAwait(true);
+            var viewName = viewModelType.Name[..^"Model".Length];
+            var viewType = Type.GetType($"{viewModelType.Namespace}.{viewName}");
+
+            if (viewType is null || Activator.CreateInstance(viewType) is not UserControl viewInstance)
+            {
+                throw new ApplicationException($"View of {viewModelType.Name} not found");
+            }
+
+            viewInstance.DataContext = viewModelInstance;
+
+            if (!_mainContentView.NavigationFrame.Navigate(viewInstance))
+            {
+                throw new ApplicationException($"Navigation to {viewModelType.Name} failed");
+            }
+
+            await CallOnNavigatedToOnCurrentViewModelAsync(context, viewModelInstance).ConfigureAwait(true);
             
-        _lastViewModel = viewModelInstance;
-    }
+            _lastViewModel = viewModelInstance;
+        }
         
-    private static Task CallOnNavigatedToOnCurrentViewModelAsync<T>(NavigationContext context, T viewModelInstance)
-    {
-        if (viewModelInstance is IAsyncNavigatedTo asyncNavigatedTo)
+        private static Task CallOnNavigatedToOnCurrentViewModelAsync<T>(NavigationContext context, T viewModelInstance)
         {
-            return asyncNavigatedTo.OnNavigatedToAsync(context ?? new NavigationContext());
-        }
+            if (viewModelInstance is IAsyncNavigatedTo asyncNavigatedTo)
+            {
+                return asyncNavigatedTo.OnNavigatedToAsync(context ?? new NavigationContext());
+            }
             
-        return Task.CompletedTask;
-    }
+            return Task.CompletedTask;
+        }
 
-    private Task CallNavigatedFromOnLastViewModelAsync(NavigationContext context)
-    {
-        return _lastViewModel is IAsyncNavigatedFrom asyncNavigatedFrom
-            ? asyncNavigatedFrom.OnNavigatedFromAsync(context ?? new NavigationContext())
-            : Task.CompletedTask;
+        private Task CallNavigatedFromOnLastViewModelAsync(NavigationContext context)
+        {
+            return _lastViewModel is IAsyncNavigatedFrom asyncNavigatedFrom
+                ? asyncNavigatedFrom.OnNavigatedFromAsync(context ?? new NavigationContext())
+                : Task.CompletedTask;
+        }
     }
 }

@@ -1,25 +1,26 @@
-﻿using Framework.Jab.Boot.Logger;
+﻿using Framework.Autofac.Boot.Logger;
 using Serilog;
 using Serilog.Events;
 
-namespace TypeCode.Business.Logging;
-
-public static class LoggerConfigurationProvider
+namespace TypeCode.Business.Logging
 {
-    private const string LogFile = "TypeCode.Console.log.txt";
+    public static class LoggerConfigurationProvider
+    {
+        private const string LogFile = "TypeCode.Console.log.txt";
         
-    public static LoggerConfiguration Create()
-    {
-        return new LoggerConfiguration()
-            .MinimumLevel.Debug()
-            .WriteTo.File(LogFile, LogEventLevel.Information);
-    }
+        public static LoggerConfiguration Create()
+        {
+            return new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .WriteTo.File(LogFile, LogEventLevel.Information);
+        }
 
-    public static LoggerConfiguration Create(LoggerBootStepOptions loggerBootStepOptions)
-    {
-        return loggerBootStepOptions
-            .Configuration
-            .MinimumLevel.Debug()
-            .WriteTo.File(LogFile, LogEventLevel.Information);
+        public static LoggerConfiguration Create(LoggerBootStepOptions loggerBootStepOptions)
+        {
+            return loggerBootStepOptions
+                .Configuration
+                .MinimumLevel.Debug()
+                .WriteTo.File(LogFile, LogEventLevel.Information);
+        }
     }
 }

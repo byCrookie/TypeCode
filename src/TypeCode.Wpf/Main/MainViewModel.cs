@@ -1,17 +1,21 @@
-﻿using System;
+﻿using Framework.Jab.Jab.Factory;
 using TypeCode.Wpf.Main.Content;
 using TypeCode.Wpf.Main.Sidebar;
 
-namespace TypeCode.Wpf.Main;
-
-public class MainViewModel
+namespace TypeCode.Wpf.Main
 {
-    public MainViewModel(IServiceProvider serviceProvider)
+    public class MainViewModel
     {
-        MainContentViewModel = serviceProvider.GetService(typeof(MainContentViewModel)) as MainContentViewModel;
-        MainSidebarViewModel = serviceProvider.GetService(typeof(MainSidebarViewModel)) as MainSidebarViewModel;
-    }
+        public MainViewModel(
+            IFactory<MainContentViewModel> contentViewModelFactory,
+            IFactory<MainSidebarViewModel> sidebarViewModelFactory
+        )
+        {
+            MainContentViewModel = contentViewModelFactory.Create();
+            MainSidebarViewModel = sidebarViewModelFactory.Create();
+        }
 
-    public MainContentViewModel MainContentViewModel { get; set; }
-    public MainSidebarViewModel MainSidebarViewModel { get; set; }
+        public MainContentViewModel MainContentViewModel { get; set; }
+        public MainSidebarViewModel MainSidebarViewModel { get; set; }
+    }
 }

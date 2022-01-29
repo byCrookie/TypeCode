@@ -1,10 +1,11 @@
 ﻿using System;
 
-namespace TypeCode.Business.Bootstrapping;
-
-internal class AssemblyLoadException : Exception
+namespace TypeCode.Business.Bootstrapping
 {
-	public AssemblyLoadException(string message) : base(message)
+	internal class AssemblyLoadException : Exception
 	{
+		public AssemblyLoadException(string message) : base(message)
+		{
+		}
 	}
 }

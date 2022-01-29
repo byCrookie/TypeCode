@@ -1,9 +1,10 @@
-﻿namespace TypeCode.Wpf.Pages.Composer;
-
-public partial class ComposerView
+﻿namespace TypeCode.Wpf.Pages.Composer
 {
-    public ComposerView()
+    public partial class ComposerView
     {
-        InitializeComponent();
+        public ComposerView()
+        {
+            InitializeComponent();
+        }
     }
 }

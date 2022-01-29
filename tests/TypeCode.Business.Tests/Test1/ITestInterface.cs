@@ -1,10 +1,11 @@
-﻿namespace TypeCode.Business.Tests.Test1;
-
-public interface ITestInterface
+﻿namespace TypeCode.Business.Tests.Test1
 {
+    public interface ITestInterface
+    {
         
-}
+    }
 
-public class TestInterface1 : ITestInterface
-{
+    public class TestInterface1 : ITestInterface
+    {
+    }
 }

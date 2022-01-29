@@ -1,8 +1,9 @@
 using System.Threading.Tasks;
 
-namespace TypeCode.Wpf.Helper.Event;
-
-public interface IAsyncEventHandler<in TEvent>
+namespace TypeCode.Wpf.Helper.Event
 {
-    public Task HandleAsync(TEvent e);
+    public interface IAsyncEventHandler<in TEvent>
+    {
+        public Task HandleAsync(TEvent e);
+    }
 }

@@ -1,14 +1,15 @@
-﻿namespace TypeCode.Business.Mode.UnitTestDependency.Manually;
-
-internal class DependencyManually
+﻿namespace TypeCode.Business.Mode.UnitTestDependency.Manually
 {
-    public DependencyManually(string dependency)
+    internal class DependencyManually
     {
-        var splitted = dependency.Split(" ");
-        TypeName = splitted[0];
-        Name = splitted[1];
-    }
+        public DependencyManually(string dependency)
+        {
+            var splitted = dependency.Split(" ");
+            TypeName = splitted[0];
+            Name = splitted[1];
+        }
 
-    public string Name { get; }
-    public string TypeName { get; }
+        public string Name { get; }
+        public string TypeName { get; }
+    }
 }

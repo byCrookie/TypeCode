@@ -1,21 +1,22 @@
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace TypeCode.Wpf.Helper.Navigation.Wizard.Complex;
-
-internal class WizardRunner : IWizardRunner
+namespace TypeCode.Wpf.Helper.Navigation.Wizard.Complex
 {
-    public Task RunAsync(Wizard wizard)
+    internal class WizardRunner : IWizardRunner
     {
-        wizard.Content.Opacity = 0.1;
-        wizard.Content.IsEnabled = false;
-        wizard.WizardOverlay.Visibility = Visibility.Visible;
+        public Task RunAsync(Wizard wizard)
+        {
+            wizard.Content.Opacity = 0.1;
+            wizard.Content.IsEnabled = false;
+            wizard.WizardOverlay.Visibility = Visibility.Visible;
             
-        wizard.NavigationFrame.Navigate(wizard.WizardInstances.ViewInstance);
+            wizard.NavigationFrame.Navigate(wizard.WizardInstances.ViewInstance);
 
-        var wizardHost = (IWizardHost)wizard.WizardInstances.ViewModelInstance;
-        wizardHost.NavigateToAsync(wizard, NavigationAction.Next);
+            var wizardHost = (IWizardHost)wizard.WizardInstances.ViewModelInstance;
+            wizardHost.NavigateToAsync(wizard, NavigationAction.Next);
             
-        return Task.CompletedTask;
+            return Task.CompletedTask;
+        }
     }
 }

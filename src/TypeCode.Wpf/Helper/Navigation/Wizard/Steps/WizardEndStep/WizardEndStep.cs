@@ -1,32 +1,33 @@
 ﻿using System.Threading.Tasks;
 
-namespace TypeCode.Wpf.Helper.Navigation.Wizard.Steps.WizardEndStep;
-
-internal class WizardEndStep<TContext, TOptions> :
-    IWizardEndStep<TContext, TOptions>
-    where TContext : WizardContext
+namespace TypeCode.Wpf.Helper.Navigation.Wizard.Steps.WizardEndStep
 {
-    private readonly IWizardNavigator _wizardNavigator;
-
-    public WizardEndStep(IWizardNavigator wizardNavigator)
+    internal class WizardEndStep<TContext, TOptions> :
+        IWizardEndStep<TContext, TOptions>
+        where TContext : WizardContext
     {
-        _wizardNavigator = wizardNavigator;
-    }
+        private readonly IWizardNavigator _wizardNavigator;
+
+        public WizardEndStep(IWizardNavigator wizardNavigator)
+        {
+            _wizardNavigator = wizardNavigator;
+        }
         
-    private WizardEndStepOptions _options;
+        private WizardEndStepOptions _options;
 
-    public Task ExecuteAsync(TContext context)
-    {
-        return _wizardNavigator.CloseAsync(context);
-    }
+        public Task ExecuteAsync(TContext context)
+        {
+            return _wizardNavigator.CloseAsync(context);
+        }
 
-    public Task<bool> ShouldExecuteAsync(TContext context)
-    {
-        return context.ShouldExecuteAsync();
-    }
+        public Task<bool> ShouldExecuteAsync(TContext context)
+        {
+            return context.ShouldExecuteAsync();
+        }
 
-    public void SetOptions(TOptions options)
-    {
-        _options = options as WizardEndStepOptions;
+        public void SetOptions(TOptions options)
+        {
+            _options = options as WizardEndStepOptions;
+        }
     }
 }

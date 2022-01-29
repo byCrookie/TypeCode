@@ -1,5 +1,6 @@
-﻿namespace TypeCode.Business.Mode.Mapper.Style;
-
-internal interface INewMapperStyleStrategy : IMapperStyleStrategy
+﻿namespace TypeCode.Business.Mode.Mapper.Style
 {
+    internal interface INewMapperStyleStrategy : IMapperStyleStrategy
+    {
+    }
 }

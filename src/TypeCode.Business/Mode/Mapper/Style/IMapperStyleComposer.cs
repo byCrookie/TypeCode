@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 
-namespace TypeCode.Business.Mode.Mapper.Style;
-
-internal interface IMapperStyleComposer
+namespace TypeCode.Business.Mode.Mapper.Style
 {
-    IEnumerable<IMapperStyleStrategy> Compose();
+    internal interface IMapperStyleComposer
+    {
+        IEnumerable<IMapperStyleStrategy> Compose();
+    }
 }

@@ -1,59 +1,60 @@
 ﻿using System.Collections.Generic;
 
-namespace TypeCode.Wpf.Helper.Navigation.Wizard;
-
-public class NavigationJournal
+namespace TypeCode.Wpf.Helper.Navigation.Wizard
 {
-    private readonly List<NavigationJournalEntry> _navigationJournalEntries;
-    private int? _currentJournalEntryIndex;
-
-    public NavigationJournal()
+    public class NavigationJournal
     {
-        _navigationJournalEntries = new List<NavigationJournalEntry>();
-    }
+        private readonly List<NavigationJournalEntry> _navigationJournalEntries;
+        private int? _currentJournalEntryIndex;
 
-    public NavigationJournalEntry GetOrAddNextEntry(InstanceResult newInstanceResult)
-    {
-        if (!_currentJournalEntryIndex.HasValue || GetJournalEntriesLastIndex() == _currentJournalEntryIndex)
+        public NavigationJournal()
         {
-            var entry = new NavigationJournalEntry { InstanceResult = newInstanceResult };
-            _navigationJournalEntries.Add(entry);
-            _currentJournalEntryIndex = _navigationJournalEntries.IndexOf(entry);
-            return entry;
+            _navigationJournalEntries = new List<NavigationJournalEntry>();
         }
 
-        return _navigationJournalEntries[GetJournalEntriesLastIndex() + 1];
-    }
-
-    private int GetJournalEntriesLastIndex()
-    {
-        if (_navigationJournalEntries.Count > 0)
+        public NavigationJournalEntry GetOrAddNextEntry(InstanceResult newInstanceResult)
         {
-            return _navigationJournalEntries.Count - 1;
+            if (!_currentJournalEntryIndex.HasValue || GetJournalEntriesLastIndex() == _currentJournalEntryIndex)
+            {
+                var entry = new NavigationJournalEntry { InstanceResult = newInstanceResult };
+                _navigationJournalEntries.Add(entry);
+                _currentJournalEntryIndex = _navigationJournalEntries.IndexOf(entry);
+                return entry;
+            }
+
+            return _navigationJournalEntries[GetJournalEntriesLastIndex() + 1];
         }
 
-        return 0;
-    }
+        private int GetJournalEntriesLastIndex()
+        {
+            if (_navigationJournalEntries.Count > 0)
+            {
+                return _navigationJournalEntries.Count - 1;
+            }
 
-    [CanBeNull]
-    public NavigationJournalEntry GetBackEntry()
-    {
-        return CanGoBack() ? _navigationJournalEntries[GetJournalEntriesLastIndex() - 1] : null;
-    }
+            return 0;
+        }
 
-    [CanBeNull]
-    public NavigationJournalEntry GetCurrentEntry()
-    {
-        return _currentJournalEntryIndex.HasValue ? _navigationJournalEntries[_currentJournalEntryIndex.Value] : null;
-    }
+        [CanBeNull]
+        public NavigationJournalEntry GetBackEntry()
+        {
+            return CanGoBack() ? _navigationJournalEntries[GetJournalEntriesLastIndex() - 1] : null;
+        }
 
-    public bool HasCurrentEntry()
-    {
-        return _currentJournalEntryIndex.HasValue;
-    }
+        [CanBeNull]
+        public NavigationJournalEntry GetCurrentEntry()
+        {
+            return _currentJournalEntryIndex.HasValue ? _navigationJournalEntries[_currentJournalEntryIndex.Value] : null;
+        }
 
-    public bool CanGoBack()
-    {
-        return _currentJournalEntryIndex is > 0;
+        public bool HasCurrentEntry()
+        {
+            return _currentJournalEntryIndex.HasValue;
+        }
+
+        public bool CanGoBack()
+        {
+            return _currentJournalEntryIndex is > 0;
+        }
     }
 }

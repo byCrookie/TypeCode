@@ -9,12 +9,9 @@
 
     <ItemGroup>
         <PackageReference Include="AsyncAwaitBestPractices.MVVM" Version="6.0.4" />
-        <PackageReference Include="framework" Version="1.0.1-pre-20220129095137" />
-        <PackageReference Include="framework.jab" Version="1.0.1-pre-20220129095139" />
-        <PackageReference Include="Serilog.Sinks.Console" Version="4.0.2-dev-00890" />
-        <PackageReference Include="Serilog.Sinks.File" Version="5.0.1-dev-00947" />
-        <PackageReference Include="workflow" Version="1.0.1-pre-20220129083508" />
-        <PackageReference Include="workflow.jab" Version="1.0.1-pre-20220129083706" />
+        <PackageReference Include="framework.autofac" Version="1.0.0-pre-202201272450" />
+        <PackageReference Include="Serilog.Sinks.Console" Version="4.0.1" />
+        <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
     </ItemGroup>
 
     <ItemGroup>

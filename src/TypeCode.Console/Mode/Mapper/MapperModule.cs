@@ -1,11 +1,13 @@
-﻿using Jab;
-using Workflow;
+﻿using Autofac;
 
-namespace TypeCode.Console.Mode.Mapper;
-
-[ServiceProviderModule]
-[Transient(typeof(IWorkflowBuilder<MappingContext>), typeof(WorkflowBuilder<MappingContext>))]
-[Transient(typeof(IMapperTypeCodeStrategy), typeof(MapperTypeCodeStrategy))]
-internal partial interface IMapperModule
+namespace TypeCode.Console.Mode.Mapper
 {
+    internal class MapperModule : Module
+    {
+        protected override void Load(ContainerBuilder builder)
+        {
+            builder.RegisterType<MapperTypeCodeStrategy>().As<IMapperTypeCodeStrategy>();
+            base.Load(builder);
+        }
+    }
 }

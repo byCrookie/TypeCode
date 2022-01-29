@@ -1,21 +1,22 @@
 ﻿using System.Windows.Controls;
 
-namespace TypeCode.Wpf.Helper.Navigation.Wizard;
-
-public class WizardNavigatorParameter
+namespace TypeCode.Wpf.Helper.Navigation.Wizard
 {
-    public WizardNavigatorParameter(
-        Frame navigationFrame,
-        Grid mainContentControl,
-        Grid wizardOverlayControl
-    )
+    public class WizardNavigatorParameter
     {
-        NavigationFrame = navigationFrame;
-        MainContentControl = mainContentControl;
-        WizardOverlayControl = wizardOverlayControl;
-    }
+        public WizardNavigatorParameter(
+            Frame navigationFrame,
+            Grid mainContentControl,
+            Grid wizardOverlayControl
+        )
+        {
+            NavigationFrame = navigationFrame;
+            MainContentControl = mainContentControl;
+            WizardOverlayControl = wizardOverlayControl;
+        }
 
-    public Frame NavigationFrame { get; set; }
-    public Grid MainContentControl { get; set; }
-    public Grid WizardOverlayControl { get; set; }
+        public Frame NavigationFrame { get; set; }
+        public Grid MainContentControl { get; set; }
+        public Grid WizardOverlayControl { get; set; }
+    }
 }

@@ -2,45 +2,46 @@
 using System.Threading.Tasks;
 using TypeCode.Wpf.Helper.Navigation.Service;
 
-namespace TypeCode.Wpf.Helper.Navigation.Wizard.Complex;
-
-public class WizardParameterBuilder
+namespace TypeCode.Wpf.Helper.Navigation.Wizard.Complex
 {
-    private WizardStepParameter _parameter;
-
-    public WizardParameterBuilder()
+    public class WizardParameterBuilder
     {
-        _parameter = new WizardStepParameter();
-    }
+        private WizardStepParameter _parameter;
 
-    public WizardParameterBuilder Before(Func<NavigationContext, Task> action)
-    {
-        _parameter.BeforeAction = action;
-        return this;
-    }
+        public WizardParameterBuilder()
+        {
+            _parameter = new WizardStepParameter();
+        }
 
-    public WizardParameterBuilder After(Func<NavigationContext, Task> action)
-    {
-        _parameter.AfterAction = action;
-        return this;
-    }
+        public WizardParameterBuilder Before(Func<NavigationContext, Task> action)
+        {
+            _parameter.BeforeAction = action;
+            return this;
+        }
 
-    public WizardParameterBuilder AllowBack(Func<NavigationContext, bool> allow)
-    {
-        _parameter.AllowBack = allow;
-        return this;
-    }
+        public WizardParameterBuilder After(Func<NavigationContext, Task> action)
+        {
+            _parameter.AfterAction = action;
+            return this;
+        }
 
-    public WizardParameterBuilder AllowNext(Func<NavigationContext, bool> allow)
-    {
-        _parameter.AllowNext = allow;
-        return this;
-    }
+        public WizardParameterBuilder AllowBack(Func<NavigationContext, bool> allow)
+        {
+            _parameter.AllowBack = allow;
+            return this;
+        }
 
-    public WizardStepParameter Build()
-    {
-        var parameter = _parameter;
-        _parameter = new WizardStepParameter();
-        return parameter;
+        public WizardParameterBuilder AllowNext(Func<NavigationContext, bool> allow)
+        {
+            _parameter.AllowNext = allow;
+            return this;
+        }
+
+        public WizardStepParameter Build()
+        {
+            var parameter = _parameter;
+            _parameter = new WizardStepParameter();
+            return parameter;
+        }
     }
 }

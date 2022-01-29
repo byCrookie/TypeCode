@@ -1,9 +1,10 @@
-﻿using Framework.Jab.Boot;
+﻿using Framework.Autofac.Boot;
 using Workflow;
 
-namespace TypeCode.Business.Bootstrapping;
-
-public interface IAssemblyLoadBootStep<in TContext> : IWorkflowStep<TContext> 
-    where TContext : WorkflowBaseContext, IBootContext
+namespace TypeCode.Business.Bootstrapping
 {
+    public interface IAssemblyLoadBootStep<in TContext> : IWorkflowStep<TContext> 
+        where TContext : WorkflowBaseContext, IBootContext
+    {
+    }
 }

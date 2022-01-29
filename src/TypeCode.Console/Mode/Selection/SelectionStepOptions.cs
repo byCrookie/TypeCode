@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 
-namespace TypeCode.Console.Mode.Selection;
-
-internal class SelectionStepOptions
+namespace TypeCode.Console.Mode.Selection
 {
-    public List<string> Selections { get; set; }
+    internal class SelectionStepOptions
+    {
+        public List<string> Selections { get; set; }
+    }
 }

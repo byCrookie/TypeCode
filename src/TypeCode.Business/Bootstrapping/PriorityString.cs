@@ -1,13 +1,14 @@
-﻿namespace TypeCode.Business.Bootstrapping;
-
-public class PriorityString
+﻿namespace TypeCode.Business.Bootstrapping
 {
-    public string Priority { get; }
-    public string Message { get; }
-
-    public PriorityString(string priority, string message)
+    public class PriorityString
     {
-        Priority = priority;
-        Message = message;
+        public string Priority { get; }
+        public string Message { get; }
+
+        public PriorityString(string priority, string message)
+        {
+            Priority = priority;
+            Message = message;
+        }
     }
 }

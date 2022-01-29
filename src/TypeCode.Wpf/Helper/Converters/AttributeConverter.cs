@@ -1,18 +1,21 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows.Data;
+using System.Windows.Media;
+using TypeCode.Wpf.Main.Sidebar;
 
-namespace TypeCode.Wpf.Helper.Converters;
-
-public class AttributeConverter : IValueConverter
+namespace TypeCode.Wpf.Helper.Converters
 {
-    public virtual object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    public class AttributeConverter : IValueConverter
     {
-        return $"{parameter}=\"{value}\"";
-    }
+        public virtual object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return $"{parameter}=\"{value}\"";
+        }
 
-    public virtual object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-    {
-        return value;
+        public virtual object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return value;
+        }
     }
 }

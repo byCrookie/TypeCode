@@ -1,9 +1,10 @@
-﻿namespace TypeCode.Wpf.Pages.TypeSelection;
-
-public partial class TypeSelectionView
+﻿namespace TypeCode.Wpf.Pages.TypeSelection
 {
-    public TypeSelectionView()
+    public partial class TypeSelectionView
     {
-        InitializeComponent();
+        public TypeSelectionView()
+        {
+            InitializeComponent();
+        }
     }
 }

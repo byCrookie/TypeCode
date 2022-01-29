@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using Workflow;
 
-namespace TypeCode.Console.Mode.MultipleTypes;
-
-internal class MultipleTypesSelectionContext : WorkflowBaseContext, IMultipleTypesSelectionContext
+namespace TypeCode.Console.Mode.MultipleTypes
 {
-    public List<Type> SelectedTypes { get; set; }
-    public Type SelectedType { get; set; }
-    public string Input { get; set; }
+    internal class MultipleTypesSelectionContext : WorkflowBaseContext, IMultipleTypesSelectionContext
+    {
+        public List<Type> SelectedTypes { get; set; }
+        public Type SelectedType { get; set; }
+        public string Input { get; set; }
+    }
 }

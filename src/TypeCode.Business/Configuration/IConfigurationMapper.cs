@@ -1,6 +1,7 @@
-﻿namespace TypeCode.Business.Configuration;
-
-public interface IConfigurationMapper
+﻿namespace TypeCode.Business.Configuration
 {
-    TypeCodeConfiguration MapToConfiguration(XmlTypeCodeConfiguration xmlConfiguration);
+    public interface IConfigurationMapper
+    {
+        TypeCodeConfiguration MapToConfiguration(XmlTypeCodeConfiguration xmlConfiguration);
+    }
 }

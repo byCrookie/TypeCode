@@ -1,9 +1,10 @@
-﻿namespace TypeCode.Wpf.Helper.Navigation.Wizard.WizardSimple;
-
-public partial class WizardSimpleView
+﻿namespace TypeCode.Wpf.Helper.Navigation.Wizard.WizardSimple
 {
-    public WizardSimpleView()
+    public partial class WizardSimpleView
     {
-        InitializeComponent();
+        public WizardSimpleView()
+        {
+            InitializeComponent();
+        }
     }
 }

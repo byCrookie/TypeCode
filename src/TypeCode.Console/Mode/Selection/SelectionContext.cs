@@ -1,10 +1,11 @@
 using TypeCode.Console.Mode.ExitOrContinue;
 using Workflow;
 
-namespace TypeCode.Console.Mode.Selection;
-
-internal class SelectionContext : WorkflowBaseContext, ISelectionContext, IExitOrContinueContext
+namespace TypeCode.Console.Mode.Selection
 {
-    public short Selection { get; set; }
-    public string Input { get; set; }
+    internal class SelectionContext : WorkflowBaseContext, ISelectionContext, IExitOrContinueContext
+    {
+        public short Selection { get; set; }
+        public string Input { get; set; }
+    }
 }

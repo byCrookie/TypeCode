@@ -1,41 +1,42 @@
 ﻿using System.Threading.Tasks;
 
-namespace TypeCode.Console.Mode.Exit;
-
-internal class ExitTypeCodeStrategy : IExitTypeCodeStrategy
+namespace TypeCode.Console.Mode.Exit
 {
-    public int Number()
+    internal class ExitTypeCodeStrategy : IExitTypeCodeStrategy
     {
-        return 6;
-    }
+        public int Number()
+        {
+            return 6;
+        }
 
-    public string Description()
-    {
-        return "Exit";
-    }
+        public string Description()
+        {
+            return "Exit";
+        }
 
-    public bool IsPlanned()
-    {
-        return false;
-    }
+        public bool IsPlanned()
+        {
+            return false;
+        }
 
-    public bool IsBeta()
-    {
-        return false;
-    }
+        public bool IsBeta()
+        {
+            return false;
+        }
 
-    public bool IsResponsibleFor(string mode)
-    {
-        return mode == $"{Number()}" && !IsPlanned();
-    }
+        public bool IsResponsibleFor(string mode)
+        {
+            return mode == $"{Number()}" && !IsPlanned();
+        }
 
-    public Task<string> GenerateAsync()
-    {
-        return Task.FromResult(string.Empty);
-    }
+        public Task<string> GenerateAsync()
+        {
+            return Task.FromResult(string.Empty);
+        }
 
-    public bool IsExit()
-    {
-        return true;
+        public bool IsExit()
+        {
+            return true;
+        }
     }
 }

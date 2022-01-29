@@ -1,16 +1,19 @@
-﻿using Jab;
+﻿using Autofac;
+using TypeCode.Wpf.Helper.Autofac;
+using TypeCode.Wpf.Main.Content;
+using TypeCode.Wpf.Main.Sidebar;
 
-namespace TypeCode.Wpf.Main;
-
-[ServiceProviderModule]
-public partial interface IMainModule
+namespace TypeCode.Wpf.Main
 {
-    // protected override void Load(ContainerBuilder builder)
-    // {
-    //     // builder.AddViewModelAndViewAsSingleInstance<MainViewModel, MainWindow>();
-    //     // builder.AddViewModelAndViewAsSingleInstance<MainContentViewModel, MainContentView>();
-    //     // builder.AddViewModelAndViewAsSingleInstance<MainSidebarViewModel, MainSidebarView>();
-    //
-    //     base.Load(builder);
-    // }
+    public class MainModule : Module
+    {
+        protected override void Load(ContainerBuilder builder)
+        {
+            // builder.AddViewModelAndViewAsSingleInstance<MainViewModel, MainWindow>();
+            // builder.AddViewModelAndViewAsSingleInstance<MainContentViewModel, MainContentView>();
+            // builder.AddViewModelAndViewAsSingleInstance<MainSidebarViewModel, MainSidebarView>();
+
+            base.Load(builder);
+        }
+    }
 }

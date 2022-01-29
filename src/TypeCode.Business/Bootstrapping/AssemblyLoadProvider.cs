@@ -1,23 +1,24 @@
 ﻿using TypeCode.Business.Configuration;
 
-namespace TypeCode.Business.Bootstrapping;
-
-public static class AssemblyLoadProvider
+namespace TypeCode.Business.Bootstrapping
 {
-	public static TypeCodeConfiguration GetConfiguration()
+	public static class AssemblyLoadProvider
 	{
-		if (AssemblyProvider != null)
+		public static TypeCodeConfiguration GetConfiguration()
 		{
-			return AssemblyProvider.GetConfiguration();
+			if (AssemblyProvider != null)
+			{
+				return AssemblyProvider.GetConfiguration();
+			}
+
+			throw new AssemblyLoadException("No AssemblyProvider was set.");
 		}
 
-		throw new AssemblyLoadException("No AssemblyProvider was set.");
-	}
+		public static void SetAssemblyProvider(IConfigurationProvider assemblyProvider)
+		{
+			AssemblyProvider = assemblyProvider;
+		}
 
-	public static void SetAssemblyProvider(IConfigurationProvider assemblyProvider)
-	{
-		AssemblyProvider = assemblyProvider;
+		private static IConfigurationProvider AssemblyProvider { get; set; }
 	}
-
-	private static IConfigurationProvider AssemblyProvider { get; set; }
 }

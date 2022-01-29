@@ -2,20 +2,21 @@ using System;
 using System.Threading.Tasks;
 using TypeCode.Wpf.Helper.Navigation.Service;
 
-namespace TypeCode.Wpf.Helper.Navigation.Wizard.Complex;
-
-public class WizardStepParameter
+namespace TypeCode.Wpf.Helper.Navigation.Wizard.Complex
 {
-    public WizardStepParameter()
+    public class WizardStepParameter
     {
-        BeforeAction = _ => Task.CompletedTask;
-        AfterAction = _ => Task.CompletedTask;
-        AllowBack = _ => true;
-        AllowNext = _ => true;
-    }
+        public WizardStepParameter()
+        {
+            BeforeAction = _ => Task.CompletedTask;
+            AfterAction = _ => Task.CompletedTask;
+            AllowBack = _ => true;
+            AllowNext = _ => true;
+        }
         
-    public Func<NavigationContext, Task> BeforeAction { get; set; }
-    public Func<NavigationContext, Task> AfterAction { get; set; }
-    public Func<NavigationContext, bool> AllowBack { get; set; }
-    public Func<NavigationContext, bool> AllowNext { get; set; }
+        public Func<NavigationContext, Task> BeforeAction { get; set; }
+        public Func<NavigationContext, Task> AfterAction { get; set; }
+        public Func<NavigationContext, bool> AllowBack { get; set; }
+        public Func<NavigationContext, bool> AllowNext { get; set; }
+    }
 }

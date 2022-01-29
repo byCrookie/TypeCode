@@ -1,9 +1,10 @@
 ﻿using TypeCode.Business.Configuration;
 
-namespace TypeCode.Business.Bootstrapping;
-
-public interface IConfigurationProvider
+namespace TypeCode.Business.Bootstrapping
 {
-    void SetConfiguration(TypeCodeConfiguration configuration);
-    TypeCodeConfiguration GetConfiguration();
+    public interface IConfigurationProvider
+    {
+        void SetConfiguration(TypeCodeConfiguration configuration);
+        TypeCodeConfiguration GetConfiguration();
+    }
 }

@@ -1,9 +1,10 @@
-﻿namespace TypeCode.Wpf.Pages.Mapper;
-
-public partial class MapperView
+﻿namespace TypeCode.Wpf.Pages.Mapper
 {
-    public MapperView()
+    public partial class MapperView
     {
-        InitializeComponent();
+        public MapperView()
+        {
+            InitializeComponent();
+        }
     }
 }

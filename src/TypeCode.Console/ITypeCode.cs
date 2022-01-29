@@ -1,7 +1,8 @@
-﻿using Framework.Jab.Boot;
+﻿using Framework.Autofac.Boot;
 
-namespace TypeCode.Console;
-
-public interface ITypeCode : IApplication
+namespace TypeCode.Console
 {
+    public interface ITypeCode : IApplication
+    {
+    }
 }

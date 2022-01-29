@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace TypeCode.Console.Mode.MultipleTypes;
-
-internal interface IMultipleTypesSelectionContext
+namespace TypeCode.Console.Mode.MultipleTypes
 {
-    List<Type> SelectedTypes { get; set; }
-    Type SelectedType { get; set; }
+    internal interface IMultipleTypesSelectionContext
+    {
+        List<Type> SelectedTypes { get; set; }
+        Type SelectedType { get; set; }
+    }
 }

@@ -1,6 +1,7 @@
-namespace TypeCode.Console.Mode.Selection;
-
-internal interface ISelectionContext
+namespace TypeCode.Console.Mode.Selection
 {
-    short Selection { get; set; }
+    internal interface ISelectionContext
+    {
+        short Selection { get; set; }
+    }
 }

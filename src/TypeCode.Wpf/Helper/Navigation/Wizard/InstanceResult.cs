@@ -1,11 +1,12 @@
 ﻿using System;
 
-namespace TypeCode.Wpf.Helper.Navigation.Wizard;
-
-public class InstanceResult
+namespace TypeCode.Wpf.Helper.Navigation.Wizard
 {
-    public Type ViewType { get; set; }
-    public object ViewInstance { get; set; }
-    public Type ViewModelType { get; set; }
-    public object ViewModelInstance { get; set; }
+    public class InstanceResult
+    {
+        public Type ViewType { get; set; }
+        public object ViewInstance { get; set; }
+        public Type ViewModelType { get; set; }
+        public object ViewModelInstance { get; set; }
+    }
 }
