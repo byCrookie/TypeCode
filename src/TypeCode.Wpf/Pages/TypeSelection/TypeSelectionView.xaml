@@ -16,7 +16,6 @@
             <Style TargetType="{x:Type typeSelection:TypeItemViewModel}">
                 <Setter Property="Background" Value="{StaticResource Secondary}"></Setter>
                 <Setter Property="Foreground" Value="{StaticResource PrimaryText}"></Setter>
-                <Setter Property="IsSelected" Value="{Binding Mode=TwoWay, Path=IsSelected}"/>
                 <Setter Property="Height" Value="30"/>
             </Style>
         </ListBox.ItemContainerStyle>

@@ -68,7 +68,7 @@ internal class AssemblyLoadBootStep<TContext> : IAssemblyLoadBootStep<TContext>
             }
         }
 
-        Log.Debug($"Total of {CountAssemblies(configuration)} assemblies have been loaded");
+        Log.Debug("Total of {0} assemblies have been loaded", CountAssemblies(configuration));
         var assemblyProvider = new ConfigurationProvider();
         assemblyProvider.SetConfiguration(configuration);
         AssemblyLoadProvider.SetAssemblyProvider(assemblyProvider);
@@ -138,7 +138,7 @@ internal class AssemblyLoadBootStep<TContext> : IAssemblyLoadBootStep<TContext>
                     .Any(pattern => pattern.IsMatch(file)))
                 .ToList();
 
-            Log.Debug($"Loading {filteredFiles.Count} assemblies");
+            Log.Debug("Loading {0} assemblies", filteredFiles.Count);
 
             Parallel.ForEach(filteredFiles, file =>
             {
@@ -153,7 +153,7 @@ internal class AssemblyLoadBootStep<TContext> : IAssemblyLoadBootStep<TContext>
                 }
             });
 
-            Log.Debug($"Loaded {assemblyDirectory.Assemblies.Count} assemblies");
+            Log.Debug("Loaded {0} assemblies", assemblyDirectory.Assemblies.Count);
 
             assemblyHolder.AssemblyDirectories.Add(assemblyDirectory);
         }
