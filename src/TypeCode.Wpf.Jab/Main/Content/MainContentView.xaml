@@ -1,0 +1,30 @@
+﻿<UserControl x:Class="TypeCode.Wpf.Jab.Main.Content.MainContentView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:converters="clr-namespace:TypeCode.Wpf.Jab.Helper.Converters"
+             xmlns:content="clr-namespace:TypeCode.Wpf.Jab.Main.Content"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance content:MainContentViewModel}">
+    
+    <UserControl.Resources>
+        <converters:BooleanToVisibilityConverterSelf x:Key="BooleanToVisibilityConverter" True="Visible"
+                                                     False="Collapsed" />
+    </UserControl.Resources>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Frame Name="NavigationFrame" Grid.Row="0"
+               Margin="0" Padding="0"
+               Background="{StaticResource Primary}"
+               NavigationUIVisibility="Hidden" />
+
+        <ProgressBar Grid.Row="1" Height="5" IsIndeterminate="True"
+                     Visibility="{Binding AreAssembliesLoading, Converter={StaticResource BooleanToVisibilityConverter}}" />
+    </Grid>
+</UserControl>

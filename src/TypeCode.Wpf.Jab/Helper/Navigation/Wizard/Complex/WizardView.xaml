@@ -1,0 +1,63 @@
+﻿<UserControl x:Class="TypeCode.Wpf.Jab.Helper.Navigation.Wizard.Complex.WizardView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:converters="clr-namespace:TypeCode.Wpf.Jab.Helper.Converters"
+             xmlns:c="clr-namespace:TypeCode.Wpf.Jab.Helper.Controls"
+             xmlns:view="clr-namespace:TypeCode.Wpf.Jab.Helper.Navigation.Wizard.View"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="300"
+             Background="{StaticResource Secondary}" d:DataContext="{d:DesignInstance view:WizardSimpleViewModel}">
+
+    <UserControl.Resources>
+        <converters:BooleanToVisibilityConverterSelf x:Key="BooleanToVisibilityConverter" True="Visible"
+                                                     False="Collapsed" />
+
+        <Style x:Key="WizardButtonStyle" TargetType="{x:Type c:CustomButton}"
+               BasedOn="{StaticResource {x:Type c:CustomButton}}">
+            <Setter Property="BorderThickness" Value="0" />
+        </Style>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <ContentControl Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Content="{Binding WizardPage}" />
+
+        <StackPanel Margin="0,5,5,5" Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
+            <c:CustomButton
+                Margin="5,0,0,0"
+                Content="Back"
+                Style="{StaticResource WizardButtonStyle}"
+                Command="{Binding BackCommand}"
+                Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Self}, Converter={StaticResource BooleanToVisibilityConverter}}" />
+            <c:CustomButton
+                Margin="5,0,0,0"
+                Content="Cancel"
+                Style="{StaticResource WizardButtonStyle}"
+                Command="{Binding CancelCommand}"
+                Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Self}, Converter={StaticResource BooleanToVisibilityConverter}}" />
+            <c:CustomButton
+                Margin="5,0,0,0"
+                Content="Next"
+                Style="{StaticResource WizardButtonStyle}"
+                Command="{Binding NextCommand}"
+                Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Self}, Converter={StaticResource BooleanToVisibilityConverter}}" />
+            <c:CustomButton
+                Margin="5,0,0,0"
+                Content="Finish"
+                Style="{StaticResource WizardButtonStyle}"
+                Command="{Binding FinishCommand}"
+                Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Self}, Converter={StaticResource BooleanToVisibilityConverter}}" />
+        </StackPanel>
+
+    </Grid>
+</UserControl>

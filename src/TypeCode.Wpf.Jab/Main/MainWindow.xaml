@@ -1,0 +1,46 @@
+﻿<Window x:Class="TypeCode.Wpf.Jab.Main.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:converters="clr-namespace:TypeCode.Wpf.Jab.Helper.Converters"
+        xmlns:sidebar="clr-namespace:TypeCode.Wpf.Jab.Main.Sidebar"
+        xmlns:content="clr-namespace:TypeCode.Wpf.Jab.Main.Content"
+        xmlns:main="clr-namespace:TypeCode.Wpf.Jab.Main"
+        mc:Ignorable="d"
+        Title="TypeCode" Height="450" Width="800" d:DataContext="{d:DesignInstance main:MainViewModel}"
+        Background="{StaticResource Primary}">
+    
+    <Window.Resources>
+        <converters:ApplyNumberConverter x:Key="ApplyNumberConverter" Number="-30"/>
+    </Window.Resources>
+
+    <Grid>
+        <Grid x:Name="Main">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="140" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <sidebar:MainSidebarView x:Name="MainSidebar" DataContext="{Binding MainSidebarViewModel}" Grid.Column="0"
+                                     Grid.Row="0" />
+
+            <content:MainContentView x:Name="MainContent" DataContext="{Binding MainContentViewModel}" Grid.Column="1"
+                                     Grid.Row="0" />
+        </Grid>
+
+        <Grid x:Name="ModalOverlay" Visibility="Collapsed" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Frame x:Name="ModalFrame"
+                   Background="Transparent"
+                   Margin="0" Padding="0" Height="300" Width="600"
+                   NavigationUIVisibility="Hidden" />
+        </Grid>
+
+        <Grid x:Name="WizardOverlay" Visibility="Collapsed" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Frame x:Name="WizardFrame"
+                   Background="Transparent"
+                   Margin="30" Padding="0"
+                   NavigationUIVisibility="Hidden" />
+        </Grid>
+    </Grid>
+</Window>
