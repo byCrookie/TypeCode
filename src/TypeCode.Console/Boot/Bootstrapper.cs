@@ -37,6 +37,6 @@ public static class Bootstrapper
             .ThenAsync<IStartBootStep<BootContext>>()
             .Build();
 
-        return bootFlow.RunAsync(new BootContext(bootScope.Container, bootScope.LifeTimeScope));
+        return bootFlow.RunAsync(new BootContext(bootScope));
     }
 }

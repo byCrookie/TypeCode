@@ -10,7 +10,7 @@
 
     <ItemGroup>
       <PackageReference Include="AsyncAwaitBestPractices.MVVM" Version="6.0.4" />
-      <PackageReference Include="framework.autofac" Version="1.0.2-pre-20220130034016" />
+      <PackageReference Include="framework.autofac" Version="1.0.2-pre-20220130052048" />
       <PackageReference Include="Nito.AsyncEx.Context" Version="5.1.2" />
       <PackageReference Include="Serilog.Sinks.Console" Version="4.0.1" />
       <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
