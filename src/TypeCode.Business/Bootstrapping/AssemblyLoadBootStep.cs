@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using Framework.Autofac.Boot;
 using Framework.Extensions.List;
 using Serilog;
@@ -24,6 +19,8 @@ internal class AssemblyLoadBootStep<TContext> : IAssemblyLoadBootStep<TContext>
     public AssemblyLoadBootStep(IConfigurationMapper configurationMapper)
     {
         _configurationMapper = configurationMapper;
+
+        _includeFileRegexPatterns = new List<Regex>();
     }
 
     public Task ExecuteAsync(TContext context)
@@ -37,36 +34,7 @@ internal class AssemblyLoadBootStep<TContext> : IAssemblyLoadBootStep<TContext>
 
         Console.WriteLine($@"{Cuts.Short()} Assembly Priority");
 
-        foreach (var root in configuration.AssemblyRoot.OrderBy(r => r.Priority))
-        {
-            foreach (var group in root.AssemblyGroup)
-            {
-                var messages = new List<PriorityString>();
-
-                group.AssemblyPathSelector.ForEach(selector =>
-                {
-                    selector.AssemblyDirectories
-                        .ForEach(directory => messages
-                            .Add(new PriorityString($"{root.Priority}.{group.Priority}.{selector.Priority}",
-                                $@"{Cuts.Point()} {directory.AbsolutPath}")));
-                });
-
-                group.AssemblyPath.ForEach(path =>
-                {
-                    path.AssemblyDirectories
-                        .ForEach(directory => messages
-                            .Add(new PriorityString($"{root.Priority}.{group.Priority}.{path.Priority}",
-                                $@"{directory.AbsolutPath}")));
-                });
-
-                foreach (var message in messages.OrderBy(message => message.Priority).ToList())
-                {
-                    Console.WriteLine(message.Message);
-                }
-
-                group.PriorityAssemblyList = messages;
-            }
-        }
+        TraverseAssemblyRoots(configuration);
 
         Log.Debug("Total of {0} assemblies have been loaded", CountAssemblies(configuration));
         var assemblyProvider = new ConfigurationProvider();
@@ -74,10 +42,54 @@ internal class AssemblyLoadBootStep<TContext> : IAssemblyLoadBootStep<TContext>
         AssemblyLoadProvider.SetAssemblyProvider(assemblyProvider);
         return Task.CompletedTask;
     }
-
+    
     public Task<bool> ShouldExecuteAsync(TContext context)
     {
-        return Task.FromResult(true);
+        return context.ShouldExecuteAsync();
+    }
+
+    private static void TraverseAssemblyRoots(TypeCodeConfiguration configuration)
+    {
+        foreach (var root in configuration.AssemblyRoot.OrderBy(r => r.Priority))
+        {
+            TraverseAssemblyGroups(root);
+        }
+    }
+
+    private static void TraverseAssemblyGroups(AssemblyRoot root)
+    {
+        foreach (var group in root.AssemblyGroup)
+        {
+            var messages = new List<PriorityString>();
+
+            @group.AssemblyPathSelector.ForEach(selector =>
+            {
+                selector.AssemblyDirectories
+                    .ForEach(directory => messages
+                        .Add(new PriorityString($"{root.Priority}.{@group.Priority}.{selector.Priority}",
+                            $@"{Cuts.Point()} {directory.AbsolutPath}")));
+            });
+
+            @group.AssemblyPath.ForEach(path =>
+            {
+                path.AssemblyDirectories
+                    .ForEach(directory => messages
+                        .Add(new PriorityString($"{root.Priority}.{@group.Priority}.{path.Priority}",
+                            $@"{directory.AbsolutPath}")));
+            });
+
+            WriteMessagesToConsole(messages);
+
+            @group.PriorityAssemblyList = messages;
+        }
+    }
+
+    private static void WriteMessagesToConsole(List<PriorityString> messages)
+    {
+        foreach (var message in messages.OrderBy(message => message.Priority).ToList())
+        {
+            Console.WriteLine(message.Message);
+        }
     }
 
     private void EvaluateAssemblyRoot(AssemblyRoot root)
