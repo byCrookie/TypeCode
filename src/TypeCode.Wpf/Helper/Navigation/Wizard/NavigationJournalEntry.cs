@@ -2,6 +2,11 @@
 
 public class NavigationJournalEntry
 {
-    public InstanceResult InstanceResult { get; set; }
+    public NavigationJournalEntry(InstanceResult newInstanceResult)
+    {
+        InstanceResult = newInstanceResult;
+    }
+
+    public InstanceResult InstanceResult { get; }
     public bool IsOpen { get; set; }
 }

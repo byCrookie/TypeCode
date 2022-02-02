@@ -16,7 +16,7 @@
     </Window.Resources>
 
     <Grid>
-        <Grid x:Name="Main">
+        <Grid ZIndex="0" x:Name="Main">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="140" />
                 <ColumnDefinition Width="*" />
@@ -29,14 +29,14 @@
                                      Grid.Row="0" />
         </Grid>
 
-        <Grid x:Name="ModalOverlay" Visibility="Collapsed" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Grid ZIndex="2" x:Name="ModalOverlay" Visibility="Collapsed" HorizontalAlignment="Center" VerticalAlignment="Center">
             <Frame x:Name="ModalFrame"
                    Background="Transparent"
                    Margin="0" Padding="0" Height="300" Width="600"
                    NavigationUIVisibility="Hidden" />
         </Grid>
 
-        <Grid x:Name="WizardOverlay" Visibility="Collapsed" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <Grid ZIndex="1" x:Name="WizardOverlay" Visibility="Collapsed" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <Frame x:Name="WizardFrame"
                    Background="Transparent"
                    Margin="30" Padding="0"

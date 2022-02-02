@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using Framework.DependencyInjection.Factory;
 using TypeCode.Wpf.Helper.Navigation.Contract;
@@ -14,7 +12,7 @@ public class ModalNavigationService : IModalNavigationService
 {
     private readonly MainWindow _mainWindow;
     private readonly IFactory _factory;
-    private ModalParameter _lastModalParameter;
+    private ModalParameter? _lastModalParameter;
 
     public ModalNavigationService(MainWindow mainWindow, IFactory factory)
     {
@@ -63,14 +61,14 @@ public class ModalNavigationService : IModalNavigationService
         _mainWindow.Main.IsEnabled = true;
         _mainWindow.ModalOverlay.Visibility = Visibility.Collapsed;
 
-        return _lastModalParameter.OnCloseAsync?.Invoke() ?? Task.CompletedTask;
+        return _lastModalParameter?.OnCloseAsync.Invoke() ?? Task.CompletedTask;
     }
 
     private static Task CallOnNavigatedToOnCurrentViewModelAsync<T>(NavigationContext context, T viewModelInstance)
     {
         if (viewModelInstance is IAsyncNavigatedTo asyncNavigatedTo)
         {
-            return asyncNavigatedTo.OnNavigatedToAsync(context ?? new NavigationContext());
+            return asyncNavigatedTo.OnNavigatedToAsync(context);
         }
             
         return Task.CompletedTask;

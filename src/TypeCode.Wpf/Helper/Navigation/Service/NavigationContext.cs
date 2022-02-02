@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-
 namespace TypeCode.Wpf.Helper.Navigation.Service;
 
 public class NavigationContext
@@ -48,23 +45,23 @@ public class NavigationContext
         }
     }
         
-    public T GetParameter<T>()
+    public T GetParameter<T>() where T : notnull
     {
         if (_parameters.TryGetValue(typeof(T), out var parameter))
         {
             return (T)parameter;
         }
 
-        return default;
+        throw new ArgumentException($"{nameof(NavigationContext)} does not contain parameter of type {typeof(T).FullName}");
     }
         
-    public T GetParameter<T>(string key)
+    public T GetParameter<T>(string key) where T : notnull
     {
         if (_parametersKey.TryGetValue(key, out var parameter))
         {
             return (T)parameter;
         }
 
-        return default;
+        throw new ArgumentException($"{nameof(NavigationContext)} does not contain parameter of type {typeof(T).FullName} with key {key}");
     }
 }

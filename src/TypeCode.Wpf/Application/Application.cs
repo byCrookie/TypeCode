@@ -1,7 +1,6 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Windows;
 using System.Windows.Threading;
+using AsyncAwaitBestPractices;
 using Framework.Autofac.Boot;
 using Framework.DependencyInjection.Factory;
 using Nito.AsyncEx;
@@ -38,9 +37,16 @@ public class Application : IApplication
 
     public Task RunAsync(CancellationToken cancellationToken)
     {
-        System.Windows.Application.Current.DispatcherUnhandledException += HandleDispatcherUnhandledException;
-
         var mainWindow = _factory.Create<MainWindow>();
+            
+        System.Windows.Application.Current.DispatcherUnhandledException +=
+            (_, args) => HandleDispatcherUnhandledException(args, mainWindow);
+        
+        SafeFireAndForgetExtensions.SetDefaultExceptionHandling(e =>
+        {
+            OpenExceptionDialog(e, mainWindow);
+        });
+        
         var mainViewModel = _factory.Create<MainViewModel>();
 
         mainWindow.DataContext = mainViewModel;
@@ -52,17 +58,31 @@ public class Application : IApplication
         return Task.CompletedTask;
     }
 
-    private void HandleDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+    private static void CloseOverlays(MainWindow mainWindow)
+    {
+        mainWindow.MainContent.Opacity = 1;
+        mainWindow.MainContent.IsEnabled = true;
+        mainWindow.WizardOverlay.Visibility = Visibility.Collapsed;
+    }
+
+    private void HandleDispatcherUnhandledException(DispatcherUnhandledExceptionEventArgs e, MainWindow mainWindow)
     {
         e.Handled = true;
+        OpenExceptionDialog(e.Exception, mainWindow);
+    }
+
+    private void OpenExceptionDialog(Exception exception, MainWindow mainWindow)
+    {
+        CloseOverlays(mainWindow);
+        
         AsyncContext.Run(() => _modalNavigationService.OpenModalAsync(new ModalParameter
         {
-            Title = "ERROR", 
-            Text = $"{e.Exception.Message}" +
+            Title = "ERROR",
+            Text = $"{exception.Message}" +
                    $"{Environment.NewLine}" +
-                   $"{e.Exception.InnerException?.Message}" +
+                   $"{exception.InnerException?.Message}" +
                    $"{Environment.NewLine}" +
-                   $"{e.Exception.StackTrace}"
+                   $"{exception.StackTrace}"
         }));
     }
 

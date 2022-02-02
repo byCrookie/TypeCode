@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace TypeCode.Wpf.Helper.Navigation.Wizard.Complex;
+﻿namespace TypeCode.Wpf.Helper.Navigation.Wizard.Complex;
 
 public interface IWizardNavigator
 {

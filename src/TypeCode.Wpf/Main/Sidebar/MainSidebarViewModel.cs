@@ -1,7 +1,8 @@
-﻿using System.Threading.Tasks;
-using System.Windows.Input;
+﻿using System.Windows.Input;
+using AsyncAwaitBestPractices;
 using AsyncAwaitBestPractices.MVVM;
 using Framework.DependencyInjection.Factory;
+using TypeCode.Wpf.Helper.Commands;
 using TypeCode.Wpf.Helper.Navigation.Service;
 using TypeCode.Wpf.Helper.Navigation.Wizard.Complex;
 using TypeCode.Wpf.Helper.ViewModel;
@@ -19,21 +20,18 @@ namespace TypeCode.Wpf.Main.Sidebar;
 public class MainSidebarViewModel : Reactive
 {
     private readonly INavigationService _navigationService;
-    private readonly IWizardBuilder _settingsWizardBuilder;
+    private readonly IFactory<NavigationContext, IWizardBuilder> _wizardBuilderFactory;
     private readonly IWizardRunner _settingsWizardRunner;
-    private readonly IFactory _factory;
 
     public MainSidebarViewModel(
         INavigationService navigationService,
-        IWizardBuilder settingsWizardBuilder,
-        IWizardRunner settingsWizardRunner,
-        IFactory factory
+        IFactory<NavigationContext, IWizardBuilder> wizardBuilderFactory,
+        IWizardRunner settingsWizardRunner
     )
     {
         _navigationService = navigationService;
-        _settingsWizardBuilder = settingsWizardBuilder;
+        _wizardBuilderFactory = wizardBuilderFactory;
         _settingsWizardRunner = settingsWizardRunner;
-        _factory = factory;
 
         SpecflowNavigationCommand = new AsyncCommand(NavigateToSpecflowAsync);
         UnitTestDependencyTypeNavigationCommand = new AsyncCommand(NavigateToUnitTestDependencyTypeAsync);
@@ -106,11 +104,12 @@ public class MainSidebarViewModel : Reactive
 
     private Task OpenSettingsAsync()
     {
-        var mainWindow = _factory.Create<MainWindow>();
-        var wizard = _settingsWizardBuilder
-            .Init(new NavigationContext(), mainWindow.WizardFrame, mainWindow.Main, mainWindow.WizardOverlay)
+        var wizardBuilder = _wizardBuilderFactory.Create(new NavigationContext());
+
+        var wizard = wizardBuilder
             .Then<ConfigurationWizardViewModel>()
             .Build();
+        
         return _settingsWizardRunner.RunAsync(wizard);
     }
 }

@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Threading.Tasks;
+﻿using System.IO;
 using System.Windows.Input;
 using System.Xml.Linq;
 using AsyncAwaitBestPractices.MVVM;
@@ -12,12 +10,15 @@ namespace TypeCode.Wpf.Pages.Common.Configuration;
 
 public class ConfigurationWizardViewModel : Reactive, IAsyncInitialNavigated
 {
-    public Task OnInititalNavigationAsync(NavigationContext context)
+    public ConfigurationWizardViewModel()
     {
         ReloadCommand = new AsyncCommand(ReloadAsync);
         SaveCommand = new AsyncCommand(SaveAsync);
         FormatCommand = new AsyncCommand(FormatAsync);
-            
+    }
+    
+    public Task OnInititalNavigationAsync(NavigationContext context)
+    {
         return ReloadAsync();
     }
 

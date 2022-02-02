@@ -5,10 +5,10 @@ namespace TypeCode.Wpf.Helper.Navigation.Wizard;
 
 public class WizardContext : WorkflowBaseContext
 {
-    public WizardContext(NavigationContext navigationContext = null)
+    public WizardContext(NavigationContext navigationContext)
     {
         NavigationJournal = new NavigationJournal();
-        NavigationContext = navigationContext ?? new NavigationContext();
+        NavigationContext = navigationContext;
     }
         
     public NavigationJournal NavigationJournal { get; set; }

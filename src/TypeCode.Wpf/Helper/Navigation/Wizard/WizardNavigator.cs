@@ -1,14 +1,9 @@
-﻿using System;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using Framework.DependencyInjection.Factory;
 using TypeCode.Wpf.Helper.Autofac;
 using TypeCode.Wpf.Helper.Navigation.Contract;
 using TypeCode.Wpf.Helper.Navigation.Service;
-using TypeCode.Wpf.Helper.Navigation.Wizard.Steps.WizardEndStep;
-using TypeCode.Wpf.Helper.Navigation.Wizard.View;
-using Workflow;
 
 namespace TypeCode.Wpf.Helper.Navigation.Wizard;
 
@@ -20,27 +15,8 @@ public class WizardNavigator : IWizardNavigator
     {
         _factory = factory;
     }
-
-    public async Task<TContext> StartAsync<TContext>(WizardNavigatorParameter parameter, TContext context, IWorkflow<TContext> wizardFlow) where TContext : WizardContext
-    {
-        parameter.MainContentControl.Opacity = 0.1;
-        parameter.MainContentControl.IsEnabled = false;
-        parameter.WizardOverlayControl.Visibility = Visibility.Visible;
-
-        context.NavigationContext.AddParameter(parameter);
-        context.NavigationContext.AddParameter("WizardContext", context);
-        var endStep = _factory.Create<IWizardEndStep<WizardContext, WizardEndStepOptions>>();
-        endStep.SetOptions(new WizardEndStepOptions());
-        wizardFlow.AddStep(endStep);
-
-        context.Wizard = CreateInstances<WizardSimpleViewModel>();
-        context.NavigationContext.GetParameter<WizardNavigatorParameter>().NavigationFrame.Navigate(context.Wizard.ViewInstance);
-
-        var wizardContext = await wizardFlow.RunAsync(context).ConfigureAwait(true);
-        return wizardContext;
-    }
-
-    public async Task NextOrNewAsync<TViewModel>(WizardContext context)
+    
+    public async Task NextOrNewAsync<TViewModel>(WizardContext context) where TViewModel : notnull
     {
         var nextEntry = context.NavigationJournal.GetOrAddNextEntry(CreateInstances<TViewModel>());
         context.NavigationContext.AddOrUpdateParameter("View", nextEntry.InstanceResult.ViewInstance);
@@ -108,7 +84,7 @@ public class WizardNavigator : IWizardNavigator
         return Task.CompletedTask;
     }
         
-    private InstanceResult CreateInstances<T>()
+    private InstanceResult CreateInstances<T>() where T : notnull
     {
         var viewModelType = typeof(T);
         var viewModelInstance = _factory.Create<T>();
@@ -127,12 +103,6 @@ public class WizardNavigator : IWizardNavigator
 
         viewInstance.DataContext = viewModelInstance;
 
-        return new InstanceResult
-        {
-            ViewType = viewType,
-            ViewInstance = viewInstance,
-            ViewModelInstance = viewModelInstance,
-            ViewModelType = viewModelType
-        };
+        return new InstanceResult(viewType, viewInstance, viewModelType, viewModelInstance);
     }
 }

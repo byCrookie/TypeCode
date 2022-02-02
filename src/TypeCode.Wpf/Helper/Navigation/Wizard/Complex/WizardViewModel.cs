@@ -1,8 +1,7 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 using System.Windows.Input;
 using AsyncAwaitBestPractices.MVVM;
+using TypeCode.Wpf.Helper.Commands;
 using TypeCode.Wpf.Helper.Navigation.Contract;
 using TypeCode.Wpf.Helper.ViewModel;
 
@@ -11,16 +10,26 @@ namespace TypeCode.Wpf.Helper.Navigation.Wizard.Complex;
 public class WizardViewModel : Reactive, IWizardHost
 {
     private readonly IWizardNavigator _wizardNavigator;
-    private Wizard _wizard;
+    private Wizard? _wizard;
 
     public WizardViewModel(IWizardNavigator wizardNavigator)
     {
         _wizardNavigator = wizardNavigator;
+
+        BackCommand = new AsyncDefaultCommand();
+        NextCommand = new AsyncDefaultCommand();
+        CancelCommand = new AsyncDefaultCommand();
+        FinishCommand = new AsyncDefaultCommand();
     }
 
     public async Task NavigateToAsync(Wizard wizard, NavigationAction navigationAction)
     {
         wizard.NavigationContext.AddOrUpdateParameter(navigationAction);
+
+        if (wizard.CurrentStepConfiguration is null)
+        {
+            throw new ArgumentException($"{nameof(wizard.CurrentStepConfiguration)} is not set");
+        }
             
         if (!wizard.CurrentStepConfiguration.Initialized && wizard.CurrentStepConfiguration.Instances.ViewModelInstance is IAsyncInitialNavigated asyncInitialNavigated)
         {
@@ -38,7 +47,12 @@ public class WizardViewModel : Reactive, IWizardHost
         FinishCommand = new AsyncCommand(FinishAsync, _ => wizard.CurrentStepConfiguration == wizard.StepConfigurations.LastOrDefault()
                                                            && wizard.CurrentStepConfiguration.AllowNext(wizard.NavigationContext));
 
-        WizardPage = wizard.CurrentStepConfiguration.Instances.ViewInstance as UserControl;
+        if (wizard.CurrentStepConfiguration.Instances.ViewInstance is not UserControl wizardPage)
+        {
+            throw new ArgumentException($"{wizard.CurrentStepConfiguration.Instances.ViewInstance.GetType().FullName} is not a {nameof(UserControl)}");
+        }
+
+        WizardPage = wizardPage;
 
         if (wizard.CurrentStepConfiguration.Instances.ViewModelInstance is IAsyncNavigatedTo asyncNavigatedTo)
         {
@@ -51,6 +65,11 @@ public class WizardViewModel : Reactive, IWizardHost
     public async Task NavigateFromAsync(Wizard wizard, NavigationAction navigationAction)
     {
         wizard.NavigationContext.AddOrUpdateParameter(navigationAction);
+        
+        if (wizard.CurrentStepConfiguration is null)
+        {
+            throw new ArgumentException($"{nameof(wizard.CurrentStepConfiguration)} is not set");
+        }
 
         if (wizard.CurrentStepConfiguration.Instances.ViewModelInstance is IAsyncNavigatedFrom asyncNavigatedFrom)
         {
@@ -62,21 +81,41 @@ public class WizardViewModel : Reactive, IWizardHost
 
     private Task NextAsync()
     {
+        if (_wizard is null)
+        {
+            throw new ArgumentException($"Wizard is not set");
+        }
+        
         return _wizardNavigator.NextAsync(_wizard);
     }
 
     private Task BackAsync()
     {
+        if (_wizard is null)
+        {
+            throw new ArgumentException($"Wizard is not set");
+        }
+        
         return _wizardNavigator.BackAsync(_wizard);
     }
 
     private Task CancelAsync()
     {
+        if (_wizard is null)
+        {
+            throw new ArgumentException($"Wizard is not set");
+        }
+        
         return _wizardNavigator.CancelAsync(_wizard);
     }
 
     private Task FinishAsync()
     {
+        if (_wizard is null)
+        {
+            throw new ArgumentException($"Wizard is not set");
+        }
+        
         return _wizardNavigator.FinishAsync(_wizard);
     }
 

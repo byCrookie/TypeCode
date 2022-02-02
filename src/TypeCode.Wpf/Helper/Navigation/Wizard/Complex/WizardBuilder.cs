@@ -1,11 +1,8 @@
-using System;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
 using Framework.DependencyInjection.Factory;
 using TypeCode.Wpf.Helper.Autofac;
 using TypeCode.Wpf.Helper.Navigation.Service;
+using TypeCode.Wpf.Main;
 
 namespace TypeCode.Wpf.Helper.Navigation.Wizard.Complex;
 
@@ -13,48 +10,42 @@ public class WizardBuilder : IWizardBuilder
 {
     private readonly IFactory _factory;
 
-    private Wizard _wizard;
+    private readonly Wizard _wizard;
 
-    public WizardBuilder(IFactory factory)
+    public WizardBuilder(IFactory factory, MainWindow mainWindow, NavigationContext navigationContext)
     {
         _factory = factory;
+
+        _wizard = new Wizard(new WizardBuilderOptions(
+                navigationContext,
+                mainWindow.WizardFrame,
+                mainWindow.Main,
+                mainWindow.WizardOverlay),
+            CreateInstances<WizardViewModel>()
+        );
     }
 
-    public IWizardBuilder Init(NavigationContext navigationContext, Frame navigationFrame, UIElement content, UIElement wizardOverlay)
+    public IWizardBuilder Then<TViewModel>(Action<IWizardParameterBuilder, NavigationContext>? configureParameter = null)
+        where TViewModel : notnull
     {
-        _wizard = new Wizard
-        {
-            NavigationContext = navigationContext,
-            NavigationFrame = navigationFrame,
-            Content = content,
-            WizardOverlay = wizardOverlay,
-            WizardInstances = CreateInstances<WizardViewModel>()
-        };
-
-        return this;
-    }
-
-    public IWizardBuilder Then<TViewModel>(Action<WizardParameterBuilder, NavigationContext> configureParameter = null)
-    {
-        var parameterBuilder = new WizardParameterBuilder();
+        var parameterBuilder = _factory.Create<IWizardParameterBuilder>();
         configureParameter?.Invoke(parameterBuilder, _wizard.NavigationContext);
         var parameter = parameterBuilder.Build();
 
-        var stepConfiguration = new WizardStepConfiguration
-        {
-            AfterAction = parameter.AfterAction,
-            BeforeAction = parameter.BeforeAction,
-            AllowBack = parameter.AllowBack,
-            AllowNext = parameter.AllowNext,
-            Instances = CreateInstances<TViewModel>()
-        };
+        var stepConfiguration = new WizardStepConfiguration(
+            parameter.AfterAction,
+            parameter.BeforeAction,
+            parameter.AllowBack,
+            parameter.AllowNext,
+            CreateInstances<TViewModel>()
+        );
 
         if (_wizard.StepConfigurations.LastOrDefault() is not null)
         {
             stepConfiguration.LastStep = _wizard.StepConfigurations.Last();
             stepConfiguration.LastStep.NextStep = stepConfiguration;
         }
-            
+
         _wizard.StepConfigurations.Add(stepConfiguration);
 
         return this;
@@ -72,7 +63,7 @@ public class WizardBuilder : IWizardBuilder
         return this;
     }
 
-    private InstanceResult CreateInstances<T>()
+    private InstanceResult CreateInstances<T>() where T : notnull
     {
         var viewModelType = typeof(T);
         var viewModelInstance = _factory.Create<T>();
@@ -91,20 +82,11 @@ public class WizardBuilder : IWizardBuilder
 
         viewInstance.DataContext = viewModelInstance;
 
-        return new InstanceResult
-        {
-            ViewType = viewType,
-            ViewInstance = viewInstance,
-            ViewModelInstance = viewModelInstance,
-            ViewModelType = viewModelType
-        };
+        return new InstanceResult(viewType, viewInstance, viewModelType, viewModelInstance);
     }
 
     public Wizard Build()
     {
-        var wizard = _wizard;
-        _wizard = null;
-        wizard.CurrentStepConfiguration = wizard.StepConfigurations.FirstOrDefault();
-        return wizard;
+        return _wizard;
     }
 }

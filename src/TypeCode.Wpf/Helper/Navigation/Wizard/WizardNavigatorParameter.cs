@@ -15,7 +15,7 @@ public class WizardNavigatorParameter
         WizardOverlayControl = wizardOverlayControl;
     }
 
-    public Frame NavigationFrame { get; set; }
-    public Grid MainContentControl { get; set; }
-    public Grid WizardOverlayControl { get; set; }
+    public Frame NavigationFrame { get; }
+    public Grid MainContentControl { get; }
+    public Grid WizardOverlayControl { get; }
 }

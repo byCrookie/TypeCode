@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace TypeCode.Wpf.Helper.Navigation.Wizard;
+﻿namespace TypeCode.Wpf.Helper.Navigation.Wizard;
 
 public class NavigationJournal
 {
@@ -16,7 +14,7 @@ public class NavigationJournal
     {
         if (!_currentJournalEntryIndex.HasValue || GetJournalEntriesLastIndex() == _currentJournalEntryIndex)
         {
-            var entry = new NavigationJournalEntry { InstanceResult = newInstanceResult };
+            var entry = new NavigationJournalEntry(newInstanceResult);
             _navigationJournalEntries.Add(entry);
             _currentJournalEntryIndex = _navigationJournalEntries.IndexOf(entry);
             return entry;
@@ -34,15 +32,13 @@ public class NavigationJournal
 
         return 0;
     }
-
-    [CanBeNull]
-    public NavigationJournalEntry GetBackEntry()
+    
+    public NavigationJournalEntry? GetBackEntry()
     {
         return CanGoBack() ? _navigationJournalEntries[GetJournalEntriesLastIndex() - 1] : null;
     }
-
-    [CanBeNull]
-    public NavigationJournalEntry GetCurrentEntry()
+    
+    public NavigationJournalEntry? GetCurrentEntry()
     {
         return _currentJournalEntryIndex.HasValue ? _navigationJournalEntries[_currentJournalEntryIndex.Value] : null;
     }

@@ -1,12 +1,10 @@
-﻿using System;
-using System.Threading.Tasks;
-using TypeCode.Wpf.Helper.Navigation.Service;
+﻿using TypeCode.Wpf.Helper.Navigation.Service;
 
 namespace TypeCode.Wpf.Helper.Navigation.Wizard.Complex;
 
-public class WizardParameterBuilder
+public class WizardParameterBuilder : IWizardParameterBuilder
 {
-    private WizardStepParameter _parameter;
+    private readonly WizardStepParameter _parameter;
 
     public WizardParameterBuilder()
     {
@@ -39,8 +37,6 @@ public class WizardParameterBuilder
 
     public WizardStepParameter Build()
     {
-        var parameter = _parameter;
-        _parameter = new WizardStepParameter();
-        return parameter;
+        return _parameter;
     }
 }

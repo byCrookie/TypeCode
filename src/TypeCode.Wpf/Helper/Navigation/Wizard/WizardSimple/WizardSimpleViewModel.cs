@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 using System.Windows.Input;
 using AsyncAwaitBestPractices.MVVM;
 using TypeCode.Wpf.Helper.Navigation.Contract;
@@ -15,11 +14,12 @@ public class WizardSimpleViewModel<T> : Reactive, IAsyncNavigatedTo
     public WizardSimpleViewModel(IWizardNavigationService wizardNavigationService)
     {
         _wizardNavigationService = wizardNavigationService;
+        
+        FinishCommand = new AsyncCommand(FinishAsync);
     }
         
     public Task OnNavigatedToAsync(NavigationContext context)
     {
-        FinishCommand = new AsyncCommand(FinishAsync);
         var parameter = context.GetParameter<WizardParameter<T>>();
         FinishText = parameter.FinishButtonText ?? "Close";
         WizardPage = context.GetParameter<UserControl>("View");

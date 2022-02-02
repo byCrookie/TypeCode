@@ -10,6 +10,7 @@ public class WizardComplexModule : Module
         builder.AddViewModelAndView<WizardViewModel, WizardView>();
 
         builder.RegisterType<WizardBuilder>().As<IWizardBuilder>();
+        builder.RegisterType<WizardParameterBuilder>().As<IWizardParameterBuilder>();
         builder.RegisterType<WizardNavigator>().As<IWizardNavigator>();
         builder.RegisterType<WizardRunner>().As<IWizardRunner>();
             

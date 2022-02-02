@@ -1,5 +1,3 @@
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 using TypeCode.Wpf.Helper.Event;
 
@@ -13,15 +11,15 @@ public class WizardNavigator : IWizardNavigator
     {
         _eventAggregator = eventAggregator;
     }
-        
+
     public async Task NextAsync(Wizard wizard)
     {
         var wizardHost = (IWizardHost)wizard.WizardInstances.ViewModelInstance;
         await wizardHost.NavigateFromAsync(wizard, NavigationAction.Next).ConfigureAwait(true);
 
-        var currentStepConfigurationIndex = wizard.StepConfigurations.IndexOf(wizard.CurrentStepConfiguration);
+        var currentStepConfigurationIndex = wizard.CurrentStepConfiguration is null ? -1 : wizard.StepConfigurations.IndexOf(wizard.CurrentStepConfiguration);
         wizard.CurrentStepConfiguration = wizard.StepConfigurations[currentStepConfigurationIndex + 1];
-            
+
         await wizardHost.NavigateToAsync(wizard, NavigationAction.Next).ConfigureAwait(true);
     }
 
@@ -31,13 +29,13 @@ public class WizardNavigator : IWizardNavigator
         {
             return;
         }
-            
+
         var wizardHost = (IWizardHost)wizard.WizardInstances.ViewModelInstance;
         await wizardHost.NavigateFromAsync(wizard, NavigationAction.Back).ConfigureAwait(true);
-            
-        var currentStepConfigurationIndex = wizard.StepConfigurations.IndexOf(wizard.CurrentStepConfiguration);
+
+        var currentStepConfigurationIndex = wizard.CurrentStepConfiguration is null ? 1 : wizard.StepConfigurations.IndexOf(wizard.CurrentStepConfiguration);
         wizard.CurrentStepConfiguration = wizard.StepConfigurations[currentStepConfigurationIndex - 1];
-            
+
         await wizardHost.NavigateToAsync(wizard, NavigationAction.Back).ConfigureAwait(true);
     }
 
@@ -52,8 +50,12 @@ public class WizardNavigator : IWizardNavigator
     public async Task FinishAsync(Wizard wizard)
     {
         await wizard.CompletedAction(wizard.NavigationContext).ConfigureAwait(true);
-        await _eventAggregator.PublishAsync(wizard.CompletedEvent).ConfigureAwait(true);
-            
+
+        if (wizard.CompletedEvent is not null)
+        {
+            await _eventAggregator.PublishAsync(wizard.CompletedEvent).ConfigureAwait(true);
+        }
+
         wizard.Content.Opacity = 1;
         wizard.Content.IsEnabled = true;
         wizard.WizardOverlay.Visibility = Visibility.Collapsed;
