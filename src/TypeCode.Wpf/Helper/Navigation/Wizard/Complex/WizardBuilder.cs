@@ -6,7 +6,7 @@ using TypeCode.Wpf.Main;
 
 namespace TypeCode.Wpf.Helper.Navigation.Wizard.Complex;
 
-public class WizardBuilder : IWizardBuilder
+public class WizardBuilder : IWizardAfterInitialBuilder
 {
     private readonly IFactory _factory;
 
@@ -25,7 +25,7 @@ public class WizardBuilder : IWizardBuilder
         );
     }
 
-    public IWizardBuilder Then<TViewModel>(Action<IWizardParameterBuilder, NavigationContext>? configureParameter = null)
+    public IWizardAfterInitialBuilder Then<TViewModel>(Action<IWizardParameterBuilder, NavigationContext>? configureParameter = null)
         where TViewModel : notnull
     {
         var parameterBuilder = _factory.Create<IWizardParameterBuilder>();
@@ -51,13 +51,13 @@ public class WizardBuilder : IWizardBuilder
         return this;
     }
 
-    public IWizardBuilder FinishAsync(Func<NavigationContext, Task> completedAction)
+    public IWizardAfterInitialBuilder FinishAsync(Func<NavigationContext, Task> completedAction)
     {
         _wizard.CompletedAction = completedAction;
         return this;
     }
 
-    public IWizardBuilder PublishAsync<TEvent>()
+    public IWizardAfterInitialBuilder PublishAsync<TEvent>()
     {
         _wizard.CompletedEvent = typeof(TEvent);
         return this;
