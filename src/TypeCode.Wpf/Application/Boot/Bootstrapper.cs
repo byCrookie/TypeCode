@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Autofac;
+﻿using Autofac;
 using Framework.Autofac.Boot;
 using Framework.Autofac.Boot.Autofac;
 using Framework.Autofac.Boot.Autofac.Registration;

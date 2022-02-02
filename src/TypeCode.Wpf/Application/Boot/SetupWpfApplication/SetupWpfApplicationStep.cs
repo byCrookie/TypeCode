@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using Autofac;
+﻿using Autofac;
 using Framework.Autofac.Boot;
 using TypeCode.Wpf.Main;
 using TypeCode.Wpf.Main.Content;

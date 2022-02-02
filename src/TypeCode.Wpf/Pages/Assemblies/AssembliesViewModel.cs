@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using TypeCode.Business.Bootstrapping;
+﻿using TypeCode.Business.Bootstrapping;
 using TypeCode.Wpf.Helper.Navigation.Contract;
 using TypeCode.Wpf.Helper.Navigation.Service;
 using TypeCode.Wpf.Helper.ViewModel;
@@ -10,6 +7,11 @@ namespace TypeCode.Wpf.Pages.Assemblies;
 
 public class AssemblyViewModel : Reactive, IAsyncNavigatedTo
 {
+    public AssemblyViewModel()
+    {
+        LoadedAssemblies = new List<string>();
+    }
+    
     public Task OnNavigatedToAsync(NavigationContext context)
     {
         var configuration = AssemblyLoadProvider.GetConfiguration();
@@ -24,8 +26,8 @@ public class AssemblyViewModel : Reactive, IAsyncNavigatedTo
         return Task.CompletedTask;
     }
 
-    public List<string> LoadedAssemblies {
-        get => Get<List<string>>();
+    public List<string>? LoadedAssemblies {
+        get => Get<List<string>?>();
         private set => Set(value);
     }
 }

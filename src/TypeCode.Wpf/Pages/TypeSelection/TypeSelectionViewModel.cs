@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.ObjectModel;
 using System.Windows.Controls;
 using Framework.Extensions.List;
 using TypeCode.Wpf.Helper.Navigation.Contract;
@@ -21,16 +17,16 @@ public class TypeSelectionViewModel : Reactive, IAsyncNavigatedTo
     public Task OnNavigatedToAsync(NavigationContext context)
     {
         var parameter = context.GetParameter<TypeSelectionParameter>();
-        parameter.Types.ForEach(t => Types.Add(new TypeItemViewModel(t)));
+        Types = new ObservableCollection<TypeItemViewModel>(parameter.Types.Select(t => new TypeItemViewModel(t)));
         SelectionMode = parameter.AllowMultiSelection ? SelectionMode.Multiple : SelectionMode.Single;
         return Task.CompletedTask;
     }
 
     public SelectionMode SelectionMode { get; set; }
 
-    public ObservableCollection<TypeItemViewModel> Types
+    public ObservableCollection<TypeItemViewModel>? Types
     {
-        get => Get<ObservableCollection<TypeItemViewModel>>();
+        get => Get<ObservableCollection<TypeItemViewModel>?>();
         set => Set(value);
     }
 
@@ -38,9 +34,9 @@ public class TypeSelectionViewModel : Reactive, IAsyncNavigatedTo
     {
         get
         {
-            return Types
+            return Types?
                 .Where(t => t.IsSelected)
-                .Select(t => t.Type);
+                .Select(t => t.Type) ?? new List<Type>();
         }
     }
 }

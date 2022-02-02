@@ -6,7 +6,7 @@ public static class AssemblyLoadProvider
 {
 	public static TypeCodeConfiguration GetConfiguration()
 	{
-		if (AssemblyProvider != null)
+		if (AssemblyProvider is not null)
 		{
 			return AssemblyProvider.GetConfiguration();
 		}
@@ -19,5 +19,5 @@ public static class AssemblyLoadProvider
 		AssemblyProvider = assemblyProvider;
 	}
 
-	private static IConfigurationProvider AssemblyProvider { get; set; }
+	private static IConfigurationProvider? AssemblyProvider { get; set; }
 }

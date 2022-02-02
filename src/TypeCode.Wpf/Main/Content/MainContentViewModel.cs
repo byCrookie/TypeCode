@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using TypeCode.Wpf.Application;
+﻿using TypeCode.Wpf.Application;
 using TypeCode.Wpf.Helper.Event;
 using TypeCode.Wpf.Helper.ViewModel;
 

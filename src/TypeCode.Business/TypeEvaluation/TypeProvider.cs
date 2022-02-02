@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using TypeCode.Business.Configuration;
+﻿using TypeCode.Business.Configuration;
 
 namespace TypeCode.Business.TypeEvaluation;
 
 internal class TypeProvider : ITypeProvider
 {
-    private TypeCodeConfiguration _configuration;
+    private TypeCodeConfiguration? _configuration;
 
     public void Initalize(TypeCodeConfiguration configuration)
     {
@@ -51,12 +47,12 @@ internal class TypeProvider : ITypeProvider
         _configuration = configuration;
     }
 
-    public bool HasByName(string name)
+    public bool HasByName(string? name)
     {
         return !string.IsNullOrEmpty(name) && GetTypesByName(name).Any();
     }
 
-    public IEnumerable<Type> TryGetByName(string name)
+    public IEnumerable<Type> TryGetByName(string? name)
     {
         return !string.IsNullOrEmpty(name) ? GetTypesByName(name) : new List<Type>();
     }
@@ -100,12 +96,12 @@ internal class TypeProvider : ITypeProvider
 
     private static string GetNameWithoutGeneric(Type type)
     {
-        return type.Name.Contains("`") ? type.Name.Remove(type.Name.IndexOf("`", StringComparison.Ordinal), 2) : type.Name;
+        return type.Name.Contains('`') ? type.Name.Remove(type.Name.IndexOf("`", StringComparison.Ordinal), 2) : type.Name;
     }
 
     private static string GetNameWithNamespace(Type type)
     {
-        return type.FullName != null ? $"{GetNamespace(type.FullName)}.{GetNameWithoutGeneric(type)}" : null;
+        return type.FullName != null ? $"{GetNamespace(type.FullName)}.{GetNameWithoutGeneric(type)}" : type.Name;
     }
 
     private static string GetNamespace(string fullName)
@@ -116,6 +112,11 @@ internal class TypeProvider : ITypeProvider
 
     private IEnumerable<Type> GetTypesByCondition(Func<Type, bool> condition)
     {
+        if (_configuration is null)
+        {
+            throw new ArgumentNullException($"{typeof(TypeCodeConfiguration)} not yet set");
+        }
+        
         foreach (var root in _configuration.AssemblyRoot)
         {
             foreach (var group in root.AssemblyGroup)
@@ -157,6 +158,11 @@ internal class TypeProvider : ITypeProvider
 
     private IEnumerable<Type> GetTypesByNames(IReadOnlyCollection<string> names)
     {
+        if (_configuration is null)
+        {
+            throw new ArgumentNullException($"{typeof(TypeCodeConfiguration)} not yet set");
+        }
+        
         foreach (var root in _configuration.AssemblyRoot)
         {
             foreach (var group in root.AssemblyGroup)
@@ -198,6 +204,11 @@ internal class TypeProvider : ITypeProvider
 
     private IEnumerable<Type> GetTypesByName(string name)
     {
+        if (_configuration is null)
+        {
+            throw new ArgumentNullException($"{typeof(TypeCodeConfiguration)} not yet set");
+        }
+        
         foreach (var root in _configuration.AssemblyRoot)
         {
             foreach (var group in root.AssemblyGroup)

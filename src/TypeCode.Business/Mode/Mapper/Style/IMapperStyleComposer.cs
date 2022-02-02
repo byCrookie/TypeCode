@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace TypeCode.Business.Mode.Mapper.Style;
+﻿namespace TypeCode.Business.Mode.Mapper.Style;
 
 internal interface IMapperStyleComposer
 {

@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace TypeCode.Wpf.Helper.Navigation.Modal.Service;
+﻿namespace TypeCode.Wpf.Helper.Navigation.Modal.Service;
 
 public interface IModalNavigationService
 {

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace TypeCode.Business.Bootstrapping;
+﻿namespace TypeCode.Business.Bootstrapping;
 
 internal class AssemblyLoadException : Exception
 {

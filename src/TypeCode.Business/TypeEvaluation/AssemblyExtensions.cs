@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
+﻿using System.Reflection;
 
 namespace TypeCode.Business.TypeEvaluation;
 
@@ -17,7 +14,7 @@ public static class AssemblyExtensions
         }
         catch (ReflectionTypeLoadException e)
         {
-            return e.Types.Where(t => t != null);
+            return e.Types.Where(type => type is not null).Cast<Type>();
         }
     }
 }

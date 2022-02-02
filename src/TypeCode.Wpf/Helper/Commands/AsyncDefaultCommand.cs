@@ -2,25 +2,10 @@
 
 namespace TypeCode.Wpf.Helper.Commands;
 
-public class AsyncDefaultCommand : IAsyncCommand
+public class AsyncDefaultCommand : AsyncCommand
 {
-    public bool CanExecute(object? parameter)
-    {
-        return false;
-    }
-
-    public void Execute(object? parameter)
-    {
-    }
-
-    public event EventHandler? CanExecuteChanged;
-    
-    public Task ExecuteAsync()
-    {
-        return Task.CompletedTask;
-    }
-
-    public void RaiseCanExecuteChanged()
+    public AsyncDefaultCommand() 
+        : base(() => Task.CompletedTask)
     {
     }
 }

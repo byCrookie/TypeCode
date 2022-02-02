@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using AsyncAwaitBestPractices.MVVM;
 using TypeCode.Business.Mode;
 using TypeCode.Business.Mode.UnitTestDependency.Manually;
@@ -18,11 +17,12 @@ public class UnitTestDependencyManuallyViewModel : Reactive, IAsyncNavigatedTo
     )
     {
         _unitTestDependencyManuallyGenerator = unitTestDependencyManuallyGenerator;
+        
+        GenerateCommand = new AsyncCommand(GenerateAsync);
     }
         
     public Task OnNavigatedToAsync(NavigationContext context)
     {
-        GenerateCommand = new AsyncCommand(GenerateAsync);
         return Task.CompletedTask;
     }
 
@@ -39,13 +39,13 @@ public class UnitTestDependencyManuallyViewModel : Reactive, IAsyncNavigatedTo
         
     public ICommand GenerateCommand { get; set; }
         
-    public string Input {
-        get => Get<string>();
+    public string? Input {
+        get => Get<string?>();
         set => Set(value);
     }
 
-    public string Output {
-        get => Get<string>();
+    public string? Output {
+        get => Get<string?>();
         private set => Set(value);
     }
 }

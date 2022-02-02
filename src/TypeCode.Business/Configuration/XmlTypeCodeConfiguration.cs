@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Xml.Serialization;
 
 namespace TypeCode.Business.Configuration;
@@ -86,21 +85,6 @@ public class XmlTypeCodeConfiguration
         
     [XmlElement(ElementName = "CloseCmd")]
     public bool CloseCmd { get; set; }
-
-    [XmlElement(ElementName = "SpaceKey")]
-    public string SpaceKey { get; set; }
-
-    [XmlElement(ElementName = "Username")]
-    public string Username { get; set; }
-
-    [XmlElement(ElementName = "Password")]
-    public string Password { get; set; }
-
-    [XmlElement(ElementName = "VersionPageName")]
-    public string VersionPageName { get; set; }
-
-    [XmlElement(ElementName = "BaseUrl")]
-    public string BaseUrl { get; set; }
 
     [XmlElement(ElementName = "AssemblyRoot")]
     public List<XmlAssemblyRoot> AssemblyRoot { get; set; }

@@ -7,7 +7,7 @@ using TypeCode.Wpf.Helper.ViewModel;
 
 namespace TypeCode.Wpf.Helper.Navigation.Wizard.WizardSimple;
 
-public class WizardSimpleViewModel<T> : Reactive, IAsyncNavigatedTo
+public class WizardSimpleViewModel<T> : Reactive, IAsyncNavigatedTo where T : notnull
 {
     private readonly IWizardNavigationService _wizardNavigationService;
 
@@ -33,13 +33,13 @@ public class WizardSimpleViewModel<T> : Reactive, IAsyncNavigatedTo
 
     public ICommand FinishCommand { get; set; }
 
-    public UserControl WizardPage {
-        get => Get<UserControl>();
+    public UserControl? WizardPage {
+        get => Get<UserControl?>();
         set => Set(value);
     }
 
-    public string FinishText {
-        get => Get<string>();
+    public string? FinishText {
+        get => Get<string?>();
         set => Set(value);
     }
 }

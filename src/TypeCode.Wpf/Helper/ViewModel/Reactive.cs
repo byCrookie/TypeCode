@@ -1,23 +1,23 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using JetBrains.Annotations;
 
 namespace TypeCode.Wpf.Helper.ViewModel;
 
 public class Reactive : INotifyPropertyChanged {
-    private readonly Dictionary<string, object> _properties = new();
+    private readonly Dictionary<string, object?> _properties = new();
         
-    protected T Get<T>([CallerMemberName] string name = null) {
+    protected T? Get<T>([CallerMemberName] string? name = null) {
         Debug.Assert(name != null, "name != null");
         if (_properties.TryGetValue(name, out var value))
         {
-            return value == null ? default : (T)value;
+            return value is null ? default : (T)value;
         }
         return default;
     }
         
-    protected void Set<T>(T value, [CallerMemberName] string name = null) {
+    protected void Set<T>(T value, [CallerMemberName] string? name = null) {
         Debug.Assert(name != null, "name != null");
         if (!Equals(value, Get<T>(name)))
         {
@@ -26,10 +26,10 @@ public class Reactive : INotifyPropertyChanged {
         }
     }
 
-    public event PropertyChangedEventHandler PropertyChanged;
+    public event PropertyChangedEventHandler? PropertyChanged;
 
     [NotifyPropertyChangedInvocator]
-    protected void OnPropertyChanged([CallerMemberName] string propertyName = null) {
+    protected void OnPropertyChanged([CallerMemberName] string? propertyName = null) {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

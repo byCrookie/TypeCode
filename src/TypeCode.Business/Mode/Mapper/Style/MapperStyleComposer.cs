@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Framework.DependencyInjection.Factory;
+﻿using Framework.DependencyInjection.Factory;
 
 namespace TypeCode.Business.Mode.Mapper.Style;
 

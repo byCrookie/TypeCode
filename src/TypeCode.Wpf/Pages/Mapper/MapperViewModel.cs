@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using AsyncAwaitBestPractices.MVVM;
 using TypeCode.Business.Mode;
 using TypeCode.Business.Mode.Mapper;
@@ -31,12 +28,13 @@ public class MapperViewModel : Reactive, IAsyncNavigatedTo
         _mapperGenerator = mapperGenerator;
         _typeProvider = typeProvider;
         _wizardNavigationService = wizardNavigationService;
+        
+        GenerateCommand = new AsyncCommand(GenerateAsync);
+        StyleCommand = new AsyncCommand<MappingStyle>(StyleAsync);
     }
 
     public Task OnNavigatedToAsync(NavigationContext context)
     {
-        GenerateCommand = new AsyncCommand(GenerateAsync);
-        StyleCommand = new AsyncCommand<MappingStyle>(StyleAsync);
         NewStyle = true;
         ExistingStyle = false;
         return Task.CompletedTask;
@@ -70,10 +68,11 @@ public class MapperViewModel : Reactive, IAsyncNavigatedTo
                     FinishButtonText = "Select"
                 }, navigationContext).ConfigureAwait(true);
 
-            var parameter = new MapperTypeCodeGeneratorParameter
+            var parameter = new MapperTypeCodeGeneratorParameter(
+                new MappingType(selectionViewModel.SelectedTypes.FirstOrDefault()),
+                new MappingType(selectionViewModel.SelectedTypes.LastOrDefault())
+            )
             {
-                MapFrom = new MappingType(selectionViewModel.SelectedTypes.First()),
-                MapTo = new MappingType(selectionViewModel.SelectedTypes.Last()),
                 MappingStyle = _mappingStyle
             };
 
@@ -85,15 +84,15 @@ public class MapperViewModel : Reactive, IAsyncNavigatedTo
     public ICommand GenerateCommand { get; set; }
     public ICommand StyleCommand { get; set; }
 
-    public string Input
+    public string? Input
     {
-        get => Get<string>();
+        get => Get<string?>();
         set => Set(value);
     }
 
-    public string Output
+    public string? Output
     {
-        get => Get<string>();
+        get => Get<string?>();
         private set => Set(value);
     }
 

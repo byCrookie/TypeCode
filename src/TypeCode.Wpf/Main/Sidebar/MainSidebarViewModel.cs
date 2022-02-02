@@ -1,8 +1,6 @@
 ﻿using System.Windows.Input;
-using AsyncAwaitBestPractices;
 using AsyncAwaitBestPractices.MVVM;
 using Framework.DependencyInjection.Factory;
-using TypeCode.Wpf.Helper.Commands;
 using TypeCode.Wpf.Helper.Navigation.Service;
 using TypeCode.Wpf.Helper.Navigation.Wizard.Complex;
 using TypeCode.Wpf.Helper.ViewModel;
@@ -63,43 +61,43 @@ public class MainSidebarViewModel : Reactive
     private Task NavigateToSpecflowAsync()
     {
         ActiveItem = ActiveItem.Specflow;
-        return _navigationService.NavigateAsync<SpecflowViewModel>();
+        return _navigationService.NavigateAsync<SpecflowViewModel>(new NavigationContext());
     }
 
     private Task NavigateToUnitTestDependencyTypeAsync()
     {
         ActiveItem = ActiveItem.UnitTestType;
-        return _navigationService.NavigateAsync<UnitTestDependencyTypeViewModel>();
+        return _navigationService.NavigateAsync<UnitTestDependencyTypeViewModel>(new NavigationContext());
     }
 
     private Task NavigateToUnitTestDependencyManuallyAsync()
     {
         ActiveItem = ActiveItem.UnitTestManually;
-        return _navigationService.NavigateAsync<UnitTestDependencyManuallyViewModel>();
+        return _navigationService.NavigateAsync<UnitTestDependencyManuallyViewModel>(new NavigationContext());
     }
 
     private Task NavigateToComposerAsync()
     {
         ActiveItem = ActiveItem.Composer;
-        return _navigationService.NavigateAsync<ComposerViewModel>();
+        return _navigationService.NavigateAsync<ComposerViewModel>(new NavigationContext());
     }
 
     private Task NavigateToMapperAsync()
     {
         ActiveItem = ActiveItem.Mapper;
-        return _navigationService.NavigateAsync<MapperViewModel>();
+        return _navigationService.NavigateAsync<MapperViewModel>(new NavigationContext());
     }
 
     private Task NavigateToBuilderAsync()
     {
         ActiveItem = ActiveItem.Builder;
-        return _navigationService.NavigateAsync<BuilderViewModel>();
+        return _navigationService.NavigateAsync<BuilderViewModel>(new NavigationContext());
     }
 
     private Task NavigateToAssemblyAsync()
     {
         ActiveItem = ActiveItem.Assembly;
-        return _navigationService.NavigateAsync<AssemblyViewModel>();
+        return _navigationService.NavigateAsync<AssemblyViewModel>(new NavigationContext());
     }
 
     private Task OpenSettingsAsync()

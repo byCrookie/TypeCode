@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace TypeCode.Console.Mode.Selection;
+﻿namespace TypeCode.Console.Mode.Selection;
 
 internal class SelectionStepOptions
 {

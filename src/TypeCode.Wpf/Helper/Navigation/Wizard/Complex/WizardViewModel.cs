@@ -113,39 +113,39 @@ public class WizardViewModel : Reactive, IWizardHost
     {
         if (_wizard is null)
         {
-            throw new ArgumentException($"Wizard is not set");
+            throw new ArgumentException("Wizard is not set");
         }
         
         return _wizardNavigator.FinishAsync(_wizard);
     }
 
-    public UserControl WizardPage
+    public UserControl? WizardPage
     {
-        get => Get<UserControl>();
+        get => Get<UserControl?>();
         set => Set(value);
     }
 
-    public ICommand BackCommand
+    public ICommand? BackCommand
     {
-        get => Get<ICommand>();
+        get => Get<ICommand?>();
         set => Set(value);
     }
 
-    public ICommand NextCommand
+    public ICommand? NextCommand
     {
-        get => Get<ICommand>();
+        get => Get<ICommand?>();
         set => Set(value);
     }
 
-    public ICommand CancelCommand
+    public ICommand? CancelCommand
     {
-        get => Get<ICommand>();
+        get => Get<ICommand?>();
         set => Set(value);
     }
 
-    public ICommand FinishCommand
+    public ICommand? FinishCommand
     {
-        get => Get<ICommand>();
+        get => Get<ICommand?>();
         set => Set(value);
     }
 }

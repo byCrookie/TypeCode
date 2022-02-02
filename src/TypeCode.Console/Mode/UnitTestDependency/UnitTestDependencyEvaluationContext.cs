@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using TypeCode.Console.Mode.ExitOrContinue;
+﻿using TypeCode.Console.Mode.ExitOrContinue;
 using TypeCode.Console.Mode.MultipleTypes;
 using TypeCode.Console.Mode.Selection;
 using Workflow;

@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using TypeCode.Business.Format;
+﻿using TypeCode.Business.Format;
 using TypeCode.Business.Mode;
 using TypeCode.Business.Mode.Mapper;
 using TypeCode.Business.Mode.Mapper.Style;
@@ -78,18 +75,14 @@ internal class MapperTypeCodeStrategy : IMapperTypeCodeStrategy
                 }
             )
             .IfFlow(context => context.Selection == 1, ifFlow => ifFlow
-                .ThenAsync(c => c.MappingCode, c => _mapperTypeCodeGenerator.GenerateAsync(new MapperTypeCodeGeneratorParameter
+                .ThenAsync(c => c.MappingCode, c => _mapperTypeCodeGenerator.GenerateAsync(new MapperTypeCodeGeneratorParameter(c.SelectedFirstType, c.SelectedSecondType)
                 {
-                    MapFrom = c.SelectedFirstType,
-                    MapTo = c.SelectedSecondType,
                     MappingStyle = MappingStyle.New
                 }))
             )
             .IfFlow(context => context.Selection == 2, ifFlow => ifFlow
-                .ThenAsync(c => c.MappingCode, c => _mapperTypeCodeGenerator.GenerateAsync(new MapperTypeCodeGeneratorParameter
+                .ThenAsync(c => c.MappingCode, c => _mapperTypeCodeGenerator.GenerateAsync(new MapperTypeCodeGeneratorParameter(c.SelectedFirstType, c.SelectedSecondType)
                 {
-                    MapFrom = c.SelectedFirstType,
-                    MapTo = c.SelectedSecondType,
                     MappingStyle = MappingStyle.Existing
                 }))
             )

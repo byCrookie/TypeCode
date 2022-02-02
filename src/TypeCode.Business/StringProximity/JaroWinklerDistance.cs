@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace TypeCode.Business.StringProximity;
+﻿namespace TypeCode.Business.StringProximity;
 
 internal static class JaroWinklerDistance
 {

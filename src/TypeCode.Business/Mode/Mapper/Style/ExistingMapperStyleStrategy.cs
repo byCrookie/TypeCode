@@ -10,8 +10,13 @@ internal class ExistingMapperStyleStrategy : IExistingMapperStyleStrategy
         return style == MappingStyle.Existing;
     }
 
-    public string Generate(MapperTypeCodeGeneratorParameter parameter)
+    public string? Generate(MapperTypeCodeGeneratorParameter parameter)
     {
+        if (parameter.MapFrom.Type is null || parameter.MapTo.Type is null)
+        {
+            return null;
+        }
+        
         var firstType = parameter.MapFrom;
         var secondType = parameter.MapTo;
 
@@ -31,6 +36,11 @@ internal class ExistingMapperStyleStrategy : IExistingMapperStyleStrategy
         
     private static void GenerateUsingStyle(StringBuilder stringBuilder, MappingType firstType, MappingType secondType)
     {
+        if (firstType.Type is null || secondType.Type is null)
+        {
+            return;
+        }
+        
         var methodName = secondType.EvaluateMethodName();
 
         stringBuilder.AppendLine($"public void {methodName}({firstType.Type.Name} {firstType.ParameterName()}, {secondType.Type.Name} {secondType.ParameterName()})");

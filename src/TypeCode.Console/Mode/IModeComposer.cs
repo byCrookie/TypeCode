@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace TypeCode.Console.Mode;
+﻿namespace TypeCode.Console.Mode;
 
 internal interface IModeComposer
 {

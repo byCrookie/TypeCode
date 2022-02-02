@@ -13,12 +13,14 @@ internal class AssemblyLoadBootStep<TContext> : IAssemblyLoadBootStep<TContext>
     where TContext : WorkflowBaseContext, IBootContext
 {
     private readonly IConfigurationMapper _configurationMapper;
+    private readonly IGenericXmlSerializer _genericXmlSerializer;
 
     private IEnumerable<Regex> _includeFileRegexPatterns;
 
-    public AssemblyLoadBootStep(IConfigurationMapper configurationMapper)
+    public AssemblyLoadBootStep(IConfigurationMapper configurationMapper, IGenericXmlSerializer genericXmlSerializer)
     {
         _configurationMapper = configurationMapper;
+        _genericXmlSerializer = genericXmlSerializer;
 
         _includeFileRegexPatterns = new List<Regex>();
     }
@@ -137,13 +139,7 @@ internal class AssemblyLoadBootStep<TContext> : IAssemblyLoadBootStep<TContext>
     {
         if (Directory.Exists(absolutPath))
         {
-            var assemblyDirectory = new AssemblyDirectory
-            {
-                RelativePath = assemblyHolder.Path,
-                AbsolutPath = absolutPath,
-                Files = Directory.GetFiles(absolutPath.Trim(), "*.dll")
-            };
-
+            var assemblyDirectory = new AssemblyDirectory(assemblyHolder.Path, absolutPath, Directory.GetFiles(absolutPath.Trim(), "*.dll"));
 
             var filteredFiles = assemblyDirectory.Files
                 .Where(file => _includeFileRegexPatterns
@@ -171,10 +167,10 @@ internal class AssemblyLoadBootStep<TContext> : IAssemblyLoadBootStep<TContext>
         }
     }
 
-    private static XmlTypeCodeConfiguration ReadXmlConfiguration()
+    private XmlTypeCodeConfiguration ReadXmlConfiguration()
     {
         var cfg = $@"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\Configuration.cfg.xml";
         var xml = File.ReadAllText(cfg);
-        return GenericXmlSerializer.Deserialize<XmlTypeCodeConfiguration>(xml);
+        return _genericXmlSerializer.Deserialize<XmlTypeCodeConfiguration>(xml);
     }
 }

@@ -2,5 +2,5 @@
 
 public class UnitTestDependencyManuallyGeneratorParameter : ITypeCodeGeneratorParameter
 {
-    public string Input { get; set; }
+    public string? Input { get; set; }
 }

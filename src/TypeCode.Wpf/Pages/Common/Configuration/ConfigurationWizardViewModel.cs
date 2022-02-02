@@ -42,8 +42,13 @@ public class ConfigurationWizardViewModel : Reactive, IAsyncInitialNavigated
         Configuration = FormatXml(xml);
     }
         
-    private static string FormatXml(string xml)
+    private static string? FormatXml(string? xml)
     {
+        if (string.IsNullOrEmpty(xml))
+        {
+            return xml;
+        }
+        
         try
         {
             var doc = XDocument.Parse(xml);
@@ -59,9 +64,9 @@ public class ConfigurationWizardViewModel : Reactive, IAsyncInitialNavigated
     public ICommand SaveCommand { get; set; }
     public ICommand FormatCommand { get; set; }
 
-    public string Configuration
+    public string? Configuration
     {
-        get => Get<string>();
+        get => Get<string?>();
         set => Set(value);
     }
 }

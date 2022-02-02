@@ -1,23 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using TypeCode.Business.Format;
 
 namespace TypeCode.Business.Mode.UnitTestDependency.Manually;
 
 internal class UnitTestDependencyManuallyTypeCodeGenerator : IUnitTestDependencyManuallyTypeCodeGenerator
 {
-    public Task<string> GenerateAsync(UnitTestDependencyManuallyGeneratorParameter parameter)
+    public Task<string?> GenerateAsync(UnitTestDependencyManuallyGeneratorParameter parameter)
     {
         return !string.IsNullOrEmpty(parameter.Input)
             ? GenerateUnitTestDependenciesManuallyAsync(parameter.Input)
-            : Task.FromResult<string>(null);
+            : Task.FromResult<string?>(null);
     }
 
-    private static Task<string> GenerateUnitTestDependenciesManuallyAsync(string input)
+    private static Task<string?> GenerateUnitTestDependenciesManuallyAsync(string input)
     {
         var lines = input.Split(Environment.NewLine);
 
@@ -26,7 +22,7 @@ internal class UnitTestDependencyManuallyTypeCodeGenerator : IUnitTestDependency
             : GenerateForSingleLineAsync(lines.Single());
     }
 
-    private static Task<string> GenerateForMultiLineAsync(IEnumerable<string> lines)
+    private static Task<string?> GenerateForMultiLineAsync(IEnumerable<string> lines)
     {
         var singleLine = string.Join("", lines.Select(line => line.Trim().TrimEnd('\r', '\n')));
         return GenerateForSingleLineAsync(singleLine);
@@ -35,7 +31,7 @@ internal class UnitTestDependencyManuallyTypeCodeGenerator : IUnitTestDependency
     private static readonly Regex PartsRegex =
         new(@"\(([^)]*)\)", RegexOptions.IgnoreCase | RegexOptions.Compiled, TimeSpan.FromMilliseconds(300));
 
-    private static Task<string> GenerateForSingleLineAsync(string line)
+    private static Task<string?> GenerateForSingleLineAsync(string line)
     {
         var matches = PartsRegex.Split(line);
 
@@ -98,7 +94,7 @@ internal class UnitTestDependencyManuallyTypeCodeGenerator : IUnitTestDependency
 
         stringBuilder.Append($@"{Cuts.Long()}");
 
-        return Task.FromResult(stringBuilder.ToString());
+        return Task.FromResult<string?>(stringBuilder.ToString());
     }
 
     private static void RemoveLastComma(StringBuilder stringBuilder)

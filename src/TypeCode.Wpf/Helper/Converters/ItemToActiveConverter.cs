@@ -1,5 +1,4 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Media;
 using TypeCode.Wpf.Main.Sidebar;
@@ -8,9 +7,14 @@ namespace TypeCode.Wpf.Helper.Converters;
 
 public class ItemToActiveConverter : IValueConverter
 {
+	public ItemToActiveConverter()
+	{
+		Active = new SolidColorBrush(Colors.WhiteSmoke);
+		NotActive = new SolidColorBrush(Colors.Black);
+	}
+	
 	public Brush Active { get; set; }
 	public Brush NotActive { get; set; }
-		
 
 	public virtual object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 	{

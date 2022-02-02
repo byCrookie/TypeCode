@@ -1,22 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 using TypeCode.Business.Format;
 
 namespace TypeCode.Business.Mode.Composer;
 
 internal class ComposerTypeCodeGenerator : IComposerTypeCodeGenerator
 {
-    public Task<string> GenerateAsync(ComposerTypeCodeGeneratorParameter parameter)
+    public Task<string?> GenerateAsync(ComposerTypeCodeGeneratorParameter parameter)
     {
         if (parameter.Type is not null && parameter.Interfaces.Any())
         {
-            return Task.FromResult(GenerateComposerCode(parameter.Type, parameter.Interfaces)); 
+            return Task.FromResult<string?>(GenerateComposerCode(parameter.Type, parameter.Interfaces)); 
         }
 
-        return Task.FromResult<string>(null);
+        return Task.FromResult<string?>(null);
     }
 
     private static string GenerateComposerCode(Type type, List<Type> interfaces)

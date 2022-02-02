@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Text;
 using Framework.Extensions.List;
 using TypeCode.Business.Bootstrapping;
 using TypeCode.Business.Format;

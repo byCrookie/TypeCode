@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace TypeCode.Business.Configuration;
+﻿namespace TypeCode.Business.Configuration;
 
 public class XmlParserException : Exception
 {

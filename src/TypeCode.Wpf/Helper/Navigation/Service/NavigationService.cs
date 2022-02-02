@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 using Framework.DependencyInjection.Factory;
 using TypeCode.Wpf.Helper.Navigation.Contract;
 using TypeCode.Wpf.Main.Content;
@@ -11,7 +9,7 @@ public class NavigationService : INavigationService
 {
     private readonly MainContentView _mainContentView;
     private readonly IFactory _factory;
-    private object _lastViewModel;
+    private object? _lastViewModel;
 
     public NavigationService(MainContentView mainContentView, IFactory factory)
     {
@@ -19,7 +17,7 @@ public class NavigationService : INavigationService
         _factory = factory;
     }
 
-    public async Task NavigateAsync<T>(NavigationContext context = null)
+    public async Task NavigateAsync<T>(NavigationContext context) where T : notnull
     {
         await CallNavigatedFromOnLastViewModelAsync(context).ConfigureAwait(true);
 
@@ -55,7 +53,7 @@ public class NavigationService : INavigationService
     {
         if (viewModelInstance is IAsyncNavigatedTo asyncNavigatedTo)
         {
-            return asyncNavigatedTo.OnNavigatedToAsync(context ?? new NavigationContext());
+            return asyncNavigatedTo.OnNavigatedToAsync(context);
         }
             
         return Task.CompletedTask;
@@ -64,7 +62,7 @@ public class NavigationService : INavigationService
     private Task CallNavigatedFromOnLastViewModelAsync(NavigationContext context)
     {
         return _lastViewModel is IAsyncNavigatedFrom asyncNavigatedFrom
-            ? asyncNavigatedFrom.OnNavigatedFromAsync(context ?? new NavigationContext())
+            ? asyncNavigatedFrom.OnNavigatedFromAsync(context)
             : Task.CompletedTask;
     }
 }

@@ -1,8 +1,5 @@
-﻿using System;
-using System.Linq;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
 using TypeCode.Business.Format;
 using TypeCode.Business.TypeEvaluation.Property;
 
@@ -10,11 +7,11 @@ namespace TypeCode.Business.Mode.Builder;
 
 internal class BuilderTypeCodeGenerator : IBuilderTypeCodeGenerator
 {
-    public Task<string> GenerateAsync(BuilderTypeCodeGeneratorParameter parameter)
+    public Task<string?> GenerateAsync(BuilderTypeCodeGeneratorParameter parameter)
     {
         return parameter.Type is not null
-            ? Task.FromResult(GenerateBuilderCode(parameter.Type))
-            : Task.FromResult<string>(null);
+            ? Task.FromResult<string?>(GenerateBuilderCode(parameter.Type))
+            : Task.FromResult<string?>(null);
     }
 
     private static string GenerateBuilderCode(Type type)

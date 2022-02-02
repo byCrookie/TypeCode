@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
 using Framework.Extensions.Number;
 using TypeCode.Business.Format;
 using TypeCode.Business.TypeEvaluation.Property;
@@ -12,11 +8,11 @@ namespace TypeCode.Business.Mode.Specflow;
 
 internal class SpecflowTypeCodeGenerator : ISpecflowTypeCodeGenerator
 {
-    public Task<string> GenerateAsync(SpecflowTypeCodeGeneratorParameter parameter)
+    public Task<string?> GenerateAsync(SpecflowTypeCodeGeneratorParameter parameter)
     {
         return parameter.Types.Any() 
-            ? Task.FromResult(GenerateTable(parameter.Types)) 
-            : Task.FromResult<string>(null);
+            ? Task.FromResult<string?>(GenerateTable(parameter.Types)) 
+            : Task.FromResult<string?>(null);
     }
 
     private static string GenerateTable(IEnumerable<Type> types)

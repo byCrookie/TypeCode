@@ -1,6 +1,4 @@
-﻿using System;
-using System.Reflection;
-using System.Threading.Tasks;
+﻿using System.Reflection;
 using Serilog;
 using TypeCode.Business.Logging;
 using TypeCode.Console.Boot;

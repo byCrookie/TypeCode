@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using AsyncAwaitBestPractices.MVVM;
 using TypeCode.Business.Mode;
 using TypeCode.Business.Mode.Composer;
@@ -28,11 +26,12 @@ public class ComposerViewModel : Reactive, IAsyncNavigatedTo
         _composerTypeGenerator = composerTypeGenerator;
         _typeProvider = typeProvider;
         _wizardNavigationService = wizardNavigationService;
+        
+        GenerateCommand = new AsyncCommand(GenerateAsync);
     }
         
     public Task OnNavigatedToAsync(NavigationContext context)
     {
-        GenerateCommand = new AsyncCommand(GenerateAsync);
         return Task.CompletedTask;
     }
 
@@ -62,9 +61,9 @@ public class ComposerViewModel : Reactive, IAsyncNavigatedTo
         var parameter = new ComposerTypeCodeGeneratorParameter
         {
             Type = selectedType,
-            Interfaces = _typeProvider
-                .TryGetTypesByCondition(typ => typ.GetInterface(selectedType?.Name ?? string.Empty) != null)
-                .ToList()
+            Interfaces = selectedType is not null ? _typeProvider
+                .TryGetTypesByCondition(typ => typ.GetInterface(selectedType.Name) != null)
+                .ToList() : new List<Type>()
         };
             
         var result = await _composerTypeGenerator.GenerateAsync(parameter).ConfigureAwait(true);
@@ -73,13 +72,13 @@ public class ComposerViewModel : Reactive, IAsyncNavigatedTo
         
     public ICommand GenerateCommand { get; set; }
         
-    public string Input {
-        get => Get<string>();
+    public string? Input {
+        get => Get<string?>();
         set => Set(value);
     }
 
-    public string Output {
-        get => Get<string>();
+    public string? Output {
+        get => Get<string?>();
         private set => Set(value);
     }
 }

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace TypeCode.Business.TypeEvaluation;
+﻿namespace TypeCode.Business.TypeEvaluation;
 
 internal class TypeLoadException : Exception
 {

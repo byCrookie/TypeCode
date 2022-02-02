@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using AsyncAwaitBestPractices.MVVM;
 using TypeCode.Business.Mode;
 using TypeCode.Business.Mode.Builder;
@@ -28,11 +26,12 @@ public class BuilderViewModel : Reactive, IAsyncNavigatedTo
         _builderGenerator = builderGenerator;
         _typeProvider = typeProvider;
         _wizardNavigationService = wizardNavigationService;
+        
+        GenerateCommand = new AsyncCommand(GenerateAsync);
     }
         
     public Task OnNavigatedToAsync(NavigationContext context)
     {
-        GenerateCommand = new AsyncCommand(GenerateAsync);
         return Task.CompletedTask;
     }
 
@@ -70,13 +69,13 @@ public class BuilderViewModel : Reactive, IAsyncNavigatedTo
         
     public ICommand GenerateCommand { get; set; }
         
-    public string Input {
-        get => Get<string>();
+    public string? Input {
+        get => Get<string?>();
         set => Set(value);
     }
 
-    public string Output {
-        get => Get<string>();
+    public string? Output {
+        get => Get<string?>();
         private set => Set(value);
     }
 }

@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace TypeCode.Console.Mode.Exit;
+﻿namespace TypeCode.Console.Mode.Exit;
 
 internal class ExitTypeCodeStrategy : IExitTypeCodeStrategy
 {

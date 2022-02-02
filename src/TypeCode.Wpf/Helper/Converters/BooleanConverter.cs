@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Windows.Data;
 
 namespace TypeCode.Wpf.Helper.Converters;
 
-public class BooleanConverter<T> : IValueConverter
+public class BooleanConverter<T> : IValueConverter where T : notnull
 {
 	public BooleanConverter(T trueValue, T falseValue)
 	{
@@ -18,7 +16,12 @@ public class BooleanConverter<T> : IValueConverter
 
 	public virtual object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 	{
-		return value is bool b && b ? True : False;
+		if (value is bool boolean)
+		{
+			return boolean ? True : False;
+		}
+
+		return False;
 	}
 
 	public virtual object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

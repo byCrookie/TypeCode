@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
+﻿using System.Collections.Concurrent;
 using System.Reflection;
 
 namespace TypeCode.Business.Bootstrapping;
 
 public class AssemblyDirectory
 {
-    public AssemblyDirectory()
+    public AssemblyDirectory(string relativePath, string absolutPath, IEnumerable<string> files)
     {
-        Files = new List<string>();
+        RelativePath = relativePath;
+        AbsolutPath = absolutPath;
+        Files = files;
         Assemblies = new ConcurrentBag<Assembly>();
         Types = new ConcurrentBag<Type>();
     }

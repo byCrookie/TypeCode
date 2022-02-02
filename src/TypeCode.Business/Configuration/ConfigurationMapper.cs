@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-
-namespace TypeCode.Business.Configuration;
+﻿namespace TypeCode.Business.Configuration;
 
 internal class ConfigurationMapper : IConfigurationMapper
 {

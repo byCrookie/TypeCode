@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace TypeCode.Console.Mode.MultipleTypes;
+﻿namespace TypeCode.Console.Mode.MultipleTypes;
 
 internal interface IMultipleTypesSelectionContext
 {

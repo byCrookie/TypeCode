@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace TypeCode.Console.Mode;
+﻿namespace TypeCode.Console.Mode;
 
 internal interface ITypeCodeStrategy
 {

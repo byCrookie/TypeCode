@@ -87,6 +87,7 @@ public class WizardBuilder : IWizardBuilder
 
     public Wizard Build()
     {
+        _wizard.CurrentStepConfiguration = _wizard.StepConfigurations.First();
         return _wizard;
     }
 }

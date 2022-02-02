@@ -1,12 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Reflection;
-using TypeCode.Business.Configuration;
+﻿using TypeCode.Business.Configuration;
 
 namespace TypeCode.Business.Bootstrapping;
 
 internal class ConfigurationProvider : IConfigurationProvider
 {
-	private static TypeCodeConfiguration _configuration;
+	private static TypeCodeConfiguration? _configuration;
 
 	public void SetConfiguration(TypeCodeConfiguration configuration)
 	{
@@ -15,11 +13,11 @@ internal class ConfigurationProvider : IConfigurationProvider
 
 	public TypeCodeConfiguration GetConfiguration()
 	{
+		if (_configuration is null)
+		{
+			throw new ArgumentNullException($"{nameof(TypeCodeConfiguration)} not yet set");
+		}
+		
 		return _configuration;
-	}
-
-	public IEnumerable<Assembly> GetAssemblies()
-	{
-		yield break;
 	}
 }

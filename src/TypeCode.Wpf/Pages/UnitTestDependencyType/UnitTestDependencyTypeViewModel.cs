@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using AsyncAwaitBestPractices.MVVM;
 using TypeCode.Business.Mode;
 using TypeCode.Business.Mode.UnitTestDependency.Type;
@@ -29,11 +26,12 @@ public class UnitTestDependencyTypeViewModel : Reactive, IAsyncNavigatedTo
         _unitTestDependencyTypeGenerator = unitTestDependencyTypeGenerator;
         _typeProvider = typeProvider;
         _wizardNavigationService = wizardNavigationService;
+        
+        GenerateCommand = new AsyncCommand(GenerateAsync);
     }
         
     public Task OnNavigatedToAsync(NavigationContext context)
     {
-        GenerateCommand = new AsyncCommand(GenerateAsync);
         return Task.CompletedTask;
     }
 
@@ -71,13 +69,13 @@ public class UnitTestDependencyTypeViewModel : Reactive, IAsyncNavigatedTo
         
     public ICommand GenerateCommand { get; set; }
         
-    public string Input {
-        get => Get<string>();
+    public string? Input {
+        get => Get<string?>();
         set => Set(value);
     }
 
-    public string Output {
-        get => Get<string>();
+    public string? Output {
+        get => Get<string?>();
         private set => Set(value);
     }
 }

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using TypeCode.Console.Mode;
+﻿using TypeCode.Console.Mode;
 using TypeCode.Console.Mode.ExitOrContinue;
 using Workflow;
 

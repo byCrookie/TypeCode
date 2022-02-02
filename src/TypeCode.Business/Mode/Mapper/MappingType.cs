@@ -1,21 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Humanizer;
+﻿using Humanizer;
 using TypeCode.Business.StringProximity;
 
 namespace TypeCode.Business.Mode.Mapper;
 
 public class MappingType
 {
-    public MappingType(Type type)
+    public MappingType(Type? type)
     {
         Type = type;
     }
-        
-    public Type Type { get; }
 
-    public string MostAccurateProperty(string property)
+    public Type? Type { get; }
+
+    public string? MostAccurateProperty(string property)
     {
         var properties = Properties().ToList();
 
@@ -29,7 +26,7 @@ public class MappingType
         var propertiesWithProximities =
             from mappingProperty in properties
             let proximity = JaroWinklerDistance.Proximity(mappingProperty, property)
-            select new ProximityProperty {Property = mappingProperty, Jaro = proximity};
+            select new ProximityProperty(mappingProperty, proximity);
 
         return propertiesWithProximities
             .OrderByDescending(distance => distance.Jaro)

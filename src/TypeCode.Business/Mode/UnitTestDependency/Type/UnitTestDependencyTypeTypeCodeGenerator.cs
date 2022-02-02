@@ -1,21 +1,18 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 using TypeCode.Business.Format;
 
 namespace TypeCode.Business.Mode.UnitTestDependency.Type;
 
 internal class UnitTestDependencyTypeTypeCodeGenerator : IUnitTestDependencyTypeTypeCodeGenerator
 {
-    public Task<string> GenerateAsync(UnitTestDependencyTypeGeneratorParameter parameter)
+    public Task<string?> GenerateAsync(UnitTestDependencyTypeGeneratorParameter parameter)
     {
         return parameter.Types.Any() 
             ? GenerateUnitTestDependenciesAsync(parameter.Types) 
-            : Task.FromResult<string>(null);
+            : Task.FromResult<string?>(null);
     }
 
-    private static Task<string> GenerateUnitTestDependenciesAsync(List<System.Type> types)
+    private static Task<string?> GenerateUnitTestDependenciesAsync(List<System.Type> types)
     {
         var stringBuilder = new StringBuilder();
 
@@ -24,7 +21,7 @@ internal class UnitTestDependencyTypeTypeCodeGenerator : IUnitTestDependencyType
             stringBuilder.AppendLine(GenerateDependencies(type));
         }
 
-        return Task.FromResult(stringBuilder.ToString());
+        return Task.FromResult<string?>(stringBuilder.ToString());
     }
 
     private static string GenerateDependencies(System.Type type)

@@ -6,14 +6,9 @@
         xmlns:sidebar="clr-namespace:TypeCode.Wpf.Main.Sidebar"
         xmlns:main="clr-namespace:TypeCode.Wpf.Main"
         xmlns:content="clr-namespace:TypeCode.Wpf.Main.Content"
-        xmlns:converters="clr-namespace:TypeCode.Wpf.Helper.Converters"
         mc:Ignorable="d"
         Title="TypeCode" Height="450" Width="800" d:DataContext="{d:DesignInstance main:MainViewModel}"
         Background="{StaticResource Primary}">
-    
-    <Window.Resources>
-        <converters:ApplyNumberConverter x:Key="ApplyNumberConverter" Number="-30"/>
-    </Window.Resources>
 
     <Grid>
         <Grid ZIndex="0" x:Name="Main">

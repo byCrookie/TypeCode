@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace TypeCode.Business.Mode.UnitTestDependency.Type;
+﻿namespace TypeCode.Business.Mode.UnitTestDependency.Type;
 
 public class UnitTestDependencyTypeGeneratorParameter : ITypeCodeGeneratorParameter
 {

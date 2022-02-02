@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using TypeCode.Business.Mode.Mapper;
+﻿using TypeCode.Business.Mode.Mapper;
 using TypeCode.Console.Mode.MultipleTypes;
 using TypeCode.Console.Mode.Selection;
 using Workflow;

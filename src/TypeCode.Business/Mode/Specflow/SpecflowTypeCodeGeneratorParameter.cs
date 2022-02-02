@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace TypeCode.Business.Mode.Specflow;
+﻿namespace TypeCode.Business.Mode.Specflow;
 
 public class SpecflowTypeCodeGeneratorParameter : ITypeCodeGeneratorParameter
 {

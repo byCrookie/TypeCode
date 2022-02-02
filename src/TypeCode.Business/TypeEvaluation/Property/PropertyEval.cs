@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Reflection;
 
 namespace TypeCode.Business.TypeEvaluation.Property;
@@ -25,21 +24,15 @@ internal class PropertyEval
     {
         var dataType = GetNestedTypeIfAvailable(type).Name;
 
-        switch (dataType)
+        return dataType switch
         {
-            case "Int64":
-                return "long";
-            case "Int32":
-                return "int";
-            case "Int16":
-                return "short";
-            case "String":
-                return "string";
-            case "Boolean":
-                return "bool";
-            default:
-                return dataType;
-        }
+            "Int64" => "long",
+            "Int32" => "int",
+            "Int16" => "short",
+            "String" => "string",
+            "Boolean" => "bool",
+            _ => dataType
+        };
     }
 
     public static bool IsList(Type type)
