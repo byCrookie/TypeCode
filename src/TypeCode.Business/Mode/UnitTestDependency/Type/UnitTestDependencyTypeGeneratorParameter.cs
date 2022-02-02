@@ -2,5 +2,10 @@
 
 public class UnitTestDependencyTypeGeneratorParameter : ITypeCodeGeneratorParameter
 {
+    public UnitTestDependencyTypeGeneratorParameter()
+    {
+        Types = new List<System.Type>();
+    }
+    
     public List<System.Type> Types { get; set; }
 }

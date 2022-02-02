@@ -81,7 +81,7 @@ internal class SpecflowTypeCodeGenerator : ISpecflowTypeCodeGenerator
 
         if (propertyType.IsEnum)
         {
-            return Enum.GetValues(propertyType).GetValue(0)?.ToString();
+            return Enum.GetValues(propertyType).GetValue(0)?.ToString() ?? defaultNull;
         }
 
         if (propertyType == typeof(DateTime))
@@ -104,7 +104,7 @@ internal class SpecflowTypeCodeGenerator : ISpecflowTypeCodeGenerator
             return defaultNull;
         }
 
-        return property.IsValueType ? Activator.CreateInstance(property)?.ToString() : defaultNull;
+        return property.IsValueType ? Activator.CreateInstance(property)?.ToString() ?? defaultNull : defaultNull;
     }
 
     private static IEnumerable<KeyValuePair<PropertyInfo, string>> RetrieveProperties(Type type)

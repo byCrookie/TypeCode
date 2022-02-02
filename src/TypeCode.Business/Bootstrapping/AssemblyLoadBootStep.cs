@@ -171,6 +171,6 @@ internal class AssemblyLoadBootStep<TContext> : IAssemblyLoadBootStep<TContext>
     {
         var cfg = $@"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\Configuration.cfg.xml";
         var xml = File.ReadAllText(cfg);
-        return _genericXmlSerializer.Deserialize<XmlTypeCodeConfiguration>(xml);
+        return _genericXmlSerializer.Deserialize<XmlTypeCodeConfiguration>(xml) ?? throw new Exception($"{cfg} can not be parsed");
     }
 }

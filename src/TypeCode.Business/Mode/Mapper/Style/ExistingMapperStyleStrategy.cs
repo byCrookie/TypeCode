@@ -12,7 +12,7 @@ internal class ExistingMapperStyleStrategy : IExistingMapperStyleStrategy
 
     public string? Generate(MapperTypeCodeGeneratorParameter parameter)
     {
-        if (parameter.MapFrom.Type is null || parameter.MapTo.Type is null)
+        if (parameter.MapFrom?.Type is null || parameter.MapTo?.Type is null)
         {
             return null;
         }

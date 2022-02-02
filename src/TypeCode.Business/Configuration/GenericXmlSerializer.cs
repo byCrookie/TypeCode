@@ -27,7 +27,7 @@ public class GenericXmlSerializer : IGenericXmlSerializer
 		return stringwriter.ToString();
 	}
 
-	public T Deserialize<T>(string xmlTextToParse) where T : class, new()
+	public T? Deserialize<T>(string xmlTextToParse) where T : class, new()
 	{
 		if (string.IsNullOrEmpty(xmlTextToParse))
 		{

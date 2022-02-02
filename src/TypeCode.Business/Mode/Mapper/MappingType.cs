@@ -35,12 +35,12 @@ public class MappingType
 
     public IEnumerable<string> Properties()
     {
-        return Type
+        return Type?
             .GetProperties()
             .Where(property =>
                 property.PropertyType.IsPublic
                 && property.SetMethod != null)
-            .Select(prop => prop.Name);
+            .Select(prop => prop.Name) ?? new List<string>();
     }
 
     public string ParameterName()
@@ -55,7 +55,7 @@ public class MappingType
             return "data";
         }
 
-        return IsEntity() ? "entity" : Type.Name.Camelize();
+        return IsEntity() ? "entity" : Type?.Name.Camelize() ?? "todo";
     }
 
     public string EvaluateMethodName()
