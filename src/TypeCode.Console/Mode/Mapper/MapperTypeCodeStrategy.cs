@@ -45,12 +45,12 @@ internal class MapperTypeCodeStrategy : IMapperTypeCodeStrategy
         return false;
     }
 
-    public bool IsResponsibleFor(string mode)
+    public bool IsResponsibleFor(string? mode)
     {
-        return mode == $"{Number()}" && !IsPlanned();
+        return mode is not null && mode == $"{Number()}" && !IsPlanned();
     }
 
-    public async Task<string> GenerateAsync()
+    public async Task<string?> GenerateAsync()
     {
         var workflow = _workflowBuilder
             .WriteLine(_ => $@"{Cuts.Point()} Seperate two types by ,")

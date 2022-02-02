@@ -33,7 +33,7 @@ internal class Program
 		{
 			foreach (var loaderException in reflectionTypeLoadException.LoaderExceptions)
 			{
-				Log.Error(loaderException, "{0}", loaderException?.Message);
+				Log.Error(loaderException ?? new Exception("Type Load Exception"), "{0}", loaderException?.Message ?? "Type Load Exception");
 			}
 		}
 	}

@@ -15,6 +15,8 @@ internal class SelectionStep<TContext, TOptions> :
     public SelectionStep(IWorkflowBuilder<SelectionContext> workflowBuilder)
     {
         _workflowBuilder = workflowBuilder;
+
+        _options = new SelectionStepOptions();
     }
 
     public async Task ExecuteAsync(TContext context)
@@ -29,8 +31,8 @@ internal class SelectionStep<TContext, TOptions> :
                 .WriteLine(_ => CreateSelectionMenu(_options.Selections))
                 .ReadLine(c => c.Input)
                 .ThenAsync<IExitOrContinueStep<SelectionContext>>()
-                .IfFlow(c => short.TryParse(c.Input.Trim(), out _), ifFlow => ifFlow
-                    .Then(c => c.Selection, c => Convert.ToInt16(c.Input.Trim()))
+                .IfFlow(c => short.TryParse(c.Input?.Trim(), out _), ifFlow => ifFlow
+                    .Then(c => c.Selection, c => Convert.ToInt16(c.Input?.Trim()))
                     .If(c => c.Selection > _options.Selections.Count || c.Selection < 1, _ => System.Console.WriteLine($@"{Cuts.Point()} Option is not valid"))
                 )
             )
@@ -61,6 +63,6 @@ internal class SelectionStep<TContext, TOptions> :
 
     public void SetOptions(TOptions options)
     {
-        _options = options as SelectionStepOptions;
+        _options = options as SelectionStepOptions ?? new SelectionStepOptions();
     }
 }

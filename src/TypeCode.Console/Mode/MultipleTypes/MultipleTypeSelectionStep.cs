@@ -32,7 +32,7 @@ internal class MultipleTypeSelectionStep<TContext> :
                     .ReadLine(c => c.Input)
                     .IfElse(c => !string.IsNullOrEmpty(c.Input),
                         c => c.SelectedType,
-                        c => c.SelectedTypes[Convert.ToInt32(c.Input.Trim())],
+                        c => c.SelectedTypes[Convert.ToInt32(c.Input?.Trim())],
                         c => c.SelectedType,
                         c => c.SelectedTypes[0]
                     ),

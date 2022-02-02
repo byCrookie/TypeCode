@@ -31,7 +31,7 @@ internal class TypeCode : ITypeCode
 
     public async Task RunAsync(CancellationToken cancellationToken)
     {
-        ITypeCodeStrategy mode = null;
+        ITypeCodeStrategy? mode = null;
 
         var tasks = new List<Task>
         {
@@ -40,22 +40,19 @@ internal class TypeCode : ITypeCode
         };
 
         await Task.WhenAll(tasks).ConfigureAwait(false);
-
-        if (mode is not null)
+        
+        while (mode is not null && !mode.IsExit())
         {
-            while (!mode.IsExit())
-            {
-                var result = await mode.GenerateAsync().ConfigureAwait(false);
-                System.Console.WriteLine(result);
-                System.Console.Read();
-                mode = await EvaluateModeAsync().ConfigureAwait(false);
-            }
+            var result = await mode.GenerateAsync().ConfigureAwait(false);
+            System.Console.WriteLine(result);
+            System.Console.Read();
+            mode = await EvaluateModeAsync().ConfigureAwait(false);
         }
 
         System.Console.Read();
     }
 
-    private async Task<ITypeCodeStrategy> EvaluateModeAsync()
+    private async Task<ITypeCodeStrategy?> EvaluateModeAsync()
     {
         var workflow = _workflowBuilder
             .Then(context => context.Modes, _ => _modeComposer.ComposeOrdered())
@@ -75,12 +72,12 @@ internal class TypeCode : ITypeCode
         return workflowContext.Mode;
     }
 
-    private static bool ModeExists(IEnumerable<ITypeCodeStrategy> modes, TypeCodeContext context)
+    private static bool ModeExists(IEnumerable<ITypeCodeStrategy> modes, IExitOrContinueContext context)
     {
         return modes
             .Where(mode => !mode.IsPlanned())
             .Select(mode => mode.Number())
-            .Any(modeNumber => $"{modeNumber}" == context.Input.Trim());
+            .Any(modeNumber => $"{modeNumber}" == context.Input?.Trim());
     }
 
     private static string CreateInputMessage(IEnumerable<ITypeCodeStrategy> modes)

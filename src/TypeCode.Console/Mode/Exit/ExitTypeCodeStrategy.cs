@@ -22,14 +22,14 @@ internal class ExitTypeCodeStrategy : IExitTypeCodeStrategy
         return false;
     }
 
-    public bool IsResponsibleFor(string mode)
+    public bool IsResponsibleFor(string? mode)
     {
-        return mode == $"{Number()}" && !IsPlanned();
+        return mode is not null && mode == $"{Number()}" && !IsPlanned();
     }
 
-    public Task<string> GenerateAsync()
+    public Task<string?> GenerateAsync()
     {
-        return Task.FromResult(string.Empty);
+        return Task.FromResult<string?>(null);
     }
 
     public bool IsExit()

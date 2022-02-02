@@ -45,25 +45,25 @@ internal class BuilderTypeCodeStrategy : IBuilderTypeCodeStrategy
         return false;
     }
 
-    public bool IsResponsibleFor(string mode)
+    public bool IsResponsibleFor(string? mode)
     {
-        return mode == $"{Number()}" && !IsPlanned();
+        return mode is not null && mode == $"{Number()}" && !IsPlanned();
     }
 
-    public async Task<string> GenerateAsync()
+    public async Task<string?> GenerateAsync()
     {
         var workflow = _workflowBuilder
             .WriteLine(_ => $@"{Cuts.Point()} Input type")
             .ReadLine(c => c.Input)
-            .While(c => !_typeProvider.HasByName(c.Input.Trim()), whileFlow => whileFlow
+            .While(c => !_typeProvider.HasByName(c.Input?.Trim()), whileFlow => whileFlow
                 .WriteLine(_ => $@"{Cuts.Point()} Type not found")
                 .WriteLine(_ => $@"{Cuts.Point()} Please input input type")
                 .ReadLine(c => c.Input)
                 .ThenAsync<IExitOrContinueStep<BuilderContext>>()
             )
-            .Then(c => c.SelectedTypes, c => _typeProvider.TryGetByName(c.Input.Trim()).ToList())
+            .Then(c => c.SelectedTypes, c => _typeProvider.TryGetByName(c.Input?.Trim()).ToList())
             .ThenAsync<IMultipleTypeSelectionStep<BuilderContext>>()
-            .Stop(c => !c.SelectedType.IsClass, _ => System.Console.WriteLine($@"{Cuts.Point()} Type has to be a class"))
+            .Stop(c => !c.SelectedType?.IsClass ?? false, _ => System.Console.WriteLine($@"{Cuts.Point()} Type has to be a class"))
             .ThenAsync(c => c.BuilderCode, c => _builderGenerator.GenerateAsync(new BuilderTypeCodeGeneratorParameter
             {
                 Type = c.SelectedType

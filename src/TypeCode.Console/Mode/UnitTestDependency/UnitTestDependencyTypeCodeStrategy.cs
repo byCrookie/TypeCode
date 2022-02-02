@@ -50,12 +50,12 @@ internal class UnitTestDependencyTypeCodeStrategy : IUnitTestDependencyTypeCodeS
         return false;
     }
 
-    public bool IsResponsibleFor(string mode)
+    public bool IsResponsibleFor(string? mode)
     {
-        return mode == $"{Number()}" && !IsPlanned();
+        return mode is not null && mode == $"{Number()}" && !IsPlanned();
     }
 
-    public async Task<string> GenerateAsync()
+    public async Task<string?> GenerateAsync()
     {
         var workflow = _workflowEvaluationBuilder
             .ThenAsync<ISelectionStep<UnitTestDependencyEvaluationContext, SelectionStepOptions>,
@@ -71,14 +71,14 @@ internal class UnitTestDependencyTypeCodeStrategy : IUnitTestDependencyTypeCodeS
             .IfFlow(context => context.Selection == 1, ifFlow => ifFlow
                 .WriteLine(_ => $@"{Cuts.Point()} Please input type name")
                 .ReadLine(context => context.Input)
-                .While(context => !_typeProvider.HasByName(context.Input.Trim()), whileFlow => whileFlow
+                .While(context => !_typeProvider.HasByName(context.Input?.Trim()), whileFlow => whileFlow
                     .WriteLine(_ => $@"{Cuts.Point()} Type not found")
                     .WriteLine(_ => $@"{Cuts.Point()} Input type name")
                     .ReadLine(context => context.Input)
                     .ThenAsync<IExitOrContinueStep<UnitTestDependencyEvaluationContext>>()
                 )
                 .If(context => !string.IsNullOrEmpty(context.Input), context => context.SelectedTypes,
-                    context => _typeProvider.TryGetByName(context.Input.Trim()))
+                    context => _typeProvider.TryGetByName(context.Input?.Trim()))
                 .ThenAsync<IMultipleTypeSelectionStep<UnitTestDependencyEvaluationContext>>()
                 .ThenAsync(context => context.UnitTestDependencyCode,
                     context => _unitTestDependencyTypeGenerator.GenerateAsync(new UnitTestDependencyTypeGeneratorParameter

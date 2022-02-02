@@ -6,7 +6,12 @@ namespace TypeCode.Console;
 
 internal class TypeCodeContext : WorkflowBaseContext, IExitOrContinueContext
 {
-    public string Input { get; set; }
-    public ITypeCodeStrategy Mode { get; set; }
+    public TypeCodeContext()
+    {
+        Modes = new List<ITypeCodeStrategy>();
+    }
+    
+    public string? Input { get; set; }
+    public ITypeCodeStrategy? Mode { get; set; }
     public IEnumerable<ITypeCodeStrategy> Modes { get; set; }
 }

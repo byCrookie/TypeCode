@@ -6,7 +6,7 @@ internal interface ITypeCodeStrategy
 	string Description();
 	bool IsPlanned();
 	bool IsBeta();
-	bool IsResponsibleFor(string mode);
-	Task<string> GenerateAsync();
+	bool IsResponsibleFor(string? mode);
+	Task<string?> GenerateAsync();
 	bool IsExit();
 }
