@@ -5,6 +5,6 @@ namespace TypeCode.Business.Configuration;
 
 internal interface IAssemblyHolder
 {
-    string? Path { get; set; }
+    string Path { get; set; }
     ConcurrentBag<AssemblyDirectory> AssemblyDirectories { get; set; }
 }

@@ -10,13 +10,15 @@ public class AssemblyGroup
         AssemblyPathSelector = new List<AssemblyPathSelector>();
         AssemblyPath = new List<AssemblyPath>();
         PriorityAssemblyList = new List<PriorityString>();
+        Name = string.Empty;
+        Text = string.Empty;
     }
         
     public List<AssemblyPathSelector> AssemblyPathSelector { get; set; }
     public List<AssemblyPath> AssemblyPath { get; set; }
-    public string? Name { get; set; }
+    public string Name { get; set; }
     public int Priority { get; set; }
-    public string? Text { get; set; }
+    public string Text { get; set; }
     public List<PriorityString> PriorityAssemblyList { get; set; }
 }
     
@@ -26,13 +28,13 @@ public class AssemblyRoot
     {
         IncludeAssemblyPattern = new List<string>();
         AssemblyGroup = new List<AssemblyGroup>();
+        Path = string.Empty;
     }
         
     public int Priority { get; set; }
     public List<string> IncludeAssemblyPattern { get; set; }
     public List<AssemblyGroup> AssemblyGroup { get; set; }
-    public string? Path { get; set; }
-    public string? Text { get; set; }
+    public string Path { get; set; }
 }
     
 public class TypeCodeConfiguration
@@ -51,10 +53,11 @@ public class AssemblyPath : IAssemblyHolder, IDictionaryHolder
     {
         AssemblyDirectories = new ConcurrentBag<AssemblyDirectory>();
         TypesByNameDictionary = new Dictionary<string, List<Type>>();
-        TypesByFullNameDictionary = new Dictionary<string, List<Type>>();   
+        TypesByFullNameDictionary = new Dictionary<string, List<Type>>();
+        Path = string.Empty;
     }
         
-    public string? Path { get; set; }
+    public string Path { get; set; }
     public int Priority { get; set; }
     public ConcurrentBag<AssemblyDirectory> AssemblyDirectories { get; set; }
     public IDictionary<string, List<Type>> TypesByNameDictionary { get; set; }
@@ -68,11 +71,13 @@ public class AssemblyPathSelector : IAssemblyHolder, IDictionaryHolder
         AssemblyDirectories = new ConcurrentBag<AssemblyDirectory>();
         TypesByNameDictionary = new Dictionary<string, List<Type>>();
         TypesByFullNameDictionary = new Dictionary<string, List<Type>>();
+        Path = string.Empty;
+        Selector = string.Empty;
     }
         
-    public string? Path { get; set; }
+    public string Path { get; set; }
     public int Priority { get; set; }
-    public string? Selector { get; set; }
+    public string Selector { get; set; }
     public ConcurrentBag<AssemblyDirectory> AssemblyDirectories { get; set; }
     public IDictionary<string, List<Type>> TypesByNameDictionary { get; set; }
     public IDictionary<string, List<Type>> TypesByFullNameDictionary { get; set; }

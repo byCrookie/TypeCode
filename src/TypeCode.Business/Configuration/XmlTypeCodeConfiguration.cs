@@ -5,24 +5,35 @@ namespace TypeCode.Business.Configuration;
 [XmlRoot(ElementName = "AssemblyPathSelector")]
 public class XmlAssemblyPathSelector
 {
+    public XmlAssemblyPathSelector()
+    {
+        Selector = string.Empty;
+        Text = string.Empty;
+    }
+    
     [XmlAttribute(AttributeName = "Priority")]
-    public int? Priority { get; set; }
+    public int Priority { get; set; }
 
     [XmlAttribute(AttributeName = "Selector")]
-    public string? Selector { get; set; }
+    public string Selector { get; set; }
 
     [XmlText]
-    public string? Text { get; set; }
+    public string Text { get; set; }
 }
 
 [XmlRoot(ElementName = "AssemblyPath")]
 public class XmlAssemblyPath
 {
+    public XmlAssemblyPath()
+    {
+        Text = string.Empty;
+    }
+    
     [XmlAttribute(AttributeName = "Priority")]
-    public int? Priority { get; set; }
+    public int Priority { get; set; }
 
     [XmlText]
-    public string? Text { get; set; }
+    public string Text { get; set; }
 }
 
 [XmlRoot(ElementName = "AssemblyGroup")]
@@ -32,6 +43,7 @@ public class XmlAssemblyGroup
     {
         AssemblyPathSelector = new List<XmlAssemblyPathSelector>();
         AssemblyPath = new List<XmlAssemblyPath>();
+        Name = string.Empty;
     }
         
     [XmlElement(ElementName = "AssemblyPathSelector")]
@@ -41,13 +53,10 @@ public class XmlAssemblyGroup
     public List<XmlAssemblyPath> AssemblyPath { get; set; }
 
     [XmlAttribute(AttributeName = "Name")]
-    public string? Name { get; set; }
+    public string Name { get; set; }
 
     [XmlAttribute(AttributeName = "Priority")]
-    public int? Priority { get; set; }
-
-    [XmlText]
-    public string? Text { get; set; }
+    public int Priority { get; set; }
 }
 
 [XmlRoot(ElementName = "AssemblyRoot")]
@@ -57,10 +66,11 @@ public class XmlAssemblyRoot
     {
         IncludeAssemblyPattern = new List<string>();
         AssemblyGroup = new List<XmlAssemblyGroup>();
+        Path = string.Empty;
     }
         
     [XmlAttribute(AttributeName = "Priority")]
-    public int? Priority { get; set; }
+    public int Priority { get; set; }
         
     [XmlElement(ElementName = "IncludeAssemblyPattern")]
     public List<string> IncludeAssemblyPattern { get; set; }
@@ -69,10 +79,7 @@ public class XmlAssemblyRoot
     public List<XmlAssemblyGroup> AssemblyGroup { get; set; }
 
     [XmlAttribute(AttributeName = "Path")]
-    public string? Path { get; set; }
-
-    [XmlText]
-    public string? Text { get; set; }
+    public string Path { get; set; }
 }
 
 [XmlRoot(ElementName = "TypeCodeConfiguration")]
