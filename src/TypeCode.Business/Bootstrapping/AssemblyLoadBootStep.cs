@@ -113,9 +113,9 @@ internal class AssemblyLoadBootStep<TContext> : IAssemblyLoadBootStep<TContext>
 
     private void EvaluateAssemblyPathSelector(AssemblyRoot root, AssemblyPathSelector assemblyPathSelector)
     {
-        var directories = Directory.GetDirectories(root.Path)
+        var directories = root.Path is not null && assemblyPathSelector.Selector is not null ? Directory.GetDirectories(root.Path)
             .Where(directory => Regex.IsMatch(directory, assemblyPathSelector.Selector))
-            .Select(directory => $@"{directory}\{assemblyPathSelector.Path}");
+            .Select(directory => $@"{directory}\{assemblyPathSelector.Path}") : new List<string>();
 
         Parallel.ForEach(directories, directory => LoadAssemblies(directory, assemblyPathSelector));
     }
@@ -139,6 +139,11 @@ internal class AssemblyLoadBootStep<TContext> : IAssemblyLoadBootStep<TContext>
     {
         if (Directory.Exists(absolutPath))
         {
+            if (assemblyHolder.Path is null)
+            {
+                throw new ArgumentException($"{nameof(assemblyHolder.Path)} can not be null");
+            }
+            
             var assemblyDirectory = new AssemblyDirectory(assemblyHolder.Path, absolutPath, Directory.GetFiles(absolutPath.Trim(), "*.dll"));
 
             var filteredFiles = assemblyDirectory.Files

@@ -10,7 +10,6 @@ public class GenericXmlSerializer : IGenericXmlSerializer
 		if (objectToParse == null)
 		{
 			throw new XmlParserException("Unable to parse a object which is null.", new ArgumentNullException(nameof(objectToParse)));
-
 		}
 
 		var stringwriter = new StringWriter(new CultureInfo("de-CH"));

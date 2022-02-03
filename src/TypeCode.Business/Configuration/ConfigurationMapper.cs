@@ -14,9 +14,9 @@ internal class ConfigurationMapper : IConfigurationMapper
     {
         return xmlAssemblyRoots.Select(root => new AssemblyRoot
         {
-            Priority = root.Priority,
-            Path = root.Path,
-            Text = root.Text,
+            Priority = root.Priority ?? throw new ArgumentException($"{nameof(root.Priority)} can not be null"),
+            Path = root.Path ?? throw new ArgumentException($"{nameof(root.Path)} can not be null"),
+            Text = root.Text ?? throw new ArgumentException($"{nameof(root.Text)} can not be null"),
             AssemblyGroup = MapToConfiguration(root.AssemblyGroup).ToList(),
             IncludeAssemblyPattern = root.IncludeAssemblyPattern
         });
@@ -27,8 +27,8 @@ internal class ConfigurationMapper : IConfigurationMapper
     {
         return xmlConfigurationAssemblyGroups.Select(xmlConfigurationAssemblyGroup => new AssemblyGroup
         {
-            Name = xmlConfigurationAssemblyGroup.Name,
-            Priority = xmlConfigurationAssemblyGroup.Priority,
+            Name = xmlConfigurationAssemblyGroup.Name ?? throw new ArgumentException($"{nameof(xmlConfigurationAssemblyGroup.Name)} can not be null"),
+            Priority = xmlConfigurationAssemblyGroup.Priority ?? throw new ArgumentException($"{nameof(xmlConfigurationAssemblyGroup.Priority)} can not be null"),
             AssemblyPath = MapToConfiguration(xmlConfigurationAssemblyGroup.AssemblyPath).ToList(),
             AssemblyPathSelector = MapToConfiguration(xmlConfigurationAssemblyGroup.AssemblyPathSelector).ToList()
         });
@@ -39,9 +39,9 @@ internal class ConfigurationMapper : IConfigurationMapper
     {
         return xmlAssemblyPathSelectors.Select(xmlAssemblyPathSelector => new AssemblyPathSelector
         {
-            Path = xmlAssemblyPathSelector.Text,
-            Priority = xmlAssemblyPathSelector.Priority,
-            Selector = xmlAssemblyPathSelector.Selector
+            Path = xmlAssemblyPathSelector.Text ?? throw new ArgumentException($"{nameof(xmlAssemblyPathSelector.Text)} can not be null"),
+            Priority = xmlAssemblyPathSelector.Priority ?? throw new ArgumentException($"{nameof(xmlAssemblyPathSelector.Priority)} can not be null"),
+            Selector = xmlAssemblyPathSelector.Selector ?? throw new ArgumentException($"{nameof(xmlAssemblyPathSelector.Selector)} can not be null")
         });
     }
 
@@ -49,8 +49,8 @@ internal class ConfigurationMapper : IConfigurationMapper
     {
         return xmlAssemblyPaths.Select(xmlAssemblyPath => new AssemblyPath
         {
-            Path = xmlAssemblyPath.Text,
-            Priority = xmlAssemblyPath.Priority
+            Path = xmlAssemblyPath.Text ?? throw new ArgumentException($"{nameof(xmlAssemblyPath.Text)} can not be null"),
+            Priority = xmlAssemblyPath.Priority ?? throw new ArgumentException($"{nameof(xmlAssemblyPath.Priority)} can not be null")
         });
     }
 }
