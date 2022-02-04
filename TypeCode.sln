@@ -18,6 +18,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Packages", "Packages", "{20
 		Packages\framework.1.0.2-pre-202202040948.nupkg = Packages\framework.1.0.2-pre-202202040948.nupkg
 		Packages\workflow.autofac.1.0.2-pre-202202040947.nupkg = Packages\workflow.autofac.1.0.2-pre-202202040947.nupkg
 		Packages\workflow.1.0.2-pre-202202040947.nupkg = Packages\workflow.1.0.2-pre-202202040947.nupkg
+		Packages\buildsdk.1.0.2-pre-20220204094709.nupkg = Packages\buildsdk.1.0.2-pre-20220204094709.nupkg
 	EndProjectSection
 EndProject
 Global
