@@ -12,15 +12,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TypeCode.Business.Tests", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TypeCode.Wpf", "src\TypeCode.Wpf\TypeCode.Wpf.csproj", "{31CB4C50-DFDE-485C-AF0F-A340C2FABD2B}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Packages", "Packages", "{205AC3EB-D68E-4379-8FE1-A717CBEE1B54}"
-	ProjectSection(SolutionItems) = preProject
-		Packages\framework.autofac.1.0.2-pre-202202040948.nupkg = Packages\framework.autofac.1.0.2-pre-202202040948.nupkg
-		Packages\framework.1.0.2-pre-202202040948.nupkg = Packages\framework.1.0.2-pre-202202040948.nupkg
-		Packages\workflow.autofac.1.0.2-pre-202202040947.nupkg = Packages\workflow.autofac.1.0.2-pre-202202040947.nupkg
-		Packages\workflow.1.0.2-pre-202202040947.nupkg = Packages\workflow.1.0.2-pre-202202040947.nupkg
-		Packages\buildsdk.1.0.2-pre-20220204094709.nupkg = Packages\buildsdk.1.0.2-pre-20220204094709.nupkg
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
