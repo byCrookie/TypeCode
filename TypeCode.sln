@@ -15,6 +15,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Packages", "Packages", "{205AC3EB-D68E-4379-8FE1-A717CBEE1B54}"
 	ProjectSection(SolutionItems) = preProject
 		Packages\framework.autofac.1.0.2-pre-202202040948.nupkg = Packages\framework.autofac.1.0.2-pre-202202040948.nupkg
+		Packages\framework.1.0.2-pre-202202040948.nupkg = Packages\framework.1.0.2-pre-202202040948.nupkg
+		Packages\workflow.autofac.1.0.2-pre-202202040947.nupkg = Packages\workflow.autofac.1.0.2-pre-202202040947.nupkg
+		Packages\workflow.1.0.2-pre-202202040947.nupkg = Packages\workflow.1.0.2-pre-202202040947.nupkg
 	EndProjectSection
 EndProject
 Global
