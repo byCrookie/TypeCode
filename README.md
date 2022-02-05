@@ -14,7 +14,14 @@ This project is built on top of https://github.com/byCrookie/Framework.NET.
 
 ## How to use
 
-Download the zip files from releases
+* Download wpf or console application zip from releases
+* Change Configuration.xml using the documentation
+* Start the .exe
+
+### Dev
+
+* Clone the git repository
+* Change the "localPackages" path in the nuget.config
 
 ## Contributing / Issues
 All contributions are welcome! If you have any issues or feature requests, either implement it yourself or create an issue, thank you.
