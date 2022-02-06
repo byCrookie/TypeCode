@@ -48,10 +48,10 @@ jobs:
       run: dotnet test --verbosity normal
       
     - name: Zip Wpf
-      run: Compress-Archive -Path ./publish/wpf -DestinationPath TypeCode.Wpf_${{ steps.previoustag.outputs.tag }}.zip
+      run: Compress-Archive -Path ./publish/wpf/* -DestinationPath TypeCode.Wpf_${{ steps.previoustag.outputs.tag }}.zip
 
     - name: Zip Console
-      run: Compress-Archive -Path ./publish/console -DestinationPath TypeCode.Console_${{ steps.previoustag.outputs.tag }}.zip
+      run: Compress-Archive -Path ./publish/console/* -DestinationPath TypeCode.Console_${{ steps.previoustag.outputs.tag }}.zip
       
     - name: Create Release
       id: create_release
