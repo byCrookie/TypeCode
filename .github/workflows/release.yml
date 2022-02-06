@@ -13,6 +13,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    
     - name: Set output
       id: vars
       run: echo ::set-output name=tag::${GITHUB_REF//./_}
@@ -22,6 +23,7 @@ jobs:
         _input-text: ${{ steps.vars.outputs.tag }}
         refs/tags/: ""
     - run: echo ${{ steps.sub.outputs.result }}
+    
     - name: Check output
       env:
         RELEASE_VERSION: ${{ steps.sub.outputs.result }}
@@ -29,18 +31,27 @@ jobs:
         echo $RELEASE_VERSION
         echo ${{ steps.vars.outputs.tag }}
         echo ${{ steps.sub.outputs.result }}
+
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 5.0.400
-    - name: Restore dependencies
-      run: dotnet restore
-    - name: Build
-      run: dotnet build --configuration Release --no-restore
+        dotnet-version: 6.0.x
+      
+    - name: Build Wpf
+      run: dotnet build --configuration Release -o publish/wpf ./src/TypeCode.Wpf
+
+    - name: Build Console
+      run: dotnet build --configuration Release -o publish/console ./src/TypeCode.Console
+      
     - name: Test
       run: dotnet test --verbosity normal
-    - name: Zip the Build
-      run: zip -r ${{ secrets.ReleaseZipName }}_${{ steps.sub.outputs.result }} ./src/TypeCode.Console/bin/Release/net5.0
+      
+    - name: Zip Wpf
+      run: zip -r TypeCode.Wpf_${{ steps.sub.outputs.result }} ./publish/wpf
+
+    - name: Zip Console
+      run: zip -r TypeCode.Console_${{ steps.sub.outputs.result }} ./publish/console
+      
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
@@ -52,12 +63,23 @@ jobs:
         body: New Release.
         draft: false
         prerelease: false
-    - name: Upload Release Asset
+        
+    - name: Upload Release Assets Wpf
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-        asset_path: ./${{ secrets.ReleaseZipName }}_${{ steps.sub.outputs.result }}.zip
-        asset_name: ${{ secrets.ReleaseZipName }}_${{ steps.sub.outputs.result }}.zip
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./TypeCode.Wpf_${{ steps.sub.outputs.result }}.zip
+        asset_name: TypeCode.Wpf_${{ steps.sub.outputs.result }}.zip
+        asset_content_type: application/zip
+        
+    - name: Upload Release Assets Console
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./TypeCode.Console_$_${{ steps.sub.outputs.result }}.zip
+        asset_name: TypeCode.Console_${{ steps.sub.outputs.result }}.zip
         asset_content_type: application/zip
