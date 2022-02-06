@@ -18,6 +18,12 @@ This project is built on top of https://github.com/byCrookie/Framework
 * Change Configuration.xml using the documentation
 * Start the .exe
 
+> :warning: **Information: Windows Defender** <br />
+> Windows Defender blocks execution of the exe.
+> The application needs permission.
+> Right-click the exe and select properties.
+> Then enable/allow execution.
+
 ### Dev
 
 * Clone the git repository
