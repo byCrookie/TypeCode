@@ -10,7 +10,7 @@ Develop c# code faster by generating .NET specific boilerplate code using reflec
 * Generate builder for class using builder pattern
 
 ## Framework
-This project is built on top of https://github.com/byCrookie/Framework.NET.
+This project is built on top of https://github.com/byCrookie/Framework
 
 ## How to use
 
