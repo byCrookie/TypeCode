@@ -8,7 +8,7 @@ internal class TypeCodeConsoleModule : Module
 {
     protected override void Load(ContainerBuilder builder)
     {
-        builder.RegisterType<TypeCode>().As<IApplication>();
+        builder.RegisterGeneric(typeof(TypeCode<>)).As(typeof(IApplication<>));
         builder.RegisterModule<ModeModule>();
 
         base.Load(builder);

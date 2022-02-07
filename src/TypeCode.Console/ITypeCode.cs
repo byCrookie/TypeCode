@@ -2,6 +2,6 @@
 
 namespace TypeCode.Console;
 
-public interface ITypeCode : IApplication
+public interface ITypeCode<in TContext> : IApplication<TContext> where TContext : BootContext
 {
 }

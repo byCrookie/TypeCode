@@ -8,7 +8,7 @@ public class AppModule : Module
 {
     protected override void Load(ContainerBuilder builder)
     {
-        builder.RegisterType<Application>().As<IApplication>();
+        builder.RegisterGeneric(typeof(Application<>)).As(typeof(IApplication<>));
             
         builder.RegisterModule<BootModule>();
             

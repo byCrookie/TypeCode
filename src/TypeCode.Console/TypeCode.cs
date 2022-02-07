@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using Framework.Autofac.Boot;
 using Framework.Extensions.List;
 using TypeCode.Business.Bootstrapping;
 using TypeCode.Business.Format;
@@ -9,7 +10,7 @@ using Workflow;
 
 namespace TypeCode.Console;
 
-internal class TypeCode : ITypeCode
+internal class TypeCode<TContext> : ITypeCode<TContext> where TContext : BootContext
 {
     private readonly IModeComposer _modeComposer;
     private readonly ITypeEvaluator _typeEvaluator;
@@ -29,7 +30,7 @@ internal class TypeCode : ITypeCode
         _typeProvider = typeProvider;
     }
 
-    public async Task RunAsync(CancellationToken cancellationToken)
+    public async Task RunAsync(TContext context, CancellationToken cancellationToken)
     {
         ITypeCodeStrategy? mode = null;
 

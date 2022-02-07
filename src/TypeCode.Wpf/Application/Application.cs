@@ -12,7 +12,7 @@ using TypeCode.Wpf.Main;
 
 namespace TypeCode.Wpf.Application;
 
-public class Application : IApplication
+public class Application<TContext> : IApplication<TContext> where TContext : BootContext
 {
     private readonly IFactory _factory;
     private readonly ITypeEvaluator _typeEvaluator;
@@ -35,7 +35,7 @@ public class Application : IApplication
         _modalNavigationService = modalNavigationService;
     }
 
-    public Task RunAsync(CancellationToken cancellationToken)
+    public Task RunAsync(TContext context, CancellationToken cancellationToken)
     {
         var mainWindow = _factory.Create<MainWindow>();
             
