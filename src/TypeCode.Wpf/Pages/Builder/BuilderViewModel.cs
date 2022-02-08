@@ -60,7 +60,7 @@ public class BuilderViewModel : Reactive, IAsyncNavigatedTo
 
         var parameter = new BuilderTypeCodeGeneratorParameter
         {
-            Type = selectedType
+            Types = selectedType is not null ? new List<Type>{selectedType} : new List<Type>()
         };
             
         var result = await _builderGenerator.GenerateAsync(parameter).ConfigureAwait(true);

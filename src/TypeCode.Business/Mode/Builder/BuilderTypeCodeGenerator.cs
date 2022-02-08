@@ -9,9 +9,21 @@ internal class BuilderTypeCodeGenerator : IBuilderTypeCodeGenerator
 {
     public Task<string?> GenerateAsync(BuilderTypeCodeGeneratorParameter parameter)
     {
-        return parameter.Type is not null
-            ? Task.FromResult<string?>(GenerateBuilderCode(parameter.Type))
+        return parameter.Types.Any()
+            ? Task.FromResult<string?>(GenerateBuildersCode(parameter.Types))
             : Task.FromResult<string?>(null);
+    }
+
+    private static string GenerateBuildersCode(IEnumerable<Type> types)
+    {
+        var code = new StringBuilder();
+
+        foreach (var type in types)
+        {
+            code.AppendLine(GenerateBuilderCode(type));
+        }
+
+        return code.ToString();
     }
 
     private static string GenerateBuilderCode(Type type)

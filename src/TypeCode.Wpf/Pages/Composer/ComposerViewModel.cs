@@ -26,10 +26,10 @@ public class ComposerViewModel : Reactive, IAsyncNavigatedTo
         _composerTypeGenerator = composerTypeGenerator;
         _typeProvider = typeProvider;
         _wizardNavigationService = wizardNavigationService;
-        
+
         GenerateCommand = new AsyncCommand(GenerateAsync);
     }
-        
+
     public Task OnNavigatedToAsync(NavigationContext context)
     {
         return Task.CompletedTask;
@@ -46,9 +46,9 @@ public class ComposerViewModel : Reactive, IAsyncNavigatedTo
             navigationContext.AddParameter(new TypeSelectionParameter
             {
                 AllowMultiSelection = false,
-                Types =types
+                Types = types
             });
-            
+
             var selectionViewModel = await _wizardNavigationService
                 .OpenWizardAsync(new WizardParameter<TypeSelectionViewModel>
                 {
@@ -57,27 +57,33 @@ public class ComposerViewModel : Reactive, IAsyncNavigatedTo
 
             selectedType = selectionViewModel.SelectedTypes.Single();
         }
-            
-        var parameter = new ComposerTypeCodeGeneratorParameter
+
+        if (selectedType is not null)
         {
-            Type = selectedType,
-            Interfaces = selectedType is not null ? _typeProvider
-                .TryGetTypesByCondition(typ => typ.GetInterface(selectedType.Name) != null)
-                .ToList() : new List<Type>()
-        };
-            
-        var result = await _composerTypeGenerator.GenerateAsync(parameter).ConfigureAwait(true);
-        Output = result;
+            var parameter = new ComposerTypeCodeGeneratorParameter();
+            parameter.ComposerTypes.Add(new ComposerType(
+                selectedType,
+                _typeProvider.TryGetTypesByCondition(typ => typ.GetInterface(selectedType.Name) != null).ToList()
+            ));
+            var result = await _composerTypeGenerator.GenerateAsync(parameter).ConfigureAwait(true);
+            Output = result;
+        }
+        else
+        {
+            Output = null; 
+        }
     }
-        
+
     public ICommand GenerateCommand { get; set; }
-        
-    public string? Input {
+
+    public string? Input
+    {
         get => Get<string?>();
         set => Set(value);
     }
 
-    public string? Output {
+    public string? Output
+    {
         get => Get<string?>();
         private set => Set(value);
     }

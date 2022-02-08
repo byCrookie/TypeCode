@@ -66,7 +66,7 @@ internal class BuilderTypeCodeStrategy : IBuilderTypeCodeStrategy
             .Stop(c => !c.SelectedType?.IsClass ?? false, _ => System.Console.WriteLine($@"{Cuts.Point()} Type has to be a class"))
             .ThenAsync(c => c.BuilderCode, c => _builderGenerator.GenerateAsync(new BuilderTypeCodeGeneratorParameter
             {
-                Type = c.SelectedType
+                Types = c.SelectedType is not null ? new List<Type> { c.SelectedType } : new List<Type>()
             }))
             .Build();
 

@@ -1,4 +1,5 @@
 ﻿using TypeCode.Business.Configuration;
+using TypeCode.Business.Format;
 
 namespace TypeCode.Business.TypeEvaluation;
 
@@ -24,7 +25,7 @@ internal class TypeProvider : ITypeProvider
 
                     path.TypesByFullNameDictionary = path.AssemblyDirectories
                         .SelectMany(directory => directory.Types)
-                        .GroupBy(GetNameWithNamespace)
+                        .GroupBy(NameBuilder.GetNameWithNamespace)
                         .ToDictionary(nameGroup => nameGroup.Key, nameGroup => nameGroup.ToList());
                 });
 
@@ -38,7 +39,7 @@ internal class TypeProvider : ITypeProvider
 
                     selector.TypesByFullNameDictionary = selector.AssemblyDirectories
                         .SelectMany(directory => directory.Types)
-                        .GroupBy(GetNameWithNamespace)
+                        .GroupBy(NameBuilder.GetNameWithNamespace)
                         .ToDictionary(nameGroup => nameGroup.Key, nameGroup => nameGroup.ToList());
                 });
             }
@@ -97,17 +98,6 @@ internal class TypeProvider : ITypeProvider
     private static string GetNameWithoutGeneric(Type type)
     {
         return type.Name.Contains('`') ? type.Name.Remove(type.Name.IndexOf("`", StringComparison.Ordinal), 2) : type.Name;
-    }
-
-    private static string GetNameWithNamespace(Type type)
-    {
-        return type.FullName != null ? $"{GetNamespace(type.FullName)}.{GetNameWithoutGeneric(type)}" : type.Name;
-    }
-
-    private static string GetNamespace(string fullName)
-    {
-        var split = fullName.Split('.');
-        return string.Join(".", split.Take(split.Length - 1));
     }
 
     private IEnumerable<Type> GetTypesByCondition(Func<Type, bool> condition)

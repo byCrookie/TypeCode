@@ -66,10 +66,12 @@ internal class ComposerTypeCodeStrategy : IComposerTypeCodeStrategy
             .Stop(c => !c.SelectedType?.IsInterface ?? false, _ => System.Console.WriteLine($@"{Cuts.Point()} Type has to be an interface"))
             .ThenAsync(c => c.ComposerCode, c => _composerGenerator.GenerateAsync(new ComposerTypeCodeGeneratorParameter
             {
-                Type = c.SelectedType,
-                Interfaces = c.SelectedType is not null ? _typeProvider
-                    .TryGetTypesByCondition(typ => typ.GetInterface(c.SelectedType.Name) != null)
-                    .ToList() : new List<Type>()
+                ComposerTypes = new List<ComposerType>
+                {
+                    new(c.SelectedType ?? throw new InvalidOperationException(), c.SelectedType is not null ? _typeProvider
+                        .TryGetTypesByCondition(typ => typ.GetInterface(c.SelectedType.Name) != null)
+                        .ToList() : new List<Type>())
+                }
             }))
             .Build();
 

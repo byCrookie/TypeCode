@@ -7,12 +7,21 @@ internal class ComposerTypeCodeGenerator : IComposerTypeCodeGenerator
 {
     public Task<string?> GenerateAsync(ComposerTypeCodeGeneratorParameter parameter)
     {
-        if (parameter.Type is not null && parameter.Interfaces.Any())
+        return parameter.ComposerTypes.Any()
+            ? Task.FromResult<string?>(GenerateComposers(parameter.ComposerTypes))
+            : Task.FromResult<string?>(null);
+    }
+
+    private static string GenerateComposers(List<ComposerType> composerTypes)
+    {
+        var code = new StringBuilder();
+
+        foreach (var composerType in composerTypes)
         {
-            return Task.FromResult<string?>(GenerateComposerCode(parameter.Type, parameter.Interfaces)); 
+            code.AppendLine(GenerateComposerCode(composerType.Type, composerType.Interfaces));
         }
 
-        return Task.FromResult<string?>(null);
+        return code.ToString();
     }
 
     private static string GenerateComposerCode(Type type, List<Type> interfaces)

@@ -50,6 +50,17 @@ public class NameBuilder
 
     public static string GetNameWithoutGeneric(Type type)
     {
-        return type.Name.Contains("`") ? type.Name.Remove(type.Name.IndexOf("`", StringComparison.Ordinal), 2) : type.Name;
+        return type.Name.Contains('`') ? type.Name.Remove(type.Name.IndexOf("`", StringComparison.Ordinal), 2) : type.Name;
+    }
+    
+    public static string GetNameWithNamespace(Type type)
+    {
+        return type.FullName != null ? $"{GetNamespace(type.FullName)}.{GetNameWithoutGeneric(type)}" : type.Name;
+    }
+
+    public static string GetNamespace(string fullName)
+    {
+        var split = fullName.Split('.');
+        return string.Join(".", split.Take(split.Length - 1));
     }
 }

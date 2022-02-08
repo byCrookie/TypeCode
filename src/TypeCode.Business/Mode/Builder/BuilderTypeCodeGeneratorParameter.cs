@@ -2,5 +2,10 @@
 
 public class BuilderTypeCodeGeneratorParameter : ITypeCodeGeneratorParameter
 {
-    public Type? Type { get; set; }
+    public BuilderTypeCodeGeneratorParameter()
+    {
+        Types = new List<Type>();
+    }
+    
+    public IEnumerable<Type> Types { get; set; }
 }
