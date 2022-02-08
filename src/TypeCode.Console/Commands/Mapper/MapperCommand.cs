@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Autofac;
+using Cocona;
 using JetBrains.Annotations;
 using TypeCode.Business.Format;
 using TypeCode.Business.Mode;
@@ -13,7 +14,7 @@ namespace TypeCode.Console.Commands.Mapper;
 public class MapperCommand
 {
     [UsedImplicitly]
-    public async Task ExecuteAsync(string from, string to)
+    public async Task ExecuteAsync([Option('f')]string from, [Option('t')]string to)
     {
         await using (var scope = LifeTimeScopeCreator.BeginLifetimeScope(ContextProvider.Get()))
         {
