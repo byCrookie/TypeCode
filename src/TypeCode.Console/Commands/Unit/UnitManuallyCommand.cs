@@ -11,7 +11,7 @@ namespace TypeCode.Console.Commands.Unit;
 [SuppressMessage("Performance", "CA1822:Member als statisch markieren")]
 public class UnitManuallyCommand
 {
-    [Command("Input")]
+    [Command("Input", Aliases = new []{"i"})]
     [UsedImplicitly]
     public async Task InputAsync([Argument]string content)
     {
@@ -23,7 +23,7 @@ public class UnitManuallyCommand
         }
     }
     
-    [Command("Path")]
+    [Command("Path", Aliases = new []{"p"})]
     [UsedImplicitly]
     public async Task PathAsync([Argument]string content)
     {
