@@ -4,7 +4,7 @@ namespace TypeCode.Business.TypeEvaluation;
 
 internal class TypeProvider : ITypeProvider
 {
-    private TypeCodeConfiguration? _configuration;
+    private static TypeCodeConfiguration? _configuration;
 
     public void Initalize(TypeCodeConfiguration configuration)
     {
