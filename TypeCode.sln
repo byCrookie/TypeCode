@@ -4,7 +4,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{ECFF6A9C-9D2
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{2823508B-B95C-4909-A4EB-B04225E9C935}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TypeCode.Console", "src\TypeCode.Console\TypeCode.Console.csproj", "{7AE25AE5-31C3-4E72-9949-128C11ED6C82}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TypeCode.Console.Interactive", "src\TypeCode.Console.Interactive\TypeCode.Console.Interactive.csproj", "{7AE25AE5-31C3-4E72-9949-128C11ED6C82}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TypeCode.Business", "src\TypeCode.Business\TypeCode.Business.csproj", "{50BBBE63-BE22-4006-97C4-FB93DCB46569}"
 EndProject

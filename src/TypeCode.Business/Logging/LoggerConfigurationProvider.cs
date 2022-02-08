@@ -6,7 +6,7 @@ namespace TypeCode.Business.Logging;
 
 public static class LoggerConfigurationProvider
 {
-    private const string LogFile = "TypeCode.Console.log.txt";
+    private const string LogFile = "TypeCode.Console.Interactive.log.txt";
         
     public static LoggerConfiguration Create()
     {
