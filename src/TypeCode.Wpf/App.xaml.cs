@@ -1,7 +1,10 @@
 ﻿using System.Windows;
 using System.Windows.Threading;
+using Framework.Autofac.Boot.Logger;
 using Nito.AsyncEx;
 using Serilog;
+using Serilog.Events;
+using TypeCode.Business.Logging;
 using TypeCode.Wpf.Application.Boot;
 
 namespace TypeCode.Wpf;
@@ -10,16 +13,24 @@ public partial class App
 {
     protected override void OnStartup(StartupEventArgs e)
     {
-        Log.Logger = new LoggerConfiguration()
-            .WriteTo.Console()
-            .MinimumLevel.Debug()
-            .CreateLogger();
+        try
+        {
+            var options = new LoggerBootStepOptions();
+            options.Configuration.WriteTo.Console(LogEventLevel.Debug);
+        
+            Log.Logger = LoggerConfigurationProvider.Create(options).CreateLogger();
             
-        Current.DispatcherUnhandledException += HandleDispatcherUnhandledException;
+            Current.DispatcherUnhandledException += HandleDispatcherUnhandledException;
 
-        AsyncContext.Run(Bootstrapper.BootAsync);
+            AsyncContext.Run(Bootstrapper.BootAsync);
             
-        base.OnStartup(e);
+            base.OnStartup(e);
+        }
+        catch (Exception exception)
+        {
+            Console.WriteLine(exception);
+            throw;
+        }
     }
 
     protected override void OnExit(ExitEventArgs e)
