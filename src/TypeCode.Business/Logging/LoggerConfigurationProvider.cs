@@ -6,13 +6,13 @@ namespace TypeCode.Business.Logging;
 
 public static class LoggerConfigurationProvider
 {
-    private const string LogFile = "TypeCode.Console.Interactive.log.txt";
+    private const string LogFile = "TypeCode.log.txt";
         
     public static LoggerConfiguration Create()
     {
         return new LoggerConfiguration()
             .MinimumLevel.Debug()
-            .WriteTo.File(LogFile, LogEventLevel.Information);
+            .WriteTo.File(LogFile, LogEventLevel.Debug);
     }
 
     public static LoggerConfiguration Create(LoggerBootStepOptions loggerBootStepOptions)
@@ -20,6 +20,6 @@ public static class LoggerConfigurationProvider
         return loggerBootStepOptions
             .Configuration
             .MinimumLevel.Debug()
-            .WriteTo.File(LogFile, LogEventLevel.Information);
+            .WriteTo.File(LogFile, LogEventLevel.Debug);
     }
 }
