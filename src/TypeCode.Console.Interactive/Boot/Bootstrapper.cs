@@ -24,7 +24,9 @@ public static class Bootstrapper
 
         var bootFlow = bootScope.WorkflowBuilder
             .ThenAsync<ILoggerBootStep<BootContext, LoggerBootStepOptions>, LoggerBootStepOptions>(
-                options => LoggerConfigurationProvider.Create(options).WriteTo.Console(LogEventLevel.Information)
+                options => LoggerConfigurationProvider.Create(options)
+                    .WriteTo.Console(LogEventLevel.Information)
+                    .WriteTo.File("TypeCode.Wpf.log.txt")
             )
             .ThenAsync<IAutofacBootStep<BootContext, AutofacBootStepOptions>, AutofacBootStepOptions>(
                 options => options.Autofac
