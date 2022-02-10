@@ -21,6 +21,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <None Remove="Configuration.cfg.xml" />
       <Content Include="Configuration.cfg.xml">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>

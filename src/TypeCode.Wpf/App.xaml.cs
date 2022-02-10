@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.IO;
+using System.Windows;
 using System.Windows.Threading;
 using Framework.Autofac.Boot.Logger;
 using Nito.AsyncEx;
@@ -29,6 +30,7 @@ public partial class App
         catch (Exception exception)
         {
             Console.WriteLine(exception);
+            File.AppendAllText("TypeCode.Fatal.log.txt", $"{exception.Message} - {exception.InnerException?.Message} | {exception.StackTrace}");
             throw;
         }
     }
