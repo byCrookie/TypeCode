@@ -27,7 +27,7 @@ public class WizardNavigationService : IWizardNavigationService
         // Wizard
 
         var wizardViewModelType = typeof(WizardSimpleViewModel<T>);
-        var wizardViewModelInstance = _factory.Create<WizardSimpleViewModel<T>>();
+        var wizardViewModelInstance = new WizardSimpleViewModel<T>(this);
 
         if (wizardViewModelInstance is null)
         {
