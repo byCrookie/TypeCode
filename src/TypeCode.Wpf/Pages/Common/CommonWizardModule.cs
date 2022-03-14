@@ -9,6 +9,7 @@ public class CommonWizardModule : Module
     protected override void Load(ContainerBuilder builder)
     {
         builder.AddViewModelAndView<ConfigurationWizardViewModel, ConfigurationWizardView>();
+        builder.AddViewModelAndView<SetupWizardViewModel, SetupWizardView>();
 
         base.Load(builder);
     }
