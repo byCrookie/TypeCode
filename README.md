@@ -14,6 +14,7 @@ This project is built on top of https://github.com/byCrookie/Framework
 
 ## How to use
 
+* Make sure that you have installed ".NET 6.0 Desktop Runtime". If not, download it from Microsoft.
 * Download wpf or console application zip from releases
 * Change Configuration.xml using the documentation
 * Start the .exe
