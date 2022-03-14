@@ -1,4 +1,6 @@
-﻿using Autofac;
+﻿using System.Diagnostics;
+using System.Windows;
+using Autofac;
 using Framework.Autofac.Boot;
 using TypeCode.Wpf.Main;
 using TypeCode.Wpf.Main.Content;
@@ -33,6 +35,16 @@ internal class SetupWpfApplicationStep<TContext> : ISetupWpfApplicationStep<TCon
             .Add(builder => builder.RegisterInstance(mainView.MainSidebar).AsSelf().SingleInstance());
         context.RegistrationActions
             .Add(builder => builder.RegisterType<MainSidebarViewModel>().AsSelf());
+        
+        EventManager.RegisterClassHandler(
+            typeof(System.Windows.Documents.Hyperlink),
+            System.Windows.Documents.Hyperlink.RequestNavigateEvent,
+            new System.Windows.Navigation.RequestNavigateEventHandler(
+                (_, en) => Process.Start(new ProcessStartInfo(
+                    en.Uri.ToString()
+                ) { UseShellExecute = true })
+            )
+        );
 
         return Task.CompletedTask;
     }

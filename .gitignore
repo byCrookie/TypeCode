@@ -6,6 +6,7 @@
 !/Nuget/
 /Nuget/*
 !/Nuget/Packages/
+version
 
 # Rider
 .idea

@@ -15,16 +15,28 @@
     
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
+        
+        <StackPanel Background="{StaticResource Accent}"
+                    Opacity="0.9"
+                    Visibility="{Binding HasNewVersion, Converter={StaticResource BooleanToVisibilityConverter}}"
+                    Orientation="Horizontal">
+            <TextBlock Margin="5,0,0,0">
+                <Hyperlink NavigateUri="{Binding VersionLink, Mode=OneWay}" Foreground="{StaticResource PrimaryText}">
+                    <Label Content="{Binding VersionMessage, Mode=OneWay}"></Label>
+                </Hyperlink>
+            </TextBlock>
+        </StackPanel>
 
-        <Frame Name="NavigationFrame" Grid.Row="0"
+        <Frame Name="NavigationFrame" Grid.Row="1"
                Margin="0" Padding="0"
                Background="{StaticResource Primary}"
                NavigationUIVisibility="Hidden" />
 
-        <ProgressBar Grid.Row="1" Height="5" IsIndeterminate="True"
+        <ProgressBar Grid.Row="2" Height="5" IsIndeterminate="True"
                      Visibility="{Binding AreAssembliesLoading, Converter={StaticResource BooleanToVisibilityConverter}}" />
     </Grid>
 </UserControl>
