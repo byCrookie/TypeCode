@@ -47,17 +47,17 @@ jobs:
     - name: Build Console Interactive
       run: dotnet build --configuration Release -o publish/interactive ./src/TypeCode.Console.Interactive
       
-    - name Add Version Wpf
+    - name: Add Version Wpf
       run: | 
         New-Item publish/wpf/version
         Set-Content publish/wpf/version ${{ steps.previoustag.outputs.tag }}
         
-    - name Add Version Console
+    - name: Add Version Console
       run: |
         New-Item publish/console/version
         Set-Content publish/console/version ${{ steps.previoustag.outputs.tag }}
       
-    - name Add Version Console Interactive
+    - name: Add Version Console Interactive
       run: |
         New-Item publish/interactive/version
         Set-Content publish/interactive/version ${{ steps.previoustag.outputs.tag }}
