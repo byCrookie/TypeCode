@@ -11,6 +11,7 @@
     <Grid Margin="5">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -30,7 +31,27 @@
             </TextBox.InputBindings>
         </TextBox>
 
-        <TextBox Margin="0,5,0,0" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+        <StackPanel Margin="0,5,0,5" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
+            <CheckBox Content="Include Strings"
+                      ToolTip="Nullable strings can't be detected automatically with option required. Decision is yours."
+                      Foreground="{StaticResource PrimaryText}"
+                      IsChecked="{Binding IncludeStrings}">
+            </CheckBox>
+            <CheckBox Margin="5,0,0,0"
+                      Content="Only Required"
+                      ToolTip="Only required properties will be included. Specflow can execute with these properties only."
+                      Foreground="{StaticResource PrimaryText}"
+                      IsChecked="{Binding OnlyRequired}">
+            </CheckBox>
+            <CheckBox Margin="5,0,0,0"
+                      Content="Sort Alphabetically"
+                      ToolTip="Properties can be sorted alphabetically. Default is the order of the properties in the class. Id's or navigation properties are always at the beginning."
+                      Foreground="{StaticResource PrimaryText}"
+                      IsChecked="{Binding SortAlphabetically}">
+            </CheckBox>
+        </StackPanel>
+
+        <TextBox Margin="0,5,0,0" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
                  Padding="2" Background="Transparent"
                  BorderThickness="0"
                  Text="{Binding Output, Mode=OneWay}"
@@ -38,8 +59,8 @@
                  TextWrapping="Wrap"
                  VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
 
-        <Separator Margin="0,5,0,5" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" />
+        <Separator Margin="0,5,0,5" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" />
 
-        <c:CustomButton Grid.Row="3" Grid.Column="1" Command="{Binding GenerateCommand}">Generate</c:CustomButton>
+        <c:CustomButton Grid.Row="4" Grid.Column="1" Command="{Binding GenerateCommand}">Generate</c:CustomButton>
     </Grid>
 </UserControl>

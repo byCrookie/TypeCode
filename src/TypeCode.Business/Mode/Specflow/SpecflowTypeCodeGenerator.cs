@@ -10,16 +10,16 @@ internal class SpecflowTypeCodeGenerator : ISpecflowTypeCodeGenerator
 {
     public Task<string?> GenerateAsync(SpecflowTypeCodeGeneratorParameter parameter)
     {
-        return parameter.Types.Any() 
-            ? Task.FromResult<string?>(GenerateTable(parameter.Types)) 
+        return parameter.Types.Any()
+            ? Task.FromResult<string?>(GenerateTable(parameter))
             : Task.FromResult<string?>(null);
     }
 
-    private static string GenerateTable(IEnumerable<Type> types)
+    private static string GenerateTable(SpecflowTypeCodeGeneratorParameter parameter)
     {
         var stringBuilder = new StringBuilder();
 
-        var tables = CreateTables(types);
+        var tables = CreateTables(parameter);
 
         foreach (var (key, (header, defaultRow)) in tables)
         {
@@ -33,14 +33,14 @@ internal class SpecflowTypeCodeGenerator : ISpecflowTypeCodeGenerator
         return stringBuilder.ToString();
     }
 
-    private static IDictionary<Type, (string, string)> CreateTables(IEnumerable<Type> entityTypes)
+    private static IDictionary<Type, (string, string)> CreateTables(SpecflowTypeCodeGeneratorParameter parameter)
     {
         var tables = new Dictionary<Type, (string, string)>();
 
-        foreach (var type in entityTypes)
+        foreach (var type in parameter.Types)
         {
-            var properties = RetrieveProperties(type).ToList();
-                
+            var properties = RetrieveProperties(parameter, type).ToList();
+
             if (properties.Any())
             {
                 CreateTableForType(properties, tables, type);
@@ -107,27 +107,51 @@ internal class SpecflowTypeCodeGenerator : ISpecflowTypeCodeGenerator
         return property.IsValueType ? Activator.CreateInstance(property)?.ToString() ?? defaultNull : defaultNull;
     }
 
-    private static IEnumerable<KeyValuePair<PropertyInfo, string>> RetrieveProperties(Type type)
+    private static IEnumerable<KeyValuePair<PropertyInfo, string>> RetrieveProperties(SpecflowTypeCodeGeneratorParameter parameter, Type type)
     {
         var properties = type.GetProperties()
-            .Where(ShouldUseProperty)
+            .Where(property => IncludeProperty(parameter, property))
             .OrderByDescending(property => property.Name == "Id")
             .ThenByDescending(property => property.Name.Contains("Id"))
-            .ThenBy(property => property.Name);
+            .ThenByDescending(property => property.PropertyType.IsClass && !PropertyEval.IsSimple(property.PropertyType));
 
-        foreach (var property in properties)
+        if (parameter.SortAlphabetically)
+        {
+            properties = properties
+                .ThenBy(prop => prop.Name);
+        }
+
+        foreach (var property in properties.ToList())
         {
             yield return new KeyValuePair<PropertyInfo, string>(property, CreateHeader(property));
         }
     }
 
-    private static bool ShouldUseProperty(PropertyInfo property)
+    private static bool IncludeProperty(SpecflowTypeCodeGeneratorParameter parameter, PropertyInfo property)
     {
-        return Nullable.GetUnderlyingType(property.PropertyType) == null
-               && property.Name != "ModifiedDate"
-               && !PropertyEval.IsList(property.PropertyType)
-               && property.GetSetMethod() != null
-               && property.Name != "Id";
+        var include = property.Name != "ModifiedDate"
+                      && !PropertyEval.IsList(property.PropertyType)
+                      && property.GetSetMethod() != null
+                      && property.Name != "Id";
+
+        if (parameter.OnlyRequired)
+        {
+            include = include
+                      && !IsNullable(property);
+        }
+
+        if (!parameter.IncludeStrings)
+        {
+            include = include
+                      && property.PropertyType != typeof(string);
+        }
+
+        return include;
+    }
+
+    private static bool IsNullable(PropertyInfo property)
+    {
+        return Nullable.GetUnderlyingType(property.PropertyType) is not null;
     }
 
     private static string CreateHeader(PropertyInfo property)

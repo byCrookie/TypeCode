@@ -26,7 +26,8 @@ public class SpecflowViewModel : Reactive, IAsyncNavigatedTo
         _specflowGenerator = specflowGenerator;
         _typeProvider = typeProvider;
         _wizardNavigationService = wizardNavigationService;
-        
+
+        IncludeStrings = true;
         GenerateCommand = new AsyncCommand(GenerateAsync);
     }
 
@@ -60,7 +61,10 @@ public class SpecflowViewModel : Reactive, IAsyncNavigatedTo
             
         var parameter = new SpecflowTypeCodeGeneratorParameter
         {
-            Types = types
+            Types = types,
+            OnlyRequired = OnlyRequired,
+            SortAlphabetically = SortAlphabetically,
+            IncludeStrings = IncludeStrings
         };
 
         var result = await _specflowGenerator.GenerateAsync(parameter).ConfigureAwait(true);
@@ -79,5 +83,23 @@ public class SpecflowViewModel : Reactive, IAsyncNavigatedTo
     {
         get => Get<string?>();
         private set => Set(value);
+    }
+    
+    public bool IncludeStrings
+    {
+        get => Get<bool>();
+        set => Set(value);
+    }
+    
+    public bool OnlyRequired
+    {
+        get => Get<bool>();
+        set => Set(value);
+    }
+    
+    public bool SortAlphabetically
+    {
+        get => Get<bool>();
+        set => Set(value);
     }
 }
