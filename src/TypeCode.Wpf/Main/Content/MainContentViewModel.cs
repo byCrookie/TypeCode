@@ -1,4 +1,7 @@
-﻿using AsyncAwaitBestPractices;
+﻿using System.Windows.Input;
+using AsyncAwaitBestPractices;
+using AsyncAwaitBestPractices.MVVM;
+using Serilog;
 using TypeCode.Business.Version;
 using TypeCode.Wpf.Application;
 using TypeCode.Wpf.Helper.Event;
@@ -6,43 +9,65 @@ using TypeCode.Wpf.Helper.ViewModel;
 
 namespace TypeCode.Wpf.Main.Content;
 
-public class MainContentViewModel : Reactive, IAsyncEventHandler<AssemblyLoadedEvent>, IAsyncEventHandler<VersionEvent>
+public class MainContentViewModel :
+    Reactive,
+    IAsyncEventHandler<AssemblyLoadedEvent>,
+    IAsyncEventHandler<BannerOpenEvent>
 {
+    private readonly IEventAggregator _eventAggregator;
+    private readonly IVersionEvaluator _versionEvaluator;
+
     public MainContentViewModel(IEventAggregator eventAggregator, IVersionEvaluator versionEvaluator)
     {
+        _eventAggregator = eventAggregator;
+        _versionEvaluator = versionEvaluator;
+
         AreAssembliesLoading = true;
 
-        async Task CheckVersion()
-        {
-            var version = await versionEvaluator.EvaluateAsync().ConfigureAwait(false);
-            await eventAggregator.PublishAsync(new VersionEvent { Version = version }).ConfigureAwait(false);
-        }
-
-        eventAggregator.Subscribe<VersionEvent>(this);
+        eventAggregator.Subscribe<BannerOpenEvent>(this);
         eventAggregator.Subscribe<AssemblyLoadedEvent>(this);
-        
-        CheckVersion().SafeFireAndForget();
+
+        CloseBannerCommand = new AsyncCommand(() =>
+        {
+            IsBannerVisible = false;
+            return Task.CompletedTask;
+        });
+
+        CheckVersionAsync().SafeFireAndForget();
     }
-        
-    public bool AreAssembliesLoading {
+
+    public bool AreAssembliesLoading
+    {
         get => Get<bool>();
         set => Set(value);
     }
-    
-    public bool HasNewVersion {
+
+    public bool IsBannerVisible
+    {
         get => Get<bool>();
         set => Set(value);
     }
-    
-    public string? VersionMessage {
+
+    public bool IsBannerLink
+    {
+        get => Get<bool>();
+        set => Set(value);
+    }
+
+    public string? BannerLink
+    {
         get => Get<string?>();
         set => Set(value);
     }
-    
-    public string? VersionLink {
+
+    public string? BannerMessage
+    {
         get => Get<string?>();
         set => Set(value);
     }
+
+    public ICommand CloseBannerCommand { get; set; }
+    private Guid? CurrentBanner { get; set; }
 
     public Task HandleAsync(AssemblyLoadedEvent e)
     {
@@ -50,15 +75,63 @@ public class MainContentViewModel : Reactive, IAsyncEventHandler<AssemblyLoadedE
         return Task.CompletedTask;
     }
 
-    public Task HandleAsync(VersionEvent e)
+    public Task HandleAsync(BannerOpenEvent e)
     {
-        if (e.Version is not null)
+        IsBannerLink = e.IsLink;
+        BannerLink = e.Link;
+        BannerMessage = e.Message;
+
+        IsBannerVisible = true;
+        CurrentBanner = Guid.NewGuid();
+
+        if (e.VisibleTime is not null)
         {
-            HasNewVersion = true;
-            VersionMessage = $"New version {e.Version} available at https://github.com/byCrookie/TypeCode/releases/tag/{e.Version}";
-            VersionLink = $"https://github.com/byCrookie/TypeCode/releases/tag/{e.Version}";
+            HideBannerAsync(CurrentBanner, e.VisibleTime.Value).SafeFireAndForget();
         }
-        
+
         return Task.CompletedTask;
+    }
+
+    private async Task HideBannerAsync(Guid? currentBanner, TimeSpan timeSpan)
+    {
+        await Task.Delay(timeSpan).ConfigureAwait(false);
+        if (CurrentBanner == currentBanner)
+        {
+            IsBannerVisible = false;
+        }
+    }
+
+    private async Task CheckVersionAsync()
+    {
+        try
+        {
+            var version = await _versionEvaluator.EvaluateAsync().ConfigureAwait(false);
+
+            if (version is null)
+            {
+                return;
+            }
+
+            var versionMessage = $"New version {version} available at https://github.com/byCrookie/TypeCode/releases/tag/{version}";
+            var versionLink = $"https://github.com/byCrookie/TypeCode/releases/tag/{version}";
+
+            await _eventAggregator.PublishAsync(new BannerOpenEvent
+            {
+                Link = versionLink,
+                Message = versionMessage,
+                IsLink = true
+            }).ConfigureAwait(false);
+        }
+        catch (Exception exception)
+        {
+            Log.Warning("{Message} {InnerMessage} {Stacktrace}", exception.Message, exception.InnerException?.Message, exception.StackTrace);
+            await _eventAggregator.PublishAsync(new BannerOpenEvent
+            {
+                Link = "https://github.com/byCrookie/TypeCode/releases",
+                Message = "Evaluating latest version failed. Manually check https://github.com/byCrookie/TypeCode/releases.",
+                IsLink = true,
+                VisibleTime = TimeSpan.FromSeconds(15)
+            }).ConfigureAwait(false);
+        }
     }
 }

@@ -7,29 +7,51 @@
              xmlns:converters="clr-namespace:TypeCode.Wpf.Helper.Converters"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance content:MainContentViewModel}">
-    
+
     <UserControl.Resources>
         <converters:BooleanToVisibilityConverterSelf x:Key="BooleanToVisibilityConverter" True="Visible"
                                                      False="Collapsed" />
+        <converters:BooleanToVisibilityConverterSelf x:Key="InverseBooleanToVisibilityConverter" True="Collapsed"
+                                                     False="Visible" />
     </UserControl.Resources>
-    
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        
-        <StackPanel Background="{StaticResource Accent}"
-                    Opacity="0.9"
-                    Visibility="{Binding HasNewVersion, Converter={StaticResource BooleanToVisibilityConverter}}"
-                    Orientation="Horizontal">
-            <TextBlock Margin="5,0,0,0">
-                <Hyperlink NavigateUri="{Binding VersionLink, Mode=OneWay}" Foreground="{StaticResource PrimaryText}">
-                    <Label Content="{Binding VersionMessage, Mode=OneWay}"></Label>
+
+
+        <Grid Background="{StaticResource Accent}"
+              Opacity="0.9"
+              Visibility="{Binding IsBannerVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="5"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="5"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="5"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="1"
+                       Foreground="{StaticResource PrimaryText}"
+                       Visibility="{Binding IsBannerLink, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
+                <Hyperlink NavigateUri="{Binding BannerLink, Mode=OneWay}">
+                    <Label Content="{Binding BannerMessage, Mode=OneWay}"></Label>
                 </Hyperlink>
             </TextBlock>
-        </StackPanel>
+            <Label Grid.Column="1"
+                   Content="{Binding BannerMessage, Mode=OneWay}"
+                   Foreground="{StaticResource PrimaryText}" />
+            <TextBlock Grid.Column="4"
+                       Foreground="{StaticResource PrimaryText}">
+                <Hyperlink Command="{Binding CloseBannerCommand}" >
+                    <Label Content="Close"></Label>
+                </Hyperlink>
+            </TextBlock>
+        </Grid>
 
         <Frame Name="NavigationFrame" Grid.Row="1"
                Margin="0" Padding="0"

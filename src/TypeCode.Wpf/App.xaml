@@ -9,7 +9,7 @@
         <Color x:Key="AccentColor">DodgerBlue</Color>
 
         <Color x:Key="PrimaryTextColor">WhiteSmoke</Color>
-        <Color x:Key="SecondaryTextColor">LightGray</Color>
+        <Color x:Key="SecondaryTextColor">#2F3136</Color>
 
         <SolidColorBrush x:Key="Primary" Color="{StaticResource PrimaryColor}" />
         <SolidColorBrush x:Key="Secondary" Color="{StaticResource SecondaryColor}" />
