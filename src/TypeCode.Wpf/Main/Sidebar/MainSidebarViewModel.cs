@@ -105,10 +105,10 @@ public class MainSidebarViewModel : Reactive
         var wizardBuilder = _wizardBuilderFactory.Create(new NavigationContext());
 
         var wizard = wizardBuilder
-            .Then<SetupWizardViewModel>()
-            .Then<ConfigurationWizardViewModel>()
+            .Then<SetupWizardViewModel>((options, _) => options.AllowNext(_ => true))
+            .Then<ConfigurationWizardViewModel>((options, _) => options.AllowBack(_ => true))
             .Build();
-        
+
         return _settingsWizardRunner.RunAsync(wizard);
     }
 }

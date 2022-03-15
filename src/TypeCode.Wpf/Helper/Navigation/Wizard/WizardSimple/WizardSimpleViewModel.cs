@@ -15,6 +15,7 @@ public class WizardSimpleViewModel<T> : Reactive, IAsyncNavigatedTo where T : no
     {
         _wizardNavigationService = wizardNavigationService;
         
+        CancelCommand = new AsyncCommand(CancelAsync);
         FinishCommand = new AsyncCommand(FinishAsync);
     }
         
@@ -25,13 +26,19 @@ public class WizardSimpleViewModel<T> : Reactive, IAsyncNavigatedTo where T : no
         WizardPage = context.GetParameter<UserControl>("View");
         return Task.CompletedTask;
     }
-
-    private Task FinishAsync()
+    
+    private Task CancelAsync()
     {
         return _wizardNavigationService.CloseWizardAsync<T>();
     }
 
+    private Task FinishAsync()
+    {
+        return _wizardNavigationService.SaveWizardAsync<T>();
+    }
+
     public ICommand FinishCommand { get; set; }
+    public ICommand CancelCommand { get; set; }
 
     public UserControl? WizardPage {
         get => Get<UserControl?>();

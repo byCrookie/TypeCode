@@ -68,8 +68,10 @@ public class WizardNavigationService : IWizardNavigationService
 
         _mainWindow.Main.Opacity = 0.1;
         _mainWindow.Main.IsEnabled = false;
-        _mainWindow.WizardOverlay.Visibility = Visibility.Visible;
-        if (!_mainWindow.WizardFrame.Navigate(wizardViewInstance))
+        _mainWindow.WizardOverlay.Opacity = 0.1;
+        _mainWindow.WizardOverlay.IsEnabled = false;
+        _mainWindow.ModalOverlay.Visibility = Visibility.Visible;
+        if (!_mainWindow.ModalFrame.Navigate(wizardViewInstance))
         {
             throw new ApplicationException($"Navigation to wizard {wizardViewModelType.Name} failed");
         }
@@ -78,25 +80,27 @@ public class WizardNavigationService : IWizardNavigationService
         context.AddParameter("View", viewInstance);
         await CallOnNavigatedToOnViewModelAsync(context, wizardViewModelInstance).ConfigureAwait(true);
         await CallOnNavigatedToOnViewModelAsync(context, viewModelInstance).ConfigureAwait(true);
-            
+
         _lastNavigationContext = context;
         _lastViewModel = viewModelInstance;
-            
+
         _isOpen = true;
-            
+
         while (_isOpen)
         {
             await Task.Delay(25).ConfigureAwait(true);
         }
-            
+
         return viewModelInstance;
     }
 
-    public async Task CloseWizardAsync<T>() where T : notnull
+    public async Task SaveWizardAsync<T>() where T : notnull
     {
         _mainWindow.Main.Opacity = 1;
         _mainWindow.Main.IsEnabled = true;
-        _mainWindow.WizardOverlay.Visibility = Visibility.Collapsed;
+        _mainWindow.WizardOverlay.Opacity = 1;
+        _mainWindow.WizardOverlay.IsEnabled = true;
+        _mainWindow.ModalOverlay.Visibility = Visibility.Collapsed;
 
         if (_lastNavigationContext is null)
         {
@@ -106,6 +110,30 @@ public class WizardNavigationService : IWizardNavigationService
         await CallNavigatedFromOnLastViewModelAsync(_lastNavigationContext).ConfigureAwait(true);
 
         _isOpen = false;
+
+        var parameter = _lastNavigationContext.GetParameter<WizardParameter<T>>();
+        await parameter.OnSaveAsync(_lastNavigationContext).ConfigureAwait(true);
+    }
+    
+    public async Task CloseWizardAsync<T>() where T : notnull
+    {
+        _mainWindow.Main.Opacity = 1;
+        _mainWindow.Main.IsEnabled = true;
+        _mainWindow.WizardOverlay.Opacity = 1;
+        _mainWindow.WizardOverlay.IsEnabled = true;
+        _mainWindow.ModalOverlay.Visibility = Visibility.Collapsed;
+
+        if (_lastNavigationContext is null)
+        {
+            throw new ArgumentNullException($"{nameof(NavigationContext)} is not set");
+        }
+
+        await CallNavigatedFromOnLastViewModelAsync(_lastNavigationContext).ConfigureAwait(true);
+
+        _isOpen = false;
+
+        var parameter = _lastNavigationContext.GetParameter<WizardParameter<T>>();
+        await parameter.OnCancelAsync(_lastNavigationContext).ConfigureAwait(true);
     }
 
     private Task CallNavigatedFromOnLastViewModelAsync(NavigationContext context)

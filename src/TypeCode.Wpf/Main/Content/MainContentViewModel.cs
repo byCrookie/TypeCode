@@ -94,7 +94,7 @@ public class MainContentViewModel :
 
     private async Task HideBannerAsync(Guid? currentBanner, TimeSpan timeSpan)
     {
-        await Task.Delay(timeSpan).ConfigureAwait(false);
+        await Task.Delay(timeSpan).ConfigureAwait(true);
         if (CurrentBanner == currentBanner)
         {
             IsBannerVisible = false;
@@ -105,7 +105,7 @@ public class MainContentViewModel :
     {
         try
         {
-            var version = await _versionEvaluator.EvaluateAsync().ConfigureAwait(false);
+            var version = await _versionEvaluator.EvaluateAsync().ConfigureAwait(true);
 
             if (version is null)
             {
@@ -120,7 +120,7 @@ public class MainContentViewModel :
                 Link = versionLink,
                 Message = versionMessage,
                 IsLink = true
-            }).ConfigureAwait(false);
+            }).ConfigureAwait(true);
         }
         catch (Exception exception)
         {
@@ -131,7 +131,7 @@ public class MainContentViewModel :
                 Message = "Evaluating latest version failed. Manually check https://github.com/byCrookie/TypeCode/releases.",
                 IsLink = true,
                 VisibleTime = TimeSpan.FromSeconds(15)
-            }).ConfigureAwait(false);
+            }).ConfigureAwait(true);
         }
     }
 }

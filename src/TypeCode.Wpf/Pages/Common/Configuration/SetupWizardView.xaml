@@ -8,7 +8,20 @@
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance configuration:SetupWizardViewModel}">
 
-    <TreeView ItemsSource="{Binding TreeViewItems, Mode=OneWay}">
-    </TreeView>
+    <StackPanel>
+        <Label Background="{StaticResource Primary}">Work in Progess</Label>
+        <TreeView
+            Background="{StaticResource Secondary}"
+            Foreground="{StaticResource PrimaryText}"
+            BorderThickness="0"
+            ItemsSource="{Binding TreeViewItems, Mode=OneWay}">
+            <TreeView.Resources>
+                <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource {x:Type TreeViewItem}}">
+                    <Setter Property="Background" Value="{StaticResource Secondary}" />
+                    <Setter Property="Foreground" Value="{StaticResource PrimaryText}" />
+                </Style>
+            </TreeView.Resources>
+        </TreeView>
+    </StackPanel>
 
 </UserControl>
