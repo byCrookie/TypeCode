@@ -37,12 +37,13 @@
 
             <TextBlock Grid.Column="1"
                        Foreground="{StaticResource PrimaryText}"
-                       Visibility="{Binding IsBannerLink, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
+                       Visibility="{Binding IsBannerLink, Converter={StaticResource BooleanToVisibilityConverter}}">
                 <Hyperlink NavigateUri="{Binding BannerLink, Mode=OneWay}">
                     <Label Content="{Binding BannerMessage, Mode=OneWay}"></Label>
                 </Hyperlink>
             </TextBlock>
             <Label Grid.Column="1"
+                   Visibility="{Binding IsBannerLink, Converter={StaticResource InverseBooleanToVisibilityConverter}}"
                    Content="{Binding BannerMessage, Mode=OneWay}"
                    Foreground="{StaticResource PrimaryText}" />
             <TextBlock Grid.Column="4"
