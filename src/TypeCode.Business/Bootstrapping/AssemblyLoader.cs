@@ -9,31 +9,32 @@ internal class AssemblyLoader : IAssemblyLoader
 {
     public Task<Assembly> LoadAsync(string path)
     {
-        const string cacheDirectory = "cache";
-        Directory.CreateDirectory(cacheDirectory);
-
-        var fileName = Path.GetFileNameWithoutExtension(path);
-        var directoryPath =  Path.GetDirectoryName(path) ?? string.Empty;
-
-        var cacheDirectoryPath = Path.Combine(cacheDirectory, GetHashString(directoryPath));
-        Directory.CreateDirectory(cacheDirectoryPath);
-
-        var cachedAssembly = Path.Combine(cacheDirectoryPath, $"{fileName}.dll");
-
-        if (!File.Exists(cachedAssembly) || AssemblyIsNewer(path, cachedAssembly))
-        {
-            File.Copy(path, cachedAssembly, true);
-        }
-
         try
         {
+            const string cacheDirectory = "cache";
+            Directory.CreateDirectory(cacheDirectory);
+
+            var fileName = Path.GetFileNameWithoutExtension(path);
+            var directoryPath = Path.GetDirectoryName(path) ?? string.Empty;
+
+            var cacheDirectoryPath = Path.Combine(cacheDirectory, GetHashString(directoryPath));
+            Directory.CreateDirectory(cacheDirectoryPath);
+
+            var cachedAssembly = Path.Combine(cacheDirectoryPath, $"{fileName}.dll");
+
+            if (!File.Exists(cachedAssembly) || AssemblyIsNewer(path, cachedAssembly))
+            {
+                File.Copy(path, cachedAssembly, true);
+            }
+            
             var assembly = Assembly.LoadFrom(cachedAssembly);
             return Task.FromResult(assembly);
         }
         catch (Exception e)
         {
-            Log.Warning("{0}", e.Message);
-            throw;
+            Log.Warning("Cache-Error. Ignore Cache: {Exception}", e.Message);
+            var assembly = Assembly.LoadFrom(path);
+            return Task.FromResult(assembly);
         }
     }
 
@@ -49,9 +50,10 @@ internal class AssemblyLoader : IAssemblyLoader
         {
             sb.Append(b.ToString("X2"));
         }
+
         return sb.ToString();
     }
-    
+
     private static IEnumerable<byte> GetHash(string inputString)
     {
         using (HashAlgorithm algorithm = SHA1.Create())
