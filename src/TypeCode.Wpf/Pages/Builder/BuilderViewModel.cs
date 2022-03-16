@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System.Windows;
+using System.Windows.Input;
 using AsyncAwaitBestPractices.MVVM;
 using TypeCode.Business.Mode;
 using TypeCode.Business.Mode.Builder;
@@ -27,6 +28,11 @@ public class BuilderViewModel : Reactive, IAsyncNavigatedTo
         _typeSelectionWizardStarter = typeSelectionWizardStarter;
 
         GenerateCommand = new AsyncCommand(GenerateAsync);
+        CopyToClipboardCommand = new AsyncCommand(() =>
+        {
+            Clipboard.SetText(Output ?? string.Empty);
+            return Task.CompletedTask;
+        });
     }
         
     public Task OnNavigatedToAsync(NavigationContext context)
@@ -68,6 +74,7 @@ public class BuilderViewModel : Reactive, IAsyncNavigatedTo
     }
         
     public ICommand GenerateCommand { get; set; }
+    public ICommand CopyToClipboardCommand { get; set; }
         
     public string? Input {
         get => Get<string?>();
