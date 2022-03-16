@@ -54,13 +54,27 @@
             </CheckBox>
         </StackPanel>
 
-        <TextBox Margin="0,5,0,0" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
-                 Padding="2" Background="Transparent"
-                 BorderThickness="0"
-                 Text="{Binding Output, Mode=OneWay}"
-                 IsReadOnly="True"
-                 TextWrapping="Wrap"
-                 VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
+        <Grid Margin="0,5,0,0" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <TextBox Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0"
+                     Padding="2" Background="Transparent"
+                     BorderThickness="0"
+                     Text="{Binding Output, Mode=OneWay}"
+                     IsReadOnly="True"
+                     TextWrapping="Wrap"
+                     VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
+            <c:CustomIconButton Grid.Column="0" Grid.Row="1" Command="{Binding CopyToClipboardCommand}">
+                <Image Source="{StaticResource CopyDrawingImage}" />
+            </c:CustomIconButton>
+        </Grid>
 
         <Separator Margin="0,5,0,5" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" />
 

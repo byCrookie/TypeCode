@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System.Windows;
+using System.Windows.Input;
 using AsyncAwaitBestPractices.MVVM;
 using TypeCode.Business.Mode;
 using TypeCode.Business.Mode.Mapper;
@@ -30,6 +31,11 @@ public class MapperViewModel : Reactive, IAsyncNavigatedTo
 
         GenerateCommand = new AsyncCommand(GenerateAsync);
         StyleCommand = new AsyncCommand<MappingStyle>(StyleAsync);
+        CopyToClipboardCommand = new AsyncCommand(() =>
+        {
+            Clipboard.SetText(Output ?? string.Empty);
+            return Task.CompletedTask;
+        });
     }
 
     public Task OnNavigatedToAsync(NavigationContext context)
@@ -87,6 +93,7 @@ public class MapperViewModel : Reactive, IAsyncNavigatedTo
 
     public ICommand GenerateCommand { get; set; }
     public ICommand StyleCommand { get; set; }
+    public ICommand CopyToClipboardCommand { get; set; }
 
     public string? Input
     {
