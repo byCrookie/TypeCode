@@ -50,7 +50,6 @@ internal class UnitTestDependencyManuallyTypeCodeGenerator : IUnitTestDependency
             .ToList();
 
         var stringBuilder = new StringBuilder();
-        stringBuilder.AppendLine($@"{Cuts.Long()}");
         stringBuilder.AppendLine($@"{Cuts.Heading()} {className}");
 
         stringBuilder.AppendLine();
@@ -91,9 +90,7 @@ internal class UnitTestDependencyManuallyTypeCodeGenerator : IUnitTestDependency
         stringBuilder.AppendLine("}");
 
         stringBuilder.AppendLine();
-
-        stringBuilder.Append($@"{Cuts.Long()}");
-
+        
         return Task.FromResult<string?>(stringBuilder.ToString());
     }
 

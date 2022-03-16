@@ -29,8 +29,7 @@ internal class BuilderTypeCodeGenerator : IBuilderTypeCodeGenerator
     private static string GenerateBuilderCode(Type type)
     {
         var stringBuilder = new StringBuilder();
-
-        stringBuilder.AppendLine($@"{Cuts.Long()}");
+        
         stringBuilder.AppendLine($@"{Cuts.Heading()} {type.FullName}");
 
         var typeName = NameBuilder.GetNameWithoutGeneric(type);

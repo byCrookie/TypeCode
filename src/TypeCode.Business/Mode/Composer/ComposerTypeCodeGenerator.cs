@@ -28,7 +28,6 @@ internal class ComposerTypeCodeGenerator : IComposerTypeCodeGenerator
     {
         var stringBuilder = new StringBuilder();
 
-        stringBuilder.AppendLine($@"{Cuts.Long()}");
         stringBuilder.AppendLine($@"{Cuts.Heading()} {type.FullName}");
 
         stringBuilder.AppendLine();
@@ -49,7 +48,6 @@ internal class ComposerTypeCodeGenerator : IComposerTypeCodeGenerator
 
         stringBuilder.AppendLine(@"}");
         stringBuilder.AppendLine();
-        stringBuilder.AppendLine($@"{Cuts.Long()}");
 
         return stringBuilder.ToString();
     }

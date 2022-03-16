@@ -29,7 +29,6 @@ internal class UnitTestDependencyTypeTypeCodeGenerator : IUnitTestDependencyType
         var constructor = type.GetConstructors().OrderByDescending(ctor => ctor.GetParameters()).First();
             
         var stringBuilder = new StringBuilder();
-        stringBuilder.AppendLine($@"{Cuts.Long()}");
         stringBuilder.AppendLine($@"{Cuts.Heading()} {constructor.DeclaringType?.FullName}");
 
         stringBuilder.AppendLine();
@@ -71,7 +70,6 @@ internal class UnitTestDependencyTypeTypeCodeGenerator : IUnitTestDependencyType
 
         stringBuilder.AppendLine();
 
-        stringBuilder.Append($@"{Cuts.Long()}");
         return stringBuilder.ToString();
     }
 
