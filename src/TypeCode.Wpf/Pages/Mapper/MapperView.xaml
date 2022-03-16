@@ -42,6 +42,16 @@
                          CommandParameter="{x:Static style:MappingStyle.Existing}">
                 Map to existing
             </RadioButton>
+            <CheckBox Content="Map Tree"
+                      ToolTip="Maps all complex subtypes of class recursivly."
+                      Foreground="{StaticResource PrimaryText}"
+                      IsChecked="{Binding MapTree}">
+            </CheckBox>
+            <CheckBox Content="Map single direction only"
+                      ToolTip="Maps single direction. (Class to OtherClass, not Class from/to OtherClass)"
+                      Foreground="{StaticResource PrimaryText}"
+                      IsChecked="{Binding MapSingleDirectionOnly}">
+            </CheckBox>
         </StackPanel>
 
         <TextBox Margin="0,5,0,0" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"

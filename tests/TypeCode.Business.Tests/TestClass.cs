@@ -5,6 +5,7 @@ public class TestClass
     public TestClass()
     {
         String = string.Empty;
+        SubTestClasses = new List<Test1.TestClass>();
     }
     
     public string? NullableString { get; set; }
@@ -13,4 +14,6 @@ public class TestClass
     public double Double { get; set; }
     public DateTime? NullableDateTime { get; set; }
     public DateTime DateTime { get; set; }
+    public List<TypeCode.Business.Tests.Test1.TestClass> SubTestClasses { get; set; }
+    public TypeCode.Business.Tests.Test1.TestClass? SubTestClass { get; set; }
 }

@@ -12,11 +12,11 @@ public class MappingType
 
     public Type? Type { get; }
 
-    public string? MostAccurateProperty(string property)
+    public TypeCodeProperty? MostAccurateProperty(string property)
     {
         var properties = Properties().ToList();
 
-        var equalProperty = properties.SingleOrDefault(prop => string.Equals(prop, property, StringComparison.CurrentCultureIgnoreCase));
+        var equalProperty = properties.SingleOrDefault(prop => string.Equals(prop.Name, property, StringComparison.CurrentCultureIgnoreCase));
 
         if (equalProperty != null)
         {
@@ -25,7 +25,7 @@ public class MappingType
 
         var propertiesWithProximities =
             from mappingProperty in properties
-            let proximity = JaroWinklerDistance.Proximity(mappingProperty, property)
+            let proximity = JaroWinklerDistance.Proximity(mappingProperty.Name, property)
             select new ProximityProperty(mappingProperty, proximity);
 
         return propertiesWithProximities
@@ -33,14 +33,14 @@ public class MappingType
             .FirstOrDefault(dist => dist.Jaro >= 0.8)?.Property;
     }
 
-    public IEnumerable<string> Properties()
+    public IEnumerable<TypeCodeProperty> Properties()
     {
         return Type?
             .GetProperties()
             .Where(property =>
                 property.PropertyType.IsPublic
                 && property.SetMethod != null)
-            .Select(prop => prop.Name) ?? new List<string>();
+            .Select(prop => new TypeCodeProperty(prop.Name, prop)) ?? new List<TypeCodeProperty>();
     }
 
     public string ParameterName()

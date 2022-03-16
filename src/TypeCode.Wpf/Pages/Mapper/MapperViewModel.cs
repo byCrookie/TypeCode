@@ -73,7 +73,9 @@ public class MapperViewModel : Reactive, IAsyncNavigatedTo
                 new MappingType(selectionViewModel.SelectedTypes.LastOrDefault())
             )
             {
-                MappingStyle = _mappingStyle
+                MappingStyle = _mappingStyle,
+                MapTree = MapTree,
+                MapSingleDirectionOnly = MapSingleDirectionOnly,
             };
 
             var result = await _mapperGenerator.GenerateAsync(parameter).ConfigureAwait(true);
@@ -106,5 +108,17 @@ public class MapperViewModel : Reactive, IAsyncNavigatedTo
     {
         get => Get<bool>();
         private set => Set(value);
+    }
+    
+    public bool MapTree
+    {
+        get => Get<bool>();
+        set => Set(value);
+    }
+    
+    public bool MapSingleDirectionOnly
+    {
+        get => Get<bool>();
+        set => Set(value);
     }
 }

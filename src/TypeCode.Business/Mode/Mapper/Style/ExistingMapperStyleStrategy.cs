@@ -1,5 +1,7 @@
-﻿using System.Text;
+﻿using System.Reflection;
+using System.Text;
 using TypeCode.Business.Format;
+using TypeCode.Business.TypeEvaluation.Property;
 
 namespace TypeCode.Business.Mode.Mapper.Style;
 
@@ -21,17 +23,59 @@ internal class ExistingMapperStyleStrategy : IExistingMapperStyleStrategy
         var secondType = parameter.MapTo;
 
         var stringBuilder = new StringBuilder();
-        stringBuilder.AppendLine($"{Cuts.Long()}");
-        stringBuilder.AppendLine($"{Cuts.Heading()} {secondType.Type.Name} -> {firstType.Type.Name}, {secondType.Type.FullName} -> {firstType.Type.FullName}");
-        stringBuilder.AppendLine();
-        GenerateUsingStyle(stringBuilder, secondType, firstType);
-        stringBuilder.AppendLine();
         stringBuilder.AppendLine($"{Cuts.Heading()} {firstType.Type.Name} -> {secondType.Type.Name}, {firstType.Type.FullName} -> {secondType.Type.FullName}");
         stringBuilder.AppendLine();
         GenerateUsingStyle(stringBuilder, firstType, secondType);
         stringBuilder.AppendLine();
-        stringBuilder.AppendLine($"{Cuts.Long()}");
+        
+        if (!parameter.MapSingleDirectionOnly)
+        {
+            stringBuilder.AppendLine($"{Cuts.Heading()} {secondType.Type.Name} -> {firstType.Type.Name}, {secondType.Type.FullName} -> {firstType.Type.FullName}");
+            stringBuilder.AppendLine();
+            GenerateUsingStyle(stringBuilder, secondType, firstType);
+            stringBuilder.AppendLine();
+        }
+
+        if (parameter.MapTree)
+        {
+            MapSubClasses(parameter, stringBuilder);
+        }
+
         return stringBuilder.ToString();
+    }
+    
+    private void MapSubClasses(MapperTypeCodeGeneratorParameter parameter, StringBuilder stringBuilder)
+    {
+        var listProperties = parameter.MapTo?.Type?.GetProperties().Where(property => PropertyEval.IsList(property.PropertyType));
+        var complexProperties = parameter.MapTo?.Type?.GetProperties().Where(property => !PropertyEval.IsList(property.PropertyType) && !PropertyEval.IsSimple(property.PropertyType));
+
+        foreach (var listProperty in listProperties ?? new List<PropertyInfo>())
+        {
+            if (listProperty.PropertyType.GenericTypeArguments.Length == 1)
+            {
+                stringBuilder.AppendLine(Generate(new MapperTypeCodeGeneratorParameter(
+                    new MappingType(listProperty.PropertyType.GenericTypeArguments.Single()),
+                    new MappingType(listProperty.PropertyType.GenericTypeArguments.Single())
+                )
+                {
+                    AlreadyMapped = parameter.AlreadyMapped,
+                    MapTree = parameter.MapTree,
+                    MapSingleDirectionOnly = parameter.MapSingleDirectionOnly
+                }));
+            }
+        }
+
+        foreach (var complexProperty in complexProperties ?? new List<PropertyInfo>())
+        {
+            stringBuilder.AppendLine(Generate(new MapperTypeCodeGeneratorParameter(
+                new MappingType(complexProperty.PropertyType),
+                new MappingType(complexProperty.PropertyType)
+            ){
+                AlreadyMapped = parameter.AlreadyMapped,
+                MapTree = parameter.MapTree,
+                MapSingleDirectionOnly = parameter.MapSingleDirectionOnly
+            }));
+        }
     }
         
     private static void GenerateUsingStyle(StringBuilder stringBuilder, MappingType firstType, MappingType secondType)
@@ -47,7 +91,7 @@ internal class ExistingMapperStyleStrategy : IExistingMapperStyleStrategy
         stringBuilder.AppendLine("{");
         foreach (var property in secondType.Properties())
         {
-            stringBuilder.AppendLine($@"{Cuts.Tab()}{secondType.ParameterName()}.{property} = {firstType.ParameterName()}.{firstType.MostAccurateProperty(property)};");
+            stringBuilder.AppendLine($@"{Cuts.Tab()}{secondType.ParameterName()}.{property.Name} = {firstType.ParameterName()}.{firstType.MostAccurateProperty(property.Name)?.Name};");
         }
 
         stringBuilder.AppendLine("}");
