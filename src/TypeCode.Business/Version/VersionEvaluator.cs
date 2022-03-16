@@ -19,7 +19,7 @@ internal class VersionEvaluator : IVersionEvaluator
 
         if (!string.IsNullOrEmpty(version)
             && !string.IsNullOrEmpty(latestVersion?.TagName)
-            && version != latestVersion.TagName)
+            && !string.Equals(version.Trim(), latestVersion.TagName.Trim(), StringComparison.CurrentCultureIgnoreCase))
         {
             return latestVersion.TagName;
         }
