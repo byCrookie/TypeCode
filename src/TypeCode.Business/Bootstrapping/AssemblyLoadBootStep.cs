@@ -14,25 +14,29 @@ internal class AssemblyLoadBootStep<TContext> : IAssemblyLoadBootStep<TContext>
 {
     private readonly IConfigurationMapper _configurationMapper;
     private readonly IGenericXmlSerializer _genericXmlSerializer;
+    private readonly IAssemblyLoader _assemblyLoader;
 
     private IEnumerable<Regex> _includeFileRegexPatterns;
 
-    public AssemblyLoadBootStep(IConfigurationMapper configurationMapper, IGenericXmlSerializer genericXmlSerializer)
+    public AssemblyLoadBootStep(IConfigurationMapper configurationMapper, IGenericXmlSerializer genericXmlSerializer, IAssemblyLoader assemblyLoader)
     {
         _configurationMapper = configurationMapper;
         _genericXmlSerializer = genericXmlSerializer;
+        _assemblyLoader = assemblyLoader;
 
         _includeFileRegexPatterns = new List<Regex>();
     }
 
-    public Task ExecuteAsync(TContext context)
+    public async Task ExecuteAsync(TContext context)
     {
         Log.Debug("Evaluating .dll files");
 
         var xmlConfiguration = ReadXmlConfiguration();
         var configuration = _configurationMapper.MapToConfiguration(xmlConfiguration);
 
-        Parallel.ForEach(configuration.AssemblyRoot, EvaluateAssemblyRoot);
+        await Parallel.ForEachAsync(configuration.AssemblyRoot, async
+          (root, _) => await EvaluateAssemblyRootAsync(root).ConfigureAwait(false))
+      .ConfigureAwait(false);
 
         Console.WriteLine($@"{Cuts.Short()} Assembly Priority");
 
@@ -42,7 +46,6 @@ internal class AssemblyLoadBootStep<TContext> : IAssemblyLoadBootStep<TContext>
         var assemblyProvider = new ConfigurationProvider();
         assemblyProvider.SetConfiguration(configuration);
         AssemblyLoadProvider.SetAssemblyProvider(assemblyProvider);
-        return Task.CompletedTask;
     }
     
     public Task<bool> ShouldExecuteAsync(TContext context)
@@ -94,30 +97,32 @@ internal class AssemblyLoadBootStep<TContext> : IAssemblyLoadBootStep<TContext>
         }
     }
 
-    private void EvaluateAssemblyRoot(AssemblyRoot root)
+    private Task EvaluateAssemblyRootAsync(AssemblyRoot root)
     {
         _includeFileRegexPatterns = root.IncludeAssemblyPattern
             .Select(pattern => new Regex(pattern, RegexOptions.CultureInvariant | RegexOptions.IgnoreCase));
 
-        Parallel.ForEach(root.AssemblyGroup, assemblyGroup => EvaluateAssemblyGroup(root, assemblyGroup));
+        return Parallel.ForEachAsync(root.AssemblyGroup, async (assemblyGroup, _) => await EvaluateAssemblyGroupAsync(root, assemblyGroup).ConfigureAwait(false));
     }
 
-    private void EvaluateAssemblyGroup(AssemblyRoot root, AssemblyGroup assemblyGroup)
+    private async Task EvaluateAssemblyGroupAsync(AssemblyRoot root, AssemblyGroup assemblyGroup)
     {
-        Parallel.ForEach(assemblyGroup.AssemblyPathSelector,
-            assemblyPathSelector => EvaluateAssemblyPathSelector(root, assemblyPathSelector));
+        await Parallel.ForEachAsync(assemblyGroup.AssemblyPathSelector, async
+            (assemblyPathSelector, _) => await EvaluateAssemblyPathSelectorAsync(root, assemblyPathSelector).ConfigureAwait(false))
+            .ConfigureAwait(false);
 
-        Parallel.ForEach(assemblyGroup.AssemblyPath,
-            assemblyPath => LoadAssemblies($@"{root.Path}{assemblyPath.Path}", assemblyPath));
+        await Parallel.ForEachAsync(assemblyGroup.AssemblyPath, async
+            (assemblyPath,_) => await LoadAssembliesAsync($@"{root.Path}{assemblyPath.Path}", assemblyPath).ConfigureAwait(false))
+            .ConfigureAwait(false);
     }
 
-    private void EvaluateAssemblyPathSelector(AssemblyRoot root, AssemblyPathSelector assemblyPathSelector)
+    private Task EvaluateAssemblyPathSelectorAsync(AssemblyRoot root, AssemblyPathSelector assemblyPathSelector)
     {
         var directories = Directory.GetDirectories(root.Path)
             .Where(directory => Regex.IsMatch(directory, assemblyPathSelector.Selector))
             .Select(directory => $@"{directory}\{assemblyPathSelector.Path}");
 
-        Parallel.ForEach(directories, directory => LoadAssemblies(directory, assemblyPathSelector));
+        return Parallel.ForEachAsync(directories, async (directory, _) => await LoadAssembliesAsync(directory, assemblyPathSelector).ConfigureAwait(false));
     }
 
     private static int CountAssemblies(TypeCodeConfiguration configuration)
@@ -135,7 +140,7 @@ internal class AssemblyLoadBootStep<TContext> : IAssemblyLoadBootStep<TContext>
                                .Sum(directory => directory.Assemblies.Count))));
     }
 
-    private void LoadAssemblies(string absolutPath, IAssemblyHolder assemblyHolder)
+    private async Task LoadAssembliesAsync(string absolutPath, IAssemblyHolder assemblyHolder)
     {
         if (Directory.Exists(absolutPath))
         {            
@@ -148,17 +153,17 @@ internal class AssemblyLoadBootStep<TContext> : IAssemblyLoadBootStep<TContext>
 
             Log.Debug("Loading {0} assemblies", filteredFiles.Count);
 
-            Parallel.ForEach(filteredFiles, file =>
+            await Parallel.ForEachAsync(filteredFiles, async (file, _) =>
             {
-                try
-                {
-                    var assembly = Assembly.LoadFrom(file);
-                    assemblyDirectory.Assemblies.Add(assembly);
-                }
-                catch (Exception)
-                {
-                    // _logger.Warn($"{Path.GetFileName(file)}: {e.Message}");
-                }
+              try
+              {
+                var assembly = await _assemblyLoader.LoadAsync(file).ConfigureAwait(false);
+                assemblyDirectory.Assemblies.Add(assembly);
+              }
+              catch (Exception e)
+              {
+                Log.Warning("{0}: {1}", Path.GetFileName(file), e.Message);
+              }
             });
 
             Log.Debug("Loaded {0} assemblies", assemblyDirectory.Assemblies.Count);

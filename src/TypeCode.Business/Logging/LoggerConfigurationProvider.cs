@@ -12,6 +12,8 @@ public static class LoggerConfigurationProvider
     {
         return new LoggerConfiguration()
             .MinimumLevel.Debug()
+            .WriteTo.Debug(LogEventLevel.Debug)
+            .WriteTo.Console(LogEventLevel.Debug)
             .WriteTo.File(LogFile, LogEventLevel.Debug);
     }
 
@@ -20,6 +22,8 @@ public static class LoggerConfigurationProvider
         return loggerBootStepOptions
             .Configuration
             .MinimumLevel.Debug()
+            .WriteTo.Debug(LogEventLevel.Debug)
+            .WriteTo.Console(LogEventLevel.Debug)
             .WriteTo.File(LogFile, LogEventLevel.Debug);
     }
 }
