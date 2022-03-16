@@ -8,6 +8,7 @@ public class TypeSelectionModule : Module
     protected override void Load(ContainerBuilder builder)
     {
         builder.AddViewModelAndView<TypeSelectionViewModel, TypeSelectionView>();
+        builder.RegisterType<TypeSelectionWizardStarter>().As<ITypeSelectionWizardStarter>();
 
         base.Load(builder);
     }

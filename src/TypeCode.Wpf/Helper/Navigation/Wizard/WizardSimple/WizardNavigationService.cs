@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using Framework.DependencyInjection.Factory;
 using TypeCode.Business.Format;
+using TypeCode.Wpf.Helper.Event;
 using TypeCode.Wpf.Helper.Navigation.Contract;
 using TypeCode.Wpf.Helper.Navigation.Service;
 using TypeCode.Wpf.Main;
@@ -12,14 +13,16 @@ public class WizardNavigationService : IWizardNavigationService
 {
     private readonly MainWindow _mainWindow;
     private readonly IFactory _factory;
+    private readonly IEventAggregator _eventAggregator;
     private static bool _isOpen;
     private NavigationContext? _lastNavigationContext;
     private object? _lastViewModel;
 
-    public WizardNavigationService(MainWindow mainWindow, IFactory factory)
+    public WizardNavigationService(MainWindow mainWindow, IFactory factory, IEventAggregator eventAggregator)
     {
         _mainWindow = mainWindow;
         _factory = factory;
+        _eventAggregator = eventAggregator;
     }
 
     public async Task<T> OpenWizardAsync<T>(WizardParameter<T> parameter, NavigationContext context) where T : notnull
@@ -27,7 +30,7 @@ public class WizardNavigationService : IWizardNavigationService
         // Wizard
 
         var wizardViewModelType = typeof(WizardSimpleViewModel<T>);
-        var wizardViewModelInstance = new WizardSimpleViewModel<T>(this);
+        var wizardViewModelInstance = new WizardSimpleViewModel<T>(this, _eventAggregator);
 
         if (wizardViewModelInstance is null)
         {
@@ -63,7 +66,6 @@ public class WizardNavigationService : IWizardNavigationService
         }
 
         viewInstance.DataContext = viewModelInstance;
-
         // Nav
 
         _mainWindow.Main.Opacity = 0.1;
@@ -78,6 +80,7 @@ public class WizardNavigationService : IWizardNavigationService
 
         context.AddParameter(parameter);
         context.AddParameter("View", viewInstance);
+        context.AddParameter("ViewModel", viewModelInstance);
         await CallOnNavigatedToOnViewModelAsync(context, wizardViewModelInstance).ConfigureAwait(true);
         await CallOnNavigatedToOnViewModelAsync(context, viewModelInstance).ConfigureAwait(true);
 
@@ -112,7 +115,7 @@ public class WizardNavigationService : IWizardNavigationService
         _isOpen = false;
 
         var parameter = _lastNavigationContext.GetParameter<WizardParameter<T>>();
-        await parameter.OnSaveAsync(_lastNavigationContext).ConfigureAwait(true);
+        await parameter.OnSaveAsync((T)_lastViewModel!, _lastNavigationContext).ConfigureAwait(true);
     }
     
     public async Task CloseWizardAsync<T>() where T : notnull
@@ -133,7 +136,7 @@ public class WizardNavigationService : IWizardNavigationService
         _isOpen = false;
 
         var parameter = _lastNavigationContext.GetParameter<WizardParameter<T>>();
-        await parameter.OnCancelAsync(_lastNavigationContext).ConfigureAwait(true);
+        await parameter.OnCancelAsync((T)_lastViewModel!, _lastNavigationContext).ConfigureAwait(true);
     }
 
     private Task CallNavigatedFromOnLastViewModelAsync(NavigationContext context)

@@ -5,7 +5,6 @@ using TypeCode.Business.Mode.UnitTestDependency.Type;
 using TypeCode.Business.TypeEvaluation;
 using TypeCode.Wpf.Helper.Navigation.Contract;
 using TypeCode.Wpf.Helper.Navigation.Service;
-using TypeCode.Wpf.Helper.Navigation.Wizard.WizardSimple;
 using TypeCode.Wpf.Helper.ViewModel;
 using TypeCode.Wpf.Pages.TypeSelection;
 
@@ -15,18 +14,18 @@ public class UnitTestDependencyTypeViewModel : Reactive, IAsyncNavigatedTo
 {
     private readonly ITypeCodeGenerator<UnitTestDependencyTypeGeneratorParameter> _unitTestDependencyTypeGenerator;
     private readonly ITypeProvider _typeProvider;
-    private readonly IWizardNavigationService _wizardNavigationService;
+    private readonly ITypeSelectionWizardStarter _typeSelectionWizardStarter;
 
     public UnitTestDependencyTypeViewModel(
         ITypeCodeGenerator<UnitTestDependencyTypeGeneratorParameter> unitTestDependencyTypeGenerator,
         ITypeProvider typeProvider,
-        IWizardNavigationService wizardNavigationService
+        ITypeSelectionWizardStarter typeSelectionWizardStarter
     )
     {
         _unitTestDependencyTypeGenerator = unitTestDependencyTypeGenerator;
         _typeProvider = typeProvider;
-        _wizardNavigationService = wizardNavigationService;
-        
+        _typeSelectionWizardStarter = typeSelectionWizardStarter;
+
         GenerateCommand = new AsyncCommand(GenerateAsync);
     }
         
@@ -42,20 +41,21 @@ public class UnitTestDependencyTypeViewModel : Reactive, IAsyncNavigatedTo
 
         if (types.Count > 1)
         {
-            var navigationContext = new NavigationContext();
-            navigationContext.AddParameter(new TypeSelectionParameter
+            var typeSelectionParameter = new TypeSelectionParameter
             {
                 AllowMultiSelection = true,
                 Types = types
-            });
-            
-            var selectionViewModel = await _wizardNavigationService
-                .OpenWizardAsync(new WizardParameter<TypeSelectionViewModel>
-                {
-                    FinishButtonText = "Select"
-                }, navigationContext).ConfigureAwait(true);
+            };
 
-            types = selectionViewModel.SelectedTypes.ToList();
+            await _typeSelectionWizardStarter.StartAsync(typeSelectionParameter, selectedTypes =>
+            {
+                types = selectedTypes.ToList();
+                return Task.CompletedTask;
+            }, _ =>
+            {
+                types = new List<Type>();
+                return Task.CompletedTask;
+            }).ConfigureAwait(true);
         }
             
         var parameter = new UnitTestDependencyTypeGeneratorParameter

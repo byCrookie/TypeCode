@@ -52,6 +52,9 @@
                     <Setter Property="Background" Value="{StaticResource Primary}"/>
                     <Setter Property="BorderBrush" Value="{StaticResource Secondary}"></Setter>
                 </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Opacity" Value="0.5"/>
+                </Trigger>
             </Style.Triggers>
         </Style>
         <Style TargetType="{x:Type Label}" BasedOn="{StaticResource {x:Type Label}}">

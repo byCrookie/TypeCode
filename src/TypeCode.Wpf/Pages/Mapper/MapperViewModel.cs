@@ -6,7 +6,6 @@ using TypeCode.Business.Mode.Mapper.Style;
 using TypeCode.Business.TypeEvaluation;
 using TypeCode.Wpf.Helper.Navigation.Contract;
 using TypeCode.Wpf.Helper.Navigation.Service;
-using TypeCode.Wpf.Helper.Navigation.Wizard.WizardSimple;
 using TypeCode.Wpf.Helper.ViewModel;
 using TypeCode.Wpf.Pages.TypeSelection;
 
@@ -16,19 +15,19 @@ public class MapperViewModel : Reactive, IAsyncNavigatedTo
 {
     private readonly ITypeCodeGenerator<MapperTypeCodeGeneratorParameter> _mapperGenerator;
     private readonly ITypeProvider _typeProvider;
-    private readonly IWizardNavigationService _wizardNavigationService;
+    private readonly ITypeSelectionWizardStarter _typeSelectionWizardStarter;
     private MappingStyle _mappingStyle;
 
     public MapperViewModel(
         ITypeCodeGenerator<MapperTypeCodeGeneratorParameter> mapperGenerator,
         ITypeProvider typeProvider,
-        IWizardNavigationService wizardNavigationService
+        ITypeSelectionWizardStarter typeSelectionWizardStarter
     )
     {
         _mapperGenerator = mapperGenerator;
         _typeProvider = typeProvider;
-        _wizardNavigationService = wizardNavigationService;
-        
+        _typeSelectionWizardStarter = typeSelectionWizardStarter;
+
         GenerateCommand = new AsyncCommand(GenerateAsync);
         StyleCommand = new AsyncCommand<MappingStyle>(StyleAsync);
     }
@@ -55,22 +54,25 @@ public class MapperViewModel : Reactive, IAsyncNavigatedTo
 
         if (types.Any())
         {
-            var navigationContext = new NavigationContext();
-            navigationContext.AddParameter(new TypeSelectionParameter
+            var typeSelectionParameter = new TypeSelectionParameter
             {
                 AllowMultiSelection = true,
                 Types = types
-            });
+            };
 
-            var selectionViewModel = await _wizardNavigationService
-                .OpenWizardAsync(new WizardParameter<TypeSelectionViewModel>
-                {
-                    FinishButtonText = "Select"
-                }, navigationContext).ConfigureAwait(true);
+            await _typeSelectionWizardStarter.StartAsync(typeSelectionParameter, selectedTypes =>
+            {
+                types = selectedTypes.ToList();
+                return Task.CompletedTask;
+            }, _ =>
+            {
+                types = new List<Type>();
+                return Task.CompletedTask;
+            }).ConfigureAwait(true);
 
             var parameter = new MapperTypeCodeGeneratorParameter(
-                new MappingType(selectionViewModel.SelectedTypes.FirstOrDefault()),
-                new MappingType(selectionViewModel.SelectedTypes.LastOrDefault())
+                new MappingType(types.FirstOrDefault()),
+                new MappingType(types.LastOrDefault())
             )
             {
                 MappingStyle = _mappingStyle,

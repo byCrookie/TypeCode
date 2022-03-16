@@ -1,6 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows.Controls;
-using Framework.Extensions.List;
+using TypeCode.Wpf.Helper.Event;
 using TypeCode.Wpf.Helper.Navigation.Contract;
 using TypeCode.Wpf.Helper.Navigation.Service;
 using TypeCode.Wpf.Helper.ViewModel;
@@ -9,15 +9,18 @@ namespace TypeCode.Wpf.Pages.TypeSelection;
 
 public class TypeSelectionViewModel : Reactive, IAsyncNavigatedTo
 {
-    public TypeSelectionViewModel()
+    private readonly IEventAggregator _eventAggregator;
+
+    public TypeSelectionViewModel(IEventAggregator eventAggregator)
     {
+        _eventAggregator = eventAggregator;
         Types = new ObservableCollection<TypeItemViewModel>();
     }
-        
+
     public Task OnNavigatedToAsync(NavigationContext context)
     {
         var parameter = context.GetParameter<TypeSelectionParameter>();
-        Types = new ObservableCollection<TypeItemViewModel>(parameter.Types.Select(t => new TypeItemViewModel(t)));
+        Types = new ObservableCollection<TypeItemViewModel>(parameter.Types.Select(t => new TypeItemViewModel(_eventAggregator, t)));
         SelectionMode = parameter.AllowMultiSelection ? SelectionMode.Multiple : SelectionMode.Single;
         return Task.CompletedTask;
     }

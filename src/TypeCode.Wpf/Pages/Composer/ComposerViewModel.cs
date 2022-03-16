@@ -5,7 +5,6 @@ using TypeCode.Business.Mode.Composer;
 using TypeCode.Business.TypeEvaluation;
 using TypeCode.Wpf.Helper.Navigation.Contract;
 using TypeCode.Wpf.Helper.Navigation.Service;
-using TypeCode.Wpf.Helper.Navigation.Wizard.WizardSimple;
 using TypeCode.Wpf.Helper.ViewModel;
 using TypeCode.Wpf.Pages.TypeSelection;
 
@@ -15,17 +14,17 @@ public class ComposerViewModel : Reactive, IAsyncNavigatedTo
 {
     private readonly ITypeCodeGenerator<ComposerTypeCodeGeneratorParameter> _composerTypeGenerator;
     private readonly ITypeProvider _typeProvider;
-    private readonly IWizardNavigationService _wizardNavigationService;
+    private readonly ITypeSelectionWizardStarter _typeSelectionWizardStarter;
 
     public ComposerViewModel(
         ITypeCodeGenerator<ComposerTypeCodeGeneratorParameter> composerTypeGenerator,
         ITypeProvider typeProvider,
-        IWizardNavigationService wizardNavigationService
+        ITypeSelectionWizardStarter typeSelectionWizardStarter
     )
     {
         _composerTypeGenerator = composerTypeGenerator;
         _typeProvider = typeProvider;
-        _wizardNavigationService = wizardNavigationService;
+        _typeSelectionWizardStarter = typeSelectionWizardStarter;
 
         GenerateCommand = new AsyncCommand(GenerateAsync);
     }
@@ -42,20 +41,21 @@ public class ComposerViewModel : Reactive, IAsyncNavigatedTo
 
         if (types.Count > 1)
         {
-            var navigationContext = new NavigationContext();
-            navigationContext.AddParameter(new TypeSelectionParameter
+            var typeSelectionParameter = new TypeSelectionParameter
             {
                 AllowMultiSelection = false,
                 Types = types
-            });
+            };
 
-            var selectionViewModel = await _wizardNavigationService
-                .OpenWizardAsync(new WizardParameter<TypeSelectionViewModel>
-                {
-                    FinishButtonText = "Select"
-                }, navigationContext).ConfigureAwait(true);
-
-            selectedType = selectionViewModel.SelectedTypes.Single();
+            await _typeSelectionWizardStarter.StartAsync(typeSelectionParameter, selectedTypes =>
+            {
+                selectedType = selectedTypes.Single();
+                return Task.CompletedTask;
+            }, _ =>
+            {
+                selectedType = null;
+                return Task.CompletedTask;
+            }).ConfigureAwait(true);
         }
 
         if (selectedType is not null)
