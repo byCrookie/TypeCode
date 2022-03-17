@@ -28,7 +28,7 @@ public static class Bootstrapper
                 options => options.Autofac
                     .AddModule(new TypeCodeBusinessModule())
             )
-            .ThenAsync<IAssemblyLoadBootStep<BootContext>>()
+            .ThenAsync<IConfigurationLoadBootStep<BootContext>>()
             .Build();
 
         return bootFlow.RunAsync(new BootContext(bootScope));

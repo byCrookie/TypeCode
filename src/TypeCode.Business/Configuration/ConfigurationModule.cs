@@ -8,7 +8,10 @@ internal class ConfigurationModule : Module
     {
         builder.RegisterType<GenericXmlSerializer>().As<IGenericXmlSerializer>();
         builder.RegisterType<ConfigurationMapper>().As<IConfigurationMapper>();
-            
+        builder.RegisterType<ConfigurationProvider>().As<IConfigurationProvider>().SingleInstance();
+        builder.RegisterType<ConfigurationLoader>().As<IConfigurationLoader>();
+        builder.RegisterType<AssemblyFileLoader>().As<IAssemblyFileLoader>();
+
         base.Load(builder);
     }
 }

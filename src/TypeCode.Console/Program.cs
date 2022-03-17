@@ -1,7 +1,7 @@
 ﻿using Autofac;
 using Cocona;
 using Serilog;
-using TypeCode.Business.Bootstrapping;
+using TypeCode.Business.Configuration;
 using TypeCode.Business.Logging;
 using TypeCode.Business.TypeEvaluation;
 using TypeCode.Console.Boot;
@@ -35,7 +35,8 @@ public class Program
             await using (var scope = LifeTimeScopeCreator.BeginLifetimeScope(ContextProvider.Get()))
             {
                 var typeEvaluator = scope.Resolve<ITypeEvaluator>();
-                var configuration = typeEvaluator.EvaluateTypes(AssemblyLoadProvider.GetConfiguration());
+                var configurationProvider = scope.Resolve<IConfigurationProvider>();
+                var configuration = typeEvaluator.EvaluateTypes(configurationProvider.GetConfiguration());
                 var typeProvider = scope.Resolve<ITypeProvider>();
                 typeProvider.Initalize(configuration);
             }

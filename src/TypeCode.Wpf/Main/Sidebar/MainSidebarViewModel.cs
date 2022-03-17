@@ -1,6 +1,7 @@
 ﻿using System.Windows.Input;
 using AsyncAwaitBestPractices.MVVM;
 using Framework.DependencyInjection.Factory;
+using TypeCode.Business.Configuration;
 using TypeCode.Wpf.Application;
 using TypeCode.Wpf.Helper.Event;
 using TypeCode.Wpf.Helper.Navigation.Service;
@@ -17,26 +18,34 @@ using TypeCode.Wpf.Pages.UnitTestDependencyType;
 
 namespace TypeCode.Wpf.Main.Sidebar;
 
-public class MainSidebarViewModel : Reactive, IAsyncEventHandler<AssemblyLoadedEvent>
+public class MainSidebarViewModel : Reactive, IAsyncEventHandler<LoadEndEvent>
 {
     private readonly INavigationService _navigationService;
     private readonly IFactory<NavigationContext, IWizardBuilder> _wizardBuilderFactory;
     private readonly IWizardRunner _settingsWizardRunner;
+    private readonly IEventAggregator _eventAggregator;
+    private readonly IConfigurationProvider _configurationProvider;
+    private readonly IConfigurationLoader _configurationLoader;
 
     public MainSidebarViewModel(
         INavigationService navigationService,
         IFactory<NavigationContext, IWizardBuilder> wizardBuilderFactory,
         IWizardRunner settingsWizardRunner,
-        IEventAggregator eventAggregator
+        IEventAggregator eventAggregator,
+        IConfigurationProvider configurationProvider,
+        IConfigurationLoader configurationLoader
     )
     {
         _navigationService = navigationService;
         _wizardBuilderFactory = wizardBuilderFactory;
         _settingsWizardRunner = settingsWizardRunner;
+        _eventAggregator = eventAggregator;
+        _configurationProvider = configurationProvider;
+        _configurationLoader = configurationLoader;
 
         AreAssembliesLoading = true;
         
-        eventAggregator.Subscribe<AssemblyLoadedEvent>(this);
+        _eventAggregator.Subscribe<LoadEndEvent>(this);
 
         SpecflowNavigationCommand = new AsyncCommand(NavigateToSpecflowAsync);
         UnitTestDependencyTypeNavigationCommand = new AsyncCommand(NavigateToUnitTestDependencyTypeAsync);
@@ -73,18 +82,21 @@ public class MainSidebarViewModel : Reactive, IAsyncEventHandler<AssemblyLoadedE
         set => Set(value);
     }
     
-    public Task HandleAsync(AssemblyLoadedEvent e)
+    public Task HandleAsync(LoadEndEvent e)
     {
         AreAssembliesLoading = false;
         InvalidateAndReloadCommand.RaiseCanExecuteChanged();
         return Task.CompletedTask;
     }
     
-    private Task InvalidateAndReloadAsync()
+    private async Task InvalidateAndReloadAsync()
     {
         AreAssembliesLoading = true;
         InvalidateAndReloadCommand.RaiseCanExecuteChanged();
-        return Task.CompletedTask;
+        await _eventAggregator.PublishAsync(new LoadStartEvent()).ConfigureAwait(true);
+        var configuration = await _configurationLoader.LoadAsync().ConfigureAwait(true);
+        _configurationProvider.SetConfiguration(configuration);
+        await _eventAggregator.PublishAsync(new LoadEndEvent()).ConfigureAwait(true);
     }
     
     private bool CanInvalidateAndReload(object? arg)

@@ -31,7 +31,7 @@ public static class Bootstrapper
                     .AddModule(new TypeCodeConsoleModule())
                     .AddModule(new TypeCodeBusinessModule())
             )
-            .ThenAsync<IAssemblyLoadBootStep<BootContext>>()
+            .ThenAsync<IConfigurationLoadBootStep<BootContext>>()
             .ThenAsync<IStartBootStep<BootContext>>()
             .Build();
 

@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using Framework.Autofac.Boot;
 using Framework.Extensions.List;
-using TypeCode.Business.Bootstrapping;
+using TypeCode.Business.Configuration;
 using TypeCode.Business.Format;
 using TypeCode.Business.TypeEvaluation;
 using TypeCode.Console.Interactive.Mode;
@@ -16,18 +16,21 @@ internal class TypeCode<TContext> : ITypeCode<TContext> where TContext : BootCon
     private readonly ITypeEvaluator _typeEvaluator;
     private readonly IWorkflowBuilder<TypeCodeContext> _workflowBuilder;
     private readonly ITypeProvider _typeProvider;
+    private readonly IConfigurationProvider _configurationProvider;
 
     public TypeCode(
         IModeComposer modeComposer,
         ITypeEvaluator typeEvaluator,
         IWorkflowBuilder<TypeCodeContext> workflowBuilder,
-        ITypeProvider typeProvider
+        ITypeProvider typeProvider,
+        IConfigurationProvider configurationProvider
     )
     {
         _modeComposer = modeComposer;
         _typeEvaluator = typeEvaluator;
         _workflowBuilder = workflowBuilder;
         _typeProvider = typeProvider;
+        _configurationProvider = configurationProvider;
     }
 
     public async Task RunAsync(TContext context, CancellationToken cancellationToken)
@@ -114,7 +117,7 @@ internal class TypeCode<TContext> : ITypeCode<TContext> where TContext : BootCon
 
     private void InitializeTypes()
     {
-        var configuration = _typeEvaluator.EvaluateTypes(AssemblyLoadProvider.GetConfiguration());
+        var configuration = _typeEvaluator.EvaluateTypes(_configurationProvider.GetConfiguration());
         _typeProvider.Initalize(configuration);
     }
 }

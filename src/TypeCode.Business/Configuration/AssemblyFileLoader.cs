@@ -3,9 +3,9 @@ using System.Security.Cryptography;
 using System.Text;
 using Serilog;
 
-namespace TypeCode.Business.Bootstrapping;
+namespace TypeCode.Business.Configuration;
 
-internal class AssemblyLoader : IAssemblyLoader
+internal class AssemblyFileLoader : IAssemblyFileLoader
 {
     public Task<Assembly> LoadAsync(string path)
     {

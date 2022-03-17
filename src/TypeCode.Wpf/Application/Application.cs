@@ -4,7 +4,7 @@ using AsyncAwaitBestPractices;
 using Framework.Autofac.Boot;
 using Framework.DependencyInjection.Factory;
 using Nito.AsyncEx;
-using TypeCode.Business.Bootstrapping;
+using TypeCode.Business.Configuration;
 using TypeCode.Business.TypeEvaluation;
 using TypeCode.Wpf.Helper.Event;
 using TypeCode.Wpf.Helper.Navigation.Modal.Service;
@@ -19,13 +19,15 @@ public class Application<TContext> : IApplication<TContext> where TContext : Boo
     private readonly ITypeProvider _typeProvider;
     private readonly IEventAggregator _eventAggregator;
     private readonly IModalNavigationService _modalNavigationService;
+    private readonly IConfigurationProvider _configurationProvider;
 
     public Application(
         IFactory factory,
         ITypeEvaluator typeEvaluator,
         ITypeProvider typeProvider,
         IEventAggregator eventAggregator,
-        IModalNavigationService modalNavigationService
+        IModalNavigationService modalNavigationService,
+        IConfigurationProvider configurationProvider
     )
     {
         _factory = factory;
@@ -33,6 +35,7 @@ public class Application<TContext> : IApplication<TContext> where TContext : Boo
         _typeProvider = typeProvider;
         _eventAggregator = eventAggregator;
         _modalNavigationService = modalNavigationService;
+        _configurationProvider = configurationProvider;
     }
 
     public Task RunAsync(TContext context, CancellationToken cancellationToken)
@@ -88,8 +91,8 @@ public class Application<TContext> : IApplication<TContext> where TContext : Boo
 
     private Task LoadAssembliesAsync()
     {
-        var configuration = _typeEvaluator.EvaluateTypes(AssemblyLoadProvider.GetConfiguration());
+        var configuration = _typeEvaluator.EvaluateTypes(_configurationProvider.GetConfiguration());
         _typeProvider.Initalize(configuration);
-        return _eventAggregator.PublishAsync(new AssemblyLoadedEvent());
+        return _eventAggregator.PublishAsync(new LoadEndEvent());
     }
 }

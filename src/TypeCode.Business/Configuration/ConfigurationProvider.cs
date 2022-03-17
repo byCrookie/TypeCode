@@ -1,12 +1,10 @@
-﻿using TypeCode.Business.Configuration;
-
-namespace TypeCode.Business.Bootstrapping;
+﻿namespace TypeCode.Business.Configuration;
 
 internal class ConfigurationProvider : IConfigurationProvider
 {
 	private static TypeCodeConfiguration? _configuration;
 
-	public void SetConfiguration(TypeCodeConfiguration configuration)
+	public void SetConfiguration(TypeCodeConfiguration? configuration)
 	{
 		_configuration = configuration;
 	}

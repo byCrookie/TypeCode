@@ -4,7 +4,6 @@ using Framework.Autofac.Boot.Autofac;
 using Framework.Autofac.Boot.Autofac.Registration;
 using Framework.Autofac.Boot.Logger;
 using Framework.Autofac.Boot.Start;
-using Serilog;
 using TypeCode.Business.Bootstrapping;
 using TypeCode.Business.Logging;
 using TypeCode.Business.Modules;
@@ -31,7 +30,7 @@ public static class Bootstrapper
                     .AddModule(new TypeCodeWpfModule())
                     .AddModule(new TypeCodeBusinessModule())
             )
-            .ThenAsync<IAssemblyLoadBootStep<BootContext>>()
+            .ThenAsync<IConfigurationLoadBootStep<BootContext>>()
             .ThenAsync<IStartBootStep<BootContext>>()
             .Build();
 

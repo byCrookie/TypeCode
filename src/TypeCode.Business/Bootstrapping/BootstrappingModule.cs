@@ -7,8 +7,7 @@ public class BootstrappingModule : Module
 {
     protected override void Load(ContainerBuilder builder)
     {
-        builder.RegisterGeneric(typeof(AssemblyLoadBootStep<>)).As(typeof(IAssemblyLoadBootStep<>));
-        builder.RegisterType<AssemblyLoader>().As<IAssemblyLoader>();
+        builder.RegisterGeneric(typeof(ConfigurationLoadBootStep<>)).As(typeof(IConfigurationLoadBootStep<>));
 
         builder.RegisterModule<ConfigurationModule>();
             

@@ -1,6 +1,4 @@
-﻿using TypeCode.Business.Configuration;
-
-namespace TypeCode.Business.Bootstrapping;
+﻿namespace TypeCode.Business.Configuration;
 
 public interface IConfigurationProvider
 {

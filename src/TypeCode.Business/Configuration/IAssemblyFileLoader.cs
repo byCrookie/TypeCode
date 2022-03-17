@@ -1,8 +1,8 @@
 ﻿using System.Reflection;
 
-namespace TypeCode.Business.Bootstrapping;
+namespace TypeCode.Business.Configuration;
 
-public interface IAssemblyLoader
+public interface IAssemblyFileLoader
 {
     public Task<Assembly> LoadAsync(string path);
 }

@@ -1,6 +1,7 @@
 ﻿using System.Windows.Input;
 using AsyncAwaitBestPractices;
 using AsyncAwaitBestPractices.MVVM;
+using Framework.Time;
 using Serilog;
 using TypeCode.Business.Version;
 using TypeCode.Wpf.Application;
@@ -11,21 +12,26 @@ namespace TypeCode.Wpf.Main.Content;
 
 public class MainContentViewModel :
     Reactive,
-    IAsyncEventHandler<AssemblyLoadedEvent>,
+    IAsyncEventHandler<LoadStartEvent>,
+    IAsyncEventHandler<LoadEndEvent>,
     IAsyncEventHandler<BannerOpenEvent>
 {
     private readonly IEventAggregator _eventAggregator;
     private readonly IVersionEvaluator _versionEvaluator;
+    private readonly IDateTimeProvider _dateTimeProvider;
 
-    public MainContentViewModel(IEventAggregator eventAggregator, IVersionEvaluator versionEvaluator)
+    public MainContentViewModel(IEventAggregator eventAggregator, IVersionEvaluator versionEvaluator, IDateTimeProvider dateTimeProvider)
     {
         _eventAggregator = eventAggregator;
         _versionEvaluator = versionEvaluator;
+        _dateTimeProvider = dateTimeProvider;
 
-        AreAssembliesLoading = true;
+        IsLoading = true;
+        LoadingStarted = _dateTimeProvider.Now();
 
         eventAggregator.Subscribe<BannerOpenEvent>(this);
-        eventAggregator.Subscribe<AssemblyLoadedEvent>(this);
+        eventAggregator.Subscribe<LoadStartEvent>(this);
+        eventAggregator.Subscribe<LoadEndEvent>(this);
 
         CloseBannerCommand = new AsyncCommand(() =>
         {
@@ -36,12 +42,18 @@ public class MainContentViewModel :
         CheckVersionAsync().SafeFireAndForget();
     }
 
-    public bool AreAssembliesLoading
+    public bool IsLoading
     {
         get => Get<bool>();
         set => Set(value);
     }
 
+    public DateTime LoadingStarted
+    {
+        get => Get<DateTime>();
+        set => Set(value);
+    }
+    
     public bool IsBannerVisible
     {
         get => Get<bool>();
@@ -69,9 +81,32 @@ public class MainContentViewModel :
     public ICommand CloseBannerCommand { get; set; }
     private Guid? CurrentBanner { get; set; }
 
-    public Task HandleAsync(AssemblyLoadedEvent e)
+    public Task HandleAsync(LoadStartEvent e)
     {
-        AreAssembliesLoading = false;
+        IsLoading = true;
+        LoadingStarted = _dateTimeProvider.Now();
+        return Task.CompletedTask;
+    } 
+    
+    public Task HandleAsync(LoadEndEvent e)
+    {
+        var diff = _dateTimeProvider.Now() - LoadingStarted;
+        
+        if (diff >= TimeSpan.FromSeconds(1))
+        {
+            IsLoading = false;
+        }
+        else
+        {
+            async Task EndLoad()
+            {
+                await Task.Delay(1000 - diff.Milliseconds).ConfigureAwait(true);
+                IsLoading = false;
+            }
+
+            EndLoad().SafeFireAndForget();
+        }
+
         return Task.CompletedTask;
     }
 

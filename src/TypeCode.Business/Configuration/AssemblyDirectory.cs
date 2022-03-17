@@ -1,7 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using System.Reflection;
 
-namespace TypeCode.Business.Bootstrapping;
+namespace TypeCode.Business.Configuration;
 
 public class AssemblyDirectory
 {

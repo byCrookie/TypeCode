@@ -1,6 +1,6 @@
 ﻿namespace TypeCode.Wpf.Application;
 
-public class AssemblyLoadedEvent
+public class LoadStartEvent
 {
         
 }

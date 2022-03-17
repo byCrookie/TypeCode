@@ -1,6 +1,6 @@
 ﻿using System.Windows.Input;
 using AsyncAwaitBestPractices.MVVM;
-using TypeCode.Business.Bootstrapping;
+using TypeCode.Business.Configuration;
 using TypeCode.Business.TypeEvaluation;
 using TypeCode.Wpf.Helper.Navigation.Contract;
 using TypeCode.Wpf.Helper.Navigation.Modal.Service;
@@ -13,11 +13,17 @@ public class AssemblyViewModel : Reactive, IAsyncNavigatedTo
 {
     private readonly IModalNavigationService _modalNavigationService;
     private readonly ITypeProvider _typeProvider;
+    private readonly IConfigurationProvider _configurationProvider;
 
-    public AssemblyViewModel(IModalNavigationService modalNavigationService, ITypeProvider typeProvider)
+    public AssemblyViewModel(
+        IModalNavigationService modalNavigationService,
+        ITypeProvider typeProvider,
+        IConfigurationProvider configurationProvider
+        )
     {
         _modalNavigationService = modalNavigationService;
         _typeProvider = typeProvider;
+        _configurationProvider = configurationProvider;
 
         LoadedAssemblies = new List<string>();
 
@@ -26,7 +32,7 @@ public class AssemblyViewModel : Reactive, IAsyncNavigatedTo
 
     public Task OnNavigatedToAsync(NavigationContext context)
     {
-        var configuration = AssemblyLoadProvider.GetConfiguration();
+        var configuration = _configurationProvider.GetConfiguration();
         LoadedAssemblies = configuration.AssemblyRoot
             .OrderBy(r => r.Priority)
             .SelectMany(r => r.AssemblyGroup)

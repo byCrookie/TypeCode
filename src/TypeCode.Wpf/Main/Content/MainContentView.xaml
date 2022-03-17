@@ -60,6 +60,6 @@
                NavigationUIVisibility="Hidden" />
 
         <ProgressBar Grid.Row="2" Height="5" IsIndeterminate="True"
-                     Visibility="{Binding AreAssembliesLoading, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                     Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}" />
     </Grid>
 </UserControl>

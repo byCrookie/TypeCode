@@ -1,4 +1,4 @@
-﻿namespace TypeCode.Business.Bootstrapping;
+﻿namespace TypeCode.Business.Configuration;
 
 public class PriorityString
 {
