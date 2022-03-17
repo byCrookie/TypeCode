@@ -1,5 +1,9 @@
-﻿using TypeCode.Business.Bootstrapping;
+﻿using System.Windows.Input;
+using AsyncAwaitBestPractices.MVVM;
+using TypeCode.Business.Bootstrapping;
+using TypeCode.Business.TypeEvaluation;
 using TypeCode.Wpf.Helper.Navigation.Contract;
+using TypeCode.Wpf.Helper.Navigation.Modal.Service;
 using TypeCode.Wpf.Helper.Navigation.Service;
 using TypeCode.Wpf.Helper.ViewModel;
 
@@ -7,11 +11,19 @@ namespace TypeCode.Wpf.Pages.Assemblies;
 
 public class AssemblyViewModel : Reactive, IAsyncNavigatedTo
 {
-    public AssemblyViewModel()
+    private readonly IModalNavigationService _modalNavigationService;
+    private readonly ITypeProvider _typeProvider;
+
+    public AssemblyViewModel(IModalNavigationService modalNavigationService, ITypeProvider typeProvider)
     {
+        _modalNavigationService = modalNavigationService;
+        _typeProvider = typeProvider;
+
         LoadedAssemblies = new List<string>();
+
+        SearchCommand = new AsyncCommand(SearchAsync);
     }
-    
+
     public Task OnNavigatedToAsync(NavigationContext context)
     {
         var configuration = AssemblyLoadProvider.GetConfiguration();
@@ -22,11 +34,50 @@ public class AssemblyViewModel : Reactive, IAsyncNavigatedTo
             .OrderBy(r => r.Priority)
             .Select(r => $"{r.Priority} {r.Message}")
             .ToList();
-            
+
         return Task.CompletedTask;
     }
 
-    public List<string>? LoadedAssemblies {
+    private async Task SearchAsync()
+    {
+        var types = _typeProvider.TryGetByName(Input).ToList();
+
+        if (types.Any())
+        {
+            var typeNames = types.Select(type => $"{type.FullName}" +
+                                                 $"{Environment.NewLine}-{type.AssemblyQualifiedName}" +
+                                                 $"{Environment.NewLine}-{type.Assembly.Location}");
+            await _modalNavigationService.OpenModalAsync(new ModalParameter
+            {
+                Title = $"Valid Type-Name {Input}",
+                Text = $"Types: {Environment.NewLine}{string.Join($"{Environment.NewLine}{Environment.NewLine}", typeNames)}"
+            }).ConfigureAwait(true);
+        }
+        else
+        {
+            await _modalNavigationService.OpenModalAsync(new ModalParameter
+            {
+                Title = $"Invalid Type-Name {Input}",
+                Text = $"No types were found for name {Input}. {Environment.NewLine}" +
+                       $"{Environment.NewLine}Possible Reasons:" +
+                       $"{Environment.NewLine}- Wrong typename" +
+                       $"{Environment.NewLine}- Type does not exist in configured assemblies" +
+                       $"{Environment.NewLine}- Type was not loaded because of corrupt assembly" +
+                       $"{Environment.NewLine}- Type was not loaded because of error while executing TypeCode"
+            }).ConfigureAwait(true);
+        }
+    }
+
+    public ICommand SearchCommand { get; set; }
+
+    public string? Input
+    {
+        get => Get<string?>();
+        set => Set(value);
+    }
+
+    public List<string>? LoadedAssemblies
+    {
         get => Get<List<string>?>();
         private set => Set(value);
     }

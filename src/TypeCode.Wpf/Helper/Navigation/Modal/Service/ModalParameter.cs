@@ -9,5 +9,6 @@ public class ModalParameter
     
     public string? Title { get; set; }
     public string? Text { get; set; }
+    public bool ScrollViewerDisabled { get; set; }
     public Func<Task> OnCloseAsync { get; set; }
 }

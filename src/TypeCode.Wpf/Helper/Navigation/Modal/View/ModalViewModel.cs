@@ -23,6 +23,7 @@ public class ModalViewModel : Reactive, IAsyncNavigatedTo
         var parameter = context.GetParameter<ModalParameter>();
         Title = parameter.Title;
         Text = parameter.Text;
+        ScrollViewerEnabled = parameter.ScrollViewerDisabled;
         return Task.CompletedTask;
     }
 
@@ -40,6 +41,11 @@ public class ModalViewModel : Reactive, IAsyncNavigatedTo
 
     public string? Text {
         get => Get<string?>();
+        private set => Set(value);
+    }
+    
+    public bool ScrollViewerEnabled {
+        get => Get<bool>();
         private set => Set(value);
     }
 }

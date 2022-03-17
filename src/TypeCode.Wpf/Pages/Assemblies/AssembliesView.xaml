@@ -4,23 +4,48 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:assemblies="clr-namespace:TypeCode.Wpf.Pages.Assemblies"
+             xmlns:controls="clr-namespace:TypeCode.Wpf.Helper.Controls"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance assemblies:AssemblyViewModel}">
 
-    <ScrollViewer VerticalScrollBarVisibility="Auto"  HorizontalScrollBarVisibility="Auto">
-        <ItemsControl ItemsSource="{Binding LoadedAssemblies}"
-                      Background="{StaticResource Primary}"
-                      BorderThickness="0">
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding}"
-                               Padding="0,5,0,0"
-                               Background="{StaticResource Secondary}"
-                               Foreground="{StaticResource PrimaryText}"
-                               Height="30" />
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
-    </ScrollViewer>
+    <Grid Margin="5" Background="{StaticResource Primary}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="5" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+        <TextBox Grid.Row="0" Grid.Column="0"
+                 Padding="2" Text="{Binding Input, UpdateSourceTrigger=PropertyChanged}"
+                 HorizontalAlignment="Stretch"
+                 HorizontalContentAlignment="Stretch"
+                 ToolTip="Input type name to search for">
+            <TextBox.InputBindings>
+                <KeyBinding Key="Enter" Command="{Binding SearchCommand}" />
+            </TextBox.InputBindings>
+        </TextBox>
+        <controls:CustomButton Margin="5,0,0,0" Grid.Row="0" Grid.Column="1" Command="{Binding SearchCommand}">Search</controls:CustomButton>
+
+        <ScrollViewer Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" VerticalScrollBarVisibility="Auto"
+                      HorizontalScrollBarVisibility="Auto">
+            <ItemsControl ItemsSource="{Binding LoadedAssemblies}"
+                          Background="{StaticResource Primary}"
+                          BorderThickness="0">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}"
+                                   Padding="0,5,0,0"
+                                   Background="{StaticResource Secondary}"
+                                   Foreground="{StaticResource PrimaryText}"
+                                   Height="30" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </Grid>
 </UserControl>
