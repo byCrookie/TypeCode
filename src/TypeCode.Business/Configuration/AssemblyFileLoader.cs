@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Net;
+using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 using Serilog;
@@ -7,7 +8,7 @@ namespace TypeCode.Business.Configuration;
 
 internal class AssemblyFileLoader : IAssemblyFileLoader
 {
-    public Task<Assembly> LoadAsync(string path)
+    public async Task<Assembly> LoadAsync(string path)
     {
         try
         {
@@ -16,25 +17,40 @@ internal class AssemblyFileLoader : IAssemblyFileLoader
 
             var fileName = Path.GetFileNameWithoutExtension(path);
             var directoryPath = Path.GetDirectoryName(path) ?? string.Empty;
-
+            
             var cacheDirectoryPath = Path.Combine(cacheDirectory, GetHashString(directoryPath));
             Directory.CreateDirectory(cacheDirectoryPath);
+            
+            var directoryCacheDescriptionFile = Path.Combine(cacheDirectoryPath, "_origin.txt");
+
+            if (!File.Exists(directoryCacheDescriptionFile))
+            {
+                await File.AppendAllTextAsync(directoryCacheDescriptionFile, directoryPath).ConfigureAwait(false);
+            }
 
             var cachedAssembly = Path.Combine(cacheDirectoryPath, $"{fileName}.dll");
 
             if (!File.Exists(cachedAssembly) || AssemblyIsNewer(path, cachedAssembly))
             {
-                File.Copy(path, cachedAssembly, true);
+                try
+                {
+                    File.Copy(path, cachedAssembly, true);
+                }
+                catch (Exception e)
+                {
+                    Log.Warning("Cache-Error. Cache create not successful from {From} to {To}: {Exception}", path, cachedAssembly, e.Message);
+                    var randomCacheAssembly = Path.Combine(cacheDirectoryPath, $"{Guid.NewGuid():N}_{fileName}.dll");
+                    File.Copy(path, randomCacheAssembly, true);
+                    return Assembly.LoadFrom(randomCacheAssembly);
+                }
             }
             
-            var assembly = Assembly.LoadFrom(cachedAssembly);
-            return Task.FromResult(assembly);
+            return Assembly.LoadFrom(cachedAssembly);
         }
         catch (Exception e)
         {
             Log.Warning("Cache-Error. Ignore Cache: {Exception}", e.Message);
-            var assembly = Assembly.LoadFrom(path);
-            return Task.FromResult(assembly);
+            return Assembly.LoadFrom(path);
         }
     }
 
