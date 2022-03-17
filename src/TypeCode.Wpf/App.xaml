@@ -4,17 +4,6 @@
              xmlns:c="clr-namespace:TypeCode.Wpf.Helper.Controls">
     <Application.Resources>
 
-        <!-- Copy Icon -->
-        <Geometry x:Key="CopyGeometry">F1 M512,512z M0,0z M502.6,70.63L441.35,9.38C435.4,3.371,427.2,0,418.7,0L255.1,0C219.75,0,191.1,28.66,191.1,64L191.1195,320C192,355.4,220.7,384,256,384L448,384C483.2,384,512,355.2,512,320L512,93.25C512,84.77,508.6,76.63,502.6,70.63z M464,320C464,328.836,456.836,336,448,336L255.1,336C246.262,336,239.1,328.836,239.1,320L239.1,64.13C239.1,55.294,246.264,48.13,255.1,48.13L383.1,48.13 384,96C384,113.67,398.33,128,416,128L463.1,128 463.1,320z M272,448C272,456.836,264.836,464,256,464L63.1,464C54.262,464,47.1,456.836,47.1,448L47.98,192.1C47.98,183.264,55.144,176.1,63.98,176.1L160,176.1 160,128 63.99,128C28.64,128,-0.00999999999999801,156.65,-0.00999999999999801,192L-0.000199999999998011,448C0.002,483.3,28.66,512,64,512L256,512C291.2,512,320,483.2,320,448L320,416 272.9,416 272,448z</Geometry>
-        <DrawingGroup x:Key="CopyDrawingGroup" ClipGeometry="M0,0 V512 H512 V0 H0 Z">
-            <DrawingGroup.Transform>
-                <TranslateTransform X="0.0099999997764825821" Y="0" />
-            </DrawingGroup.Transform>
-            <GeometryDrawing Brush="#FF000000" Geometry="{StaticResource CopyGeometry}" />
-        </DrawingGroup>
-        <DrawingImage x:Key="CopyDrawingImage" Drawing="{StaticResource CopyDrawingGroup}" />
-        <!-- End Copy Icon -->
-
         <Color x:Key="PrimaryColor">#202225</Color>
         <Color x:Key="SecondaryColor">#2F3136</Color>
         <Color x:Key="ShadowColor">#36393F</Color>
@@ -69,10 +58,23 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+        <Style TargetType="{x:Type c:InverseCustomButton}" BasedOn="{StaticResource {x:Type c:CustomButton}}">
+            <Setter Property="Background" Value="{StaticResource Secondary}" />
+            <Setter Property="BorderBrush" Value="{StaticResource Secondary}"></Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{StaticResource Primary}" />
+                    <Setter Property="BorderBrush" Value="{StaticResource Primary}"></Setter>
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Opacity" Value="0.5" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
         <Style TargetType="{x:Type c:CustomIconButton}" BasedOn="{StaticResource {x:Type c:CustomButton}}">
             <Setter Property="MinWidth" Value="30"></Setter>
             <Setter Property="Width" Value="30"></Setter>
-            
+
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
                     <Setter Property="Background" Value="{StaticResource Primary}" />
@@ -105,5 +107,28 @@
             <Setter Property="Background" Value="{StaticResource Shadow}" />
             <Setter Property="Foreground" Value="{StaticResource PrimaryText}" />
         </Style>
+
+        <!-- Copy Icon -->
+        <Geometry x:Key="CopyGeometry">F1 M512,512z M0,0z M502.6,70.63L441.35,9.38C435.4,3.371,427.2,0,418.7,0L255.1,0C219.75,0,191.1,28.66,191.1,64L191.1195,320C192,355.4,220.7,384,256,384L448,384C483.2,384,512,355.2,512,320L512,93.25C512,84.77,508.6,76.63,502.6,70.63z M464,320C464,328.836,456.836,336,448,336L255.1,336C246.262,336,239.1,328.836,239.1,320L239.1,64.13C239.1,55.294,246.264,48.13,255.1,48.13L383.1,48.13 384,96C384,113.67,398.33,128,416,128L463.1,128 463.1,320z M272,448C272,456.836,264.836,464,256,464L63.1,464C54.262,464,47.1,456.836,47.1,448L47.98,192.1C47.98,183.264,55.144,176.1,63.98,176.1L160,176.1 160,128 63.99,128C28.64,128,-0.00999999999999801,156.65,-0.00999999999999801,192L-0.000199999999998011,448C0.002,483.3,28.66,512,64,512L256,512C291.2,512,320,483.2,320,448L320,416 272.9,416 272,448z</Geometry>
+        <DrawingGroup x:Key="CopyDrawingGroup" ClipGeometry="M0,0 V512 H512 V0 H0 Z">
+            <DrawingGroup.Transform>
+                <TranslateTransform X="0.0099999997764825821" Y="0" />
+            </DrawingGroup.Transform>
+            <GeometryDrawing Brush="#FF000000" Geometry="{StaticResource CopyGeometry}" />
+        </DrawingGroup>
+        <DrawingImage x:Key="CopyDrawingImage" Drawing="{StaticResource CopyDrawingGroup}" />
+        <!-- End Copy Icon -->
+
+        <!-- Reload Icon -->
+        <Geometry x:Key="ReloadGeometry1">F1 M120,120z M0,0z M60,95.5C40.425,95.5 24.5,79.574 24.5,60 24.5,40.425 40.425,24.5 60,24.5 73.62,24.5 85.467,32.214 91.418,43.5L114.045,43.5C106.984,20.347 85.462,3.5 60,3.5 28.796,3.5 3.5,28.796 3.5,60 3.5,91.203 28.796,116.5 60,116.5 76.264,116.5 90.911,109.618 101.221,98.62L85.889,84.255C79.406,91.168,70.201,95.5,60,95.5z</Geometry>
+        <Geometry x:Key="ReloadGeometry2">F1 M120,120z M0,0z M120,21.832L120,21.832 119.992,68.842 74.827,55.811z</Geometry>
+        <DrawingGroup x:Key="ReloadDrawingGroup" ClipGeometry="M0,0 V120 H120 V0 H0 Z">
+            <DrawingGroup Opacity="1">
+                <GeometryDrawing Brush="{StaticResource PrimaryText}" Geometry="{StaticResource ReloadGeometry1}" />
+            </DrawingGroup>
+            <GeometryDrawing Brush="{StaticResource PrimaryText}" Geometry="{StaticResource ReloadGeometry2}" />
+        </DrawingGroup>
+        <DrawingImage x:Key="ReloadDrawingImage" Drawing="{StaticResource ReloadDrawingGroup}" />
+        <!-- End Reload Icon -->
     </Application.Resources>
 </Application>

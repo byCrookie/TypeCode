@@ -1,6 +1,8 @@
 ﻿using System.Windows.Input;
 using AsyncAwaitBestPractices.MVVM;
 using Framework.DependencyInjection.Factory;
+using TypeCode.Wpf.Application;
+using TypeCode.Wpf.Helper.Event;
 using TypeCode.Wpf.Helper.Navigation.Service;
 using TypeCode.Wpf.Helper.Navigation.Wizard.Complex;
 using TypeCode.Wpf.Helper.ViewModel;
@@ -15,7 +17,7 @@ using TypeCode.Wpf.Pages.UnitTestDependencyType;
 
 namespace TypeCode.Wpf.Main.Sidebar;
 
-public class MainSidebarViewModel : Reactive
+public class MainSidebarViewModel : Reactive, IAsyncEventHandler<AssemblyLoadedEvent>
 {
     private readonly INavigationService _navigationService;
     private readonly IFactory<NavigationContext, IWizardBuilder> _wizardBuilderFactory;
@@ -24,12 +26,17 @@ public class MainSidebarViewModel : Reactive
     public MainSidebarViewModel(
         INavigationService navigationService,
         IFactory<NavigationContext, IWizardBuilder> wizardBuilderFactory,
-        IWizardRunner settingsWizardRunner
+        IWizardRunner settingsWizardRunner,
+        IEventAggregator eventAggregator
     )
     {
         _navigationService = navigationService;
         _wizardBuilderFactory = wizardBuilderFactory;
         _settingsWizardRunner = settingsWizardRunner;
+
+        AreAssembliesLoading = true;
+        
+        eventAggregator.Subscribe<AssemblyLoadedEvent>(this);
 
         SpecflowNavigationCommand = new AsyncCommand(NavigateToSpecflowAsync);
         UnitTestDependencyTypeNavigationCommand = new AsyncCommand(NavigateToUnitTestDependencyTypeAsync);
@@ -38,6 +45,7 @@ public class MainSidebarViewModel : Reactive
         MapperNavigationCommand = new AsyncCommand(NavigateToMapperAsync);
         BuilderNavigationCommand = new AsyncCommand(NavigateToBuilderAsync);
         AssemblyNavigationCommand = new AsyncCommand(NavigateToAssemblyAsync);
+        InvalidateAndReloadCommand = new AsyncCommand(InvalidateAndReloadAsync, CanInvalidateAndReload);
         OpenSettingsCommand = new AsyncCommand(OpenSettingsAsync);
 
         ActiveItem = ActiveItem.None;
@@ -50,12 +58,38 @@ public class MainSidebarViewModel : Reactive
     public ICommand MapperNavigationCommand { get; }
     public ICommand BuilderNavigationCommand { get; }
     public ICommand AssemblyNavigationCommand { get; }
+    public IAsyncCommand InvalidateAndReloadCommand { get; }
     public ICommand OpenSettingsCommand { get; }
 
     public ActiveItem ActiveItem
     {
         get => Get<ActiveItem>();
         set => Set(value);
+    }
+    
+    public bool AreAssembliesLoading
+    {
+        get => Get<bool>();
+        set => Set(value);
+    }
+    
+    public Task HandleAsync(AssemblyLoadedEvent e)
+    {
+        AreAssembliesLoading = false;
+        InvalidateAndReloadCommand.RaiseCanExecuteChanged();
+        return Task.CompletedTask;
+    }
+    
+    private Task InvalidateAndReloadAsync()
+    {
+        AreAssembliesLoading = true;
+        InvalidateAndReloadCommand.RaiseCanExecuteChanged();
+        return Task.CompletedTask;
+    }
+    
+    private bool CanInvalidateAndReload(object? arg)
+    {
+        return !AreAssembliesLoading;
     }
 
     private Task NavigateToSpecflowAsync()
