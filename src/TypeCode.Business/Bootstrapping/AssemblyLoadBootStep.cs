@@ -47,12 +47,27 @@ internal class AssemblyLoadBootStep<TContext> : IAssemblyLoadBootStep<TContext>
         assemblyProvider.SetConfiguration(configuration);
         AssemblyLoadProvider.SetAssemblyProvider(assemblyProvider);
     }
+
+    private static int CountAssemblies(TypeCodeConfiguration configuration)
+    {
+        var counter = 0;
+        foreach (var assemblyGroup in configuration.AssemblyRoot.SelectMany(assemblyRoot => assemblyRoot.AssemblyGroup))
+        {
+            counter += assemblyGroup.AssemblyPath
+                .SelectMany(assemblyPath => assemblyPath.AssemblyDirectories)
+                .Sum(assemblyDirectory => assemblyDirectory.Assemblies.Count);
+            counter += assemblyGroup.AssemblyPath
+                .SelectMany(assemblyPath => assemblyPath.AssemblyDirectories)
+                .Sum(assemblyDirectory => assemblyDirectory.Assemblies.Count);
+        }
+        return counter;
+    }
     
     public Task<bool> ShouldExecuteAsync(TContext context)
     {
         return context.ShouldExecuteAsync();
     }
-
+    
     private static void TraverseAssemblyRoots(TypeCodeConfiguration configuration)
     {
         foreach (var root in configuration.AssemblyRoot.OrderBy(r => r.Priority))
@@ -60,13 +75,13 @@ internal class AssemblyLoadBootStep<TContext> : IAssemblyLoadBootStep<TContext>
             TraverseAssemblyGroups(root);
         }
     }
-
+    
     private static void TraverseAssemblyGroups(AssemblyRoot root)
     {
         foreach (var group in root.AssemblyGroup)
         {
             var messages = new List<PriorityString>();
-
+    
             @group.AssemblyPathSelector.ForEach(selector =>
             {
                 selector.AssemblyDirectories
@@ -74,7 +89,7 @@ internal class AssemblyLoadBootStep<TContext> : IAssemblyLoadBootStep<TContext>
                         .Add(new PriorityString($"{root.Priority}.{@group.Priority}.{selector.Priority}",
                             $@"{Cuts.Point()} {directory.AbsolutPath}")));
             });
-
+    
             @group.AssemblyPath.ForEach(path =>
             {
                 path.AssemblyDirectories
@@ -82,13 +97,13 @@ internal class AssemblyLoadBootStep<TContext> : IAssemblyLoadBootStep<TContext>
                         .Add(new PriorityString($"{root.Priority}.{@group.Priority}.{path.Priority}",
                             $@"{directory.AbsolutPath}")));
             });
-
+    
             WriteMessagesToConsole(messages);
-
+    
             @group.PriorityAssemblyList = messages;
         }
     }
-
+    
     private static void WriteMessagesToConsole(List<PriorityString> messages)
     {
         foreach (var message in messages.OrderBy(message => message.Priority).ToList())
@@ -96,48 +111,33 @@ internal class AssemblyLoadBootStep<TContext> : IAssemblyLoadBootStep<TContext>
             Console.WriteLine(message.Message);
         }
     }
-
+    
     private Task EvaluateAssemblyRootAsync(AssemblyRoot root)
     {
         _includeFileRegexPatterns = root.IncludeAssemblyPattern
             .Select(pattern => new Regex(pattern, RegexOptions.CultureInvariant | RegexOptions.IgnoreCase));
-
+    
         return Parallel.ForEachAsync(root.AssemblyGroup, async (assemblyGroup, _) => await EvaluateAssemblyGroupAsync(root, assemblyGroup).ConfigureAwait(false));
     }
-
+    
     private async Task EvaluateAssemblyGroupAsync(AssemblyRoot root, AssemblyGroup assemblyGroup)
     {
         await Parallel.ForEachAsync(assemblyGroup.AssemblyPathSelector, async
             (assemblyPathSelector, _) => await EvaluateAssemblyPathSelectorAsync(root, assemblyPathSelector).ConfigureAwait(false))
             .ConfigureAwait(false);
-
+    
         await Parallel.ForEachAsync(assemblyGroup.AssemblyPath, async
             (assemblyPath,_) => await LoadAssembliesAsync($@"{root.Path}{assemblyPath.Path}", assemblyPath).ConfigureAwait(false))
             .ConfigureAwait(false);
     }
-
+    
     private Task EvaluateAssemblyPathSelectorAsync(AssemblyRoot root, AssemblyPathSelector assemblyPathSelector)
     {
         var directories = Directory.GetDirectories(root.Path)
             .Where(directory => Regex.IsMatch(directory, assemblyPathSelector.Selector))
             .Select(directory => $@"{directory}\{assemblyPathSelector.Path}");
-
+    
         return Parallel.ForEachAsync(directories, async (directory, _) => await LoadAssembliesAsync(directory, assemblyPathSelector).ConfigureAwait(false));
-    }
-
-    private static int CountAssemblies(TypeCodeConfiguration configuration)
-    {
-        return configuration.AssemblyRoot
-                   .Sum(root => root.AssemblyGroup
-                       .Sum(group => group.AssemblyPath
-                           .Sum(path => path.AssemblyDirectories
-                               .Sum(directory => directory.Assemblies.Count))))
-               +
-               configuration.AssemblyRoot
-                   .Sum(root => root.AssemblyGroup
-                       .Sum(group => group.AssemblyPathSelector
-                           .Sum(path => path.AssemblyDirectories
-                               .Sum(directory => directory.Assemblies.Count))));
     }
 
     private async Task LoadAssembliesAsync(string absolutPath, IAssemblyHolder assemblyHolder)
@@ -145,33 +145,33 @@ internal class AssemblyLoadBootStep<TContext> : IAssemblyLoadBootStep<TContext>
         if (Directory.Exists(absolutPath))
         {            
             var assemblyDirectory = new AssemblyDirectory(assemblyHolder.Path, absolutPath, Directory.GetFiles(absolutPath.Trim(), "*.dll"));
-
+    
             var filteredFiles = assemblyDirectory.Files
                 .Where(file => _includeFileRegexPatterns
                     .Any(pattern => pattern.IsMatch(file)))
                 .ToList();
-
+    
             Log.Debug("Loading {0} assemblies", filteredFiles.Count);
-
+    
             await Parallel.ForEachAsync(filteredFiles, async (file, _) =>
             {
-              try
-              {
-                var assembly = await _assemblyLoader.LoadAsync(file).ConfigureAwait(false);
-                assemblyDirectory.Assemblies.Add(assembly);
-              }
-              catch (Exception e)
-              {
-                Log.Warning("{0}: {1}", Path.GetFileName(file), e.Message);
-              }
-            });
-
+                try
+                {
+                    var assembly = await _assemblyLoader.LoadAsync(file).ConfigureAwait(false);
+                    assemblyDirectory.Assemblies.Add(assembly);
+                }
+                catch (Exception e)
+                {
+                    Log.Warning("{0}: {1}", Path.GetFileName(file), e.Message);
+                }
+            }).ConfigureAwait(false);
+    
             Log.Debug("Loaded {0} assemblies", assemblyDirectory.Assemblies.Count);
-
+    
             assemblyHolder.AssemblyDirectories.Add(assemblyDirectory);
         }
     }
-
+    
     private XmlTypeCodeConfiguration ReadXmlConfiguration()
     {
         var cfg = $@"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\Configuration.cfg.xml";
