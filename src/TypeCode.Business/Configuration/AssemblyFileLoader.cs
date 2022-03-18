@@ -6,7 +6,7 @@ using Serilog;
 
 namespace TypeCode.Business.Configuration;
 
-internal class AssemblyFileLoader : IAssemblyFileLoader
+public class AssemblyFileLoader : IAssemblyFileLoader
 {
     public async Task<Assembly> LoadAsync(string path)
     {

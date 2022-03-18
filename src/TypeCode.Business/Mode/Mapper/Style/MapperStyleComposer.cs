@@ -2,7 +2,7 @@
 
 namespace TypeCode.Business.Mode.Mapper.Style;
 
-internal class MapperStyleComposer : IMapperStyleComposer
+public class MapperStyleComposer : IMapperStyleComposer
 {
     private readonly IFactory _factory;
 

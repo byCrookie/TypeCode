@@ -1,5 +1,5 @@
 ﻿namespace TypeCode.Business.Mode.Mapper.Style;
 
-internal interface IExistingMapperStyleStrategy : IMapperStyleStrategy
+public interface IExistingMapperStyleStrategy : IMapperStyleStrategy
 {
 }

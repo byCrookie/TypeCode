@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Windows;
 using System.Windows.Threading;
-using Framework.Autofac.Boot.Logger;
+using Framework.Jab.Boot.Logger;
 using Nito.AsyncEx;
 using Serilog;
 using Serilog.Events;
@@ -19,7 +19,7 @@ public partial class App
             var options = new LoggerBootStepOptions();
             options.Configuration.WriteTo.Console(LogEventLevel.Debug);
         
-            Log.Logger = LoggerConfigurationProvider.Create(options).CreateLogger();
+            Log.Logger = JabLoggerConfigurationProvider.Create(options).CreateLogger();
             
             Current.DispatcherUnhandledException += HandleDispatcherUnhandledException;
 

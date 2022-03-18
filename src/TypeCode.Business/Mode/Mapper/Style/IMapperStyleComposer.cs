@@ -1,6 +1,6 @@
 ﻿namespace TypeCode.Business.Mode.Mapper.Style;
 
-internal interface IMapperStyleComposer
+public interface IMapperStyleComposer
 {
     IEnumerable<IMapperStyleStrategy> Compose();
 }

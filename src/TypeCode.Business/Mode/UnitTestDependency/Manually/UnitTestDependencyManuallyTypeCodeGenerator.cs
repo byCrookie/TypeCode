@@ -4,7 +4,7 @@ using TypeCode.Business.Format;
 
 namespace TypeCode.Business.Mode.UnitTestDependency.Manually;
 
-internal class UnitTestDependencyManuallyTypeCodeGenerator : IUnitTestDependencyManuallyTypeCodeGenerator
+public class UnitTestDependencyManuallyTypeCodeGenerator : IUnitTestDependencyManuallyTypeCodeGenerator
 {
     public Task<string?> GenerateAsync(UnitTestDependencyManuallyGeneratorParameter parameter)
     {

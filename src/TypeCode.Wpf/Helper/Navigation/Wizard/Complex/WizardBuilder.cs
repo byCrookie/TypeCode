@@ -1,7 +1,7 @@
 using System.Windows.Controls;
 using Framework.DependencyInjection.Factory;
-using TypeCode.Wpf.Helper.Autofac;
 using TypeCode.Wpf.Helper.Navigation.Service;
+using TypeCode.Wpf.Helper.Views;
 using TypeCode.Wpf.Main;
 
 namespace TypeCode.Wpf.Helper.Navigation.Wizard.Complex;
@@ -9,18 +9,18 @@ namespace TypeCode.Wpf.Helper.Navigation.Wizard.Complex;
 public class WizardBuilder : IWizardAfterInitialBuilder
 {
     private readonly IFactory _factory;
-
+    
     private readonly Wizard _wizard;
 
-    public WizardBuilder(IFactory factory, MainWindow mainWindow, NavigationContext navigationContext)
+    public WizardBuilder(IFactory factory, IMainViewProvider mainViewProvider, NavigationContext navigationContext)
     {
         _factory = factory;
 
         _wizard = new Wizard(new WizardBuilderOptions(
                 navigationContext,
-                mainWindow.WizardFrame,
-                mainWindow.Main,
-                mainWindow.WizardOverlay),
+                mainViewProvider.MainWindow().WizardFrame,
+                mainViewProvider.MainWindow().Main,
+                mainViewProvider.MainWindow().WizardOverlay),
             CreateInstances<WizardViewModel>()
         );
     }

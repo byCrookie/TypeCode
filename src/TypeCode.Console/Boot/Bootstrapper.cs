@@ -22,13 +22,13 @@ public static class Bootstrapper
 
         var bootFlow = bootScope.WorkflowBuilder
             .ThenAsync<ILoggerBootStep<BootContext, LoggerBootStepOptions>, LoggerBootStepOptions>(
-                options => LoggerConfigurationProvider.Create(options).WriteTo.Console(LogEventLevel.Information)
+                options => AutofacLoggerConfigurationProvider.Create(options).WriteTo.Console(LogEventLevel.Information)
             )
             .ThenAsync<IAutofacBootStep<BootContext, AutofacBootStepOptions>, AutofacBootStepOptions>(
                 options => options.Autofac
                     .AddModule(new TypeCodeBusinessModule())
             )
-            .ThenAsync<IConfigurationLoadBootStep<BootContext>>()
+            .ThenAsync<IConfigurationAutofacLoadBootStep<BootContext>>()
             .Build();
 
         return bootFlow.RunAsync(new BootContext(bootScope));

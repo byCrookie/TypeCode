@@ -11,16 +11,16 @@ namespace TypeCode.Wpf.Helper.Navigation.Wizard.WizardSimple;
 
 public class WizardNavigationService : IWizardNavigationService
 {
-    private readonly MainWindow _mainWindow;
+    private readonly IMainViewProvider _mainViewProvider;
     private readonly IFactory _factory;
     private readonly IEventAggregator _eventAggregator;
     private static bool _isOpen;
     private NavigationContext? _lastNavigationContext;
     private object? _lastViewModel;
 
-    public WizardNavigationService(MainWindow mainWindow, IFactory factory, IEventAggregator eventAggregator)
+    public WizardNavigationService(IMainViewProvider mainViewProvider, IFactory factory, IEventAggregator eventAggregator)
     {
-        _mainWindow = mainWindow;
+        _mainViewProvider = mainViewProvider;
         _factory = factory;
         _eventAggregator = eventAggregator;
     }
@@ -68,12 +68,12 @@ public class WizardNavigationService : IWizardNavigationService
         viewInstance.DataContext = viewModelInstance;
         // Nav
 
-        _mainWindow.Main.Opacity = 0.1;
-        _mainWindow.Main.IsEnabled = false;
-        _mainWindow.WizardOverlay.Opacity = 0.1;
-        _mainWindow.WizardOverlay.IsEnabled = false;
-        _mainWindow.ModalOverlay.Visibility = Visibility.Visible;
-        if (!_mainWindow.ModalFrame.Navigate(wizardViewInstance))
+        _mainViewProvider.MainWindow().Main.Opacity = 0.1;
+        _mainViewProvider.MainWindow().Main.IsEnabled = false;
+        _mainViewProvider.MainWindow().WizardOverlay.Opacity = 0.1;
+        _mainViewProvider.MainWindow().WizardOverlay.IsEnabled = false;
+        _mainViewProvider.MainWindow().ModalOverlay.Visibility = Visibility.Visible;
+        if (!_mainViewProvider.MainWindow().ModalFrame.Navigate(wizardViewInstance))
         {
             throw new ApplicationException($"Navigation to wizard {wizardViewModelType.Name} failed");
         }
@@ -99,11 +99,11 @@ public class WizardNavigationService : IWizardNavigationService
 
     public async Task SaveWizardAsync<T>() where T : notnull
     {
-        _mainWindow.Main.Opacity = 1;
-        _mainWindow.Main.IsEnabled = true;
-        _mainWindow.WizardOverlay.Opacity = 1;
-        _mainWindow.WizardOverlay.IsEnabled = true;
-        _mainWindow.ModalOverlay.Visibility = Visibility.Collapsed;
+        _mainViewProvider.MainWindow().Main.Opacity = 1;
+        _mainViewProvider.MainWindow().Main.IsEnabled = true;
+        _mainViewProvider.MainWindow().WizardOverlay.Opacity = 1;
+        _mainViewProvider.MainWindow().WizardOverlay.IsEnabled = true;
+        _mainViewProvider.MainWindow().ModalOverlay.Visibility = Visibility.Collapsed;
 
         if (_lastNavigationContext is null)
         {
@@ -120,11 +120,11 @@ public class WizardNavigationService : IWizardNavigationService
     
     public async Task CloseWizardAsync<T>() where T : notnull
     {
-        _mainWindow.Main.Opacity = 1;
-        _mainWindow.Main.IsEnabled = true;
-        _mainWindow.WizardOverlay.Opacity = 1;
-        _mainWindow.WizardOverlay.IsEnabled = true;
-        _mainWindow.ModalOverlay.Visibility = Visibility.Collapsed;
+        _mainViewProvider.MainWindow().Main.Opacity = 1;
+        _mainViewProvider.MainWindow().Main.IsEnabled = true;
+        _mainViewProvider.MainWindow().WizardOverlay.Opacity = 1;
+        _mainViewProvider.MainWindow().WizardOverlay.IsEnabled = true;
+        _mainViewProvider.MainWindow().ModalOverlay.Visibility = Visibility.Collapsed;
 
         if (_lastNavigationContext is null)
         {

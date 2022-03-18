@@ -21,7 +21,7 @@ namespace TypeCode.Wpf.Main.Sidebar;
 public class MainSidebarViewModel : Reactive, IAsyncEventHandler<LoadEndEvent>
 {
     private readonly INavigationService _navigationService;
-    private readonly IFactory<NavigationContext, IWizardBuilder> _wizardBuilderFactory;
+    private readonly IFactory _factory;
     private readonly IWizardRunner _settingsWizardRunner;
     private readonly IEventAggregator _eventAggregator;
     private readonly IConfigurationProvider _configurationProvider;
@@ -29,7 +29,7 @@ public class MainSidebarViewModel : Reactive, IAsyncEventHandler<LoadEndEvent>
 
     public MainSidebarViewModel(
         INavigationService navigationService,
-        IFactory<NavigationContext, IWizardBuilder> wizardBuilderFactory,
+        IFactory factory,
         IWizardRunner settingsWizardRunner,
         IEventAggregator eventAggregator,
         IConfigurationProvider configurationProvider,
@@ -37,7 +37,7 @@ public class MainSidebarViewModel : Reactive, IAsyncEventHandler<LoadEndEvent>
     )
     {
         _navigationService = navigationService;
-        _wizardBuilderFactory = wizardBuilderFactory;
+        _factory = factory;
         _settingsWizardRunner = settingsWizardRunner;
         _eventAggregator = eventAggregator;
         _configurationProvider = configurationProvider;
@@ -148,7 +148,7 @@ public class MainSidebarViewModel : Reactive, IAsyncEventHandler<LoadEndEvent>
 
     private Task OpenSettingsAsync()
     {
-        var wizardBuilder = _wizardBuilderFactory.Create(new NavigationContext());
+        var wizardBuilder = _factory.Create<IWizardBuilder>();
 
         var wizard = wizardBuilder
             .Then<SetupWizardViewModel>((options, _) => options.AllowNext(_ => true))

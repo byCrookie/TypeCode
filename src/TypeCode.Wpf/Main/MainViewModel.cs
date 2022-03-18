@@ -6,13 +6,10 @@ namespace TypeCode.Wpf.Main;
 
 public class MainViewModel
 {
-    public MainViewModel(
-        IFactory<MainContentViewModel> contentViewModelFactory,
-        IFactory<MainSidebarViewModel> sidebarViewModelFactory
-    )
+    public MainViewModel(IFactory factory)
     {
-        MainContentViewModel = contentViewModelFactory.Create();
-        MainSidebarViewModel = sidebarViewModelFactory.Create();
+        MainContentViewModel = factory.Create<MainContentViewModel>();
+        MainSidebarViewModel = factory.Create<MainSidebarViewModel>();
     }
 
     public MainContentViewModel MainContentViewModel { get; set; }

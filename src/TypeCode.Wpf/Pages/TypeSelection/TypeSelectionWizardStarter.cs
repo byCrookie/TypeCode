@@ -3,7 +3,7 @@ using TypeCode.Wpf.Helper.Navigation.Wizard.WizardSimple;
 
 namespace TypeCode.Wpf.Pages.TypeSelection;
 
-internal class TypeSelectionWizardStarter : ITypeSelectionWizardStarter
+public class TypeSelectionWizardStarter : ITypeSelectionWizardStarter
 {
     private readonly IWizardNavigationService _wizardNavigationService;
 

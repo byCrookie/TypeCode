@@ -1,16 +1,16 @@
-﻿using Framework.Autofac.Boot;
+﻿using Framework.Jab.Boot;
 using TypeCode.Business.Configuration;
 using Workflow;
 
 namespace TypeCode.Business.Bootstrapping;
 
-internal class ConfigurationLoadBootStep<TContext> : IConfigurationLoadBootStep<TContext>
+public class ConfigurationJabLoadBootStep<TContext> : IConfigurationJabLoadBootStep<TContext>
     where TContext : WorkflowBaseContext, IBootContext
 {
     private readonly IConfigurationLoader _configurationLoader;
     private readonly IConfigurationProvider _configurationProvider;
 
-    public ConfigurationLoadBootStep(IConfigurationLoader configurationLoader, IConfigurationProvider configurationProvider)
+    public ConfigurationJabLoadBootStep(IConfigurationLoader configurationLoader, IConfigurationProvider configurationProvider)
     {
         _configurationLoader = configurationLoader;
         _configurationProvider = configurationProvider;

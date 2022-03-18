@@ -24,7 +24,7 @@ public class Program
 {
     public static async Task<int> Main(string[] args)
     {
-        Log.Logger = LoggerConfigurationProvider.Create().CreateLogger();
+        Log.Logger = AutofacLoggerConfigurationProvider.Create().CreateLogger();
 
         try
         {

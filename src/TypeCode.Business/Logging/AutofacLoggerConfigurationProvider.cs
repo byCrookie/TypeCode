@@ -4,7 +4,7 @@ using Serilog.Events;
 
 namespace TypeCode.Business.Logging;
 
-public static class LoggerConfigurationProvider
+public static class AutofacLoggerConfigurationProvider
 {
     private const string LogFile = "TypeCode.log.txt";
         

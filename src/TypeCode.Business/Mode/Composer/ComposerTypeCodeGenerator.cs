@@ -3,7 +3,7 @@ using TypeCode.Business.Format;
 
 namespace TypeCode.Business.Mode.Composer;
 
-internal class ComposerTypeCodeGenerator : IComposerTypeCodeGenerator
+public class ComposerTypeCodeGenerator : IComposerTypeCodeGenerator
 {
     public Task<string?> GenerateAsync(ComposerTypeCodeGeneratorParameter parameter)
     {

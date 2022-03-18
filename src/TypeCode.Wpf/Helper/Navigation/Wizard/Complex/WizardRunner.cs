@@ -3,7 +3,7 @@ using TypeCode.Wpf.Helper.Navigation.Service;
 
 namespace TypeCode.Wpf.Helper.Navigation.Wizard.Complex;
 
-internal class WizardRunner : IWizardRunner
+public class WizardRunner : IWizardRunner
 {
     public async Task<NavigationContext> RunAsync(Wizard wizard)
     {

@@ -6,7 +6,7 @@ using TypeCode.Business.Format;
 
 namespace TypeCode.Business.Configuration;
 
-internal class ConfigurationLoader : IConfigurationLoader
+public class ConfigurationLoader : IConfigurationLoader
 {
     private readonly IConfigurationMapper _configurationMapper;
     private readonly IGenericXmlSerializer _genericXmlSerializer;

@@ -1,6 +1,6 @@
 ﻿namespace TypeCode.Business.Configuration;
 
-internal class ConfigurationMapper : IConfigurationMapper
+public class ConfigurationMapper : IConfigurationMapper
 {
     public TypeCodeConfiguration MapToConfiguration(XmlTypeCodeConfiguration xmlConfiguration)
     {

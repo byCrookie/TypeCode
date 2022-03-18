@@ -1,19 +1,19 @@
 ﻿using System.Windows.Controls;
 using Framework.DependencyInjection.Factory;
 using TypeCode.Wpf.Helper.Navigation.Contract;
-using TypeCode.Wpf.Main.Content;
+using TypeCode.Wpf.Main;
 
 namespace TypeCode.Wpf.Helper.Navigation.Service;
 
 public class NavigationService : INavigationService
 {
-    private readonly MainContentView _mainContentView;
+    private readonly IMainViewProvider _mainViewProvider;
     private readonly IFactory _factory;
     private object? _lastViewModel;
 
-    public NavigationService(MainContentView mainContentView, IFactory factory)
+    public NavigationService(IMainViewProvider mainViewProvider, IFactory factory)
     {
-        _mainContentView = mainContentView;
+        _mainViewProvider = mainViewProvider;
         _factory = factory;
     }
 
@@ -39,7 +39,7 @@ public class NavigationService : INavigationService
 
         viewInstance.DataContext = viewModelInstance;
 
-        if (!_mainContentView.NavigationFrame.Navigate(viewInstance))
+        if (!_mainViewProvider.MainContentView().NavigationFrame.Navigate(viewInstance))
         {
             throw new ApplicationException($"Navigation to {viewModelType.Name} failed");
         }

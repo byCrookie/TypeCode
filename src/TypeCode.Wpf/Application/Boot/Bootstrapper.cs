@@ -1,12 +1,9 @@
-﻿using Autofac;
-using Framework.Autofac.Boot;
-using Framework.Autofac.Boot.Autofac;
-using Framework.Autofac.Boot.Autofac.Registration;
-using Framework.Autofac.Boot.Logger;
-using Framework.Autofac.Boot.Start;
+﻿using Framework.Jab.Boot;
+using Framework.Jab.Boot.Jab;
+using Framework.Jab.Boot.Logger;
+using Framework.Jab.Boot.Start;
 using TypeCode.Business.Bootstrapping;
 using TypeCode.Business.Logging;
-using TypeCode.Business.Modules;
 using TypeCode.Wpf.Application.Boot.SetupWpfApplication;
 
 namespace TypeCode.Wpf.Application.Boot;
@@ -15,22 +12,15 @@ public static class Bootstrapper
 {
     public static Task BootAsync()
     {
-        var bootScope = BootConfiguration.Configure<BootContext>(new List<Module>
-        {
-            new BootModule()
-        });
+        var serviceProvider = new TypeCodeWpfServiceProvider();
+        var bootScope = BootConfiguration.Configure<BootContext>(serviceProvider);
 
         var bootFlow = bootScope.WorkflowBuilder
             .ThenAsync<ILoggerBootStep<BootContext, LoggerBootStepOptions>, LoggerBootStepOptions>(
-                options => LoggerConfigurationProvider.Create(options)
+                options => JabLoggerConfigurationProvider.Create(options)
             )
             .ThenAsync<ISetupWpfApplicationStep<BootContext>>()
-            .ThenAsync<IAutofacBootStep<BootContext, AutofacBootStepOptions>, AutofacBootStepOptions>(
-                options => options.Autofac
-                    .AddModule(new TypeCodeWpfModule())
-                    .AddModule(new TypeCodeBusinessModule())
-            )
-            .ThenAsync<IConfigurationLoadBootStep<BootContext>>()
+            .ThenAsync<IConfigurationJabLoadBootStep<BootContext>>()
             .ThenAsync<IStartBootStep<BootContext>>()
             .Build();
 

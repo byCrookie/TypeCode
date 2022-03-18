@@ -5,7 +5,7 @@ using TypeCode.Business.TypeEvaluation.Property;
 
 namespace TypeCode.Business.Mode.Builder;
 
-internal class BuilderTypeCodeGenerator : IBuilderTypeCodeGenerator
+public class BuilderTypeCodeGenerator : IBuilderTypeCodeGenerator
 {
     public Task<string?> GenerateAsync(BuilderTypeCodeGeneratorParameter parameter)
     {

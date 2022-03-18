@@ -3,7 +3,7 @@ using TypeCode.Business.Format;
 
 namespace TypeCode.Business.TypeEvaluation;
 
-internal class TypeProvider : ITypeProvider
+public class TypeProvider : ITypeProvider
 {
     private static TypeCodeConfiguration? _configuration;
 

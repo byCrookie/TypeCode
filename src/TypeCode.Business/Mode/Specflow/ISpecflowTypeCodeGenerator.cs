@@ -1,5 +1,5 @@
 ﻿namespace TypeCode.Business.Mode.Specflow;
 
-internal interface ISpecflowTypeCodeGenerator : ITypeCodeGenerator<SpecflowTypeCodeGeneratorParameter>
+public interface ISpecflowTypeCodeGenerator : ITypeCodeGenerator<SpecflowTypeCodeGeneratorParameter>
 {
 }

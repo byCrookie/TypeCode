@@ -3,7 +3,7 @@ using System.Text.Json;
 
 namespace TypeCode.Business.Version;
 
-internal class VersionEvaluator : IVersionEvaluator
+public class VersionEvaluator : IVersionEvaluator
 {
     public async Task<string?> EvaluateAsync()
     {

@@ -5,7 +5,7 @@ using TypeCode.Business.Configuration;
 
 namespace TypeCode.Business.TypeEvaluation;
 
-internal class TypeEvaluator : ITypeEvaluator
+public class TypeEvaluator : ITypeEvaluator
 {
     public TypeCodeConfiguration EvaluateTypes(TypeCodeConfiguration configuration)
     {

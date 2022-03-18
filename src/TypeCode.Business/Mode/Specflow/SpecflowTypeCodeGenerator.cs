@@ -6,7 +6,7 @@ using TypeCode.Business.TypeEvaluation.Property;
 
 namespace TypeCode.Business.Mode.Specflow;
 
-internal class SpecflowTypeCodeGenerator : ISpecflowTypeCodeGenerator
+public class SpecflowTypeCodeGenerator : ISpecflowTypeCodeGenerator
 {
     public Task<string?> GenerateAsync(SpecflowTypeCodeGeneratorParameter parameter)
     {

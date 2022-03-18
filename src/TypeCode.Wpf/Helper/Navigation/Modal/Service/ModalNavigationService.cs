@@ -10,13 +10,13 @@ namespace TypeCode.Wpf.Helper.Navigation.Modal.Service;
 
 public class ModalNavigationService : IModalNavigationService
 {
-    private readonly MainWindow _mainWindow;
+    private readonly IMainViewProvider _mainViewProvider;
     private readonly IFactory _factory;
     private ModalParameter? _lastModalParameter;
 
-    public ModalNavigationService(MainWindow mainWindow, IFactory factory)
+    public ModalNavigationService(IMainViewProvider mainViewProvider, IFactory factory)
     {
-        _mainWindow = mainWindow;
+        _mainViewProvider = mainViewProvider;
         _factory = factory;
     }
 
@@ -40,10 +40,10 @@ public class ModalNavigationService : IModalNavigationService
 
         viewInstance.DataContext = viewModelInstance;
 
-        _mainWindow.Main.Opacity = 0.1;
-        _mainWindow.Main.IsEnabled = false;
-        _mainWindow.ModalOverlay.Visibility = Visibility.Visible;
-        if (!_mainWindow.ModalFrame.Navigate(viewInstance))
+        _mainViewProvider.MainWindow().Main.Opacity = 0.1;
+        _mainViewProvider.MainWindow().Main.IsEnabled = false;
+        _mainViewProvider.MainWindow().ModalOverlay.Visibility = Visibility.Visible;
+        if (!_mainViewProvider.MainWindow().ModalFrame.Navigate(viewInstance))
         {
             throw new ApplicationException($"Navigation to modal {viewModelType.Name} failed");
         }
@@ -57,9 +57,9 @@ public class ModalNavigationService : IModalNavigationService
 
     public Task CloseModalAsync()
     {
-        _mainWindow.Main.Opacity = 1;
-        _mainWindow.Main.IsEnabled = true;
-        _mainWindow.ModalOverlay.Visibility = Visibility.Collapsed;
+        _mainViewProvider.MainWindow().Main.Opacity = 1;
+        _mainViewProvider.MainWindow().Main.IsEnabled = true;
+        _mainViewProvider.MainWindow().ModalOverlay.Visibility = Visibility.Collapsed;
 
         return _lastModalParameter?.OnCloseAsync.Invoke() ?? Task.CompletedTask;
     }

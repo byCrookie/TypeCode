@@ -5,7 +5,7 @@ using TypeCode.Business.TypeEvaluation.Property;
 
 namespace TypeCode.Business.Mode.Mapper;
 
-internal class MapperTypeCodeGenerator : IMapperTypeCodeGenerator
+public class MapperTypeCodeGenerator : IMapperTypeCodeGenerator
 {
     private readonly IMapperStyleComposer _mapperStyleComposer;
 

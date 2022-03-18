@@ -1,6 +1,6 @@
 ﻿namespace TypeCode.Business.Mode.Mapper.Style;
 
-internal interface IMapperStyleStrategy
+public interface IMapperStyleStrategy
 {
     bool IsResponsibleFor(MappingStyle style);
     string? Generate(MapperTypeCodeGeneratorParameter parameter);

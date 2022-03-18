@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Threading;
 using AsyncAwaitBestPractices;
-using Framework.Autofac.Boot;
+using Framework.Jab.Boot;
 using Framework.DependencyInjection.Factory;
 using Nito.AsyncEx;
 using TypeCode.Business.Configuration;
@@ -20,6 +20,7 @@ public class Application<TContext> : IApplication<TContext> where TContext : Boo
     private readonly IEventAggregator _eventAggregator;
     private readonly IModalNavigationService _modalNavigationService;
     private readonly IConfigurationProvider _configurationProvider;
+    private readonly IMainViewProvider _mainViewProvider;
 
     public Application(
         IFactory factory,
@@ -27,7 +28,8 @@ public class Application<TContext> : IApplication<TContext> where TContext : Boo
         ITypeProvider typeProvider,
         IEventAggregator eventAggregator,
         IModalNavigationService modalNavigationService,
-        IConfigurationProvider configurationProvider
+        IConfigurationProvider configurationProvider,
+        IMainViewProvider mainViewProvider
     )
     {
         _factory = factory;
@@ -36,11 +38,12 @@ public class Application<TContext> : IApplication<TContext> where TContext : Boo
         _eventAggregator = eventAggregator;
         _modalNavigationService = modalNavigationService;
         _configurationProvider = configurationProvider;
+        _mainViewProvider = mainViewProvider;
     }
 
     public Task RunAsync(TContext context, CancellationToken cancellationToken)
     {
-        var mainWindow = _factory.Create<MainWindow>();
+        var mainWindow = _mainViewProvider.MainWindow();
             
         System.Windows.Application.Current.DispatcherUnhandledException +=
             (_, args) => HandleDispatcherUnhandledException(args, mainWindow);

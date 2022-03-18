@@ -1,6 +1,6 @@
 ﻿namespace TypeCode.Business.Configuration;
 
-internal class ConfigurationProvider : IConfigurationProvider
+public class ConfigurationProvider : IConfigurationProvider
 {
 	private static TypeCodeConfiguration? _configuration;
 
