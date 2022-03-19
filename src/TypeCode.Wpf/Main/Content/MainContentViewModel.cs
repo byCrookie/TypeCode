@@ -7,6 +7,7 @@ using TypeCode.Business.Version;
 using TypeCode.Wpf.Application;
 using TypeCode.Wpf.Helper.Commands;
 using TypeCode.Wpf.Helper.Event;
+using TypeCode.Wpf.Helper.Thread;
 using TypeCode.Wpf.Helper.ViewModel;
 
 namespace TypeCode.Wpf.Main.Content;
@@ -102,8 +103,7 @@ public class MainContentViewModel :
             Task.Run(async () =>
             {
                 await Task.Delay(TimeSpan.FromSeconds(1) - diff).ConfigureAwait(true);
-                System.Windows.Application.Current.Dispatcher
-                    .BeginInvoke(() => IsLoading = false, DispatcherPriority.Normal);
+                IsLoading = false;
             });
         }
 

@@ -53,7 +53,7 @@ public class MainSidebarViewModel : Reactive, IAsyncEventHandler<LoadEndEvent>
         _typeProvider = typeProvider;
 
         IsLoading = true;
-        
+
         _eventAggregator.Subscribe<LoadEndEvent>(this);
 
         SpecflowNavigationCommand = new AsyncRelayCommand(NavigateToSpecflowAsync);
@@ -84,13 +84,13 @@ public class MainSidebarViewModel : Reactive, IAsyncEventHandler<LoadEndEvent>
         get => Get<ActiveItem>();
         set => Set(value);
     }
-    
+
     public bool IsLoading
     {
         get => Get<bool>();
         set => Set(value);
     }
-    
+
     public Task HandleAsync(LoadEndEvent e)
     {
         IsLoading = false;
@@ -98,19 +98,22 @@ public class MainSidebarViewModel : Reactive, IAsyncEventHandler<LoadEndEvent>
         Log.Debug("Loading Ended {In}", GetType().FullName);
         return Task.CompletedTask;
     }
-    
+
     private async Task InvalidateAndReloadAsync()
     {
         IsLoading = true;
         InvalidateAndReloadCommand.RaiseCanExecuteChanged();
         await _eventAggregator.PublishAsync(new LoadStartEvent()).ConfigureAwait(true);
-        var configuration = await _configurationLoader.LoadAsync().ConfigureAwait(true);
-        _typeEvaluator.EvaluateTypes(configuration);
-        _typeProvider.Initalize(configuration);
-        _configurationProvider.SetConfiguration(configuration);
-        await _eventAggregator.PublishAsync(new LoadEndEvent()).ConfigureAwait(true);
+        await Task.Run(async () =>
+        {
+            var configuration = await _configurationLoader.LoadAsync().ConfigureAwait(false);
+            _typeEvaluator.EvaluateTypes(configuration);
+            _typeProvider.Initalize(configuration);
+            _configurationProvider.SetConfiguration(configuration);
+            await _eventAggregator.PublishAsync(new LoadEndEvent()).ConfigureAwait(false);
+        }).ConfigureAwait(false);
     }
-    
+
     private bool CanInvalidateAndReload(object? arg)
     {
         return !IsLoading;

@@ -1,6 +1,8 @@
 using System.Collections.Concurrent;
+using System.Windows.Threading;
 using Framework.Extensions.List;
 using Serilog;
+using TypeCode.Wpf.Helper.Thread;
 
 namespace TypeCode.Wpf.Helper.Event;
 
@@ -36,7 +38,8 @@ public class EventAggregator : IEventAggregator
                 if (ev.Key is IAsyncEventHandler<TEvent> asyncEventHandler)
                 {
                     Log.Debug("Calling {Handler} to handle {Event}", asyncEventHandler.GetType().FullName, typeof(TEvent));
-                    return asyncEventHandler.HandleAsync(e);
+                    MainThread.BackgroundFireAndForget(() => asyncEventHandler.HandleAsync(e), DispatcherPriority.Send);
+                    return Task.CompletedTask;
                 }
 
                 return Task.CompletedTask;

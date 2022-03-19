@@ -8,6 +8,7 @@ using TypeCode.Business.Configuration;
 using TypeCode.Business.TypeEvaluation;
 using TypeCode.Wpf.Helper.Event;
 using TypeCode.Wpf.Helper.Navigation.Modal.Service;
+using TypeCode.Wpf.Helper.Thread;
 using TypeCode.Wpf.Main;
 
 namespace TypeCode.Wpf.Application;
@@ -96,8 +97,6 @@ public class Application<TContext> : IApplication<TContext> where TContext : Boo
     {
         var configuration = _typeEvaluator.EvaluateTypes(_configurationProvider.GetConfiguration());
         _typeProvider.Initalize(configuration);
-        System.Windows.Application.Current.Dispatcher
-            .BeginInvoke(() => _eventAggregator.PublishAsync(new LoadEndEvent()), DispatcherPriority.Normal);
-        return Task.CompletedTask;
+        return _eventAggregator.PublishAsync(new LoadEndEvent());
     }
 }
