@@ -54,7 +54,7 @@ public class MainContentViewModel :
         get => Get<DateTime>();
         set => Set(value);
     }
-    
+
     public bool IsBannerVisible
     {
         get => Get<bool>();
@@ -87,8 +87,8 @@ public class MainContentViewModel :
         IsLoading = true;
         LoadingStarted = _dateTimeProvider.Now();
         return Task.CompletedTask;
-    } 
-    
+    }
+
     public Task HandleAsync(LoadEndEvent e)
     {
         var diff = _dateTimeProvider.Now() - LoadingStarted;
@@ -99,14 +99,12 @@ public class MainContentViewModel :
         }
         else
         {
-            async Task EndLoadAsync()
+            Task.Run(async () =>
             {
                 await Task.Delay(TimeSpan.FromSeconds(1) - diff).ConfigureAwait(true);
-                IsLoading = false;
-            }
-
-            System.Windows.Application.Current.Dispatcher
-                .BeginInvoke(EndLoadAsync, DispatcherPriority.Normal);
+                System.Windows.Application.Current.Dispatcher
+                    .BeginInvoke(() => IsLoading = false, DispatcherPriority.Normal);
+            });
         }
 
         Log.Debug("Loading Ended {In}", GetType().FullName);

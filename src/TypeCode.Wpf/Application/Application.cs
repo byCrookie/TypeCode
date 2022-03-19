@@ -57,9 +57,8 @@ public class Application<TContext> : IApplication<TContext> where TContext : Boo
 
         mainWindow.DataContext = mainViewModel;
 
-        System.Windows.Application.Current.Dispatcher
-            .BeginInvoke(LoadAssembliesAsync, DispatcherPriority.Loaded);
-
+        Task.Run(LoadAssembliesAsync, cancellationToken);
+        
         mainWindow.ShowDialog();
 
         return Task.CompletedTask;
@@ -97,6 +96,8 @@ public class Application<TContext> : IApplication<TContext> where TContext : Boo
     {
         var configuration = _typeEvaluator.EvaluateTypes(_configurationProvider.GetConfiguration());
         _typeProvider.Initalize(configuration);
-        return _eventAggregator.PublishAsync(new LoadEndEvent());
+        System.Windows.Application.Current.Dispatcher
+            .BeginInvoke(() => _eventAggregator.PublishAsync(new LoadEndEvent()), DispatcherPriority.Normal);
+        return Task.CompletedTask;
     }
 }
