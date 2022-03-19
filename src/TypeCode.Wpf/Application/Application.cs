@@ -57,7 +57,8 @@ public class Application<TContext> : IApplication<TContext> where TContext : Boo
 
         mainWindow.DataContext = mainViewModel;
 
-        Task.Run(LoadAssembliesAsync, cancellationToken);
+        System.Windows.Application.Current.Dispatcher
+            .InvokeAsync(LoadAssembliesAsync);
 
         mainWindow.ShowDialog();
 

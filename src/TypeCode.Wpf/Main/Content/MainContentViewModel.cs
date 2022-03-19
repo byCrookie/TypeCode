@@ -91,7 +91,7 @@ public class MainContentViewModel :
     public Task HandleAsync(LoadEndEvent e)
     {
         var diff = _dateTimeProvider.Now() - LoadingStarted;
-        
+
         if (diff >= TimeSpan.FromSeconds(1))
         {
             IsLoading = false;
@@ -100,13 +100,15 @@ public class MainContentViewModel :
         {
             async Task EndLoad()
             {
-                await Task.Delay(1000 - diff.Milliseconds).ConfigureAwait(true);
+                await Task.Delay(TimeSpan.FromSeconds(1) - diff).ConfigureAwait(true);
                 IsLoading = false;
             }
 
-            EndLoad().SafeFireAndForget();
+            System.Windows.Application.Current.Dispatcher
+                .InvokeAsync(EndLoad);
         }
 
+        Log.Debug("Loading Ended {In}", GetType().FullName);
         return Task.CompletedTask;
     }
 

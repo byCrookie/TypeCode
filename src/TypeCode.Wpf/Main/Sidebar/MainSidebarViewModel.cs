@@ -1,6 +1,7 @@
 ﻿using System.Windows.Input;
 using AsyncAwaitBestPractices.MVVM;
 using Framework.DependencyInjection.Factory;
+using Serilog;
 using TypeCode.Business.Configuration;
 using TypeCode.Business.TypeEvaluation;
 using TypeCode.Wpf.Application;
@@ -50,7 +51,7 @@ public class MainSidebarViewModel : Reactive, IAsyncEventHandler<LoadEndEvent>
         _typeEvaluator = typeEvaluator;
         _typeProvider = typeProvider;
 
-        AreAssembliesLoading = true;
+        IsLoading = true;
         
         _eventAggregator.Subscribe<LoadEndEvent>(this);
 
@@ -83,7 +84,7 @@ public class MainSidebarViewModel : Reactive, IAsyncEventHandler<LoadEndEvent>
         set => Set(value);
     }
     
-    public bool AreAssembliesLoading
+    public bool IsLoading
     {
         get => Get<bool>();
         set => Set(value);
@@ -91,14 +92,15 @@ public class MainSidebarViewModel : Reactive, IAsyncEventHandler<LoadEndEvent>
     
     public Task HandleAsync(LoadEndEvent e)
     {
-        AreAssembliesLoading = false;
+        IsLoading = false;
         InvalidateAndReloadCommand.RaiseCanExecuteChanged();
+        Log.Debug("Loading Ended {In}", GetType().FullName);
         return Task.CompletedTask;
     }
     
     private async Task InvalidateAndReloadAsync()
     {
-        AreAssembliesLoading = true;
+        IsLoading = true;
         InvalidateAndReloadCommand.RaiseCanExecuteChanged();
         await _eventAggregator.PublishAsync(new LoadStartEvent()).ConfigureAwait(true);
         var configuration = await _configurationLoader.LoadAsync().ConfigureAwait(true);
@@ -110,7 +112,7 @@ public class MainSidebarViewModel : Reactive, IAsyncEventHandler<LoadEndEvent>
     
     private bool CanInvalidateAndReload(object? arg)
     {
-        return !AreAssembliesLoading;
+        return !IsLoading;
     }
 
     private Task NavigateToSpecflowAsync()
