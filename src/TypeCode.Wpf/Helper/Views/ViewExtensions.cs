@@ -2,7 +2,7 @@
 
 namespace TypeCode.Wpf.Helper.Views;
 
-public static class ViewModelExtensions
+public static class ViewExtensions
 {
     public static Type? GetViewType(this Type viewModelType)
     {
