@@ -5,15 +5,13 @@ namespace TypeCode.Business.Logging;
 
 public static class JabLoggerConfigurationProvider
 {
-    private const string LogFile = "TypeCode.log.txt";
-
     public static LoggerConfiguration Create()
     {
         return new LoggerConfiguration()
             .MinimumLevel.Debug()
             .WriteTo.Debug()
             .WriteTo.Console()
-            .WriteTo.File(LogFile, shared: true);
+            .WriteTo.File(LogFiles.File, rollOnFileSizeLimit: true, shared: true);
     }
 
     public static LoggerConfiguration Create(LoggerBootStepOptions loggerBootStepOptions)
@@ -23,6 +21,6 @@ public static class JabLoggerConfigurationProvider
             .MinimumLevel.Debug()
             .WriteTo.Debug()
             .WriteTo.Console()
-            .WriteTo.File(LogFile, shared: true);
+            .WriteTo.File(LogFiles.File, rollOnFileSizeLimit: true, shared: true);
     }
 }

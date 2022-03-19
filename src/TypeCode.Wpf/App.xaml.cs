@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Windows;
 using System.Windows.Threading;
+using Framework.Extensions.List;
 using Framework.Jab.Boot.Logger;
 using Nito.AsyncEx;
 using Serilog;
@@ -18,6 +19,8 @@ public partial class App
         {
             var options = new LoggerBootStepOptions();
             options.Configuration.WriteTo.Console(LogEventLevel.Debug);
+            
+            LogFiles.All.ForEach(File.Delete);
         
             Log.Logger = JabLoggerConfigurationProvider.Create(options).CreateLogger();
             
@@ -30,7 +33,7 @@ public partial class App
         catch (Exception exception)
         {
             Console.WriteLine(exception);
-            File.AppendAllText("TypeCode.Fatal.log.txt", $"{exception.Message} - {exception.InnerException?.Message} | {exception.StackTrace}");
+            File.AppendAllText(LogFiles.FileFatal, $"{exception.Message} - {exception.InnerException?.Message} | {exception.StackTrace}");
             throw;
         }
     }

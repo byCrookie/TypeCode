@@ -1,6 +1,7 @@
 ﻿using Serilog;
 using TypeCode.Business.Configuration;
 using TypeCode.Business.Format;
+using TypeCode.Business.Logging;
 
 namespace TypeCode.Business.TypeEvaluation;
 
@@ -256,7 +257,7 @@ public class TypeProvider : ITypeProvider
     {
         lock (Lock)
         {
-            File.AppendAllLines("TypeCode.IndexedTypes.txt", keys);
+            File.AppendAllLines(LogFiles.IndexedTypes, keys);
         }
     }
 }
