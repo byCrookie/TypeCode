@@ -1,6 +1,5 @@
 ﻿using Framework.Autofac.Boot.Logger;
 using Serilog;
-using Serilog.Events;
 
 namespace TypeCode.Business.Logging;
 
@@ -12,9 +11,9 @@ public static class AutofacLoggerConfigurationProvider
     {
         return new LoggerConfiguration()
             .MinimumLevel.Debug()
-            .WriteTo.Debug(LogEventLevel.Debug)
-            .WriteTo.Console(LogEventLevel.Debug)
-            .WriteTo.File(LogFile, LogEventLevel.Debug);
+            .WriteTo.Debug()
+            .WriteTo.Console()
+            .WriteTo.File(LogFile, shared: true);
     }
 
     public static LoggerConfiguration Create(LoggerBootStepOptions loggerBootStepOptions)
@@ -22,8 +21,8 @@ public static class AutofacLoggerConfigurationProvider
         return loggerBootStepOptions
             .Configuration
             .MinimumLevel.Debug()
-            .WriteTo.Debug(LogEventLevel.Debug)
-            .WriteTo.Console(LogEventLevel.Debug)
-            .WriteTo.File(LogFile, LogEventLevel.Debug);
+            .WriteTo.Debug()
+            .WriteTo.Console()
+            .WriteTo.File(LogFile, shared: true);
     }
 }
