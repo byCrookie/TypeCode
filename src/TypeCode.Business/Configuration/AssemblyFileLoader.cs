@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Runtime.Loader;
 
 namespace TypeCode.Business.Configuration;
 
@@ -15,7 +16,7 @@ public class AssemblyFileLoader : IAssemblyFileLoader
         
         await using (var fs = new FileStream(fullPath, FileMode.Open))
         {
-            return new CustomAssemblyLoadContext(fullPath).LoadFromStream(fs);
+            return new AssemblyLoadContext(null).LoadFromStream(fs);
         }
     }
 }
