@@ -20,10 +20,17 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Remove="Configuration.cfg.xml" />
-      <Content Include="Configuration.cfg.xml">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
+        <None Remove="Configuration.Development.cfg.xml" />
+        <DevConfigFile Include="Configuration.Development.cfg.xml" />
+        <None Remove="Configuration.Production.cfg.xml" />
+        <ProdConfigFile Include="Configuration.Production.cfg.xml" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Remove="Configuration.cfg.xml" />
+        <Content Include="Configuration.cfg.xml">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
     </ItemGroup>
 
 </Project>

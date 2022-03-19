@@ -1,0 +1,45 @@
+<TypeCodeConfiguration>
+    <AssemblyRoot Path="D:\Dev\Projects\Git\veranlagung\" Priority="1">
+        <IncludeAssemblyPattern>^(?=.*\bNest\b)(?=.*\b.dll\b).*$</IncludeAssemblyPattern>
+        <AssemblyGroup Name="veranlagung" Priority="1">
+            <AssemblyPathSelector Priority="1" Selector="VA(.*)">Source\Veranlagung.TestTool\bin\Debug</AssemblyPathSelector>
+            <AssemblyPath Priority="1">trunk\Source\Veranlagung.TestTool\bin\Debug</AssemblyPath>
+            <AssemblyPath Priority="2">20210\Source\Veranlagung.TestTool\bin\Debug</AssemblyPath>
+            <AssemblyPath Priority="3">switch\Source\Veranlagung.TestTool\bin\Debug</AssemblyPath>
+        </AssemblyGroup>
+    </AssemblyRoot>
+    <AssemblyRoot Path="D:\Dev\Projects\Git\framework\" Priority="2">
+        <IncludeAssemblyPattern>^(?=.*\bNest\b)(?=.*\b.dll\b).*$</IncludeAssemblyPattern>
+        <AssemblyGroup Name="framework" Priority="1">
+            <AssemblyPathSelector Priority="1" Selector="VA(.*)">Source\CH.Nest.UI.TestTool\bin\Debug</AssemblyPathSelector>
+            <AssemblyPath Priority="1">trunk\Source\CH.Nest.UI.TestTool\bin\Debug</AssemblyPath>
+            <AssemblyPath Priority="2">20210\Source\CH.Nest.UI.TestTool\bin\Debug</AssemblyPath>
+            <AssemblyPath Priority="3">switch\Source\CH.Nest.UI.TestTool\bin\Debug</AssemblyPath>
+        </AssemblyGroup>
+    </AssemblyRoot>
+    <AssemblyRoot Path="D:\Dev\Projects\Git\nbase\" Priority="3">
+        <IncludeAssemblyPattern>^(?=.*\bNest\b)(?=.*\b.dll\b).*$</IncludeAssemblyPattern>
+        <AssemblyGroup Name="nbase" Priority="1">
+            <AssemblyPathSelector Priority="1" Selector="VA(.*)">Source\UiTestApp\bin\Debug</AssemblyPathSelector>
+            <AssemblyPath Priority="1">trunk\Source\UiTestApp\bin\Debug</AssemblyPath>
+            <AssemblyPath Priority="2">20210\Source\UiTestApp\bin\Debug</AssemblyPath>
+            <AssemblyPath Priority="3">switch\Source\UiTestApp\bin\Debug</AssemblyPath>
+        </AssemblyGroup>
+    </AssemblyRoot>
+    <AssemblyRoot Path="D:\Dev\Projects\Git\stammdaten\" Priority="4">
+        <IncludeAssemblyPattern>^(?=.*\bNest\b)(?=.*\b.dll\b).*$</IncludeAssemblyPattern>
+        <AssemblyGroup Name="stammdaten" Priority="1">
+            <AssemblyPathSelector Priority="1" Selector="VA(.*)">Source\SteuernstammdatenTestTool\bin\Debug</AssemblyPathSelector>
+            <AssemblyPath Priority="1">trunk\Source\SteuernstammdatenTestTool\bin\Debug</AssemblyPath>
+            <AssemblyPath Priority="2">20210\Source\SteuernstammdatenTestTool\bin\Debug</AssemblyPath>
+            <AssemblyPath Priority="3">switch\Source\SteuernstammdatenTestTool\bin\Debug</AssemblyPath>
+        </AssemblyGroup>
+    </AssemblyRoot>
+    <AssemblyRoot Path="D:\Dev\Projects\Git\nest\" Priority="1">
+        <IncludeAssemblyPattern>^(?=.*\bNest\b)(?=.*\b.dll\b).*$</IncludeAssemblyPattern>
+        <AssemblyGroup Name="nest" Priority="1">
+            <AssemblyPath Priority="1">VA-4143\Source\Veranlagung\Veranlagung.TestTool\bin\Debug</AssemblyPath>
+            <AssemblyPathSelector Priority="1" Selector="VA(.*)">Source\Veranlagung\Veranlagung.TestTool\bin\Debug</AssemblyPathSelector>
+        </AssemblyGroup>
+    </AssemblyRoot>
+</TypeCodeConfiguration>

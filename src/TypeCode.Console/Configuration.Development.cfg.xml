@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TypeCodeConfiguration>
+
+    <AssemblyRoot Path="M:\Development\Home\" Priority="1">
+        <IncludeAssemblyPattern>^(?=.*\bTypeCode\b)(?=.*\b.dll\b).*$</IncludeAssemblyPattern>
+        
+        <AssemblyGroup Name="TypeCode" Priority="1">
+            <AssemblyPath Priority="1">TypeCode\tests\TypeCode.Business.Tests\bin\Debug\net6.0</AssemblyPath>
+            <AssemblyPath Priority="2">TypeCode\tests\TypeCode.Test.Library1\bin\Debug\net6.0</AssemblyPath>
+            <AssemblyPath Priority="3">TypeCode\tests\TypeCode.Test.Library2\bin\Debug\net6.0</AssemblyPath>
+        </AssemblyGroup>
+    </AssemblyRoot>
+    
+</TypeCodeConfiguration>
