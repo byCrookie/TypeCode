@@ -5,6 +5,7 @@ using Serilog;
 using TypeCode.Business.Configuration;
 using TypeCode.Business.TypeEvaluation;
 using TypeCode.Wpf.Application;
+using TypeCode.Wpf.Helper.Commands;
 using TypeCode.Wpf.Helper.Event;
 using TypeCode.Wpf.Helper.Navigation.Service;
 using TypeCode.Wpf.Helper.Navigation.Wizard.Complex;
@@ -55,15 +56,15 @@ public class MainSidebarViewModel : Reactive, IAsyncEventHandler<LoadEndEvent>
         
         _eventAggregator.Subscribe<LoadEndEvent>(this);
 
-        SpecflowNavigationCommand = new AsyncCommand(NavigateToSpecflowAsync);
-        UnitTestDependencyTypeNavigationCommand = new AsyncCommand(NavigateToUnitTestDependencyTypeAsync);
-        UnitTestDependencyManuallyNavigationCommand = new AsyncCommand(NavigateToUnitTestDependencyManuallyAsync);
-        ComposerNavigationCommand = new AsyncCommand(NavigateToComposerAsync);
-        MapperNavigationCommand = new AsyncCommand(NavigateToMapperAsync);
-        BuilderNavigationCommand = new AsyncCommand(NavigateToBuilderAsync);
-        AssemblyNavigationCommand = new AsyncCommand(NavigateToAssemblyAsync);
-        InvalidateAndReloadCommand = new AsyncCommand(InvalidateAndReloadAsync, CanInvalidateAndReload);
-        OpenSettingsCommand = new AsyncCommand(OpenSettingsAsync);
+        SpecflowNavigationCommand = new AsyncRelayCommand(NavigateToSpecflowAsync);
+        UnitTestDependencyTypeNavigationCommand = new AsyncRelayCommand(NavigateToUnitTestDependencyTypeAsync);
+        UnitTestDependencyManuallyNavigationCommand = new AsyncRelayCommand(NavigateToUnitTestDependencyManuallyAsync);
+        ComposerNavigationCommand = new AsyncRelayCommand(NavigateToComposerAsync);
+        MapperNavigationCommand = new AsyncRelayCommand(NavigateToMapperAsync);
+        BuilderNavigationCommand = new AsyncRelayCommand(NavigateToBuilderAsync);
+        AssemblyNavigationCommand = new AsyncRelayCommand(NavigateToAssemblyAsync);
+        InvalidateAndReloadCommand = new AsyncRelayCommand(InvalidateAndReloadAsync, CanInvalidateAndReload);
+        OpenSettingsCommand = new AsyncRelayCommand(OpenSettingsAsync);
 
         ActiveItem = ActiveItem.None;
     }

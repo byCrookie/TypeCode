@@ -1,9 +1,9 @@
 ﻿using System.Windows;
 using System.Windows.Input;
-using AsyncAwaitBestPractices.MVVM;
 using TypeCode.Business.Mode;
 using TypeCode.Business.Mode.Specflow;
 using TypeCode.Business.TypeEvaluation;
+using TypeCode.Wpf.Helper.Commands;
 using TypeCode.Wpf.Helper.Navigation.Contract;
 using TypeCode.Wpf.Helper.Navigation.Service;
 using TypeCode.Wpf.Helper.ViewModel;
@@ -28,8 +28,8 @@ public class SpecflowViewModel : Reactive, IAsyncNavigatedTo
         _typeSelectionWizardStarter = typeSelectionWizardStarter;
 
         IncludeStrings = true;
-        GenerateCommand = new AsyncCommand(GenerateAsync);
-        CopyToClipboardCommand = new AsyncCommand(() =>
+        GenerateCommand = new AsyncRelayCommand(GenerateAsync);
+        CopyToClipboardCommand = new AsyncRelayCommand(() =>
         {
             Clipboard.SetText(Output ?? string.Empty);
             return Task.CompletedTask;

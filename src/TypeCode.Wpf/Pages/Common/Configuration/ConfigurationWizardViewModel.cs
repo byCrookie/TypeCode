@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Windows.Input;
 using System.Xml.Linq;
-using AsyncAwaitBestPractices.MVVM;
+using TypeCode.Wpf.Helper.Commands;
 using TypeCode.Wpf.Helper.Navigation.Service;
 using TypeCode.Wpf.Helper.Navigation.Wizard.Complex;
 using TypeCode.Wpf.Helper.ViewModel;
@@ -12,9 +12,9 @@ public class ConfigurationWizardViewModel : Reactive, IAsyncInitialNavigated
 {
     public ConfigurationWizardViewModel()
     {
-        ReloadCommand = new AsyncCommand(ReloadAsync);
-        SaveCommand = new AsyncCommand(SaveAsync);
-        FormatCommand = new AsyncCommand(FormatAsync);
+        ReloadCommand = new AsyncRelayCommand(ReloadAsync);
+        SaveCommand = new AsyncRelayCommand(SaveAsync);
+        FormatCommand = new AsyncRelayCommand(FormatAsync);
     }
     
     public Task OnInititalNavigationAsync(NavigationContext context)

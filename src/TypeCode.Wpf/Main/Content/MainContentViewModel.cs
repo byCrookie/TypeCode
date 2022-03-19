@@ -1,10 +1,10 @@
 ﻿using System.Windows.Input;
 using AsyncAwaitBestPractices;
-using AsyncAwaitBestPractices.MVVM;
 using Framework.Time;
 using Serilog;
 using TypeCode.Business.Version;
 using TypeCode.Wpf.Application;
+using TypeCode.Wpf.Helper.Commands;
 using TypeCode.Wpf.Helper.Event;
 using TypeCode.Wpf.Helper.ViewModel;
 
@@ -33,7 +33,7 @@ public class MainContentViewModel :
         eventAggregator.Subscribe<LoadStartEvent>(this);
         eventAggregator.Subscribe<LoadEndEvent>(this);
 
-        CloseBannerCommand = new AsyncCommand(() =>
+        CloseBannerCommand = new AsyncRelayCommand(() =>
         {
             IsBannerVisible = false;
             return Task.CompletedTask;

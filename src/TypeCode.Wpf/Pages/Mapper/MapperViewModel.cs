@@ -1,10 +1,10 @@
 ﻿using System.Windows;
 using System.Windows.Input;
-using AsyncAwaitBestPractices.MVVM;
 using TypeCode.Business.Mode;
 using TypeCode.Business.Mode.Mapper;
 using TypeCode.Business.Mode.Mapper.Style;
 using TypeCode.Business.TypeEvaluation;
+using TypeCode.Wpf.Helper.Commands;
 using TypeCode.Wpf.Helper.Navigation.Contract;
 using TypeCode.Wpf.Helper.Navigation.Service;
 using TypeCode.Wpf.Helper.ViewModel;
@@ -29,9 +29,9 @@ public class MapperViewModel : Reactive, IAsyncNavigatedTo
         _typeProvider = typeProvider;
         _typeSelectionWizardStarter = typeSelectionWizardStarter;
 
-        GenerateCommand = new AsyncCommand(GenerateAsync);
-        StyleCommand = new AsyncCommand<MappingStyle>(StyleAsync);
-        CopyToClipboardCommand = new AsyncCommand(() =>
+        GenerateCommand = new AsyncRelayCommand(GenerateAsync);
+        StyleCommand = new AsyncRelayCommand<MappingStyle>(StyleAsync);
+        CopyToClipboardCommand = new AsyncRelayCommand(() =>
         {
             Clipboard.SetText(Output ?? string.Empty);
             return Task.CompletedTask;

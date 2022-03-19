@@ -1,6 +1,6 @@
 ﻿using System.Windows.Input;
-using AsyncAwaitBestPractices.MVVM;
 using Microsoft.Win32;
+using TypeCode.Wpf.Helper.Commands;
 using TypeCode.Wpf.Helper.Navigation.Service;
 using TypeCode.Wpf.Helper.Navigation.Wizard.Complex;
 using TypeCode.Wpf.Helper.ViewModel;
@@ -11,7 +11,7 @@ public class AssemblyRootWizardViewModel : Reactive, IAsyncInitialNavigated
 {
     public AssemblyRootWizardViewModel()
     {
-        SelectCommand = new AsyncCommand(SelectAsync);
+        SelectCommand = new AsyncRelayCommand(SelectAsync);
     }
 
     public Task OnInititalNavigationAsync(NavigationContext context)

@@ -1,6 +1,7 @@
 ﻿using System.Windows.Controls;
 using System.Windows.Input;
 using AsyncAwaitBestPractices.MVVM;
+using TypeCode.Wpf.Helper.Commands;
 using TypeCode.Wpf.Helper.Event;
 using TypeCode.Wpf.Helper.Navigation.Contract;
 using TypeCode.Wpf.Helper.Navigation.Service;
@@ -26,8 +27,8 @@ public class WizardSimpleViewModel<T> :
         _parameter = new WizardParameter<T>();
         _context = new NavigationContext();
         
-        CancelCommand = new AsyncCommand(CancelAsync);
-        FinishCommand = new AsyncCommand(FinishAsync, CanFinish);
+        CancelCommand = new AsyncRelayCommand(CancelAsync);
+        FinishCommand = new AsyncRelayCommand(FinishAsync, CanFinish);
     }
 
     public Task OnNavigatedToAsync(NavigationContext context)

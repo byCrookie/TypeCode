@@ -1,5 +1,5 @@
 ﻿using System.Windows.Input;
-using AsyncAwaitBestPractices.MVVM;
+using TypeCode.Wpf.Helper.Commands;
 using TypeCode.Wpf.Helper.Navigation.Contract;
 using TypeCode.Wpf.Helper.Navigation.Modal.Service;
 using TypeCode.Wpf.Helper.Navigation.Service;
@@ -15,7 +15,7 @@ public class ModalViewModel : Reactive, IAsyncNavigatedTo
     {
         _modalNavigationService = modalNavigationService;
         
-        OkCommand = new AsyncCommand(OkAsync);
+        OkCommand = new AsyncRelayCommand(OkAsync);
     }
         
     public Task OnNavigatedToAsync(NavigationContext context)

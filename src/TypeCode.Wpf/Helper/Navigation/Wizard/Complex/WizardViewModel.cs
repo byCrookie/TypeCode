@@ -1,6 +1,5 @@
 ﻿using System.Windows.Controls;
 using System.Windows.Input;
-using AsyncAwaitBestPractices.MVVM;
 using TypeCode.Wpf.Helper.Commands;
 using TypeCode.Wpf.Helper.Navigation.Contract;
 using TypeCode.Wpf.Helper.ViewModel;
@@ -39,13 +38,13 @@ public class WizardViewModel : Reactive, IWizardHost
 
         await wizard.CurrentStepConfiguration.BeforeAction(wizard.NavigationContext).ConfigureAwait(true);
 
-        BackCommand = new AsyncCommand(BackAsync, _ => wizard.CurrentStepConfiguration != wizard.StepConfigurations.FirstOrDefault()
-                                                       && wizard.CurrentStepConfiguration.AllowBack(wizard.NavigationContext));
-        NextCommand = new AsyncCommand(NextAsync, _ => wizard.CurrentStepConfiguration != wizard.StepConfigurations.LastOrDefault()
-                                                       && wizard.CurrentStepConfiguration.AllowNext(wizard.NavigationContext));
-        CancelCommand = new AsyncCommand(CancelAsync);
-        FinishCommand = new AsyncCommand(FinishAsync, _ => wizard.CurrentStepConfiguration == wizard.StepConfigurations.LastOrDefault()
-                                                           && wizard.CurrentStepConfiguration.AllowNext(wizard.NavigationContext));
+        BackCommand = new AsyncRelayCommand(BackAsync, _ => wizard.CurrentStepConfiguration != wizard.StepConfigurations.FirstOrDefault()
+                                                            && wizard.CurrentStepConfiguration.AllowBack(wizard.NavigationContext));
+        NextCommand = new AsyncRelayCommand(NextAsync, _ => wizard.CurrentStepConfiguration != wizard.StepConfigurations.LastOrDefault()
+                                                            && wizard.CurrentStepConfiguration.AllowNext(wizard.NavigationContext));
+        CancelCommand = new AsyncRelayCommand(CancelAsync);
+        FinishCommand = new AsyncRelayCommand(FinishAsync, _ => wizard.CurrentStepConfiguration == wizard.StepConfigurations.LastOrDefault()
+                                                                && wizard.CurrentStepConfiguration.AllowNext(wizard.NavigationContext));
 
         if (wizard.CurrentStepConfiguration.Instances.ViewInstance is not UserControl wizardPage)
         {

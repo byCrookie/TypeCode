@@ -1,7 +1,7 @@
 ﻿using System.Windows.Input;
-using AsyncAwaitBestPractices.MVVM;
 using TypeCode.Business.Configuration;
 using TypeCode.Business.TypeEvaluation;
+using TypeCode.Wpf.Helper.Commands;
 using TypeCode.Wpf.Helper.Navigation.Contract;
 using TypeCode.Wpf.Helper.Navigation.Modal.Service;
 using TypeCode.Wpf.Helper.Navigation.Service;
@@ -27,7 +27,7 @@ public class AssemblyViewModel : Reactive, IAsyncNavigatedTo
 
         LoadedAssemblies = new List<string>();
 
-        SearchCommand = new AsyncCommand(SearchAsync);
+        SearchCommand = new AsyncRelayCommand(SearchAsync);
     }
 
     public Task OnNavigatedToAsync(NavigationContext context)
