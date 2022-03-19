@@ -11,9 +11,11 @@ public class AssemblyFileLoader : IAssemblyFileLoader
 
     private static async Task<Assembly> LoadFromPathAsync(string path)
     {
-        await using (var fs = new FileStream(Path.GetFullPath(path), FileMode.Open))
+        var fullPath = Path.GetFullPath(path);
+        
+        await using (var fs = new FileStream(fullPath, FileMode.Open))
         {
-            return new CustomAssemblyLoadContext().LoadFromStream(fs);
+            return new CustomAssemblyLoadContext(fullPath).LoadFromStream(fs);
         }
     }
 }
