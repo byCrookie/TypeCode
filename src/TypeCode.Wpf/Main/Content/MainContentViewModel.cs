@@ -1,4 +1,5 @@
 ﻿using System.Windows.Input;
+using System.Windows.Threading;
 using AsyncAwaitBestPractices;
 using Framework.Time;
 using Serilog;
@@ -98,14 +99,14 @@ public class MainContentViewModel :
         }
         else
         {
-            async Task EndLoad()
+            async Task EndLoadAsync()
             {
                 await Task.Delay(TimeSpan.FromSeconds(1) - diff).ConfigureAwait(true);
                 IsLoading = false;
             }
 
             System.Windows.Application.Current.Dispatcher
-                .InvokeAsync(EndLoad);
+                .BeginInvoke(EndLoadAsync, DispatcherPriority.Normal);
         }
 
         Log.Debug("Loading Ended {In}", GetType().FullName);
