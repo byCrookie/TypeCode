@@ -12,7 +12,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="appsdk" Version="1.0.4-pre-202203190520" />
+      <PackageReference Include="appsdk" Version="1.0.5-pre-202203190546" />
       <PackageReference Include="Cocona" Version="2.0.2" />
     </ItemGroup>
 
