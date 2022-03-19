@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <TypeCodeConfiguration>
     <AssemblyRoot Path="D:\Dev\Projects\Git\veranlagung\" Priority="1">
         <IncludeAssemblyPattern>^(?=.*\bNest\b)(?=.*\b.dll\b).*$</IncludeAssemblyPattern>
