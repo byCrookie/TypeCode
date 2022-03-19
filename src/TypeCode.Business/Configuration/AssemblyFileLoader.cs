@@ -1,48 +1,38 @@
 ﻿using System.Reflection;
+using System.Runtime.Loader;
 using System.Security.Cryptography;
 using System.Text;
-using Serilog;
 
 namespace TypeCode.Business.Configuration;
 
 public class AssemblyFileLoader : IAssemblyFileLoader
 {
-    public async Task<Assembly> LoadAsync(string path)
+    public Task<Assembly> LoadAsync(string path)
     {
-        try
+        const string cacheDirectory = "cache";
+        Directory.CreateDirectory(cacheDirectory);
+
+        var fileName = Path.GetFileNameWithoutExtension(path);
+        var directoryPath = Path.GetDirectoryName(path) ?? string.Empty;
+
+        var cacheDirectoryPath = Path.Combine(cacheDirectory, GetHashString(directoryPath));
+        Directory.CreateDirectory(cacheDirectoryPath);
+
+        var cachedAssembly = Path.Combine(cacheDirectoryPath, $"{fileName}.dll");
+
+        if (!File.Exists(cachedAssembly) || AssemblyIsNewer(path, cachedAssembly))
         {
-            const string cacheDirectory = "cache";
-            Directory.CreateDirectory(cacheDirectory);
-
-            var fileName = Path.GetFileNameWithoutExtension(path);
-            var directoryPath = Path.GetDirectoryName(path) ?? string.Empty;
-            
-            var cacheDirectoryPath = Path.Combine(cacheDirectory, GetHashString(directoryPath));
-            Directory.CreateDirectory(cacheDirectoryPath);
-
-            var cachedAssembly = Path.Combine(cacheDirectoryPath, $"{fileName}.dll");
-
-            if (!File.Exists(cachedAssembly) || AssemblyIsNewer(path, cachedAssembly))
-            {
-                try
-                {
-                    File.Copy(path, cachedAssembly, true);
-                }
-                catch (Exception e)
-                {
-                    Log.Warning("Cache-Error. Cache create not successful from {From} to {To}: {Exception}", path, cachedAssembly, e.Message);
-                    var randomCacheAssembly = Path.Combine(cacheDirectoryPath, $"{Guid.NewGuid():N}_{fileName}.dll");
-                    File.Copy(path, randomCacheAssembly, true);
-                    return Assembly.LoadFile(Path.GetFullPath(randomCacheAssembly));
-                }
-            }
-            
-            return Assembly.LoadFile(Path.GetFullPath(cachedAssembly));
+            File.Copy(path, cachedAssembly, true);
         }
-        catch (Exception e)
+
+        return LoadFromPathAsync(cachedAssembly);
+    }
+
+    private static async Task<Assembly> LoadFromPathAsync(string path)
+    {
+        await using (var fs = new FileStream(Path.GetFullPath(path), FileMode.Open))
         {
-            Log.Warning("Cache-Error. Ignore Cache: {Exception}", e.Message);
-            return Assembly.LoadFile(Path.GetFullPath(path));
+            return new AssemblyLoadContext(Guid.NewGuid().ToString("N")).LoadFromStream(fs);
         }
     }
 
