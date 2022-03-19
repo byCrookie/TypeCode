@@ -151,7 +151,7 @@ public class MainSidebarViewModel : Reactive, IAsyncEventHandler<LoadEndEvent>
         var wizardBuilder = _factory.Create<IWizardBuilder>();
 
         var wizard = wizardBuilder
-            .Then<SetupWizardViewModel>((options, _) => options.AllowNext(_ => true))
+            //.Then<SetupWizardViewModel>((options, _) => options.AllowNext(_ => true))
             .Then<ConfigurationWizardViewModel>((options, _) => options.AllowBack(_ => true))
             .Build();
 

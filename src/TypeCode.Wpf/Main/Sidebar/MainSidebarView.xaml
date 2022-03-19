@@ -94,7 +94,7 @@
                         Command="{Binding AssemblyNavigationCommand}"
                         Content="Assemblies" />
 
-        <DockPanel Margin="5,0,0,0" Grid.Row="8" HorizontalAlignment="Left">
+        <DockPanel Visibility="Collapsed" Margin="5,0,0,0" Grid.Row="8" HorizontalAlignment="Left">
             <c:InverseCustomButton MaxHeight="30" DockPanel.Dock="Left"
                             Height="30"
                             MinWidth="30"
