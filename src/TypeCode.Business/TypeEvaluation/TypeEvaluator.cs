@@ -6,8 +6,6 @@ namespace TypeCode.Business.TypeEvaluation;
 
 public class TypeEvaluator : ITypeEvaluator
 {
-    private static readonly object Lock = new();
-    
     public TypeCodeConfiguration EvaluateTypes(TypeCodeConfiguration configuration)
     {
         try
@@ -48,10 +46,5 @@ public class TypeEvaluator : ITypeEvaluator
         var loadedTypes = assembly.GetLoadableTypes().ToList();
         Log.Debug("Loaded {Count} Types from {Assembly}", loadedTypes.Count, assembly.FullName);
         loadedTypes.ForEach(type => assemblyDirectory.Types.Add(type));
-
-        lock (Lock)
-        {
-            File.AppendAllLines("TypeCode.LoadedTypes.txt", loadedTypes.Select(type => $"{type.FullName}.{type.AssemblyQualifiedName}"));
-        }
     }
 }

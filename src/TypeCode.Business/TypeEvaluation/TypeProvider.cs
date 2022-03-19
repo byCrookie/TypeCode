@@ -6,6 +6,7 @@ namespace TypeCode.Business.TypeEvaluation;
 
 public class TypeProvider : ITypeProvider
 {
+    private static readonly object Lock = new();
     private static TypeCodeConfiguration? _configuration;
 
     public void Initalize(TypeCodeConfiguration configuration)
@@ -26,10 +27,14 @@ public class TypeProvider : ITypeProvider
                         .GroupBy(GetNameWithoutGeneric)
                         .ToDictionary(nameGroup => nameGroup.Key, nameGroup => nameGroup.ToList());
 
+                    WriteKeysToFile(path.TypesByNameDictionary.Keys);
+
                     path.TypesByFullNameDictionary = path.AssemblyDirectories
                         .SelectMany(directory => directory.Types)
                         .GroupBy(NameBuilder.GetNameWithNamespace)
                         .ToDictionary(nameGroup => nameGroup.Key, nameGroup => nameGroup.ToList());
+                    
+                    WriteKeysToFile(path.TypesByFullNameDictionary.Keys);
                 });
 
                 group.AssemblyPathSelector = group.AssemblyPathSelector.OrderBy(selector => selector.Priority).ToList();
@@ -39,11 +44,15 @@ public class TypeProvider : ITypeProvider
                         .SelectMany(directory => directory.Types)
                         .GroupBy(GetNameWithoutGeneric)
                         .ToDictionary(nameGroup => nameGroup.Key, nameGroup => nameGroup.ToList());
+                    
+                    WriteKeysToFile(selector.TypesByNameDictionary.Keys);
 
                     selector.TypesByFullNameDictionary = selector.AssemblyDirectories
                         .SelectMany(directory => directory.Types)
                         .GroupBy(NameBuilder.GetNameWithNamespace)
                         .ToDictionary(nameGroup => nameGroup.Key, nameGroup => nameGroup.ToList());
+                    
+                    WriteKeysToFile(selector.TypesByFullNameDictionary.Keys);
                 });
             }
         });
@@ -241,5 +250,13 @@ public class TypeProvider : ITypeProvider
         }
 
         return Enumerable.Empty<Type>();
+    }
+    
+    private static void WriteKeysToFile(IEnumerable<string> keys)
+    {
+        lock (Lock)
+        {
+            File.AppendAllLines("TypeCode.IndexedTypes.txt", keys);
+        }
     }
 }
