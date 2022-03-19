@@ -1,5 +1,4 @@
-﻿using System.Net;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 using Serilog;
@@ -20,13 +19,6 @@ public class AssemblyFileLoader : IAssemblyFileLoader
             
             var cacheDirectoryPath = Path.Combine(cacheDirectory, GetHashString(directoryPath));
             Directory.CreateDirectory(cacheDirectoryPath);
-            
-            var directoryCacheDescriptionFile = Path.Combine(cacheDirectoryPath, "_origin.txt");
-
-            if (!File.Exists(directoryCacheDescriptionFile))
-            {
-                await File.AppendAllTextAsync(directoryCacheDescriptionFile, directoryPath).ConfigureAwait(false);
-            }
 
             var cachedAssembly = Path.Combine(cacheDirectoryPath, $"{fileName}.dll");
 
@@ -41,16 +33,16 @@ public class AssemblyFileLoader : IAssemblyFileLoader
                     Log.Warning("Cache-Error. Cache create not successful from {From} to {To}: {Exception}", path, cachedAssembly, e.Message);
                     var randomCacheAssembly = Path.Combine(cacheDirectoryPath, $"{Guid.NewGuid():N}_{fileName}.dll");
                     File.Copy(path, randomCacheAssembly, true);
-                    return Assembly.LoadFrom(randomCacheAssembly);
+                    return Assembly.LoadFile(Path.GetFullPath(randomCacheAssembly));
                 }
             }
             
-            return Assembly.LoadFrom(cachedAssembly);
+            return Assembly.LoadFile(Path.GetFullPath(cachedAssembly));
         }
         catch (Exception e)
         {
             Log.Warning("Cache-Error. Ignore Cache: {Exception}", e.Message);
-            return Assembly.LoadFrom(path);
+            return Assembly.LoadFile(Path.GetFullPath(path));
         }
     }
 

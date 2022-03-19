@@ -2,6 +2,7 @@
 using AsyncAwaitBestPractices.MVVM;
 using Framework.DependencyInjection.Factory;
 using TypeCode.Business.Configuration;
+using TypeCode.Business.TypeEvaluation;
 using TypeCode.Wpf.Application;
 using TypeCode.Wpf.Helper.Event;
 using TypeCode.Wpf.Helper.Navigation.Service;
@@ -26,6 +27,8 @@ public class MainSidebarViewModel : Reactive, IAsyncEventHandler<LoadEndEvent>
     private readonly IEventAggregator _eventAggregator;
     private readonly IConfigurationProvider _configurationProvider;
     private readonly IConfigurationLoader _configurationLoader;
+    private readonly ITypeEvaluator _typeEvaluator;
+    private readonly ITypeProvider _typeProvider;
 
     public MainSidebarViewModel(
         INavigationService navigationService,
@@ -33,7 +36,9 @@ public class MainSidebarViewModel : Reactive, IAsyncEventHandler<LoadEndEvent>
         IWizardRunner settingsWizardRunner,
         IEventAggregator eventAggregator,
         IConfigurationProvider configurationProvider,
-        IConfigurationLoader configurationLoader
+        IConfigurationLoader configurationLoader,
+        ITypeEvaluator typeEvaluator,
+        ITypeProvider typeProvider
     )
     {
         _navigationService = navigationService;
@@ -42,6 +47,8 @@ public class MainSidebarViewModel : Reactive, IAsyncEventHandler<LoadEndEvent>
         _eventAggregator = eventAggregator;
         _configurationProvider = configurationProvider;
         _configurationLoader = configurationLoader;
+        _typeEvaluator = typeEvaluator;
+        _typeProvider = typeProvider;
 
         AreAssembliesLoading = true;
         
@@ -95,6 +102,8 @@ public class MainSidebarViewModel : Reactive, IAsyncEventHandler<LoadEndEvent>
         InvalidateAndReloadCommand.RaiseCanExecuteChanged();
         await _eventAggregator.PublishAsync(new LoadStartEvent()).ConfigureAwait(true);
         var configuration = await _configurationLoader.LoadAsync().ConfigureAwait(true);
+        _typeEvaluator.EvaluateTypes(configuration);
+        _typeProvider.Initalize(configuration);
         _configurationProvider.SetConfiguration(configuration);
         await _eventAggregator.PublishAsync(new LoadEndEvent()).ConfigureAwait(true);
     }
