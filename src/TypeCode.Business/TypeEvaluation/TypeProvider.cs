@@ -1,4 +1,5 @@
-﻿using TypeCode.Business.Configuration;
+﻿using Serilog;
+using TypeCode.Business.Configuration;
 using TypeCode.Business.Format;
 
 namespace TypeCode.Business.TypeEvaluation;
@@ -9,6 +10,8 @@ public class TypeProvider : ITypeProvider
 
     public void Initalize(TypeCodeConfiguration configuration)
     {
+        Log.Debug("Initialize Types");
+        
         Parallel.ForEach(configuration.AssemblyRoot, root =>
         {
             root.AssemblyGroup = root.AssemblyGroup.OrderBy(group => group.Priority).ToList();
@@ -44,6 +47,8 @@ public class TypeProvider : ITypeProvider
                 });
             }
         });
+        
+        Log.Debug("Initialized Types");
 
         _configuration = configuration;
     }

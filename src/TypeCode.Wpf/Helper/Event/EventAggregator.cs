@@ -1,5 +1,6 @@
 using System.Collections.Concurrent;
 using Framework.Extensions.List;
+using Serilog;
 
 namespace TypeCode.Wpf.Helper.Event;
 
@@ -26,12 +27,15 @@ public class EventAggregator : IEventAggregator
 
     public Task PublishAsync<TEvent>(TEvent e) where TEvent : notnull
     {
+        Log.Debug("{Event} was published", typeof(TEvent));
+        
         if (Events.TryGetValue(typeof(TEvent), out var events))
         {
             return events.ForEachAsync(ev =>
             {
                 if (ev.Key is IAsyncEventHandler<TEvent> asyncEventHandler)
                 {
+                    Log.Debug("Calling {Handler} to handle {Event}", asyncEventHandler.GetType().FullName, typeof(TEvent));
                     return asyncEventHandler.HandleAsync(e);
                 }
 

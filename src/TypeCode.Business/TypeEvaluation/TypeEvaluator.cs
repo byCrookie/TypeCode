@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
-using Framework.Extensions.List;
-using TypeCode.Business.Bootstrapping;
+using Serilog;
 using TypeCode.Business.Configuration;
 
 namespace TypeCode.Business.TypeEvaluation;
@@ -11,7 +10,9 @@ public class TypeEvaluator : ITypeEvaluator
     {
         try
         {
-            return LoadTypes(configuration);
+            var config = LoadTypes(configuration);
+            Log.Debug("Types were loaded");
+            return config;
         }
         catch (Exception ex)
         {
@@ -42,7 +43,8 @@ public class TypeEvaluator : ITypeEvaluator
 
     private static void Load(Assembly assembly, AssemblyDirectory assemblyDirectory)
     {
-        var loadedTypes = assembly.GetLoadableTypes();
+        var loadedTypes = assembly.GetLoadableTypes().ToList();
+        Log.Debug("Loaded {Count} Types from {Assembly}", loadedTypes.Count, assembly.FullName);
         loadedTypes.ForEach(type => assemblyDirectory.Types.Add(type));
     }
 }

@@ -8,7 +8,7 @@ public class AssemblyFileLoader : IAssemblyFileLoader
 {
     public Task<Assembly> LoadAsync(string path)
     {
-        Log.Information("Load Assembly {Path}", path);
+        Log.Debug("Load Assembly {Path}", path);
         return LoadFromPathAsync(path);
     }
 
