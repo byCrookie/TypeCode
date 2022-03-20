@@ -24,9 +24,9 @@ public class AssemblyLoader : IAssemblyLoader
                     .Concat(group.AssemblyPathSelector
                         .SelectMany(selector => selector.AssemblyDirectories))));
 
-        foreach (var assemblyDirectory in assemblyDirectories)
+        await Parallel.ForEachAsync(assemblyDirectories, async (assemblyDirectory, _) =>
         {
-            foreach (var assemblyCompound in assemblyDirectory.AssemblyCompounds.ToList())
+            await Parallel.ForEachAsync(assemblyDirectory.AssemblyCompounds.ToList(), _, async (assemblyCompound, _) =>
             {
                 var fileName = Path.GetFileName(assemblyCompound.File);
                 var cacheDirectoryPath = Path.Combine(cacheDirectory, GetHashString(assemblyDirectory.AbsolutPath));
@@ -37,9 +37,13 @@ public class AssemblyLoader : IAssemblyLoader
                 if (_assemblyCompounds.ContainsKey(assemblyCompound.File))
                 {
                     var loadedCompound = _assemblyCompounds[assemblyCompound.File];
-                    assemblyDirectory.AssemblyCompounds.Remove(assemblyCompound);
-                    assemblyDirectory.AssemblyCompounds.Add(loadedCompound);
-                    
+
+                    lock (assemblyDirectory)
+                    {
+                        assemblyDirectory.AssemblyCompounds.Remove(assemblyCompound);
+                        assemblyDirectory.AssemblyCompounds.Add(loadedCompound);
+                    }
+
                     if (!File.Exists(cachedAssembly) || AssemblyIsNewer(assemblyCompound.File, cachedAssembly))
                     {
                         Log.Debug("Reload assembly {Path} and refresh cache at {Cache}", assemblyCompound.File, cachedAssembly);
@@ -52,8 +56,8 @@ public class AssemblyLoader : IAssemblyLoader
                     Log.Debug("Load assembly {Path} and create cache at {Cache}", assemblyCompound.File, cachedAssembly);
                     await AddCompoundAsync(assemblyCompound, cachedAssembly).ConfigureAwait(false);
                 }
-            }
-        }
+            }).ConfigureAwait(false);
+        }).ConfigureAwait(false);
         
         Log.Debug("Total of {0} assemblies have been loaded", CountAssemblies(configuration));
     }
