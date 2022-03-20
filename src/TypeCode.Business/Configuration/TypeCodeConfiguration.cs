@@ -51,7 +51,7 @@ public class AssemblyPath : IAssemblyHolder, IDictionaryHolder
 {
     public AssemblyPath()
     {
-        AssemblyDirectories = new ConcurrentBag<AssemblyDirectory>();
+        AssemblyDirectories = new List<AssemblyDirectory>();
         TypesByNameDictionary = new Dictionary<string, List<Type>>();
         TypesByFullNameDictionary = new Dictionary<string, List<Type>>();
         Path = string.Empty;
@@ -59,7 +59,7 @@ public class AssemblyPath : IAssemblyHolder, IDictionaryHolder
         
     public string Path { get; set; }
     public int Priority { get; set; }
-    public ConcurrentBag<AssemblyDirectory> AssemblyDirectories { get; set; }
+    public List<AssemblyDirectory> AssemblyDirectories { get; set; }
     public IDictionary<string, List<Type>> TypesByNameDictionary { get; set; }
     public IDictionary<string, List<Type>> TypesByFullNameDictionary { get; set; }
 }
@@ -68,7 +68,7 @@ public class AssemblyPathSelector : IAssemblyHolder, IDictionaryHolder
 {
     public AssemblyPathSelector()
     {
-        AssemblyDirectories = new ConcurrentBag<AssemblyDirectory>();
+        AssemblyDirectories = new List<AssemblyDirectory>();
         TypesByNameDictionary = new Dictionary<string, List<Type>>();
         TypesByFullNameDictionary = new Dictionary<string, List<Type>>();
         Path = string.Empty;
@@ -78,7 +78,7 @@ public class AssemblyPathSelector : IAssemblyHolder, IDictionaryHolder
     public string Path { get; set; }
     public int Priority { get; set; }
     public string Selector { get; set; }
-    public ConcurrentBag<AssemblyDirectory> AssemblyDirectories { get; set; }
+    public List<AssemblyDirectory> AssemblyDirectories { get; set; }
     public IDictionary<string, List<Type>> TypesByNameDictionary { get; set; }
     public IDictionary<string, List<Type>> TypesByFullNameDictionary { get; set; }
 }

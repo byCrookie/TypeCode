@@ -8,7 +8,6 @@ using TypeCode.Business.Configuration;
 using TypeCode.Business.TypeEvaluation;
 using TypeCode.Wpf.Helper.Event;
 using TypeCode.Wpf.Helper.Navigation.Modal.Service;
-using TypeCode.Wpf.Helper.Thread;
 using TypeCode.Wpf.Main;
 
 namespace TypeCode.Wpf.Application;
@@ -16,7 +15,6 @@ namespace TypeCode.Wpf.Application;
 public class Application<TContext> : IApplication<TContext> where TContext : BootContext
 {
     private readonly IFactory _factory;
-    private readonly ITypeEvaluator _typeEvaluator;
     private readonly ITypeProvider _typeProvider;
     private readonly IEventAggregator _eventAggregator;
     private readonly IModalNavigationService _modalNavigationService;
@@ -25,7 +23,6 @@ public class Application<TContext> : IApplication<TContext> where TContext : Boo
 
     public Application(
         IFactory factory,
-        ITypeEvaluator typeEvaluator,
         ITypeProvider typeProvider,
         IEventAggregator eventAggregator,
         IModalNavigationService modalNavigationService,
@@ -34,7 +31,6 @@ public class Application<TContext> : IApplication<TContext> where TContext : Boo
     )
     {
         _factory = factory;
-        _typeEvaluator = typeEvaluator;
         _typeProvider = typeProvider;
         _eventAggregator = eventAggregator;
         _modalNavigationService = modalNavigationService;
@@ -95,8 +91,7 @@ public class Application<TContext> : IApplication<TContext> where TContext : Boo
 
     private Task LoadAssembliesAsync()
     {
-        var configuration = _typeEvaluator.EvaluateTypes(_configurationProvider.GetConfiguration());
-        _typeProvider.Initalize(configuration);
+        _typeProvider.Initalize(_configurationProvider.GetConfiguration());
         return _eventAggregator.PublishAsync(new LoadEndEvent());
     }
 }

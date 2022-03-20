@@ -34,11 +34,9 @@ public class Program
             
             await using (var scope = LifeTimeScopeCreator.BeginLifetimeScope(ContextProvider.Get()))
             {
-                var typeEvaluator = scope.Resolve<ITypeEvaluator>();
                 var configurationProvider = scope.Resolve<IConfigurationProvider>();
-                var configuration = typeEvaluator.EvaluateTypes(configurationProvider.GetConfiguration());
                 var typeProvider = scope.Resolve<ITypeProvider>();
-                typeProvider.Initalize(configuration);
+                typeProvider.Initalize(configurationProvider.GetConfiguration());
             }
 
             await CoconaApp.RunAsync<Program>(args).ConfigureAwait(false);

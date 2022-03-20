@@ -24,14 +24,14 @@ public class TypeProvider : ITypeProvider
                 Parallel.ForEach(group.AssemblyPath, path =>
                 {
                     path.TypesByNameDictionary = path.AssemblyDirectories
-                        .SelectMany(directory => directory.Types)
+                        .SelectMany(directory => directory.AssemblyCompounds.SelectMany(compund => compund.Types))
                         .GroupBy(GetNameWithoutGeneric)
                         .ToDictionary(nameGroup => nameGroup.Key, nameGroup => nameGroup.ToList());
 
                     WriteKeysToFile(path.TypesByNameDictionary.Keys);
 
                     path.TypesByFullNameDictionary = path.AssemblyDirectories
-                        .SelectMany(directory => directory.Types)
+                        .SelectMany(directory => directory.AssemblyCompounds.SelectMany(compund => compund.Types))
                         .GroupBy(NameBuilder.GetNameWithNamespace)
                         .ToDictionary(nameGroup => nameGroup.Key, nameGroup => nameGroup.ToList());
                     
@@ -42,14 +42,14 @@ public class TypeProvider : ITypeProvider
                 Parallel.ForEach(group.AssemblyPathSelector, selector =>
                 {
                     selector.TypesByNameDictionary = selector.AssemblyDirectories
-                        .SelectMany(directory => directory.Types)
+                        .SelectMany(directory => directory.AssemblyCompounds.SelectMany(compund => compund.Types))
                         .GroupBy(GetNameWithoutGeneric)
                         .ToDictionary(nameGroup => nameGroup.Key, nameGroup => nameGroup.ToList());
                     
                     WriteKeysToFile(selector.TypesByNameDictionary.Keys);
 
                     selector.TypesByFullNameDictionary = selector.AssemblyDirectories
-                        .SelectMany(directory => directory.Types)
+                        .SelectMany(directory => directory.AssemblyCompounds.SelectMany(compund => compund.Types))
                         .GroupBy(NameBuilder.GetNameWithNamespace)
                         .ToDictionary(nameGroup => nameGroup.Key, nameGroup => nameGroup.ToList());
                     

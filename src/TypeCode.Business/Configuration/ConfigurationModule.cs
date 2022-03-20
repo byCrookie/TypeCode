@@ -10,7 +10,7 @@ internal class ConfigurationModule : Module
         builder.RegisterType<ConfigurationMapper>().As<IConfigurationMapper>();
         builder.RegisterType<ConfigurationProvider>().As<IConfigurationProvider>().SingleInstance();
         builder.RegisterType<ConfigurationLoader>().As<IConfigurationLoader>();
-        builder.RegisterType<AssemblyFileLoader>().As<IAssemblyFileLoader>();
+        builder.RegisterType<AssemblyLoader>().As<IAssemblyLoader>();
 
         base.Load(builder);
     }

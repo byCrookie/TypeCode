@@ -7,7 +7,7 @@ namespace TypeCode.Business.Configuration;
 [Transient(typeof(IConfigurationMapper), typeof(ConfigurationMapper))]
 [Singleton(typeof(IConfigurationProvider), typeof(ConfigurationProvider))]
 [Transient(typeof(IConfigurationLoader), typeof(ConfigurationLoader))]
-[Transient(typeof(IAssemblyFileLoader), typeof(AssemblyFileLoader))]
+[Singleton(typeof(IAssemblyLoader), typeof(AssemblyLoader))]
 public interface IConfigurationModule
 {
 }

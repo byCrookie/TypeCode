@@ -6,7 +6,6 @@ internal class TypeEvaluationModule : Module
 {
     protected override void Load(ContainerBuilder builder)
     {
-        builder.RegisterType<TypeEvaluator>().As<ITypeEvaluator>();
         builder.RegisterType<TypeProvider>().As<ITypeProvider>().SingleInstance();
             
         base.Load(builder);

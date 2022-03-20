@@ -10,15 +10,19 @@ public class ConfigurationLoader : IConfigurationLoader
 {
     private readonly IConfigurationMapper _configurationMapper;
     private readonly IGenericXmlSerializer _genericXmlSerializer;
-    private readonly IAssemblyFileLoader _assemblyFileLoader;
+    private readonly IAssemblyLoader _assemblyLoader;
 
     private IEnumerable<Regex> _includeFileRegexPatterns;
 
-    public ConfigurationLoader(IConfigurationMapper configurationMapper, IGenericXmlSerializer genericXmlSerializer, IAssemblyFileLoader assemblyFileLoader)
+    public ConfigurationLoader(
+        IConfigurationMapper configurationMapper,
+        IGenericXmlSerializer genericXmlSerializer,
+        IAssemblyLoader assemblyLoader
+    )
     {
         _configurationMapper = configurationMapper;
         _genericXmlSerializer = genericXmlSerializer;
-        _assemblyFileLoader = assemblyFileLoader;
+        _assemblyLoader = assemblyLoader;
 
         _includeFileRegexPatterns = new List<Regex>();
     }
@@ -36,69 +40,44 @@ public class ConfigurationLoader : IConfigurationLoader
 
         Console.WriteLine($@"{Cuts.Short()} Assembly Priority");
 
-        TraverseAssemblyRoots(configuration);
+        SetPriorties(configuration);
 
-        Log.Debug("Total of {0} assemblies have been loaded", CountAssemblies(configuration));
+        await _assemblyLoader.LoadAsync(configuration).ConfigureAwait(false);
+        
         return configuration;
     }
 
-    private static int CountAssemblies(TypeCodeConfiguration configuration)
-    {
-        var counter = 0;
-        foreach (var assemblyGroup in configuration.AssemblyRoot.SelectMany(assemblyRoot => assemblyRoot.AssemblyGroup))
-        {
-            counter += assemblyGroup.AssemblyPath
-                .SelectMany(assemblyPath => assemblyPath.AssemblyDirectories)
-                .Sum(assemblyDirectory => assemblyDirectory.Assemblies.Count);
-            counter += assemblyGroup.AssemblyPath
-                .SelectMany(assemblyPath => assemblyPath.AssemblyDirectories)
-                .Sum(assemblyDirectory => assemblyDirectory.Assemblies.Count);
-        }
-
-        return counter;
-    }
-
-    private static void TraverseAssemblyRoots(TypeCodeConfiguration configuration)
+    private static void SetPriorties(TypeCodeConfiguration configuration)
     {
         foreach (var root in configuration.AssemblyRoot.OrderBy(r => r.Priority))
         {
-            TraverseAssemblyGroups(root);
-        }
-    }
-
-    private static void TraverseAssemblyGroups(AssemblyRoot root)
-    {
-        foreach (var group in root.AssemblyGroup)
-        {
-            var messages = new List<PriorityString>();
-
-            group.AssemblyPathSelector.ForEach(selector =>
+            foreach (var group in root.AssemblyGroup)
             {
-                selector.AssemblyDirectories
-                    .ForEach(directory => messages
-                        .Add(new PriorityString($"{root.Priority}.{@group.Priority}.{selector.Priority}",
-                            $@"{Cuts.Point()} {directory.AbsolutPath}")));
-            });
+                var messages = new List<PriorityString>();
 
-            group.AssemblyPath.ForEach(path =>
-            {
-                path.AssemblyDirectories
-                    .ForEach(directory => messages
-                        .Add(new PriorityString($"{root.Priority}.{@group.Priority}.{path.Priority}",
-                            $@"{directory.AbsolutPath}")));
-            });
+                group.AssemblyPathSelector.ForEach(selector =>
+                {
+                    selector.AssemblyDirectories
+                        .ForEach(directory => messages
+                            .Add(new PriorityString($"{root.Priority}.{group.Priority}.{selector.Priority}",
+                                $@"{Cuts.Point()} {directory.AbsolutPath}")));
+                });
 
-            WriteMessagesToConsole(messages);
+                group.AssemblyPath.ForEach(path =>
+                {
+                    path.AssemblyDirectories
+                        .ForEach(directory => messages
+                            .Add(new PriorityString($"{root.Priority}.{group.Priority}.{path.Priority}",
+                                $@"{directory.AbsolutPath}")));
+                });
 
-            @group.PriorityAssemblyList = messages;
-        }
-    }
+                foreach (var message in messages.OrderBy(message => message.Priority).ToList())
+                {
+                    Log.Debug("{0}", message.Message);
+                }
 
-    private static void WriteMessagesToConsole(List<PriorityString> messages)
-    {
-        foreach (var message in messages.OrderBy(message => message.Priority).ToList())
-        {
-            Console.WriteLine(message.Message);
+                group.PriorityAssemblyList = messages;
+            }
         }
     }
 
@@ -117,7 +96,7 @@ public class ConfigurationLoader : IConfigurationLoader
             .ConfigureAwait(false);
 
         await Parallel.ForEachAsync(assemblyGroup.AssemblyPath, async
-                (assemblyPath, _) => await LoadAssembliesAsync($@"{root.Path}{assemblyPath.Path}", assemblyPath).ConfigureAwait(false))
+                (assemblyPath, _) => await PrepareAssemblyDirectoriesAsync($@"{root.Path}{assemblyPath.Path}", assemblyPath).ConfigureAwait(false))
             .ConfigureAwait(false);
     }
 
@@ -127,39 +106,30 @@ public class ConfigurationLoader : IConfigurationLoader
             .Where(directory => Regex.IsMatch(directory, assemblyPathSelector.Selector))
             .Select(directory => $@"{directory}\{assemblyPathSelector.Path}");
 
-        return Parallel.ForEachAsync(directories, async (directory, _) => await LoadAssembliesAsync(directory, assemblyPathSelector).ConfigureAwait(false));
+        return Parallel.ForEachAsync(directories, async (directory, _) => await PrepareAssemblyDirectoriesAsync(directory, assemblyPathSelector).ConfigureAwait(false));
     }
 
-    private async Task LoadAssembliesAsync(string absolutPath, IAssemblyHolder assemblyHolder)
+    private Task PrepareAssemblyDirectoriesAsync(string absolutPath, IAssemblyHolder assemblyHolder)
     {
         if (Directory.Exists(absolutPath))
         {
-            var assemblyDirectory = new AssemblyDirectory(assemblyHolder.Path, absolutPath, Directory.GetFiles(absolutPath.Trim(), "*.dll"));
+            var assemblyDirectory = new AssemblyDirectory(
+                assemblyHolder.Path,
+                absolutPath
+            );
 
-            var filteredFiles = assemblyDirectory.Files
+            var filteredAssemblyFiles = Directory
+                .GetFiles(absolutPath.Trim(), "*.dll")
                 .Where(file => _includeFileRegexPatterns
                     .Any(pattern => pattern.IsMatch(file)))
                 .ToList();
 
-            Log.Debug("Loading {0} assemblies", filteredFiles.Count);
-
-            await Parallel.ForEachAsync(filteredFiles, async (file, _) =>
-            {
-                try
-                {
-                    var assembly = await _assemblyFileLoader.LoadAsync(file).ConfigureAwait(false);
-                    assemblyDirectory.Assemblies.Add(assembly);
-                }
-                catch (Exception e)
-                {
-                    Log.Warning("{0}: {1}", Path.GetFileName(file), e.Message);
-                }
-            }).ConfigureAwait(false);
-
-            Log.Debug("Loaded {0} assemblies", assemblyDirectory.Assemblies.Count);
-
+            assemblyDirectory.AssemblyCompounds = filteredAssemblyFiles
+                .Select(file => new AssemblyCompound(file)).ToList();
             assemblyHolder.AssemblyDirectories.Add(assemblyDirectory);
         }
+
+        return Task.CompletedTask;
     }
 
     private XmlTypeCodeConfiguration ReadXmlConfiguration()

@@ -29,7 +29,6 @@ public class MainSidebarViewModel : Reactive, IAsyncEventHandler<LoadEndEvent>
     private readonly IEventAggregator _eventAggregator;
     private readonly IConfigurationProvider _configurationProvider;
     private readonly IConfigurationLoader _configurationLoader;
-    private readonly ITypeEvaluator _typeEvaluator;
     private readonly ITypeProvider _typeProvider;
 
     public MainSidebarViewModel(
@@ -39,7 +38,6 @@ public class MainSidebarViewModel : Reactive, IAsyncEventHandler<LoadEndEvent>
         IEventAggregator eventAggregator,
         IConfigurationProvider configurationProvider,
         IConfigurationLoader configurationLoader,
-        ITypeEvaluator typeEvaluator,
         ITypeProvider typeProvider
     )
     {
@@ -49,7 +47,6 @@ public class MainSidebarViewModel : Reactive, IAsyncEventHandler<LoadEndEvent>
         _eventAggregator = eventAggregator;
         _configurationProvider = configurationProvider;
         _configurationLoader = configurationLoader;
-        _typeEvaluator = typeEvaluator;
         _typeProvider = typeProvider;
 
         IsLoading = true;
@@ -107,7 +104,6 @@ public class MainSidebarViewModel : Reactive, IAsyncEventHandler<LoadEndEvent>
         await Task.Run(async () =>
         {
             var configuration = await _configurationLoader.LoadAsync().ConfigureAwait(false);
-            _typeEvaluator.EvaluateTypes(configuration);
             _typeProvider.Initalize(configuration);
             _configurationProvider.SetConfiguration(configuration);
             await _eventAggregator.PublishAsync(new LoadEndEvent()).ConfigureAwait(false);

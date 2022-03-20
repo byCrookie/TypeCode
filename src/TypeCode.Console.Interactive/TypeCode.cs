@@ -13,21 +13,18 @@ namespace TypeCode.Console.Interactive;
 internal class TypeCode<TContext> : ITypeCode<TContext> where TContext : BootContext
 {
     private readonly IModeComposer _modeComposer;
-    private readonly ITypeEvaluator _typeEvaluator;
     private readonly IWorkflowBuilder<TypeCodeContext> _workflowBuilder;
     private readonly ITypeProvider _typeProvider;
     private readonly IConfigurationProvider _configurationProvider;
 
     public TypeCode(
         IModeComposer modeComposer,
-        ITypeEvaluator typeEvaluator,
         IWorkflowBuilder<TypeCodeContext> workflowBuilder,
         ITypeProvider typeProvider,
         IConfigurationProvider configurationProvider
     )
     {
         _modeComposer = modeComposer;
-        _typeEvaluator = typeEvaluator;
         _workflowBuilder = workflowBuilder;
         _typeProvider = typeProvider;
         _configurationProvider = configurationProvider;
@@ -117,7 +114,6 @@ internal class TypeCode<TContext> : ITypeCode<TContext> where TContext : BootCon
 
     private void InitializeTypes()
     {
-        var configuration = _typeEvaluator.EvaluateTypes(_configurationProvider.GetConfiguration());
-        _typeProvider.Initalize(configuration);
+        _typeProvider.Initalize(_configurationProvider.GetConfiguration());
     }
 }
