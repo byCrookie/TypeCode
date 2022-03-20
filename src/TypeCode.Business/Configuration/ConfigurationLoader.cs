@@ -43,7 +43,7 @@ public class ConfigurationLoader : IConfigurationLoader
         SetPriorties(configuration);
 
         await _assemblyLoader.LoadAsync(configuration).ConfigureAwait(false);
-        
+
         return configuration;
     }
 
@@ -118,14 +118,16 @@ public class ConfigurationLoader : IConfigurationLoader
                 absolutPath
             );
 
-            var filteredAssemblyFiles = Directory
-                .GetFiles(absolutPath.Trim(), "*.dll")
+            var files = Directory.GetFiles(absolutPath.Trim(), "*.dll")
+                .Select(file => new { FileName = Path.GetFileName(file), Path = file });
+
+            var filteredAssemblyFiles = files
                 .Where(file => _includeFileRegexPatterns
-                    .Any(pattern => pattern.IsMatch(file)))
+                    .Any(pattern => pattern.IsMatch(file.FileName)))
                 .ToList();
 
             assemblyDirectory.AssemblyCompounds = filteredAssemblyFiles
-                .Select(file => new AssemblyCompound(file)).ToList();
+                .Select(file => new AssemblyCompound(file.Path)).ToList();
             assemblyHolder.AssemblyDirectories.Add(assemblyDirectory);
         }
 
