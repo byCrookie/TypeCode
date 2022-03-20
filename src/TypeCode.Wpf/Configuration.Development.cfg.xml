@@ -2,7 +2,7 @@
 <TypeCodeConfiguration>
 
     <AssemblyRoot Path="M:\Development\Home\" Priority="1">
-        <IncludeAssemblyPattern>^(?=.*\bTypeCode\b)(?=.*\b.dll\b).*$</IncludeAssemblyPattern>
+        <IncludeAssemblyPattern>^(?=.*\b(TypeCode.)\b)(?=.*\b(.dll)\b).*$</IncludeAssemblyPattern>
         
         <AssemblyGroup Name="TypeCode" Priority="1">
             <AssemblyPath Priority="1">TypeCode\tests\TypeCode.Business.Tests\bin\Debug\net6.0</AssemblyPath>

@@ -8,6 +8,7 @@ using TypeCode.Business.Configuration;
 using TypeCode.Business.TypeEvaluation;
 using TypeCode.Wpf.Helper.Event;
 using TypeCode.Wpf.Helper.Navigation.Modal.Service;
+using TypeCode.Wpf.Helper.Thread;
 using TypeCode.Wpf.Main;
 
 namespace TypeCode.Wpf.Application;
@@ -76,17 +77,20 @@ public class Application<TContext> : IApplication<TContext> where TContext : Boo
 
     private void OpenExceptionDialog(Exception exception, MainWindow mainWindow)
     {
-        CloseOverlays(mainWindow);
-        
-        AsyncContext.Run(() => _modalNavigationService.OpenModalAsync(new ModalParameter
+        MainThread.BackgroundFireAndForget(() =>
         {
-            Title = "ERROR",
-            Text = $"{exception.Message}" +
-                   $"{Environment.NewLine}" +
-                   $"{exception.InnerException?.Message}" +
-                   $"{Environment.NewLine}" +
-                   $"{exception.StackTrace}"
-        }));
+            CloseOverlays(mainWindow);
+        
+            AsyncContext.Run(() => _modalNavigationService.OpenModalAsync(new ModalParameter
+            {
+                Title = "ERROR",
+                Text = $"{exception.Message}" +
+                       $"{Environment.NewLine}" +
+                       $"{exception.InnerException?.Message}" +
+                       $"{Environment.NewLine}" +
+                       $"{exception.StackTrace}"
+            }));
+        }, DispatcherPriority.Send);
     }
 
     private Task LoadAssembliesAsync()

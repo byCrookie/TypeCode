@@ -26,7 +26,7 @@ public class AssemblyLoader : IAssemblyLoader
 
         foreach (var assemblyDirectory in assemblyDirectories)
         {
-            foreach (var assemblyCompound in assemblyDirectory.AssemblyCompounds)
+            foreach (var assemblyCompound in assemblyDirectory.AssemblyCompounds.ToList())
             {
                 var fileName = Path.GetFileName(assemblyCompound.File);
                 var cacheDirectoryPath = Path.Combine(cacheDirectory, GetHashString(assemblyDirectory.AbsolutPath));
@@ -36,36 +36,46 @@ public class AssemblyLoader : IAssemblyLoader
 
                 if (_assemblyCompounds.ContainsKey(assemblyCompound.File))
                 {
+                    var loadedCompound = _assemblyCompounds[assemblyCompound.File];
+                    assemblyDirectory.AssemblyCompounds.Remove(assemblyCompound);
+                    assemblyDirectory.AssemblyCompounds.Add(loadedCompound);
+                    
                     if (!File.Exists(cachedAssembly) || AssemblyIsNewer(assemblyCompound.File, cachedAssembly))
                     {
-                        if (_assemblyCompounds.TryRemove(assemblyCompound.File, out var loadedCompound))
-                        {
-                            loadedCompound.AssemblyLoadContext?.Unload();
-                        }
-
-                        File.Copy(assemblyCompound.File, cachedAssembly, true);
-                        var (assemblyLoadContext, assembly) = await LoadFromPathAsync(cachedAssembly).ConfigureAwait(false);
-                        assemblyCompound.AssemblyLoadContext = assemblyLoadContext;
-                        assemblyCompound.Assembly = assembly;
-                        assemblyCompound.Types = LoadTypes(assemblyCompound);
-
-                        _assemblyCompounds.TryAdd(assemblyCompound.File, assemblyCompound);
+                        Log.Debug("Reload assembly {Path} and refresh cache at {Cache}", assemblyCompound.File, cachedAssembly);
+                        loadedCompound.AssemblyLoadContext?.Unload();
+                        await UpdateCompoundAsync(loadedCompound, cachedAssembly).ConfigureAwait(false);
                     }
                 }
                 else
                 {
-                    File.Copy(assemblyCompound.File, cachedAssembly, true);
-                    var (assemblyLoadContext, assembly) = await LoadFromPathAsync(cachedAssembly).ConfigureAwait(false);
-                    assemblyCompound.AssemblyLoadContext = assemblyLoadContext;
-                    assemblyCompound.Assembly = assembly;
-                    assemblyCompound.Types = LoadTypes(assemblyCompound);
-
-                    _assemblyCompounds.TryAdd(assemblyCompound.File, assemblyCompound);
+                    Log.Debug("Load assembly {Path} and create cache at {Cache}", assemblyCompound.File, cachedAssembly);
+                    await AddCompoundAsync(assemblyCompound, cachedAssembly).ConfigureAwait(false);
                 }
             }
         }
         
         Log.Debug("Total of {0} assemblies have been loaded", CountAssemblies(configuration));
+    }
+    
+    private static Task UpdateCompoundAsync(AssemblyCompound assemblyCompound, string cachedAssembly)
+    {
+        return OverwriteCompoundAsync(assemblyCompound, cachedAssembly);
+    }
+
+    private async Task AddCompoundAsync(AssemblyCompound assemblyCompound, string cachedAssembly)
+    {
+        await OverwriteCompoundAsync(assemblyCompound, cachedAssembly).ConfigureAwait(false);
+        _assemblyCompounds.TryAdd(assemblyCompound.File, assemblyCompound);
+    }
+    
+    private static async Task OverwriteCompoundAsync(AssemblyCompound assemblyCompound, string cachedAssembly)
+    {
+        File.Copy(assemblyCompound.File, cachedAssembly, true);
+        var (assemblyLoadContext, assembly) = await LoadFromPathAsync(cachedAssembly).ConfigureAwait(false);
+        assemblyCompound.AssemblyLoadContext = assemblyLoadContext;
+        assemblyCompound.Assembly = assembly;
+        assemblyCompound.Types = LoadTypes(assemblyCompound);
     }
 
     private static List<Type> LoadTypes(AssemblyCompound assemblyCompound)
