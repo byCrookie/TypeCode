@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using System.Text.RegularExpressions;
-using Framework.Extensions.List;
 using Serilog;
+using TypeCode.Business.Configuration.Assemblies;
 using TypeCode.Business.Format;
 
 namespace TypeCode.Business.Configuration;

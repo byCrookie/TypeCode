@@ -1,4 +1,4 @@
-﻿namespace TypeCode.Business.Configuration;
+﻿namespace TypeCode.Business.Configuration.Assemblies;
 
 internal class AssemblyLoadException : Exception
 {

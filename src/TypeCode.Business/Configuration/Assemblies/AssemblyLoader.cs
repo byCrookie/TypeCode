@@ -2,7 +2,7 @@
 using Serilog;
 using TypeCode.Business.TypeEvaluation;
 
-namespace TypeCode.Business.Configuration;
+namespace TypeCode.Business.Configuration.Assemblies;
 
 public class AssemblyLoader : IAssemblyLoader
 {

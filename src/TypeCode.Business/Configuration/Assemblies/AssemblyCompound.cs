@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-
-namespace TypeCode.Business.Configuration;
+﻿namespace TypeCode.Business.Configuration.Assemblies;
 
 public class AssemblyCompound
 {
@@ -12,7 +10,7 @@ public class AssemblyCompound
     }
     
     public string File { get; }
-    public Assembly? Assembly { get; set; }
+    public System.Reflection.Assembly? Assembly { get; set; }
     public List<Type> Types { get; set; }
     public DateTime LastFileWriteTime { get; set; }
 }

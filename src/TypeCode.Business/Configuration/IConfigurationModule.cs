@@ -1,4 +1,5 @@
 ﻿using Jab;
+using TypeCode.Business.Configuration.Assemblies;
 
 namespace TypeCode.Business.Configuration;
 

@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Loader;
 
-namespace TypeCode.Business.Configuration;
+namespace TypeCode.Business.Configuration.Assemblies;
 
 public class CustomAssemblyLoadContext : AssemblyLoadContext
 {

@@ -3,7 +3,7 @@ using System.Runtime.Loader;
 using Microsoft.Extensions.DependencyModel;
 using Microsoft.Extensions.DependencyModel.Resolution;
 
-namespace TypeCode.Business.Configuration;
+namespace TypeCode.Business.Configuration.Assemblies;
 
 internal sealed class AssemblyResolver : IDisposable
 {
@@ -28,14 +28,14 @@ internal sealed class AssemblyResolver : IDisposable
         _assemblyLoadContext.Resolving += OnResolving;
     }
 
-    public Assembly Assembly { get; }
+    public System.Reflection.Assembly Assembly { get; }
 
     public void Dispose()
     {
         _assemblyLoadContext.Resolving -=  OnResolving;
     }
 
-    private Assembly? OnResolving(AssemblyLoadContext loadContext, AssemblyName name)
+    private System.Reflection.Assembly? OnResolving(AssemblyLoadContext loadContext, AssemblyName name)
     {
         var library = _dependencyContext.RuntimeLibraries
             .FirstOrDefault(runtimeLibrary => NamesMatch(runtimeLibrary, name));

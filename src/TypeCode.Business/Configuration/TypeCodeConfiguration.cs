@@ -1,5 +1,6 @@
 using System.Collections.Concurrent;
 using TypeCode.Business.Bootstrapping;
+using TypeCode.Business.Configuration.Assemblies;
 
 namespace TypeCode.Business.Configuration;
 
