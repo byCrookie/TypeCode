@@ -124,9 +124,9 @@
         <Geometry x:Key="ReloadGeometry2">F1 M120,120z M0,0z M120,21.832L120,21.832 119.992,68.842 74.827,55.811z</Geometry>
         <DrawingGroup x:Key="ReloadDrawingGroup" ClipGeometry="M0,0 V120 H120 V0 H0 Z">
             <DrawingGroup Opacity="1">
-                <GeometryDrawing Brush="{StaticResource PrimaryText}" Geometry="{StaticResource ReloadGeometry1}" />
+                <GeometryDrawing Brush="{StaticResource Accent}" Geometry="{StaticResource ReloadGeometry1}" />
             </DrawingGroup>
-            <GeometryDrawing Brush="{StaticResource PrimaryText}" Geometry="{StaticResource ReloadGeometry2}" />
+            <GeometryDrawing Brush="{StaticResource Accent}" Geometry="{StaticResource ReloadGeometry2}" />
         </DrawingGroup>
         <DrawingImage x:Key="ReloadDrawingImage" Drawing="{StaticResource ReloadDrawingGroup}" />
         <!-- End Reload Icon -->
