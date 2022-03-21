@@ -5,5 +5,5 @@ namespace TypeCode.Business.Configuration.Assemblies;
 
 public interface IAssemblyDependencyLoader
 {
-    Task<Assembly?> LoadFromAssemblyPathAsync(AssemblyLoadContext assemblyLoadContext, string assemblyFullPath);
+    Assembly? LoadFromAssemblyPath(AssemblyLoadContext assemblyLoadContext, string assemblyFullPath);
 }

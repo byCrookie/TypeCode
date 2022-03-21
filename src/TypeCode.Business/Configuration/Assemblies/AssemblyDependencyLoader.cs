@@ -6,7 +6,7 @@ namespace TypeCode.Business.Configuration.Assemblies;
 
 public class AssemblyDependencyLoader : IAssemblyDependencyLoader
 {
-    public async Task<Assembly?> LoadFromAssemblyPathAsync(AssemblyLoadContext assemblyLoadContext, string assemblyFullPath)
+    public Assembly? LoadFromAssemblyPath(AssemblyLoadContext assemblyLoadContext, string assemblyFullPath)
     {
         var fileNameWithOutExtension = Path.GetFileNameWithoutExtension(assemblyFullPath);
         var fileName = Path.GetFileName(assemblyFullPath);
@@ -26,12 +26,12 @@ public class AssemblyDependencyLoader : IAssemblyDependencyLoader
             ? assemblyLoadContext.LoadFromAssemblyName(new AssemblyName(fileNameWithOutExtension))
             : LoadAssembly(assemblyLoadContext, assemblyFullPath);
 
-        await LoadReferencedAssembliesAsync(assemblyLoadContext, assembly, fileName, directory).ConfigureAwait(false);
+        LoadReferencedAssemblies(assemblyLoadContext, assembly, fileName, directory);
 
         return assembly;
     }
 
-    private static async Task LoadReferencedAssembliesAsync(AssemblyLoadContext assemblyLoadContext, Assembly assembly, string fileName, string? directory)
+    private static void LoadReferencedAssemblies(AssemblyLoadContext assemblyLoadContext, Assembly assembly, string fileName, string? directory)
     {
         if (directory is null)
         {
@@ -45,16 +45,16 @@ public class AssemblyDependencyLoader : IAssemblyDependencyLoader
 
         var references = assembly.GetReferencedAssemblies();
 
-        await Parallel.ForEachAsync(references, async (reference, _) =>
+        foreach (var reference in references)
         {
             if (filesInDirectory.Contains(reference.Name))
             {
                 var loadFileName = reference.Name + ".dll";
                 var path = Path.Combine(directory, loadFileName);
                 var loadedAssembly = LoadAssembly(assemblyLoadContext, path);
-                await LoadReferencedAssembliesAsync(assemblyLoadContext, loadedAssembly, loadFileName, directory).ConfigureAwait(false);
+                LoadReferencedAssemblies(assemblyLoadContext, loadedAssembly, loadFileName, directory);
             }
-        }).ConfigureAwait(false);
+        }
     }
 
     private static Assembly LoadAssembly(AssemblyLoadContext assemblyLoadContext, string assemblyFullPath)
