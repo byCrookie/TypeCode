@@ -11,15 +11,15 @@ public class BuilderCommand : AsyncCommand<BuilderCommand.Settings>
 {
     public class Settings : CommandSettings
     {
-        public Settings()
+        public Settings(string typeName)
         {
-            TypeName = string.Empty;
+            TypeName = typeName;
         }
         
         [UsedImplicitly]
         [Description("Type for which the builder is generated.")]
         [CommandArgument(0, "[TypeName]")]
-        public string TypeName { get; init; }
+        public string TypeName { get; }
     }
 
     public override async Task<int> ExecuteAsync(CommandContext context, Settings settings)

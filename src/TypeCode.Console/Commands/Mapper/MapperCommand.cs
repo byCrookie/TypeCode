@@ -12,21 +12,21 @@ public class MapperCommand : AsyncCommand<MapperCommand.Settings>
 {
     public class Settings : CommandSettings
     {
-        public Settings()
+        public Settings(string from, string to)
         {
-            From = string.Empty;
-            To = string.Empty;
+            From = from;
+            To = to;
         }
 
         [UsedImplicitly]
         [Description("Type for left side of mapping.")]
         [CommandOption("-f|--from")]
-        public string From { get; init; }
+        public string From { get; }
         
         [UsedImplicitly]
         [Description("Type for right side of mapping.")]
         [CommandOption("-t|--to")]
-        public string To { get; init; }
+        public string To { get; }
     }
 
     public override async Task<int> ExecuteAsync(CommandContext context, Settings settings)

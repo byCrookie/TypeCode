@@ -11,15 +11,15 @@ public class SpecflowCommand : AsyncCommand<SpecflowCommand.Settings>
 {
     public class Settings : CommandSettings
     {
-        public Settings()
+        public Settings(string[] typeNames)
         {
-            TypeNames = Array.Empty<string>();
+            TypeNames = typeNames;
         }
         
         [UsedImplicitly]
         [Description("Typenames for which the tables are generated.")]
         [CommandArgument(0, "[TypeNames]")]
-        public string[] TypeNames { get; init; }
+        public string[] TypeNames { get; }
 
         [UsedImplicitly]
         [Description("Only use required properties for specflow execution.")]

@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using JetBrains.Annotations;
 using Spectre.Console.Cli;
 using TypeCode.Business.Mode;
@@ -8,20 +7,19 @@ using TypeCode.Business.TypeEvaluation;
 
 namespace TypeCode.Console.Commands.Unit;
 
-[SuppressMessage("Performance", "CA1822:Member als statisch markieren")]
 public class UnitTypeCommand : AsyncCommand<UnitTypeCommand.Settings>
 {
     public class Settings : CommandSettings
     {
-        public Settings()
+        public Settings(string[] typeNames)
         {
-            TypeNames = Array.Empty<string>();
+            TypeNames = typeNames;
         }
         
         [UsedImplicitly]
         [Description("Typenames for which the tables are generated.")]
         [CommandArgument(0, "[TypeNames]")]
-        public string[] TypeNames { get; init; }
+        public string[] TypeNames { get; }
     }
 
     public override async Task<int> ExecuteAsync(CommandContext context, Settings settings)

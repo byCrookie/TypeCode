@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using JetBrains.Annotations;
 using Spectre.Console.Cli;
 using TypeCode.Business.Mode;
@@ -7,20 +6,19 @@ using TypeCode.Business.Mode.UnitTestDependency.Manually;
 
 namespace TypeCode.Console.Commands.Unit;
 
-[SuppressMessage("Performance", "CA1822:Member als statisch markieren")]
 public class UnitManuallyCommand  : AsyncCommand<UnitManuallyCommand.Settings>
 {
     public class Settings : CommandSettings
     {
-        public Settings()
+        public Settings(string content)
         {
-            Content = string.Empty;
+            Content = content;
         }
         
         [UsedImplicitly]
         [Description("Constructor-declaration for which the code is generated.")]
         [CommandArgument(0, "[ConstructorDeclaration]")]
-        public string Content { get; init; }
+        public string Content { get; }
     }
 
     public override async Task<int> ExecuteAsync(CommandContext context, Settings settings)
