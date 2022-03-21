@@ -7,50 +7,39 @@ namespace TypeCode.Business.Configuration;
 
 internal sealed class AssemblyResolver : IDisposable
 {
-    private readonly ICompilationAssemblyResolver _assemblyResolver;
+    private readonly AssemblyLoadContext _assemblyLoadContext;
     private readonly DependencyContext _dependencyContext;
-    private readonly AssemblyLoadContext? _loadContext;
+    private readonly ICompilationAssemblyResolver _assemblyResolver;
 
     public AssemblyResolver(AssemblyLoadContext assemblyLoadContext, string path)
     {
+        _assemblyLoadContext = assemblyLoadContext;
+        
         Assembly = assemblyLoadContext.LoadFromAssemblyPath(path);
-        _dependencyContext = DependencyContext.Load(Assembly);
 
-        _assemblyResolver = new CompositeCompilationAssemblyResolver
-                                (new ICompilationAssemblyResolver[]
+        _dependencyContext = DependencyContext.Load(Assembly);
+        _assemblyResolver = new CompositeCompilationAssemblyResolver(new ICompilationAssemblyResolver[]
         {
             new AppBaseCompilationAssemblyResolver(Path.GetDirectoryName(path)),
             new ReferenceAssemblyPathResolver(),
             new PackageCompilationAssemblyResolver()
         });
 
-        _loadContext = assemblyLoadContext;
-
-        if (_loadContext is not null)
-        {
-            _loadContext.Resolving += OnResolving;
-        }
+        _assemblyLoadContext.Resolving += OnResolving;
     }
 
     public Assembly Assembly { get; }
 
     public void Dispose()
     {
-        if (_loadContext is not null)
-        {
-            _loadContext.Resolving -= OnResolving;
-        }
+        _assemblyLoadContext.Resolving -=  OnResolving;
     }
 
-    private Assembly? OnResolving(AssemblyLoadContext context, AssemblyName name)
+    private Assembly? OnResolving(AssemblyLoadContext loadContext, AssemblyName name)
     {
-        bool NamesMatch(RuntimeLibrary runtime)
-        {
-            return string.Equals(runtime.Name, name.Name, StringComparison.OrdinalIgnoreCase);
-        }
+        var library = _dependencyContext.RuntimeLibraries
+            .FirstOrDefault(runtimeLibrary => NamesMatch(runtimeLibrary, name));
 
-        var library = _dependencyContext.RuntimeLibraries.FirstOrDefault(NamesMatch);
-        
         if (library != null)
         {
             var wrapper = new CompilationLibrary(
@@ -64,12 +53,18 @@ internal sealed class AssemblyResolver : IDisposable
 
             var assemblies = new List<string>();
             _assemblyResolver.TryResolveAssemblyPaths(wrapper, assemblies);
-            if (assemblies.Count > 0 && _loadContext is not null)
+            
+            if (assemblies.Count > 0)
             {
-                return _loadContext.LoadFromAssemblyPath(assemblies[0]);
+                return _assemblyLoadContext.LoadFromAssemblyPath(assemblies[0]);
             }
         }
 
         return null;
+    }
+    
+    private static bool NamesMatch(Library runtime, AssemblyName assemblyName)
+    {
+        return string.Equals(runtime.Name, assemblyName.Name, StringComparison.OrdinalIgnoreCase);
     }
 }
