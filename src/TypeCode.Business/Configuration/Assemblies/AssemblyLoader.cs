@@ -38,16 +38,17 @@ public class AssemblyLoader : IAssemblyLoader
                     loadedAssemblyDirectory.AssemblyLoadContext?.Unload();
                     assemblyDirectory.AssemblyLoadContext = new CustomAssemblyLoadContext(assemblyDirectory.AbsolutPath);
 
-                    await Parallel.ForEachAsync(assemblyDirectory.AssemblyCompounds, _, (assemblyCompound, _) =>
+                    await Parallel.ForEachAsync(assemblyDirectory.AssemblyCompounds, _, async (assemblyCompound, _) =>
                     {
                         Log.Debug("Reload assembly at {Path}", assemblyCompound.File);
                         
-                        var assembly = _assemblyDependencyLoader.LoadFromAssemblyPath(assemblyDirectory.AssemblyLoadContext, assemblyCompound.File);
+                        var assembly = await _assemblyDependencyLoader
+                            .LoadFromAssemblyPathAsync(assemblyDirectory.AssemblyLoadContext, assemblyCompound.File)
+                            .ConfigureAwait(false);
+                        
                         assemblyCompound.Assembly = assembly;
                         assemblyCompound.Types = LoadTypes(assemblyCompound);
                         assemblyCompound.LastFileWriteTime = File.GetLastWriteTime(assemblyCompound.File);
-
-                        return ValueTask.CompletedTask;
                     }).ConfigureAwait(false);
                 }
                 else
@@ -62,15 +63,16 @@ public class AssemblyLoader : IAssemblyLoader
 
                 assemblyDirectory.AssemblyLoadContext = new CustomAssemblyLoadContext(assemblyDirectory.AbsolutPath);
 
-                await Parallel.ForEachAsync(assemblyDirectory.AssemblyCompounds, _, (assemblyCompound, _) =>
+                await Parallel.ForEachAsync(assemblyDirectory.AssemblyCompounds, _, async (assemblyCompound, _) =>
                 {
                     Log.Debug("Load assembly at {Path}", assemblyCompound.File);
 
-                    var assembly = _assemblyDependencyLoader.LoadFromAssemblyPath(assemblyDirectory.AssemblyLoadContext, assemblyCompound.File);
+                    var assembly = await _assemblyDependencyLoader
+                        .LoadFromAssemblyPathAsync(assemblyDirectory.AssemblyLoadContext, assemblyCompound.File)
+                        .ConfigureAwait(false);
+                    
                     assemblyCompound.Assembly = assembly;
                     assemblyCompound.Types = LoadTypes(assemblyCompound);
-
-                    return ValueTask.CompletedTask;
                 }).ConfigureAwait(false);
 
                 _assemblyDirectories.TryAdd(assemblyDirectory.AbsolutPath, assemblyDirectory);
