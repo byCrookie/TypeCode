@@ -21,6 +21,7 @@ public class Application<TContext> : IApplication<TContext> where TContext : Boo
     private readonly IModalNavigationService _modalNavigationService;
     private readonly IConfigurationProvider _configurationProvider;
     private readonly IMainViewProvider _mainViewProvider;
+    private readonly IConfigurationLoader _configurationLoader;
 
     public Application(
         IFactory factory,
@@ -28,7 +29,8 @@ public class Application<TContext> : IApplication<TContext> where TContext : Boo
         IEventAggregator eventAggregator,
         IModalNavigationService modalNavigationService,
         IConfigurationProvider configurationProvider,
-        IMainViewProvider mainViewProvider
+        IMainViewProvider mainViewProvider,
+        IConfigurationLoader configurationLoader
     )
     {
         _factory = factory;
@@ -37,6 +39,7 @@ public class Application<TContext> : IApplication<TContext> where TContext : Boo
         _modalNavigationService = modalNavigationService;
         _configurationProvider = configurationProvider;
         _mainViewProvider = mainViewProvider;
+        _configurationLoader = configurationLoader;
     }
 
     public Task RunAsync(TContext context, CancellationToken cancellationToken)
@@ -93,9 +96,11 @@ public class Application<TContext> : IApplication<TContext> where TContext : Boo
         }, DispatcherPriority.Send);
     }
 
-    private Task LoadAssembliesAsync()
+    private async Task LoadAssembliesAsync()
     {
-        _typeProvider.Initalize(_configurationProvider.GetConfiguration());
-        return _eventAggregator.PublishAsync(new LoadEndEvent());
+        var configuration = await _configurationLoader.LoadAsync().ConfigureAwait(false);
+        _typeProvider.Initalize(configuration);
+        _configurationProvider.SetConfiguration(configuration);
+        await _eventAggregator.PublishAsync(new LoadEndEvent()).ConfigureAwait(false);
     }
 }

@@ -20,7 +20,6 @@ public static class Bootstrapper
                 options => JabLoggerConfigurationProvider.Create(options)
             )
             .ThenAsync<ISetupWpfApplicationStep<BootContext>>()
-            .ThenAsync<IConfigurationJabLoadBootStep<BootContext>>()
             .ThenAsync<IStartBootStep<BootContext>>()
             .Build();
 

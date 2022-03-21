@@ -12,7 +12,6 @@ namespace TypeCode.Business.Modules;
 [Import(typeof(IConfigurationModule))]
 [Import(typeof(IModeModule))]
 [Import(typeof(ITypeEvaluationModule))]
-[Import(typeof(IBootstrappingModule))]
 [Singleton(typeof(IConfigurationProvider), typeof(ConfigurationProvider))]
 public interface ITypeCodeBusinessModule
 {

@@ -20,10 +20,7 @@ public class AssemblyLoader : IAssemblyLoader
                     .Concat(group.AssemblyPathSelector
                         .SelectMany(selector => selector.AssemblyDirectories))));
 
-        await Parallel.ForEachAsync(assemblyDirectories, new ParallelOptions
-        {
-            MaxDegreeOfParallelism = 1
-        }, async (assemblyDirectory, _) =>
+        await Parallel.ForEachAsync(assemblyDirectories, async (assemblyDirectory, _) =>
         {
             if (_assemblyDirectories.ContainsKey(assemblyDirectory.AbsolutPath))
             {
@@ -38,10 +35,7 @@ public class AssemblyLoader : IAssemblyLoader
                     loadedAssemblyDirectory.AssemblyLoadContext?.Unload();
                     assemblyDirectory.AssemblyLoadContext = new CustomAssemblyLoadContext(assemblyDirectory.AbsolutPath);
 
-                    await Parallel.ForEachAsync(assemblyDirectory.AssemblyCompounds, new ParallelOptions
-                    {
-                        MaxDegreeOfParallelism = 1
-                    }, (assemblyCompound, _) =>
+                    await Parallel.ForEachAsync(assemblyDirectory.AssemblyCompounds, _, (assemblyCompound, _) =>
                     {
                         Log.Debug("Reload assembly at {Path}", assemblyCompound.File);
 
@@ -67,10 +61,7 @@ public class AssemblyLoader : IAssemblyLoader
 
                 assemblyDirectory.AssemblyLoadContext = new CustomAssemblyLoadContext(assemblyDirectory.AbsolutPath);
 
-                await Parallel.ForEachAsync(assemblyDirectory.AssemblyCompounds, new ParallelOptions
-                {
-                    MaxDegreeOfParallelism = 1
-                }, (assemblyCompound, _) =>
+                await Parallel.ForEachAsync(assemblyDirectory.AssemblyCompounds, _, (assemblyCompound, _) =>
                 {
                     Log.Debug("Load assembly at {Path}", assemblyCompound.File);
 
