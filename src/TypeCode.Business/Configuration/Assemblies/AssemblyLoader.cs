@@ -6,7 +6,13 @@ namespace TypeCode.Business.Configuration.Assemblies;
 
 public class AssemblyLoader : IAssemblyLoader
 {
+    private readonly IAssemblyDependencyLoader _assemblyDependencyLoader;
     private readonly ConcurrentDictionary<string, AssemblyDirectory> _assemblyDirectories = new();
+
+    public AssemblyLoader(IAssemblyDependencyLoader assemblyDependencyLoader)
+    {
+        _assemblyDependencyLoader = assemblyDependencyLoader;
+    }
 
     public async Task LoadAsync(TypeCodeConfiguration configuration)
     {
@@ -35,14 +41,12 @@ public class AssemblyLoader : IAssemblyLoader
                     await Parallel.ForEachAsync(assemblyDirectory.AssemblyCompounds, _, (assemblyCompound, _) =>
                     {
                         Log.Debug("Reload assembly at {Path}", assemblyCompound.File);
-
-                        using (var assemblyResolver = new AssemblyResolver(assemblyDirectory.AssemblyLoadContext, assemblyCompound.File))
-                        {
-                            assemblyCompound.Assembly = assemblyResolver.Assembly;
-                            assemblyCompound.Types = LoadTypes(assemblyCompound);
-                            assemblyCompound.LastFileWriteTime = File.GetLastWriteTime(assemblyCompound.File);
-                        }
                         
+                        var assembly = _assemblyDependencyLoader.LoadFromAssemblyPath(assemblyDirectory.AssemblyLoadContext, assemblyCompound.File);
+                        assemblyCompound.Assembly = assembly;
+                        assemblyCompound.Types = LoadTypes(assemblyCompound);
+                        assemblyCompound.LastFileWriteTime = File.GetLastWriteTime(assemblyCompound.File);
+
                         return ValueTask.CompletedTask;
                     }).ConfigureAwait(false);
                 }
@@ -62,12 +66,10 @@ public class AssemblyLoader : IAssemblyLoader
                 {
                     Log.Debug("Load assembly at {Path}", assemblyCompound.File);
 
-                    using (var assemblyResolver = new AssemblyResolver(assemblyDirectory.AssemblyLoadContext, assemblyCompound.File))
-                    {
-                        assemblyCompound.Assembly = assemblyResolver.Assembly;
-                        assemblyCompound.Types = LoadTypes(assemblyCompound);
-                    }
-                    
+                    var assembly = _assemblyDependencyLoader.LoadFromAssemblyPath(assemblyDirectory.AssemblyLoadContext, assemblyCompound.File);
+                    assemblyCompound.Assembly = assembly;
+                    assemblyCompound.Types = LoadTypes(assemblyCompound);
+
                     return ValueTask.CompletedTask;
                 }).ConfigureAwait(false);
 
