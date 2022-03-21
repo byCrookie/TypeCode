@@ -11,5 +11,6 @@ public class AssemblyDirectory
         
     public string RelativePath { get; set; }
     public string AbsolutPath { get; set; }
+    public CustomAssemblyLoadContext? AssemblyLoadContext { get; set; }
     public List<AssemblyCompound> AssemblyCompounds { get; set; }
 }

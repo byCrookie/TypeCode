@@ -1,8 +1,4 @@
 ﻿using System.Collections.Concurrent;
-using System.Reflection;
-using System.Runtime.Loader;
-using System.Security.Cryptography;
-using System.Text;
 using Serilog;
 using TypeCode.Business.TypeEvaluation;
 
@@ -10,13 +6,13 @@ namespace TypeCode.Business.Configuration;
 
 public class AssemblyLoader : IAssemblyLoader
 {
-    private readonly ConcurrentDictionary<string, AssemblyCompound> _assemblyCompounds = new();
+    private readonly ConcurrentDictionary<string, AssemblyDirectory> _assemblyDirectories = new();
 
     public async Task LoadAsync(TypeCodeConfiguration configuration)
     {
         const string cacheDirectory = "cache";
         Directory.CreateDirectory(cacheDirectory);
-        
+
         var assemblyDirectories = configuration.AssemblyRoot
             .SelectMany(root => root.AssemblyGroup
                 .SelectMany(group => group.AssemblyPath
@@ -24,62 +20,100 @@ public class AssemblyLoader : IAssemblyLoader
                     .Concat(group.AssemblyPathSelector
                         .SelectMany(selector => selector.AssemblyDirectories))));
 
-        await Parallel.ForEachAsync(assemblyDirectories, async (assemblyDirectory, _) =>
+        await Parallel.ForEachAsync(assemblyDirectories, new ParallelOptions
         {
-            await Parallel.ForEachAsync(assemblyDirectory.AssemblyCompounds.ToList(), _, async (assemblyCompound, _) =>
+            MaxDegreeOfParallelism = 1
+        }, async (assemblyDirectory, _) =>
+        {
+            if (_assemblyDirectories.ContainsKey(assemblyDirectory.AbsolutPath))
             {
-                var fileName = Path.GetFileName(assemblyCompound.File);
-                var cacheDirectoryPath = Path.Combine(cacheDirectory, GetHashString(assemblyDirectory.AbsolutPath));
-                Directory.CreateDirectory(cacheDirectoryPath);
+                var loadedAssemblyDirectory = _assemblyDirectories[assemblyDirectory.AbsolutPath];
+                _assemblyDirectories.TryRemove(assemblyDirectory.AbsolutPath, out var _);
+                _assemblyDirectories.TryAdd(assemblyDirectory.AbsolutPath, assemblyDirectory);
 
-                var cachedAssembly = Path.Combine(cacheDirectoryPath, fileName);
-
-                if (_assemblyCompounds.ContainsKey(assemblyCompound.File))
+                if (AnyAssemblyIsNewer(loadedAssemblyDirectory.AssemblyCompounds, assemblyDirectory.AssemblyCompounds))
                 {
-                    var loadedCompound = _assemblyCompounds[assemblyCompound.File];
+                    Log.Debug("Reload assemblies at {Path}", assemblyDirectory.AbsolutPath);
 
-                    lock (assemblyDirectory)
-                    {
-                        assemblyDirectory.AssemblyCompounds.Remove(assemblyCompound);
-                        assemblyDirectory.AssemblyCompounds.Add(loadedCompound);
-                    }
+                    loadedAssemblyDirectory.AssemblyLoadContext?.Unload();
+                    assemblyDirectory.AssemblyLoadContext = new CustomAssemblyLoadContext(assemblyDirectory.AbsolutPath);
 
-                    if (!File.Exists(cachedAssembly) || AssemblyIsNewer(assemblyCompound.File, cachedAssembly))
+                    await Parallel.ForEachAsync(assemblyDirectory.AssemblyCompounds, new ParallelOptions
                     {
-                        Log.Debug("Reload assembly {Path} and refresh cache at {Cache}", assemblyCompound.File, cachedAssembly);
-                        loadedCompound.AssemblyLoadContext?.Unload();
-                        await UpdateCompoundAsync(loadedCompound, cachedAssembly).ConfigureAwait(false);
-                    }
+                        MaxDegreeOfParallelism = 1
+                    }, (assemblyCompound, _) =>
+                    {
+                        Log.Debug("Reload assembly at {Path}", assemblyCompound.File);
+
+                        using (var assemblyResolver = new AssemblyResolver(assemblyDirectory.AssemblyLoadContext, assemblyCompound.File))
+                        {
+                            assemblyCompound.Assembly = assemblyResolver.Assembly;
+                            assemblyCompound.Types = LoadTypes(assemblyCompound);
+                            assemblyCompound.LastFileWriteTime = File.GetLastWriteTime(assemblyCompound.File);
+                        }
+                        
+                        return ValueTask.CompletedTask;
+                    }).ConfigureAwait(false);
                 }
                 else
                 {
-                    Log.Debug("Load assembly {Path} and create cache at {Cache}", assemblyCompound.File, cachedAssembly);
-                    await AddCompoundAsync(assemblyCompound, cachedAssembly).ConfigureAwait(false);
+                    assemblyDirectory.AssemblyLoadContext = loadedAssemblyDirectory.AssemblyLoadContext;
+                    assemblyDirectory.AssemblyCompounds = loadedAssemblyDirectory.AssemblyCompounds;
                 }
-            }).ConfigureAwait(false);
+            }
+            else
+            {
+                Log.Debug("Load assemblies at {Path}", assemblyDirectory.AbsolutPath);
+
+                assemblyDirectory.AssemblyLoadContext = new CustomAssemblyLoadContext(assemblyDirectory.AbsolutPath);
+
+                await Parallel.ForEachAsync(assemblyDirectory.AssemblyCompounds, new ParallelOptions
+                {
+                    MaxDegreeOfParallelism = 1
+                }, (assemblyCompound, _) =>
+                {
+                    Log.Debug("Load assembly at {Path}", assemblyCompound.File);
+
+                    using (var assemblyResolver = new AssemblyResolver(assemblyDirectory.AssemblyLoadContext, assemblyCompound.File))
+                    {
+                        assemblyCompound.Assembly = assemblyResolver.Assembly;
+                        assemblyCompound.Types = LoadTypes(assemblyCompound);
+                    }
+                    
+                    return ValueTask.CompletedTask;
+                }).ConfigureAwait(false);
+
+                _assemblyDirectories.TryAdd(assemblyDirectory.AbsolutPath, assemblyDirectory);
+            }
+            
         }).ConfigureAwait(false);
-        
+
         Log.Debug("Total of {0} assemblies have been loaded", CountAssemblies(configuration));
     }
-    
-    private static Task UpdateCompoundAsync(AssemblyCompound assemblyCompound, string cachedAssembly)
-    {
-        return OverwriteCompoundAsync(assemblyCompound, cachedAssembly);
-    }
 
-    private async Task AddCompoundAsync(AssemblyCompound assemblyCompound, string cachedAssembly)
+    private static bool AnyAssemblyIsNewer(IReadOnlyCollection<AssemblyCompound> loadedAssemblyCompounds, List<AssemblyCompound> newAssemblyCompounds)
     {
-        await OverwriteCompoundAsync(assemblyCompound, cachedAssembly).ConfigureAwait(false);
-        _assemblyCompounds.TryAdd(assemblyCompound.File, assemblyCompound);
-    }
-    
-    private static async Task OverwriteCompoundAsync(AssemblyCompound assemblyCompound, string cachedAssembly)
-    {
-        File.Copy(assemblyCompound.File, cachedAssembly, true);
-        var (assemblyLoadContext, assembly) = await LoadFromPathAsync(cachedAssembly).ConfigureAwait(false);
-        assemblyCompound.AssemblyLoadContext = assemblyLoadContext;
-        assemblyCompound.Assembly = assembly;
-        assemblyCompound.Types = LoadTypes(assemblyCompound);
+        if (loadedAssemblyCompounds.Count != newAssemblyCompounds.Count)
+        {
+            return true;
+        }
+        
+        var loadedCompoundDic = loadedAssemblyCompounds.ToDictionary(loadedCompound => loadedCompound.File, loadedCompound => loadedCompound);
+
+        foreach (var newAssemblyCompound in newAssemblyCompounds)
+        {
+            if (!loadedCompoundDic.ContainsKey(newAssemblyCompound.File))
+            {
+                return true;
+            }
+
+            if (newAssemblyCompound.LastFileWriteTime >= loadedCompoundDic[newAssemblyCompound.File].LastFileWriteTime)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private static List<Type> LoadTypes(AssemblyCompound assemblyCompound)
@@ -87,41 +121,6 @@ public class AssemblyLoader : IAssemblyLoader
         var loadedTypes = assemblyCompound.Assembly?.GetLoadableTypes().ToList();
         Log.Debug("Loaded {Count} Types from {Assembly}", loadedTypes?.Count, assemblyCompound.Assembly?.FullName);
         return loadedTypes ?? new List<Type>();
-    }
-
-    private static async Task<(AssemblyLoadContext, Assembly)> LoadFromPathAsync(string path)
-    {
-        var fullPath = Path.GetFullPath(path);
-
-        await using (var fs = new FileStream(fullPath, FileMode.Open))
-        {
-            var context = new CustomAssemblyLoadContext(path);
-            return (context, context.LoadFromStream(fs));
-        }
-    }
-
-    private static bool AssemblyIsNewer(string path, string cachedAssembly)
-    {
-        return File.GetLastWriteTime(path) > File.GetLastWriteTime(cachedAssembly);
-    }
-
-    private static string GetHashString(string inputString)
-    {
-        var sb = new StringBuilder();
-        foreach (var b in GetHash(inputString))
-        {
-            sb.Append(b.ToString("X2"));
-        }
-
-        return sb.ToString();
-    }
-
-    private static IEnumerable<byte> GetHash(string inputString)
-    {
-        using (HashAlgorithm algorithm = SHA1.Create())
-        {
-            return algorithm.ComputeHash(Encoding.UTF8.GetBytes(inputString));
-        }
     }
 
     private static int CountAssemblies(TypeCodeConfiguration configuration)
@@ -136,6 +135,7 @@ public class AssemblyLoader : IAssemblyLoader
                 .SelectMany(assemblyPath => assemblyPath.AssemblyDirectories)
                 .Sum(assemblyDirectory => assemblyDirectory.AssemblyCompounds.Select(com => com.Assembly).Count());
         }
+
         return counter;
     }
 }

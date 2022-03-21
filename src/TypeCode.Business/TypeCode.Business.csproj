@@ -11,6 +11,7 @@
         <PackageReference Include="bycrookie.framework.autofac" Version="1.0.6-pre-202203190621" />
         <PackageReference Include="bycrookie.framework.jab" Version="1.0.6-pre-202203190621" />
         <PackageReference Include="Humanizer.Core" Version="2.14.1" />
+        <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="6.0.0" />
         <PackageReference Include="Serilog.Sinks.Console" Version="4.0.1" />
         <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
     </ItemGroup>

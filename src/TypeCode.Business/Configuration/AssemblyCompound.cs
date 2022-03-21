@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using System.Runtime.Loader;
 
 namespace TypeCode.Business.Configuration;
 
@@ -9,10 +8,11 @@ public class AssemblyCompound
     {
         File = file;
         Types = new List<Type>();
+        LastFileWriteTime = System.IO.File.GetLastWriteTime(file);
     }
     
     public string File { get; }
     public Assembly? Assembly { get; set; }
-    public AssemblyLoadContext? AssemblyLoadContext { get; set; }
     public List<Type> Types { get; set; }
+    public DateTime LastFileWriteTime { get; set; }
 }
