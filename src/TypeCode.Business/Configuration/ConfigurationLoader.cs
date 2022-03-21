@@ -38,7 +38,7 @@ public class ConfigurationLoader : IConfigurationLoader
                 (root, _) => await EvaluateAssemblyRootAsync(root).ConfigureAwait(false))
             .ConfigureAwait(false);
 
-        Console.WriteLine($@"{Cuts.Short()} Assembly Priority");
+        Log.Information("{Cut} Assembly Priority", Cuts.Short());
 
         SetPriorties(configuration);
 
@@ -73,7 +73,7 @@ public class ConfigurationLoader : IConfigurationLoader
 
                 foreach (var message in messages.OrderBy(message => message.Priority).ToList())
                 {
-                    Log.Debug("{0}", message.Message);
+                    Log.Information("{0}", message.Message);
                 }
 
                 group.PriorityAssemblyList = messages;

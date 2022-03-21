@@ -3,7 +3,7 @@ using Workflow;
 
 namespace TypeCode.Business.Bootstrapping;
 
-public interface IConfigurationJabLoadBootStep<in TContext> : IWorkflowStep<TContext> 
+public interface IConfigurationLoadBootStep<in TContext> : IWorkflowStep<TContext> 
     where TContext : WorkflowBaseContext, IBootContext
 {
 }

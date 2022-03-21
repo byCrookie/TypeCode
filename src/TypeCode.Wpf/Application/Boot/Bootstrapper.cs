@@ -17,7 +17,7 @@ public static class Bootstrapper
 
         var bootFlow = bootScope.WorkflowBuilder
             .ThenAsync<ILoggerBootStep<BootContext, LoggerBootStepOptions>, LoggerBootStepOptions>(
-                options => JabLoggerConfigurationProvider.Create(options)
+                options => LoggerConfigurationProvider.Create(options)
             )
             .ThenAsync<ISetupWpfApplicationStep<BootContext>>()
             .ThenAsync<IStartBootStep<BootContext>>()

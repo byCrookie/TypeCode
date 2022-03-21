@@ -1,11 +1,9 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using Autofac;
 using Cocona;
 using JetBrains.Annotations;
 using TypeCode.Business.Mode;
 using TypeCode.Business.Mode.Specflow;
 using TypeCode.Business.TypeEvaluation;
-using TypeCode.Console.Boot.Helper;
 
 namespace TypeCode.Console.Commands.Specflow;
 
@@ -20,19 +18,17 @@ public class SpecflowCommand
         [Option] bool includeStrings = true
     )
     {
-        await using (var scope = LifeTimeScopeCreator.BeginLifetimeScope(ContextProvider.Get()))
+        var serviceProvider = new TypeCodeConsoleServiceProvider();
+        var mode = serviceProvider.GetService<ITypeCodeGenerator<SpecflowTypeCodeGeneratorParameter>>();
+        var typeProvider = serviceProvider.GetService<ITypeProvider>();
+        var types = typeProvider.TryGetByNames(typeNames);
+        var parameter = new SpecflowTypeCodeGeneratorParameter
         {
-            var mode = scope.Resolve<ITypeCodeGenerator<SpecflowTypeCodeGeneratorParameter>>();
-            var typeProvider = scope.Resolve<ITypeProvider>();
-            var types = typeProvider.TryGetByNames(typeNames);
-            var parameter = new SpecflowTypeCodeGeneratorParameter
-            {
-                Types = types.ToList(),
-                OnlyRequired = onlyRequired,
-                SortAlphabetically = sortAlphabetically,
-                IncludeStrings = includeStrings
-            };
-            System.Console.WriteLine(await mode.GenerateAsync(parameter).ConfigureAwait(false));
-        }
+            Types = types.ToList(),
+            OnlyRequired = onlyRequired,
+            SortAlphabetically = sortAlphabetically,
+            IncludeStrings = includeStrings
+        };
+        System.Console.WriteLine(await mode.GenerateAsync(parameter).ConfigureAwait(false));
     }
 }

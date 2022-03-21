@@ -5,14 +5,14 @@ using Workflow;
 
 namespace TypeCode.Business.Bootstrapping;
 
-public class ConfigurationJabLoadBootStep<TContext> : IConfigurationJabLoadBootStep<TContext>
+public class ConfigurationLoadBootStep<TContext> : IConfigurationLoadBootStep<TContext>
     where TContext : WorkflowBaseContext, IBootContext
 {
     private readonly IConfigurationLoader _configurationLoader;
     private readonly IConfigurationProvider _configurationProvider;
     private readonly ITypeProvider _typeProvider;
 
-    public ConfigurationJabLoadBootStep(
+    public ConfigurationLoadBootStep(
         IConfigurationLoader configurationLoader,
         IConfigurationProvider configurationProvider,
         ITypeProvider typeProvider

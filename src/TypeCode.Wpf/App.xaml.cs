@@ -22,7 +22,7 @@ public partial class App
             
             LogFiles.All.ForEach(File.Delete);
         
-            Log.Logger = JabLoggerConfigurationProvider.Create(options).CreateLogger();
+            Log.Logger = LoggerConfigurationProvider.Create(options).CreateLogger();
             
             Current.DispatcherUnhandledException += HandleDispatcherUnhandledException;
 

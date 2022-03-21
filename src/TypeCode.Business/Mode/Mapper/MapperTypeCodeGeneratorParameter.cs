@@ -1,5 +1,4 @@
-﻿using Framework.Autofac.Boot;
-using TypeCode.Business.Mode.Mapper.Style;
+﻿using TypeCode.Business.Mode.Mapper.Style;
 
 namespace TypeCode.Business.Mode.Mapper;
 

@@ -3,7 +3,7 @@ using Serilog;
 using TypeCode.Business.Logging;
 using TypeCode.Console.Interactive.Boot;
 
-Log.Logger = AutofacLoggerConfigurationProvider.Create().CreateLogger();
+Log.Logger = LoggerConfigurationProvider.Create().CreateLogger();
 
 try
 {
