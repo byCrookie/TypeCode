@@ -1,6 +1,6 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using Cocona;
+﻿using System.ComponentModel;
 using JetBrains.Annotations;
+using Spectre.Console.Cli;
 using TypeCode.Business.Format;
 using TypeCode.Business.Mode;
 using TypeCode.Business.Mode.Mapper;
@@ -8,29 +8,46 @@ using TypeCode.Business.TypeEvaluation;
 
 namespace TypeCode.Console.Commands.Mapper;
 
-[SuppressMessage("Performance", "CA1822:Member als statisch markieren")]
-public class MapperCommand
+public class MapperCommand : AsyncCommand<MapperCommand.Settings>
 {
-    [UsedImplicitly]
-    public async Task ExecuteAsync([Option('f')] string from, [Option('t')] string to)
+    public class Settings : CommandSettings
+    {
+        public Settings()
+        {
+            From = string.Empty;
+            To = string.Empty;
+        }
+
+        [UsedImplicitly]
+        [Description("Type for left side of mapping.")]
+        [CommandOption("-f|--from")]
+        public string From { get; init; }
+        
+        [UsedImplicitly]
+        [Description("Type for right side of mapping.")]
+        [CommandOption("-t|--to")]
+        public string To { get; init; }
+    }
+
+    public override async Task<int> ExecuteAsync(CommandContext context, Settings settings)
     {
         var serviceProvider = new TypeCodeConsoleServiceProvider();
         var mode = serviceProvider.GetService<ITypeCodeGenerator<MapperTypeCodeGeneratorParameter>>();
         var typeProvider = serviceProvider.GetService<ITypeProvider>();
-        var fromTypes = typeProvider.TryGetByName(from).ToList();
-        var toTypes = typeProvider.TryGetByName(to).ToList();
+        var fromTypes = typeProvider.TryGetByName(settings.From).ToList();
+        var toTypes = typeProvider.TryGetByName(settings.To).ToList();
 
         if (fromTypes.Count > 1)
         {
-            System.Console.WriteLine($@"{Cuts.Medium()} From {from}");
-            System.Console.WriteLine($@"To many types found for name {from}. Call the command again and specify the types fullname.");
+            System.Console.WriteLine($@"{Cuts.Medium()} From {settings.From}");
+            System.Console.WriteLine($@"To many types found for name {settings.From}. Call the command again and specify the types fullname.");
             fromTypes.ForEach(type => System.Console.WriteLine($@"{Cuts.Short()} {NameBuilder.GetNameWithNamespace(type)}"));
         }
 
         if (toTypes.Count > 1)
         {
-            System.Console.WriteLine($@"{Cuts.Medium()} From {to}");
-            System.Console.WriteLine($@"To many types found for name {to}. Call the command again and specify the types fullname.");
+            System.Console.WriteLine($@"{Cuts.Medium()} To {settings.To}");
+            System.Console.WriteLine($@"To many types found for name {settings.To}. Call the command again and specify the types fullname.");
             toTypes.ForEach(type => System.Console.WriteLine($@"{Cuts.Short()} {NameBuilder.GetNameWithNamespace(type)}"));
         }
 
@@ -39,5 +56,7 @@ public class MapperCommand
             var parameter = new MapperTypeCodeGeneratorParameter(new MappingType(fromTypes.First()), new MappingType(toTypes.First()));
             System.Console.WriteLine(await mode.GenerateAsync(parameter).ConfigureAwait(false));
         }
+
+        return 0;
     }
 }

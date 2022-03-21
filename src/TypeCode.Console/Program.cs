@@ -1,5 +1,5 @@
-﻿using Cocona;
-using Serilog;
+﻿using Serilog;
+using Spectre.Console.Cli;
 using TypeCode.Business.Logging;
 using TypeCode.Console.Boot;
 using TypeCode.Console.Boot.Helper;
@@ -11,12 +11,6 @@ using TypeCode.Console.Commands.Unit;
 
 namespace TypeCode.Console;
 
-[HasSubCommands(typeof(UnitManuallyCommand), "unit-manually")]
-[HasSubCommands(typeof(UnitTypeCommand), "unit-type")]
-[HasSubCommands(typeof(SpecflowCommand), "specflow")]
-[HasSubCommands(typeof(BuilderCommand), "builder")]
-[HasSubCommands(typeof(ComposerCommand), "composer")]
-[HasSubCommands(typeof(MapperCommand), "mapper")]
 public class Program
 {
     public static async Task<int> Main(string[] args)
@@ -27,7 +21,18 @@ public class Program
         {
             Log.Debug("Boot");
             await Bootstrapper.BootAsync().ConfigureAwait(false);
-            await CoconaApp.RunAsync<Program>(args).ConfigureAwait(false);
+            
+            var app = new CommandApp();
+            app.Configure(config =>
+            {
+                config.AddCommand<UnitManuallyCommand>("unit-manually");
+                config.AddCommand<UnitTypeCommand>("unit-type");
+                config.AddCommand<SpecflowCommand>("specflow");
+                config.AddCommand<BuilderCommand>("builder");
+                config.AddCommand<ComposerCommand>("composer");
+                config.AddCommand<MapperCommand>("mapper");
+            });
+            await app.RunAsync(args).ConfigureAwait(false);
         }
         catch (Exception exception)
         {

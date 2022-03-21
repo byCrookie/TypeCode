@@ -1,23 +1,35 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using Cocona;
+﻿using System.ComponentModel;
 using JetBrains.Annotations;
+using Spectre.Console.Cli;
 using TypeCode.Business.Mode;
 using TypeCode.Business.Mode.Builder;
 using TypeCode.Business.TypeEvaluation;
 
 namespace TypeCode.Console.Commands.Builder;
 
-[SuppressMessage("Performance", "CA1822:Member als statisch markieren")]
-public class BuilderCommand
+public class BuilderCommand : AsyncCommand<BuilderCommand.Settings>
 {
-    [UsedImplicitly]
-    public async Task ExecuteAsync([Argument] string typeName)
+    public class Settings : CommandSettings
+    {
+        public Settings()
+        {
+            TypeName = string.Empty;
+        }
+        
+        [UsedImplicitly]
+        [Description("Type for which the builder is generated.")]
+        [CommandArgument(0, "[TypeName]")]
+        public string TypeName { get; init; }
+    }
+
+    public override async Task<int> ExecuteAsync(CommandContext context, Settings settings)
     {
         var serviceProvider = new TypeCodeConsoleServiceProvider();
         var mode = serviceProvider.GetService<ITypeCodeGenerator<BuilderTypeCodeGeneratorParameter>>();
         var typeProvider = serviceProvider.GetService<ITypeProvider>();
-        var type = typeProvider.TryGetByName(typeName);
+        var type = typeProvider.TryGetByName(settings.TypeName);
         var parameter = new BuilderTypeCodeGeneratorParameter { Types = type };
         System.Console.WriteLine(await mode.GenerateAsync(parameter).ConfigureAwait(false));
+        return 0;
     }
 }

@@ -1,34 +1,59 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using Cocona;
+﻿using System.ComponentModel;
 using JetBrains.Annotations;
+using Spectre.Console.Cli;
 using TypeCode.Business.Mode;
 using TypeCode.Business.Mode.Specflow;
 using TypeCode.Business.TypeEvaluation;
 
 namespace TypeCode.Console.Commands.Specflow;
 
-[SuppressMessage("Performance", "CA1822:Member als statisch markieren")]
-public class SpecflowCommand
+public class SpecflowCommand : AsyncCommand<SpecflowCommand.Settings>
 {
-    [UsedImplicitly]
-    public async Task ExecuteAsync(
-        [Option] bool onlyRequired,
-        [Option] bool sortAlphabetically,
-        [Argument] string[] typeNames,
-        [Option] bool includeStrings = true
-    )
+    public class Settings : CommandSettings
+    {
+        public Settings()
+        {
+            TypeNames = Array.Empty<string>();
+        }
+        
+        [UsedImplicitly]
+        [Description("Typenames for which the tables are generated.")]
+        [CommandArgument(0, "[TypeNames]")]
+        public string[] TypeNames { get; init; }
+
+        [UsedImplicitly]
+        [Description("Only use required properties for specflow execution.")]
+        [CommandOption("-o|--only-required")]
+        [DefaultValue(false)]
+        public bool OnyRequired { get; init; }
+        
+        [UsedImplicitly]
+        [Description("Sort the table columns alphabetically.")]
+        [CommandOption("-s|--sort-alphabetically")]
+        [DefaultValue(false)]
+        public bool SortAlphabetically { get; init; }
+        
+        [UsedImplicitly]
+        [Description("Include properties of type string.")]
+        [CommandOption("-i|--include-strings")]
+        [DefaultValue(true)]
+        public bool IncludeStrings { get; init; }
+    }
+
+    public override async Task<int> ExecuteAsync(CommandContext context, Settings settings)
     {
         var serviceProvider = new TypeCodeConsoleServiceProvider();
         var mode = serviceProvider.GetService<ITypeCodeGenerator<SpecflowTypeCodeGeneratorParameter>>();
         var typeProvider = serviceProvider.GetService<ITypeProvider>();
-        var types = typeProvider.TryGetByNames(typeNames);
+        var types = typeProvider.TryGetByNames(settings.TypeNames);
         var parameter = new SpecflowTypeCodeGeneratorParameter
         {
             Types = types.ToList(),
-            OnlyRequired = onlyRequired,
-            SortAlphabetically = sortAlphabetically,
-            IncludeStrings = includeStrings
+            OnlyRequired = settings.OnyRequired,
+            SortAlphabetically = settings.SortAlphabetically,
+            IncludeStrings = settings.IncludeStrings
         };
         System.Console.WriteLine(await mode.GenerateAsync(parameter).ConfigureAwait(false));
+        return 0;
     }
 }

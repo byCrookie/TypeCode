@@ -1,22 +1,33 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using Cocona;
+﻿using System.ComponentModel;
 using JetBrains.Annotations;
+using Spectre.Console.Cli;
 using TypeCode.Business.Mode;
 using TypeCode.Business.Mode.Composer;
 using TypeCode.Business.TypeEvaluation;
 
 namespace TypeCode.Console.Commands.Composer;
 
-[SuppressMessage("Performance", "CA1822:Member als statisch markieren")]
-public class ComposerCommand
+public class ComposerCommand : AsyncCommand<ComposerCommand.Settings>
 {
-    [UsedImplicitly]
-    public async Task ExecuteAsync([Argument] string typeName)
+    public class Settings : CommandSettings
+    {
+        public Settings()
+        {
+            TypeName = string.Empty;
+        }
+
+        [UsedImplicitly]
+        [Description("Type for which the builder is generated.")]
+        [CommandArgument(0, "[TypeName]")]
+        public string TypeName { get; init; }
+    }
+
+    public override async Task<int> ExecuteAsync(CommandContext context, Settings settings)
     {
         var serviceProvider = new TypeCodeConsoleServiceProvider();
         var mode = serviceProvider.GetService<ITypeCodeGenerator<ComposerTypeCodeGeneratorParameter>>();
         var typeProvider = serviceProvider.GetService<ITypeProvider>();
-        var types = typeProvider.TryGetByName(typeName);
+        var types = typeProvider.TryGetByName(settings.TypeName);
         var parameter = new ComposerTypeCodeGeneratorParameter();
 
         foreach (var type in types)
@@ -27,5 +38,6 @@ public class ComposerCommand
         }
 
         System.Console.WriteLine(await mode.GenerateAsync(parameter).ConfigureAwait(false));
+        return 0;
     }
 }
