@@ -10,9 +10,6 @@ public class AssemblyLoader : IAssemblyLoader
 
     public async Task LoadAsync(TypeCodeConfiguration configuration)
     {
-        const string cacheDirectory = "cache";
-        Directory.CreateDirectory(cacheDirectory);
-
         var assemblyDirectories = configuration.AssemblyRoot
             .SelectMany(root => root.AssemblyGroup
                 .SelectMany(group => group.AssemblyPath
