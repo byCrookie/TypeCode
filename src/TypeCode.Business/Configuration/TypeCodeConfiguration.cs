@@ -1,4 +1,5 @@
 using System.Collections.Concurrent;
+using System.Text.RegularExpressions;
 using TypeCode.Business.Bootstrapping;
 using TypeCode.Business.Configuration.Assemblies;
 
@@ -27,13 +28,13 @@ public class AssemblyRoot
 {
     public AssemblyRoot()
     {
-        IncludeAssemblyPattern = new List<string>();
+        IncludeAssemblyPattern = new List<Regex>();
         AssemblyGroup = new List<AssemblyGroup>();
         Path = string.Empty;
     }
         
     public int Priority { get; set; }
-    public List<string> IncludeAssemblyPattern { get; set; }
+    public List<Regex> IncludeAssemblyPattern { get; set; }
     public List<AssemblyGroup> AssemblyGroup { get; set; }
     public string Path { get; set; }
 }

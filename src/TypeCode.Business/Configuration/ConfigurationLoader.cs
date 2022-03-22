@@ -12,8 +12,6 @@ public class ConfigurationLoader : IConfigurationLoader
     private readonly IGenericXmlSerializer _genericXmlSerializer;
     private readonly IAssemblyLoader _assemblyLoader;
 
-    private IEnumerable<Regex> _includeFileRegexPatterns;
-
     public ConfigurationLoader(
         IConfigurationMapper configurationMapper,
         IGenericXmlSerializer genericXmlSerializer,
@@ -23,8 +21,6 @@ public class ConfigurationLoader : IConfigurationLoader
         _configurationMapper = configurationMapper;
         _genericXmlSerializer = genericXmlSerializer;
         _assemblyLoader = assemblyLoader;
-
-        _includeFileRegexPatterns = new List<Regex>();
     }
 
     public async Task<TypeCodeConfiguration> LoadAsync()
@@ -81,35 +77,32 @@ public class ConfigurationLoader : IConfigurationLoader
         }
     }
 
-    private Task EvaluateAssemblyRootAsync(AssemblyRoot root)
+    private static Task EvaluateAssemblyRootAsync(AssemblyRoot root)
     {
-        _includeFileRegexPatterns = root.IncludeAssemblyPattern
-            .Select(pattern => new Regex(pattern, RegexOptions.CultureInvariant | RegexOptions.IgnoreCase));
-
         return Parallel.ForEachAsync(root.AssemblyGroup, async (assemblyGroup, _) => await EvaluateAssemblyGroupAsync(root, assemblyGroup).ConfigureAwait(false));
     }
 
-    private async Task EvaluateAssemblyGroupAsync(AssemblyRoot root, AssemblyGroup assemblyGroup)
+    private static async Task EvaluateAssemblyGroupAsync(AssemblyRoot root, AssemblyGroup assemblyGroup)
     {
         await Parallel.ForEachAsync(assemblyGroup.AssemblyPathSelector, async
                 (assemblyPathSelector, _) => await EvaluateAssemblyPathSelectorAsync(root, assemblyPathSelector).ConfigureAwait(false))
             .ConfigureAwait(false);
 
         await Parallel.ForEachAsync(assemblyGroup.AssemblyPath, async
-                (assemblyPath, _) => await PrepareAssemblyDirectoriesAsync($@"{root.Path}{assemblyPath.Path}", assemblyPath).ConfigureAwait(false))
+                (assemblyPath, _) => await PrepareAssemblyDirectoriesAsync(root, $@"{root.Path}{assemblyPath.Path}", assemblyPath).ConfigureAwait(false))
             .ConfigureAwait(false);
     }
 
-    private Task EvaluateAssemblyPathSelectorAsync(AssemblyRoot root, AssemblyPathSelector assemblyPathSelector)
+    private static Task EvaluateAssemblyPathSelectorAsync(AssemblyRoot root, AssemblyPathSelector assemblyPathSelector)
     {
         var directories = Directory.GetDirectories(root.Path)
             .Where(directory => Regex.IsMatch(directory, assemblyPathSelector.Selector))
             .Select(directory => $@"{directory}\{assemblyPathSelector.Path}");
 
-        return Parallel.ForEachAsync(directories, async (directory, _) => await PrepareAssemblyDirectoriesAsync(directory, assemblyPathSelector).ConfigureAwait(false));
+        return Parallel.ForEachAsync(directories, async (directory, _) => await PrepareAssemblyDirectoriesAsync(root, directory, assemblyPathSelector).ConfigureAwait(false));
     }
 
-    private Task PrepareAssemblyDirectoriesAsync(string absolutPath, IAssemblyHolder assemblyHolder)
+    private static Task PrepareAssemblyDirectoriesAsync(AssemblyRoot assemblyRoot, string absolutPath, IAssemblyHolder assemblyHolder)
     {
         if (Directory.Exists(absolutPath))
         {
@@ -122,7 +115,7 @@ public class ConfigurationLoader : IConfigurationLoader
                 .Select(file => new { FileName = Path.GetFileName(file), Path = file });
 
             var filteredAssemblyFiles = files
-                .Where(file => _includeFileRegexPatterns
+                .Where(file => assemblyRoot.IncludeAssemblyPattern
                     .Any(pattern => pattern.IsMatch(file.FileName)))
                 .ToList();
 

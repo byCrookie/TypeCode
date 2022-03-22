@@ -1,4 +1,6 @@
-﻿namespace TypeCode.Business.Configuration;
+﻿using System.Text.RegularExpressions;
+
+namespace TypeCode.Business.Configuration;
 
 public class ConfigurationMapper : IConfigurationMapper
 {
@@ -25,6 +27,8 @@ public class ConfigurationMapper : IConfigurationMapper
             Path = root.Path,
             AssemblyGroup = MapToConfiguration(root.AssemblyGroup).ToList(),
             IncludeAssemblyPattern = root.IncludeAssemblyPattern
+                .Select(pattern => new Regex(pattern, RegexOptions.CultureInvariant | RegexOptions.IgnoreCase | RegexOptions.Compiled))
+                .ToList()
         });
     }
 
