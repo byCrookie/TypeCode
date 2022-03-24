@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Collections.Concurrent;
+using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 using Serilog;
@@ -8,50 +9,94 @@ namespace TypeCode.Business.Configuration.Assemblies;
 
 public class AssemblyLoader : IAssemblyLoader
 {
+    private readonly ConcurrentBag<string> _usedCacheDirectories = new();
+    private const string CacheDirectory = "cache";
+    private const string CacheDirectoryPattern = "TypeCode_";
+
     public async Task LoadAsync(TypeCodeConfiguration configuration)
     {
-        const string cacheDirectory = "cache";
-        Directory.CreateDirectory(cacheDirectory);
-        
+        Directory.CreateDirectory(CacheDirectory);
+
         var assemblyDirectories = configuration.AssemblyRoot
             .SelectMany(root => root.AssemblyGroup
                 .SelectMany(group => group.AssemblyPath
                     .SelectMany(path => path.AssemblyDirectories)
                     .Concat(group.AssemblyPathSelector
-                        .SelectMany(selector => selector.AssemblyDirectories))));
+                        .SelectMany(selector => selector.AssemblyDirectories))))
+            .ToList();
 
         await Parallel.ForEachAsync(assemblyDirectories, async (assemblyDirectory, _) =>
         {
             await Parallel.ForEachAsync(assemblyDirectory.AssemblyCompounds, _, async (assemblyCompound, _) =>
             {
-               assemblyCompound.Assembly = await LoadAsync(assemblyCompound.File).ConfigureAwait(false);
-               assemblyCompound.Types = LoadTypes(assemblyCompound);
+                await CreateCacheAsync(assemblyCompound.File).ConfigureAwait(false);
+            }).ConfigureAwait(false);
+        }).ConfigureAwait(false);
+        
+        await Parallel.ForEachAsync(assemblyDirectories, async (assemblyDirectory, _) =>
+        {
+            await Parallel.ForEachAsync(assemblyDirectory.AssemblyCompounds, _, async (assemblyCompound, _) =>
+            {
+                assemblyCompound.Assembly = await LoadAsync(assemblyCompound.File).ConfigureAwait(false);
+                assemblyCompound.Types = LoadTypes(assemblyCompound);
             }).ConfigureAwait(false);
         }).ConfigureAwait(false);
 
+        ClearUnusedCaches();
+
         Log.Debug("Total of {0} assemblies have been loaded", CountAssemblies(configuration));
     }
-    
-    private static Task<Assembly?> LoadAsync(string path)
+
+    private void ClearUnusedCaches()
+    {
+        var caches = Directory.GetDirectories(CacheDirectory, $"{CacheDirectoryPattern}*");
+        foreach (var cache in caches)
+        {
+            if (!_usedCacheDirectories.Contains(cache) && Directory.Exists(cache))
+            {
+                Directory.Delete(cache);
+            }
+        }
+
+        _usedCacheDirectories.Clear();
+    }
+
+    private Task CreateCacheAsync(string path)
     {
         try
         {
-            const string cacheDirectory = "cache";
-            Directory.CreateDirectory(cacheDirectory);
-
             var fileName = Path.GetFileNameWithoutExtension(path);
-            var directoryPath = Path.GetDirectoryName(path) ?? string.Empty;
+            var directoryName = Path.GetDirectoryName(path) ?? string.Empty;
 
-            var cacheDirectoryPath = Path.Combine(cacheDirectory, GetHashString(directoryPath));
+            var cacheDirectoryPath = Path.Combine(CacheDirectory, $"{CacheDirectoryPattern}{GetHashString(directoryName)}");
             Directory.CreateDirectory(cacheDirectoryPath);
 
             var cachedAssembly = Path.Combine(cacheDirectoryPath, $"{fileName}.dll");
+            
+            _usedCacheDirectories.Add(cacheDirectoryPath);
 
             if (!File.Exists(cachedAssembly) || AssemblyIsNewer(path, cachedAssembly))
             {
                 File.Copy(path, cachedAssembly, true);
             }
-            
+        }
+        catch (Exception exception)
+        {
+            Log.Warning("Error creating cache for {Assembly}: {Exception}", path, exception.Message);
+        }
+        
+        return Task.CompletedTask;
+    }
+
+    private static Task<Assembly?> LoadAsync(string path)
+    {
+        try
+        {
+            var fileName = Path.GetFileNameWithoutExtension(path);
+            var directoryName = Path.GetDirectoryName(path) ?? string.Empty;
+            var cacheDirectoryPath = Path.Combine(CacheDirectory, $"{CacheDirectoryPattern}{GetHashString(directoryName)}");
+            var cachedAssembly = Path.Combine(cacheDirectoryPath, $"{fileName}.dll");
+
             var assembly = Assembly.LoadFrom(cachedAssembly);
             return Task.FromResult<Assembly?>(assembly);
         }
@@ -61,7 +106,7 @@ public class AssemblyLoader : IAssemblyLoader
             return Task.FromResult<Assembly?>(null);
         }
     }
-    
+
     private static List<Type> LoadTypes(AssemblyCompound assemblyCompound)
     {
         var loadedTypes = assemblyCompound.Assembly?.GetLoadableTypes().ToList();
