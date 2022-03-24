@@ -1,5 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using System.Reflection;
+using System.Security.Cryptography;
+using System.Text;
 using Serilog;
 using TypeCode.Business.TypeEvaluation;
 
@@ -17,6 +19,9 @@ public class AssemblyLoader : IAssemblyLoader
 
     public async Task LoadAsync(TypeCodeConfiguration configuration)
     {
+        const string cacheDirectory = "cache";
+        Directory.CreateDirectory(cacheDirectory);
+        
         var assemblyDirectories = configuration.AssemblyRoot
             .SelectMany(root => root.AssemblyGroup
                 .SelectMany(group => group.AssemblyPath
@@ -64,10 +69,15 @@ public class AssemblyLoader : IAssemblyLoader
                         //     assemblyCompound.Types = LoadTypes(assemblyCompound);
                         //     assemblyCompound.LastFileWriteTime = File.GetLastWriteTime(assemblyCompound.File);
                         // }
-                        
-                        assemblyCompound.Assembly = Assembly.LoadFrom(assemblyCompound.File);
-                        assemblyCompound.Types = LoadTypes(assemblyCompound);
 
+                        var cacheFile = UpdateCache(assemblyDirectory, assemblyCompound, cacheDirectory);
+
+                        if (ShouldLoadAssembly(assemblyDirectory, assemblyCompound))
+                        {
+                            assemblyCompound.Assembly = Assembly.LoadFrom(cacheFile);
+                            assemblyCompound.Types = LoadTypes(assemblyCompound);
+                        }
+                        
                         return ValueTask.CompletedTask;
                     }).ConfigureAwait(false);
                 }
@@ -106,9 +116,14 @@ public class AssemblyLoader : IAssemblyLoader
                     //     assemblyCompound.Types = LoadTypes(assemblyCompound);
                     // }
                     
-                    assemblyCompound.Assembly = Assembly.LoadFrom(assemblyCompound.File);
-                    assemblyCompound.Types = LoadTypes(assemblyCompound);
-                    
+                    var cacheFile = UpdateCache(assemblyDirectory, assemblyCompound, cacheDirectory);
+
+                    if (ShouldLoadAssembly(assemblyDirectory, assemblyCompound))
+                    {
+                        assemblyCompound.Assembly = Assembly.LoadFrom(cacheFile);
+                        assemblyCompound.Types = LoadTypes(assemblyCompound);
+                    }
+
                     return ValueTask.CompletedTask;
                 }).ConfigureAwait(false);
 
@@ -117,6 +132,28 @@ public class AssemblyLoader : IAssemblyLoader
         }).ConfigureAwait(false);
 
         Log.Debug("Total of {0} assemblies have been loaded", CountAssemblies(configuration));
+    }
+
+    private static bool ShouldLoadAssembly(AssemblyDirectoryWithAssemblyRoot assemblyDirectory, AssemblyCompound assemblyCompound)
+    {
+        var fileName = Path.GetFileName(assemblyCompound.File);
+        return assemblyDirectory.AssemblyRoot.IncludeAssemblyPattern.Any(pattern => pattern.IsMatch(fileName));
+    }
+
+    private static string UpdateCache(AssemblyDirectoryWithAssemblyRoot assemblyDirectory, AssemblyCompound assemblyCompound, string cacheDirectory)
+    {
+        var fileName = Path.GetFileName(assemblyCompound.File);
+        var cacheDirectoryPath = Path.Combine(cacheDirectory, GetHashString(assemblyDirectory.AssemblyDirectory.AbsolutPath));
+        Directory.CreateDirectory(cacheDirectoryPath);
+
+        var cachedAssembly = Path.Combine(cacheDirectoryPath, fileName);
+
+        if (AssemblyIsNewer(assemblyCompound.File, cachedAssembly))
+        {
+            File.Copy(assemblyCompound.File, cachedAssembly, true);
+        }
+
+        return cachedAssembly;
     }
 
     private static bool AnyAssemblyIsNewer(IReadOnlyCollection<AssemblyCompound> loadedAssemblyCompounds, List<AssemblyCompound> newAssemblyCompounds)
@@ -149,6 +186,30 @@ public class AssemblyLoader : IAssemblyLoader
         var loadedTypes = assemblyCompound.Assembly?.GetLoadableTypes().ToList();
         Log.Debug("Loaded {Count} Types from {Assembly}", loadedTypes?.Count, assemblyCompound.Assembly?.FullName);
         return loadedTypes ?? new List<Type>();
+    }
+    
+    private static bool AssemblyIsNewer(string path, string cachedAssembly)
+    {
+        return File.GetLastWriteTime(path) > File.GetLastWriteTime(cachedAssembly);
+    }
+
+    private static string GetHashString(string inputString)
+    {
+        var sb = new StringBuilder();
+        foreach (var b in GetHash(inputString))
+        {
+            sb.Append(b.ToString("X2"));
+        }
+
+        return sb.ToString();
+    }
+
+    private static IEnumerable<byte> GetHash(string inputString)
+    {
+        using (HashAlgorithm algorithm = SHA1.Create())
+        {
+            return algorithm.ComputeHash(Encoding.UTF8.GetBytes(inputString));
+        }
     }
 
     private static int CountAssemblies(TypeCodeConfiguration configuration)

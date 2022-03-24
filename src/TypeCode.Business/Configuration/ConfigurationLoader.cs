@@ -114,12 +114,7 @@ public class ConfigurationLoader : IConfigurationLoader
             var files = Directory.GetFiles(absolutPath.Trim(), "*.dll")
                 .Select(file => new { FileName = Path.GetFileName(file), Path = file });
 
-            var filteredAssemblyFiles = files
-                .Where(file => assemblyRoot.IncludeAssemblyPattern
-                    .Any(pattern => pattern.IsMatch(file.FileName)))
-                .ToList();
-
-            assemblyDirectory.AssemblyCompounds = filteredAssemblyFiles
+            assemblyDirectory.AssemblyCompounds = files
                 .Select(file => new AssemblyCompound(file.Path)).ToList();
             assemblyHolder.AssemblyDirectories.Add(assemblyDirectory);
         }
