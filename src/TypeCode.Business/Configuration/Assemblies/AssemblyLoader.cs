@@ -38,17 +38,33 @@ public class AssemblyLoader : IAssemblyLoader
                     loadedAssemblyDirectory.AssemblyLoadContext?.Unload();
                     assemblyDirectory.AssemblyDirectory.AssemblyLoadContext = new CustomAssemblyLoadContext(assemblyDirectory.AssemblyDirectory.AbsolutPath);
 
-                    await Parallel.ForEachAsync(assemblyDirectory.AssemblyDirectory.AssemblyCompounds, _, async (assemblyCompound, _) =>
+                    await Parallel.ForEachAsync(assemblyDirectory.AssemblyDirectory.AssemblyCompounds, _, (assemblyCompound, _) =>
                     {
                         Log.Debug("Reload assembly at {Path}", assemblyCompound.File);
+                        
+                        // var assembly = await _assemblyDependencyLoader
+                        //     .LoadFromAssemblyPathAsync(assemblyDirectory, assemblyCompound.File)
+                        //     .ConfigureAwait(false);
+                        // assemblyCompound.Assembly = assembly;
+                        // assemblyCompound.Types = LoadTypes(assemblyCompound);
+                        // assemblyCompound.LastFileWriteTime = File.GetLastWriteTime(assemblyCompound.File);
 
-                        var assembly = await _assemblyDependencyLoader
-                            .LoadFromAssemblyPathAsync(assemblyDirectory, assemblyCompound.File)
-                            .ConfigureAwait(false);
+                        using (var assemblyResolver = new AssemblyResolver(assemblyDirectory.AssemblyDirectory.AssemblyLoadContext, assemblyCompound.File))
+                        {
+                            assemblyCompound.Assembly = assemblyResolver.Assembly;
+                            assemblyCompound.Types = LoadTypes(assemblyCompound);
+                            assemblyCompound.LastFileWriteTime = File.GetLastWriteTime(assemblyCompound.File);
+                        }
+                        
+                        // using (var fs = new FileStream(assemblyCompound.File, FileMode.Open))
+                        // {
+                        //     var assembly = assemblyDirectory.AssemblyDirectory.AssemblyLoadContext.LoadFromStream(fs);
+                        //     assemblyCompound.Assembly = assembly;
+                        //     assemblyCompound.Types = LoadTypes(assemblyCompound);
+                        //     assemblyCompound.LastFileWriteTime = File.GetLastWriteTime(assemblyCompound.File);
+                        // }
 
-                        assemblyCompound.Assembly = assembly;
-                        assemblyCompound.Types = LoadTypes(assemblyCompound);
-                        assemblyCompound.LastFileWriteTime = File.GetLastWriteTime(assemblyCompound.File);
+                        return ValueTask.CompletedTask;
                     }).ConfigureAwait(false);
                 }
                 else
@@ -63,16 +79,30 @@ public class AssemblyLoader : IAssemblyLoader
 
                 assemblyDirectory.AssemblyDirectory.AssemblyLoadContext = new CustomAssemblyLoadContext(assemblyDirectory.AssemblyDirectory.AbsolutPath);
 
-                await Parallel.ForEachAsync(assemblyDirectory.AssemblyDirectory.AssemblyCompounds, _, async (assemblyCompound, _) =>
+                await Parallel.ForEachAsync(assemblyDirectory.AssemblyDirectory.AssemblyCompounds, _, (assemblyCompound, _) =>
                 {
                     Log.Debug("Load assembly at {Path}", assemblyCompound.File);
 
-                    var assembly = await _assemblyDependencyLoader
-                        .LoadFromAssemblyPathAsync(assemblyDirectory, assemblyCompound.File)
-                        .ConfigureAwait(false);
+                    // var assembly = await _assemblyDependencyLoader
+                    //     .LoadFromAssemblyPathAsync(assemblyDirectory, assemblyCompound.File)
+                    //     .ConfigureAwait(false);
+                    // assemblyCompound.Assembly = assembly;
+                    // assemblyCompound.Types = LoadTypes(assemblyCompound);
 
-                    assemblyCompound.Assembly = assembly;
-                    assemblyCompound.Types = LoadTypes(assemblyCompound);
+                    using (var assemblyResolver = new AssemblyResolver(assemblyDirectory.AssemblyDirectory.AssemblyLoadContext, assemblyCompound.File))
+                    {
+                        assemblyCompound.Assembly = assemblyResolver.Assembly;
+                        assemblyCompound.Types = LoadTypes(assemblyCompound);
+                    }
+                    
+                    // using (var fs = new FileStream(assemblyCompound.File, FileMode.Open))
+                    // {
+                    //     var assembly = assemblyDirectory.AssemblyDirectory.AssemblyLoadContext.LoadFromStream(fs);
+                    //     assemblyCompound.Assembly = assembly;
+                    //     assemblyCompound.Types = LoadTypes(assemblyCompound);
+                    // }
+                    
+                    return ValueTask.CompletedTask;
                 }).ConfigureAwait(false);
 
                 _assemblyDirectories.TryAdd(assemblyDirectory.AssemblyDirectory.AbsolutPath, assemblyDirectory.AssemblyDirectory);
@@ -98,7 +128,7 @@ public class AssemblyLoader : IAssemblyLoader
                 return true;
             }
 
-            if (newAssemblyCompound.LastFileWriteTime >= loadedCompoundDic[newAssemblyCompound.File].LastFileWriteTime)
+            if (newAssemblyCompound.LastFileWriteTime > loadedCompoundDic[newAssemblyCompound.File].LastFileWriteTime)
             {
                 return true;
             }

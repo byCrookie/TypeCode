@@ -18,6 +18,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TypeCode.Test.Library1", "t
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TypeCode.Test.Library2", "tests\TypeCode.Test.Library2\TypeCode.Test.Library2.csproj", "{7C1DC089-E4DA-489C-BCFF-2E78115B0297}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TypeCode.Test.Static", "tests\TypeCode.Test.Static\TypeCode.Test.Static.csproj", "{BFF036EE-DA15-4172-92C2-EB77E50F96A3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,7 @@ Global
 		{2B72B3A3-F948-4B2E-B3AE-1525A6EE0DE7} = {ECFF6A9C-9D23-4986-9A8F-D72E9DC0029C}
 		{64CB2C90-7538-4723-8C4A-CA09C63188BD} = {2823508B-B95C-4909-A4EB-B04225E9C935}
 		{7C1DC089-E4DA-489C-BCFF-2E78115B0297} = {2823508B-B95C-4909-A4EB-B04225E9C935}
+		{BFF036EE-DA15-4172-92C2-EB77E50F96A3} = {2823508B-B95C-4909-A4EB-B04225E9C935}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{7AE25AE5-31C3-4E72-9949-128C11ED6C82}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -61,5 +64,9 @@ Global
 		{7C1DC089-E4DA-489C-BCFF-2E78115B0297}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7C1DC089-E4DA-489C-BCFF-2E78115B0297}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7C1DC089-E4DA-489C-BCFF-2E78115B0297}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BFF036EE-DA15-4172-92C2-EB77E50F96A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BFF036EE-DA15-4172-92C2-EB77E50F96A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BFF036EE-DA15-4172-92C2-EB77E50F96A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BFF036EE-DA15-4172-92C2-EB77E50F96A3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
