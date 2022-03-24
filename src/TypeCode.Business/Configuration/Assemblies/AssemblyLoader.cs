@@ -17,27 +17,27 @@ public class AssemblyLoader : IAssemblyLoader
     {
         Directory.CreateDirectory(CacheDirectory);
 
-        var assemblyDirectories = configuration.AssemblyRoot
+        var assemblyDirectoryWithAssemblyRoots = configuration.AssemblyRoot
             .SelectMany(root => root.AssemblyGroup
                 .SelectMany(group => group.AssemblyPath
-                    .SelectMany(path => path.AssemblyDirectories)
+                    .SelectMany(path => path.AssemblyDirectories.Select(directory => new AssemblyDirectoryWithAssemblyRoot(root, directory)))
                     .Concat(group.AssemblyPathSelector
-                        .SelectMany(selector => selector.AssemblyDirectories))))
+                        .SelectMany(selector => selector.AssemblyDirectories.Select(directory => new AssemblyDirectoryWithAssemblyRoot(root, directory))))))
             .ToList();
 
-        await Parallel.ForEachAsync(assemblyDirectories, async (assemblyDirectory, _) =>
+        await Parallel.ForEachAsync(assemblyDirectoryWithAssemblyRoots, async (assemblyDirectoryWithAssemblyRoot, _) =>
         {
-            await Parallel.ForEachAsync(assemblyDirectory.AssemblyCompounds, _, async (assemblyCompound, _) =>
+            await Parallel.ForEachAsync(assemblyDirectoryWithAssemblyRoot.AssemblyDirectory.AssemblyCompounds, _, async (assemblyCompound, _) =>
             {
                 await CreateCacheAsync(assemblyCompound.File).ConfigureAwait(false);
             }).ConfigureAwait(false);
         }).ConfigureAwait(false);
         
-        await Parallel.ForEachAsync(assemblyDirectories, async (assemblyDirectory, _) =>
+        await Parallel.ForEachAsync(assemblyDirectoryWithAssemblyRoots, async (assemblyDirectoryWithAssemblyRoot, _) =>
         {
-            await Parallel.ForEachAsync(assemblyDirectory.AssemblyCompounds, _, async (assemblyCompound, _) =>
+            await Parallel.ForEachAsync(assemblyDirectoryWithAssemblyRoot.AssemblyDirectory.AssemblyCompounds, _, async (assemblyCompound, _) =>
             {
-                assemblyCompound.Assembly = await LoadAsync(assemblyCompound.File).ConfigureAwait(false);
+                assemblyCompound.Assembly = await LoadAsync(assemblyDirectoryWithAssemblyRoot, assemblyCompound.File).ConfigureAwait(false);
                 assemblyCompound.Types = LoadTypes(assemblyCompound);
             }).ConfigureAwait(false);
         }).ConfigureAwait(false);
@@ -88,17 +88,22 @@ public class AssemblyLoader : IAssemblyLoader
         return Task.CompletedTask;
     }
 
-    private static Task<Assembly?> LoadAsync(string path)
+    private static Task<Assembly?> LoadAsync(AssemblyDirectoryWithAssemblyRoot assemblyDirectoryWithAssemblyRoot, string path)
     {
         try
         {
-            var fileName = Path.GetFileNameWithoutExtension(path);
+            var fileName = Path.GetFileName(path);
             var directoryName = Path.GetDirectoryName(path) ?? string.Empty;
             var cacheDirectoryPath = Path.Combine(CacheDirectory, $"{CacheDirectoryPattern}{GetHashString(directoryName)}");
-            var cachedAssembly = Path.Combine(cacheDirectoryPath, $"{fileName}.dll");
+            var cachedAssembly = Path.Combine(cacheDirectoryPath, fileName);
 
-            var assembly = Assembly.LoadFrom(cachedAssembly);
-            return Task.FromResult<Assembly?>(assembly);
+            if (assemblyDirectoryWithAssemblyRoot.AssemblyRoot.IncludeAssemblyPattern.Any(pattern => pattern.IsMatch(fileName)))
+            {
+                var assembly = Assembly.LoadFrom(cachedAssembly);
+                return Task.FromResult<Assembly?>(assembly);
+            }
+            
+            return Task.FromResult<Assembly?>(null);
         }
         catch (Exception exception)
         {
