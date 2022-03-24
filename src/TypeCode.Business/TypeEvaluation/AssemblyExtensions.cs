@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using Serilog;
 
 namespace TypeCode.Business.TypeEvaluation;
 
@@ -14,6 +15,7 @@ public static class AssemblyExtensions
         }
         catch (ReflectionTypeLoadException e)
         {
+            Log.Warning("Not all types have been loaded from {Assembly}", assembly.FullName);
             return e.Types.Where(type => type is not null).Cast<Type>();
         }
     }
