@@ -36,7 +36,7 @@ internal class TypeCode<TContext> : ITypeCode<TContext> where TContext : BootCon
 
         var tasks = new List<Task>
         {
-            Task.Run(InitializeTypes, cancellationToken),
+            Task.Run(InitializeTypesAsync, cancellationToken),
             Task.Run(async () => mode = await EvaluateModeAsync().ConfigureAwait(false), cancellationToken)
         };
 
@@ -112,8 +112,8 @@ internal class TypeCode<TContext> : ITypeCode<TContext> where TContext : BootCon
         }
     }
 
-    private void InitializeTypes()
+    private Task InitializeTypesAsync()
     {
-        _typeProvider.Initalize(_configurationProvider.GetConfiguration());
+        return _typeProvider.InitalizeAsync(_configurationProvider.GetConfiguration());
     }
 }

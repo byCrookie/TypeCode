@@ -7,57 +7,52 @@ namespace TypeCode.Business.TypeEvaluation;
 
 public class TypeProvider : ITypeProvider
 {
-    private static readonly object Lock = new();
     private static TypeCodeConfiguration? _configuration;
 
-    public void Initalize(TypeCodeConfiguration configuration)
+    public async Task InitalizeAsync(TypeCodeConfiguration configuration)
     {
         Log.Debug("Initialize Types");
-        
-        Parallel.ForEach(configuration.AssemblyRoot, root =>
-        {
-            root.AssemblyGroup = root.AssemblyGroup.OrderBy(group => group.Priority).ToList();
 
-            foreach (var group in root.AssemblyGroup)
+        foreach (var root in configuration.AssemblyRoot.OrderBy(root => root.Priority).ToList())
+        {
+            foreach (var group in root.AssemblyGroup.OrderBy(group => group.Priority).ToList())
             {
-                group.AssemblyPath = group.AssemblyPath.OrderBy(path => path.Priority).ToList();
-                Parallel.ForEach(group.AssemblyPath, path =>
+                foreach (var path in group.AssemblyPath.OrderBy(path => path.Priority).ToList())
                 {
                     path.TypesByNameDictionary = path.AssemblyDirectories
                         .SelectMany(directory => directory.AssemblyCompounds.SelectMany(compund => compund.Types))
                         .GroupBy(GetNameWithoutGeneric)
                         .ToDictionary(nameGroup => nameGroup.Key, nameGroup => nameGroup.ToList());
 
-                    WriteKeysToFile(path.TypesByNameDictionary.Keys);
+                    await WriteKeysToFileAsync(path.TypesByNameDictionary.Keys).ConfigureAwait(false);
 
                     path.TypesByFullNameDictionary = path.AssemblyDirectories
                         .SelectMany(directory => directory.AssemblyCompounds.SelectMany(compund => compund.Types))
                         .GroupBy(NameBuilder.GetNameWithNamespace)
                         .ToDictionary(nameGroup => nameGroup.Key, nameGroup => nameGroup.ToList());
-                    
-                    WriteKeysToFile(path.TypesByFullNameDictionary.Keys);
-                });
 
-                group.AssemblyPathSelector = group.AssemblyPathSelector.OrderBy(selector => selector.Priority).ToList();
-                Parallel.ForEach(group.AssemblyPathSelector, selector =>
+                    await WriteKeysToFileAsync(path.TypesByFullNameDictionary.Keys).ConfigureAwait(false);
+                }
+
+                foreach (var selector in group.AssemblyPathSelector.OrderBy(selector => selector.Priority).ToList())
                 {
                     selector.TypesByNameDictionary = selector.AssemblyDirectories
                         .SelectMany(directory => directory.AssemblyCompounds.SelectMany(compund => compund.Types))
                         .GroupBy(GetNameWithoutGeneric)
                         .ToDictionary(nameGroup => nameGroup.Key, nameGroup => nameGroup.ToList());
-                    
-                    WriteKeysToFile(selector.TypesByNameDictionary.Keys);
+
+                    await WriteKeysToFileAsync(selector.TypesByNameDictionary.Keys).ConfigureAwait(false);
 
                     selector.TypesByFullNameDictionary = selector.AssemblyDirectories
                         .SelectMany(directory => directory.AssemblyCompounds.SelectMany(compund => compund.Types))
                         .GroupBy(NameBuilder.GetNameWithNamespace)
                         .ToDictionary(nameGroup => nameGroup.Key, nameGroup => nameGroup.ToList());
-                    
-                    WriteKeysToFile(selector.TypesByFullNameDictionary.Keys);
-                });
+
+                   await WriteKeysToFileAsync(selector.TypesByFullNameDictionary.Keys).ConfigureAwait(false);
+                }
             }
-        });
-        
+        }
+
         Log.Debug("Initialized Types");
 
         _configuration = configuration;
@@ -115,13 +110,13 @@ public class TypeProvider : ITypeProvider
         return type.Name.Contains('`') ? type.Name.Remove(type.Name.IndexOf("`", StringComparison.Ordinal), 2) : type.Name;
     }
 
-    private IEnumerable<Type> GetTypesByCondition(Func<Type, bool> condition)
+    private static IEnumerable<Type> GetTypesByCondition(Func<Type, bool> condition)
     {
         if (_configuration is null)
         {
             throw new ArgumentNullException($"{typeof(TypeCodeConfiguration)} not yet set");
         }
-        
+
         foreach (var root in _configuration.AssemblyRoot)
         {
             foreach (var group in root.AssemblyGroup)
@@ -161,13 +156,13 @@ public class TypeProvider : ITypeProvider
         return Enumerable.Empty<Type>();
     }
 
-    private IEnumerable<Type> GetTypesByNames(IReadOnlyCollection<string> names)
+    private static IEnumerable<Type> GetTypesByNames(IReadOnlyCollection<string> names)
     {
         if (_configuration is null)
         {
             throw new ArgumentNullException($"{typeof(TypeCodeConfiguration)} not yet set");
         }
-        
+
         foreach (var root in _configuration.AssemblyRoot)
         {
             foreach (var group in root.AssemblyGroup)
@@ -207,13 +202,13 @@ public class TypeProvider : ITypeProvider
         return Enumerable.Empty<Type>();
     }
 
-    private IEnumerable<Type> GetTypesByName(string name)
+    private static IEnumerable<Type> GetTypesByName(string name)
     {
         if (_configuration is null)
         {
             throw new ArgumentNullException($"{typeof(TypeCodeConfiguration)} not yet set");
         }
-        
+
         foreach (var root in _configuration.AssemblyRoot)
         {
             foreach (var group in root.AssemblyGroup)
@@ -252,12 +247,9 @@ public class TypeProvider : ITypeProvider
 
         return Enumerable.Empty<Type>();
     }
-    
-    private static void WriteKeysToFile(IEnumerable<string> keys)
+
+    private static Task WriteKeysToFileAsync(IEnumerable<string> keys)
     {
-        lock (Lock)
-        {
-            File.AppendAllLines(LogFiles.IndexedTypes, keys);
-        }
+        return File.AppendAllLinesAsync(LogFiles.IndexedTypes, keys);
     }
 }

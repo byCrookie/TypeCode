@@ -26,7 +26,7 @@ public class ConfigurationLoadBootStep<TContext> : IConfigurationLoadBootStep<TC
     public async Task ExecuteAsync(TContext context)
     {
         var configuration = await _configurationLoader.LoadAsync().ConfigureAwait(false);
-        _typeProvider.Initalize(configuration);
+        await _typeProvider.InitalizeAsync(configuration).ConfigureAwait(false);
         _configurationProvider.SetConfiguration(configuration);
     }
 

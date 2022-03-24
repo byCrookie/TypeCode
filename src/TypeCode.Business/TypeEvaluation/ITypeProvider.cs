@@ -4,7 +4,7 @@ namespace TypeCode.Business.TypeEvaluation;
 
 public interface ITypeProvider
 {
-    void Initalize(TypeCodeConfiguration configuration);
+    Task InitalizeAsync(TypeCodeConfiguration configuration);
     bool HasByName(string? name);
     IEnumerable<Type> TryGetByName(string? name);
     IEnumerable<Type> TryGetByNames(IEnumerable<string> names);

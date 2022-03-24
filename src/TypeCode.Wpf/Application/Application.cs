@@ -99,7 +99,7 @@ public class Application<TContext> : IApplication<TContext> where TContext : Boo
     private async Task LoadAssembliesAsync()
     {
         var configuration = await _configurationLoader.LoadAsync().ConfigureAwait(false);
-        _typeProvider.Initalize(configuration);
+        await _typeProvider.InitalizeAsync(configuration).ConfigureAwait(false);
         _configurationProvider.SetConfiguration(configuration);
         await _eventAggregator.PublishAsync(new LoadEndEvent()).ConfigureAwait(false);
     }
