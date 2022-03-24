@@ -49,20 +49,20 @@ public class AssemblyLoader : IAssemblyLoader
                         // assemblyCompound.Types = LoadTypes(assemblyCompound);
                         // assemblyCompound.LastFileWriteTime = File.GetLastWriteTime(assemblyCompound.File);
 
-                        using (var assemblyResolver = new AssemblyResolver(assemblyDirectory.AssemblyDirectory.AssemblyLoadContext, assemblyCompound.File))
-                        {
-                            assemblyCompound.Assembly = assemblyResolver.Assembly;
-                            assemblyCompound.Types = LoadTypes(assemblyCompound);
-                            assemblyCompound.LastFileWriteTime = File.GetLastWriteTime(assemblyCompound.File);
-                        }
-                        
-                        // using (var fs = new FileStream(assemblyCompound.File, FileMode.Open))
+                        // using (var assemblyResolver = new AssemblyResolver(assemblyDirectory.AssemblyDirectory.AssemblyLoadContext, assemblyCompound.File))
                         // {
-                        //     var assembly = assemblyDirectory.AssemblyDirectory.AssemblyLoadContext.LoadFromStream(fs);
-                        //     assemblyCompound.Assembly = assembly;
+                        //     assemblyCompound.Assembly = assemblyResolver.Assembly;
                         //     assemblyCompound.Types = LoadTypes(assemblyCompound);
                         //     assemblyCompound.LastFileWriteTime = File.GetLastWriteTime(assemblyCompound.File);
                         // }
+                        
+                        using (var fs = new FileStream(assemblyCompound.File, FileMode.Open))
+                        {
+                            var assembly = assemblyDirectory.AssemblyDirectory.AssemblyLoadContext.LoadFromStream(fs);
+                            assemblyCompound.Assembly = assembly;
+                            assemblyCompound.Types = LoadTypes(assemblyCompound);
+                            assemblyCompound.LastFileWriteTime = File.GetLastWriteTime(assemblyCompound.File);
+                        }
 
                         return ValueTask.CompletedTask;
                     }).ConfigureAwait(false);
@@ -89,18 +89,18 @@ public class AssemblyLoader : IAssemblyLoader
                     // assemblyCompound.Assembly = assembly;
                     // assemblyCompound.Types = LoadTypes(assemblyCompound);
 
-                    using (var assemblyResolver = new AssemblyResolver(assemblyDirectory.AssemblyDirectory.AssemblyLoadContext, assemblyCompound.File))
-                    {
-                        assemblyCompound.Assembly = assemblyResolver.Assembly;
-                        assemblyCompound.Types = LoadTypes(assemblyCompound);
-                    }
-                    
-                    // using (var fs = new FileStream(assemblyCompound.File, FileMode.Open))
+                    // using (var assemblyResolver = new AssemblyResolver(assemblyDirectory.AssemblyDirectory.AssemblyLoadContext, assemblyCompound.File))
                     // {
-                    //     var assembly = assemblyDirectory.AssemblyDirectory.AssemblyLoadContext.LoadFromStream(fs);
-                    //     assemblyCompound.Assembly = assembly;
+                    //     assemblyCompound.Assembly = assemblyResolver.Assembly;
                     //     assemblyCompound.Types = LoadTypes(assemblyCompound);
                     // }
+                    
+                    using (var fs = new FileStream(assemblyCompound.File, FileMode.Open))
+                    {
+                        var assembly = assemblyDirectory.AssemblyDirectory.AssemblyLoadContext.LoadFromStream(fs);
+                        assemblyCompound.Assembly = assembly;
+                        assemblyCompound.Types = LoadTypes(assemblyCompound);
+                    }
                     
                     return ValueTask.CompletedTask;
                 }).ConfigureAwait(false);
