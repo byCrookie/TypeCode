@@ -12,4 +12,12 @@
         </AssemblyGroup>
     </AssemblyRoot>
 
+    <AssemblyRoot Path="M:\Temp\" Priority="1">
+        <IncludeAssemblyPattern>^(?=.*\b(CH.Nest)\b)(?=.*\b(.dll)\b).*$</IncludeAssemblyPattern>
+
+        <AssemblyGroup Name="Temp" Priority="1">
+            <AssemblyPath Priority="1">assemblies\nest.shared</AssemblyPath>
+        </AssemblyGroup>
+    </AssemblyRoot>
+
 </TypeCodeConfiguration>
