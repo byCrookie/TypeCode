@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using System.Reflection;
 using Serilog;
 using TypeCode.Business.TypeEvaluation;
 
@@ -56,13 +57,16 @@ public class AssemblyLoader : IAssemblyLoader
                         //     assemblyCompound.LastFileWriteTime = File.GetLastWriteTime(assemblyCompound.File);
                         // }
                         
-                        using (var fs = new FileStream(assemblyCompound.File, FileMode.Open))
-                        {
-                            var assembly = assemblyDirectory.AssemblyDirectory.AssemblyLoadContext.LoadFromStream(fs);
-                            assemblyCompound.Assembly = assembly;
-                            assemblyCompound.Types = LoadTypes(assemblyCompound);
-                            assemblyCompound.LastFileWriteTime = File.GetLastWriteTime(assemblyCompound.File);
-                        }
+                        // using (var fs = new FileStream(assemblyCompound.File, FileMode.Open))
+                        // {
+                        //     var assembly = assemblyDirectory.AssemblyDirectory.AssemblyLoadContext.LoadFromStream(fs);
+                        //     assemblyCompound.Assembly = assembly;
+                        //     assemblyCompound.Types = LoadTypes(assemblyCompound);
+                        //     assemblyCompound.LastFileWriteTime = File.GetLastWriteTime(assemblyCompound.File);
+                        // }
+                        
+                        assemblyCompound.Assembly = Assembly.LoadFrom(assemblyCompound.File);
+                        assemblyCompound.Types = LoadTypes(assemblyCompound);
 
                         return ValueTask.CompletedTask;
                     }).ConfigureAwait(false);
@@ -95,12 +99,15 @@ public class AssemblyLoader : IAssemblyLoader
                     //     assemblyCompound.Types = LoadTypes(assemblyCompound);
                     // }
                     
-                    using (var fs = new FileStream(assemblyCompound.File, FileMode.Open))
-                    {
-                        var assembly = assemblyDirectory.AssemblyDirectory.AssemblyLoadContext.LoadFromStream(fs);
-                        assemblyCompound.Assembly = assembly;
-                        assemblyCompound.Types = LoadTypes(assemblyCompound);
-                    }
+                    // using (var fs = new FileStream(assemblyCompound.File, FileMode.Open))
+                    // {
+                    //     var assembly = assemblyDirectory.AssemblyDirectory.AssemblyLoadContext.LoadFromStream(fs);
+                    //     assemblyCompound.Assembly = assembly;
+                    //     assemblyCompound.Types = LoadTypes(assemblyCompound);
+                    // }
+                    
+                    assemblyCompound.Assembly = Assembly.LoadFrom(assemblyCompound.File);
+                    assemblyCompound.Types = LoadTypes(assemblyCompound);
                     
                     return ValueTask.CompletedTask;
                 }).ConfigureAwait(false);
