@@ -77,6 +77,8 @@ public class AssemblyLoader : IAssemblyLoader
                     assemblyCompound.Types = LoadTypes(assemblyCompound);
                     assemblyCompound.LastFileWriteTime = File.GetLastWriteTime(assemblyCompound.File);
                 }).ConfigureAwait(false);
+                
+                _assemblyDirectories.TryAdd(assemblyRootCompound.AssemblyDirectory.AbsolutPath, assemblyRootCompound.AssemblyDirectory);
             }
         }).ConfigureAwait(false);
 
