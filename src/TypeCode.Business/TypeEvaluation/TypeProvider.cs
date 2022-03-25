@@ -8,6 +8,7 @@ namespace TypeCode.Business.TypeEvaluation;
 public class TypeProvider : ITypeProvider
 {
     private static TypeCodeConfiguration? _configuration;
+    private static readonly List<string> LoadedKeys = new();
 
     public async Task InitalizeAsync(TypeCodeConfiguration configuration)
     {
@@ -23,15 +24,15 @@ public class TypeProvider : ITypeProvider
                         .SelectMany(directory => directory.AssemblyCompounds.SelectMany(compund => compund.Types))
                         .GroupBy(GetNameWithoutGeneric)
                         .ToDictionary(nameGroup => nameGroup.Key, nameGroup => nameGroup.ToList());
-
-                    await WriteKeysToFileAsync(path.TypesByNameDictionary.Keys).ConfigureAwait(false);
+                    
+                    LoadedKeys.AddRange(path.TypesByNameDictionary.Keys);
 
                     path.TypesByFullNameDictionary = path.AssemblyDirectories
                         .SelectMany(directory => directory.AssemblyCompounds.SelectMany(compund => compund.Types))
                         .GroupBy(NameBuilder.GetNameWithNamespace)
                         .ToDictionary(nameGroup => nameGroup.Key, nameGroup => nameGroup.ToList());
-
-                    await WriteKeysToFileAsync(path.TypesByFullNameDictionary.Keys).ConfigureAwait(false);
+                    
+                    LoadedKeys.AddRange(path.TypesByFullNameDictionary.Keys);
                 }
 
                 foreach (var selector in group.AssemblyPathSelector.OrderBy(selector => selector.Priority).ToList())
@@ -40,18 +41,21 @@ public class TypeProvider : ITypeProvider
                         .SelectMany(directory => directory.AssemblyCompounds.SelectMany(compund => compund.Types))
                         .GroupBy(GetNameWithoutGeneric)
                         .ToDictionary(nameGroup => nameGroup.Key, nameGroup => nameGroup.ToList());
-
-                    await WriteKeysToFileAsync(selector.TypesByNameDictionary.Keys).ConfigureAwait(false);
+                    
+                    LoadedKeys.AddRange(selector.TypesByNameDictionary.Keys);
 
                     selector.TypesByFullNameDictionary = selector.AssemblyDirectories
                         .SelectMany(directory => directory.AssemblyCompounds.SelectMany(compund => compund.Types))
                         .GroupBy(NameBuilder.GetNameWithNamespace)
                         .ToDictionary(nameGroup => nameGroup.Key, nameGroup => nameGroup.ToList());
-
-                   await WriteKeysToFileAsync(selector.TypesByFullNameDictionary.Keys).ConfigureAwait(false);
+                    
+                    LoadedKeys.AddRange(selector.TypesByFullNameDictionary.Keys);
                 }
             }
         }
+        
+        await WriteKeysToFileAsync(LoadedKeys).ConfigureAwait(false);
+        LoadedKeys.Clear();
 
         Log.Debug("Initialized Types");
 
