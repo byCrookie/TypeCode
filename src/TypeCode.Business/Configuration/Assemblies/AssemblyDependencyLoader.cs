@@ -10,7 +10,7 @@ public class AssemblyDependencyLoader : IAssemblyDependencyLoader
 {
     private readonly ConcurrentDictionary<string, LoadLock> _locks = new();
 
-    public async Task<Assembly?> LoadFromAssemblyPathAsync(AssemblyDirectoryWithAssemblyRoot assemblyDirectory, string assemblyFullPath)
+    public async Task<Assembly?> LoadWithDependenciesAsync(AssemblyRootCompound assemblyDirectory, string assemblyFullPath)
     {
         Log.Debug("Load {Assembly} to context {Context}", assemblyFullPath, assemblyDirectory.AssemblyDirectory.AssemblyLoadContext!.Name);
 
@@ -27,7 +27,7 @@ public class AssemblyDependencyLoader : IAssemblyDependencyLoader
         return assembly;
     }
 
-    private Task LoadReferencedAssembliesAsync(AssemblyDirectoryWithAssemblyRoot assemblyDirectory, Assembly assembly, string fileName, string? directory)
+    private Task LoadReferencedAssembliesAsync(AssemblyRootCompound assemblyDirectory, Assembly assembly, string fileName, string? directory)
     {
         Log.Debug("Load referenced assemblies from {Assembly} to context {Context}", assembly.FullName, assemblyDirectory.AssemblyDirectory.AssemblyLoadContext!.Name);
 
@@ -44,15 +44,16 @@ public class AssemblyDependencyLoader : IAssemblyDependencyLoader
 
         Log.Debug("Found {Count} referenced assemblies to load from {Assembly} to context {Context}", references.Length, assembly.FullName, assemblyDirectory.AssemblyDirectory.AssemblyLoadContext.Name);
 
-        return Parallel.ForEachAsync(references, async (reference, _) =>
+        return Parallel.ForEachAsync(references, (reference, _) =>
         {
             if (filesInDirectory.Contains(reference.Name))
             {
                 var loadFileName = reference.Name + ".dll";
                 var path = Path.Combine(directory!, loadFileName);
-                var loadedAssembly = LoadFromLoadedOrFile(assemblyDirectory, path, reference.Name!);
-                await LoadReferencedAssembliesAsync(assemblyDirectory, loadedAssembly, loadFileName, directory).ConfigureAwait(false);
+                LoadFromLoadedOrFile(assemblyDirectory, path, reference.Name!);
             }
+            
+            return ValueTask.CompletedTask;
         });
     }
 
@@ -67,7 +68,7 @@ public class AssemblyDependencyLoader : IAssemblyDependencyLoader
         }
     }
     
-    private Assembly LoadFromLoadedOrFile(AssemblyDirectoryWithAssemblyRoot assemblyDirectory, string assemblyFullPath, string fileNameWithOutExtension)
+    private Assembly LoadFromLoadedOrFile(AssemblyRootCompound assemblyDirectory, string assemblyFullPath, string fileNameWithOutExtension)
     {
         var inCompileLibraries = DependencyContext.Default.CompileLibraries
             .Any(l => l.Name.Equals(fileNameWithOutExtension, StringComparison.OrdinalIgnoreCase));

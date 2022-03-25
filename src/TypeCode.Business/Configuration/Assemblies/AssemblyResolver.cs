@@ -15,12 +15,12 @@ internal sealed class AssemblyResolver : IDisposable
     {
         _assemblyLoadContext = assemblyLoadContext;
         
-        using (var fs = new FileStream(path, FileMode.Open))
-        {
-            Assembly = _assemblyLoadContext.LoadFromStream(fs);
-        }
+        // using (var fs = new FileStream(path, FileMode.Open))
+        // {
+        //     Assembly = _assemblyLoadContext.LoadFromStream(fs);
+        // }
         
-        // Assembly = assemblyLoadContext.LoadFromAssemblyPath(path);
+        Assembly = assemblyLoadContext.LoadFromAssemblyPath(path);
 
         _dependencyContext = DependencyContext.Load(Assembly);
         _assemblyResolver = new CompositeCompilationAssemblyResolver(new ICompilationAssemblyResolver[]
@@ -61,12 +61,12 @@ internal sealed class AssemblyResolver : IDisposable
             
             if (assemblies.Count > 0)
             {
-                using (var fs = new FileStream(assemblies[0], FileMode.Open))
-                {
-                    return _assemblyLoadContext.LoadFromStream(fs);
-                }
+                // using (var fs = new FileStream(assemblies[0], FileMode.Open))
+                // {
+                //     return _assemblyLoadContext.LoadFromStream(fs);
+                // }
                 
-                // return _assemblyLoadContext.LoadFromAssemblyPath(assemblies[0]);
+                return _assemblyLoadContext.LoadFromAssemblyPath(assemblies[0]);
             }
         }
 

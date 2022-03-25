@@ -1,8 +1,8 @@
 ﻿namespace TypeCode.Business.Configuration.Assemblies;
 
-public class AssemblyDirectoryWithAssemblyRoot
+public class AssemblyRootCompound
 {
-    public AssemblyDirectoryWithAssemblyRoot(AssemblyRoot assemblyRoot, AssemblyDirectory assemblyDirectory)
+    public AssemblyRootCompound(AssemblyRoot assemblyRoot, AssemblyDirectory assemblyDirectory)
     {
         AssemblyRoot = assemblyRoot;
         AssemblyDirectory = assemblyDirectory;
