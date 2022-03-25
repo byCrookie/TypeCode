@@ -7,7 +7,7 @@
         xmlns:main="clr-namespace:TypeCode.Wpf.Main"
         xmlns:content="clr-namespace:TypeCode.Wpf.Main.Content"
         mc:Ignorable="d"
-        Title="TypeCode" Height="600" Width="1000" d:DataContext="{d:DesignInstance main:MainViewModel}"
+        Title="{Binding Title}" Height="600" Width="1000" d:DataContext="{d:DesignInstance main:MainViewModel}"
         Background="{StaticResource Primary}">
 
     <Grid>

@@ -6,9 +6,9 @@ namespace TypeCode.Wpf.Main;
 
 [ServiceProviderModule]
 [Singleton(typeof(IMainViewProvider), typeof(MainViewProvider))]
-[Transient(typeof(MainViewModel))]
-[Transient(typeof(MainContentViewModel))]
-[Transient(typeof(MainSidebarViewModel))]
+[Singleton(typeof(MainViewModel))]
+[Singleton(typeof(MainContentViewModel))]
+[Singleton(typeof(MainSidebarViewModel))]
 public interface IMainModule
 {
     

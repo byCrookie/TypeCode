@@ -5,13 +5,13 @@ namespace TypeCode.Business.Version;
 
 public class VersionEvaluator : IVersionEvaluator
 {
-    public async Task<string?> EvaluateAsync()
+    public async Task<VersionResult> EvaluateAsync()
     {
         var file = $"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\\version";
 
         if (!File.Exists(file))
         {
-            return null;
+            return new VersionResult();
         }
 
         var version = await File.ReadAllTextAsync(file).ConfigureAwait(false);
@@ -21,10 +21,17 @@ public class VersionEvaluator : IVersionEvaluator
             && !string.IsNullOrEmpty(latestVersion?.TagName)
             && !string.Equals(version.Trim(), latestVersion.TagName.Trim(), StringComparison.CurrentCultureIgnoreCase))
         {
-            return latestVersion.TagName;
+            return new VersionResult
+            {
+                CurrentVersion = version,
+                NewVersion = latestVersion.TagName
+            };
         }
 
-        return null;
+        return new VersionResult
+        {
+            CurrentVersion = version
+        };
     }
 
     private static async Task<VersionResponse?> GetVersionAsync()

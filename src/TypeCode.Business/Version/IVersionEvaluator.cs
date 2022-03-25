@@ -2,5 +2,5 @@
 
 public interface IVersionEvaluator
 {
-    Task<string?> EvaluateAsync();
+    Task<VersionResult> EvaluateAsync();
 }

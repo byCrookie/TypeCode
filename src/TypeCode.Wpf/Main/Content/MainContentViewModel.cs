@@ -143,13 +143,18 @@ public class MainContentViewModel :
         {
             var version = await _versionEvaluator.EvaluateAsync().ConfigureAwait(false);
 
-            if (version is null)
+            if (version.CurrentVersion is not null)
+            {
+                await _eventAggregator.PublishAsync(new VersionLoadedEvent(version.CurrentVersion)).ConfigureAwait(false); 
+            }
+            
+            if (version.NewVersion is null)
             {
                 return;
             }
 
-            var versionMessage = $"New version {version} available at https://github.com/byCrookie/TypeCode/releases/tag/{version}";
-            var versionLink = $"https://github.com/byCrookie/TypeCode/releases/tag/{version}";
+            var versionMessage = $"New version {version.NewVersion} available at https://github.com/byCrookie/TypeCode/releases/tag/{version.NewVersion}";
+            var versionLink = $"https://github.com/byCrookie/TypeCode/releases/tag/{version.NewVersion}";
 
             await _eventAggregator.PublishAsync(new BannerOpenEvent
             {
