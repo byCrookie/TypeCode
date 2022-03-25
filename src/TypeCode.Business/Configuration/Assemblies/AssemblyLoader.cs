@@ -71,7 +71,7 @@ public class AssemblyLoader : IAssemblyLoader
 
                 await Parallel.ForEachAsync(assemblyRootCompound.AssemblyDirectory.AssemblyCompounds, _, async (assemblyCompound, _) =>
                 {
-                    Log.Debug("Reload assembly at {Path}", assemblyCompound.File);
+                    Log.Debug("Load assembly at {Path}", assemblyCompound.File);
 
                     assemblyCompound.Assembly = await LoadAsync(assemblyRootCompound, assemblyCompound.File).ConfigureAwait(false);
                     assemblyCompound.Types = LoadTypes(assemblyCompound);
