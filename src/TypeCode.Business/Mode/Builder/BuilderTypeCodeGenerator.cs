@@ -9,18 +9,35 @@ public class BuilderTypeCodeGenerator : IBuilderTypeCodeGenerator
 {
     public Task<string?> GenerateAsync(BuilderTypeCodeGeneratorParameter parameter)
     {
-        return parameter.Types.Any()
-            ? Task.FromResult<string?>(GenerateBuildersCode(parameter.Types))
+        return parameter.Type is not null
+            ? Task.FromResult(GenerateBuildersCode(parameter))
             : Task.FromResult<string?>(null);
     }
 
-    private static string GenerateBuildersCode(IEnumerable<Type> types)
+    private static string? GenerateBuildersCode(BuilderTypeCodeGeneratorParameter parameter)
     {
-        var code = new StringBuilder();
-
-        foreach (var type in types)
+        if (parameter.AlreadyMapped.Contains(parameter.Type!))
         {
-            code.AppendLine(GenerateBuilderCode(type));
+            return null;
+        }
+
+        parameter.AlreadyMapped.Add(parameter.Type!);
+        
+        var code = new StringBuilder();
+        
+        code.AppendLine(GenerateBuilderCode(parameter.Type!));
+
+        if (parameter.Recursive)
+        {
+            var complexProperties = parameter.Type!.GetProperties()
+                .Where(property => !PropertyEval.IsList(property.PropertyType) 
+                                   && !PropertyEval.IsSimple(property.PropertyType));
+
+            foreach (var property in complexProperties)
+            {
+                parameter.Type = property.PropertyType;
+                code.AppendLine(GenerateBuildersCode(parameter));
+            }
         }
 
         return code.ToString();
@@ -67,42 +84,41 @@ public class BuilderTypeCodeGenerator : IBuilderTypeCodeGenerator
 
     private static void CreatePropertyMethod(StringBuilder stringBuilder, string typeName, string classFieldName, PropertyInfo property)
     {
-        var propertyName = property.Name;
         var dataType = PropertyEval.GetNestedPropertyTypeNameIfAvailable(property.PropertyType);
 
         if (PropertyEval.IsSimple(property.PropertyType) || property.PropertyType.IsEnum)
         {
-            stringBuilder.AppendLine($@"{Cuts.Tab()}public {typeName}Builder {propertyName}({dataType} value)");
+            stringBuilder.AppendLine($@"{Cuts.Tab()}public {typeName}Builder {property.Name}({dataType} value)");
             stringBuilder.AppendLine($@"{Cuts.Tab()}{{");
-            stringBuilder.AppendLine($@"{Cuts.Tab()}{Cuts.Tab()}{classFieldName}.{propertyName} = value;");
+            stringBuilder.AppendLine($@"{Cuts.Tab()}{Cuts.Tab()}{classFieldName}.{property.Name} = value;");
             stringBuilder.AppendLine($@"{Cuts.Tab()}{Cuts.Tab()}return this;");
             stringBuilder.AppendLine($@"{Cuts.Tab()}}}");
         }
         else if (PropertyEval.IsList(property.PropertyType) && PropertyEval.IsSimple(PropertyEval.GetNestedTypeIfAvailable(property.PropertyType)))
         {
-            stringBuilder.AppendLine($@"{Cuts.Tab()}public {typeName}Builder Add{propertyName}({dataType} value)");
+            stringBuilder.AppendLine($@"{Cuts.Tab()}public {typeName}Builder Add{property.Name}({dataType} value)");
             stringBuilder.AppendLine($@"{Cuts.Tab()}{{");
-            stringBuilder.AppendLine($@"{Cuts.Tab()}{Cuts.Tab()}{classFieldName}.{propertyName}.Add(value);");
+            stringBuilder.AppendLine($@"{Cuts.Tab()}{Cuts.Tab()}{classFieldName}.{property.Name}.Add(value);");
             stringBuilder.AppendLine($@"{Cuts.Tab()}{Cuts.Tab()}return this;");
             stringBuilder.AppendLine($@"{Cuts.Tab()}}}");
         }
         else if (PropertyEval.IsList(property.PropertyType) && !PropertyEval.IsSimple(PropertyEval.GetNestedTypeIfAvailable(property.PropertyType)))
         {
-            stringBuilder.AppendLine($@"{Cuts.Tab()}public {typeName}Builder Add{propertyName}(Action<{propertyName}Builder> configure)");
+            stringBuilder.AppendLine($@"{Cuts.Tab()}public {typeName}Builder Add{property.Name}(Action<{PropertyEval.GetNestedTypeIfAvailable(property.PropertyType).Name}Builder> configure)");
             stringBuilder.AppendLine($@"{Cuts.Tab()}{{");
-            stringBuilder.AppendLine($@"{Cuts.Tab()}{Cuts.Tab()}var builder = new {propertyName}Builder();");
+            stringBuilder.AppendLine($@"{Cuts.Tab()}{Cuts.Tab()}var builder = new {PropertyEval.GetNestedTypeIfAvailable(property.PropertyType).Name}Builder();");
             stringBuilder.AppendLine($@"{Cuts.Tab()}{Cuts.Tab()}configure(builder);");
-            stringBuilder.AppendLine($@"{Cuts.Tab()}{Cuts.Tab()}{classFieldName}.{propertyName}.Add(builder.Build());");
+            stringBuilder.AppendLine($@"{Cuts.Tab()}{Cuts.Tab()}{classFieldName}.{property.Name}.Add(builder.Build());");
             stringBuilder.AppendLine($@"{Cuts.Tab()}{Cuts.Tab()}return this;");
             stringBuilder.AppendLine($@"{Cuts.Tab()}}}");
         }
         else
         {
-            stringBuilder.AppendLine($@"{Cuts.Tab()}public {typeName}Builder {propertyName}(Action<{propertyName}Builder> configure)");
+            stringBuilder.AppendLine($@"{Cuts.Tab()}public {typeName}Builder {property.Name}(Action<{property.PropertyType.Name}Builder> configure)");
             stringBuilder.AppendLine($@"{Cuts.Tab()}{{");
-            stringBuilder.AppendLine($@"{Cuts.Tab()}{Cuts.Tab()}var builder = new {propertyName}Builder();");
+            stringBuilder.AppendLine($@"{Cuts.Tab()}{Cuts.Tab()}var builder = new {property.PropertyType.Name}Builder();");
             stringBuilder.AppendLine($@"{Cuts.Tab()}{Cuts.Tab()}configure(builder);");
-            stringBuilder.AppendLine($@"{Cuts.Tab()}{Cuts.Tab()}{classFieldName}.{propertyName} = builder.Build();");
+            stringBuilder.AppendLine($@"{Cuts.Tab()}{Cuts.Tab()}{classFieldName}.{property.PropertyType.Name} = builder.Build();");
             stringBuilder.AppendLine($@"{Cuts.Tab()}{Cuts.Tab()}return this;");
             stringBuilder.AppendLine($@"{Cuts.Tab()}}}");
         }

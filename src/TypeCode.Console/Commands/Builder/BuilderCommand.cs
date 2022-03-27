@@ -27,9 +27,14 @@ public class BuilderCommand : AsyncCommand<BuilderCommand.Settings>
         var serviceProvider = new TypeCodeConsoleServiceProvider();
         var mode = serviceProvider.GetService<ITypeCodeGenerator<BuilderTypeCodeGeneratorParameter>>();
         var typeProvider = serviceProvider.GetService<ITypeProvider>();
-        var type = typeProvider.TryGetByName(settings.TypeName);
-        var parameter = new BuilderTypeCodeGeneratorParameter { Types = type };
-        System.Console.WriteLine(await mode.GenerateAsync(parameter).ConfigureAwait(false));
+        var types = typeProvider.TryGetByName(settings.TypeName);
+
+        foreach (var type in types)
+        {
+            var parameter = new BuilderTypeCodeGeneratorParameter { Type = type };
+            System.Console.WriteLine(await mode.GenerateAsync(parameter).ConfigureAwait(false));
+        }
+
         return 0;
     }
 }

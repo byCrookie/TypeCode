@@ -45,12 +45,12 @@
             <CheckBox Content="Recursiv"
                       ToolTip="Maps all complex subtypes of class recursivly."
                       Foreground="{StaticResource PrimaryText}"
-                      IsChecked="{Binding MapTree}">
+                      IsChecked="{Binding Recursiv}">
             </CheckBox>
             <CheckBox Content="Single direction"
                       ToolTip="Maps single direction only. (Class to OtherClass, not Class from/to OtherClass)"
                       Foreground="{StaticResource PrimaryText}"
-                      IsChecked="{Binding MapSingleDirectionOnly}">
+                      IsChecked="{Binding SingleDirectionOnly}">
             </CheckBox>
         </StackPanel>
 

@@ -14,7 +14,7 @@ public class MapperTypeCodeGeneratorParameter : ITypeCodeGeneratorParameter
     public MappingType? MapFrom { get; set; }
     public MappingType? MapTo { get; set; }
     public MappingStyle MappingStyle { get; set; }
-    public bool MapTree { get; set; }
-    public bool MapSingleDirectionOnly { get; set; }
+    public bool Recursiv { get; set; }
+    public bool SingleDirectionOnly { get; set; }
     public List<Type> AlreadyMapped { get; set; }
 }

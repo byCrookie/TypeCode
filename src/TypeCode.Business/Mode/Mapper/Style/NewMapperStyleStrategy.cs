@@ -35,7 +35,7 @@ public class NewMapperStyleStrategy : INewMapperStyleStrategy
         GenerateUsingStyle(stringBuilder, firstType, secondType);
         stringBuilder.AppendLine();
 
-        if (!parameter.MapSingleDirectionOnly)
+        if (!parameter.SingleDirectionOnly)
         {
             stringBuilder.AppendLine($"{Cuts.Heading()} {secondType.Type.Name} -> {firstType.Type.Name}, {secondType.Type.FullName} -> {firstType.Type.FullName}");
             stringBuilder.AppendLine();
@@ -43,7 +43,7 @@ public class NewMapperStyleStrategy : INewMapperStyleStrategy
             stringBuilder.AppendLine();
         }
 
-        if (parameter.MapTree)
+        if (parameter.Recursiv)
         {
             MapSubClasses(parameter, stringBuilder);
         }
@@ -66,8 +66,8 @@ public class NewMapperStyleStrategy : INewMapperStyleStrategy
                 )
                 {
                     AlreadyMapped = parameter.AlreadyMapped,
-                    MapTree = parameter.MapTree,
-                    MapSingleDirectionOnly = parameter.MapSingleDirectionOnly
+                    Recursiv = parameter.Recursiv,
+                    SingleDirectionOnly = parameter.SingleDirectionOnly
                 }));
             }
         }
@@ -80,8 +80,8 @@ public class NewMapperStyleStrategy : INewMapperStyleStrategy
             )
             {
                 AlreadyMapped = parameter.AlreadyMapped,
-                MapTree = parameter.MapTree,
-                MapSingleDirectionOnly = parameter.MapSingleDirectionOnly
+                Recursiv = parameter.Recursiv,
+                SingleDirectionOnly = parameter.SingleDirectionOnly
             }));
         }
     }

@@ -16,4 +16,5 @@ public class TestClass
     public DateTime DateTime { get; set; }
     public List<TypeCode.Business.Tests.Test1.TestClass> SubTestClasses { get; set; }
     public TypeCode.Business.Tests.Test1.TestClass? SubTestClass { get; set; }
+    public TypeCode.Business.Tests.Test1.TestClass? SubTestClass2 { get; set; }
 }

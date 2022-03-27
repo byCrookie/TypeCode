@@ -12,6 +12,7 @@
     <Grid Margin="5">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -30,8 +31,16 @@
                 <KeyBinding Key="Enter" Command="{Binding GenerateCommand}" />
             </TextBox.InputBindings>
         </TextBox>
+        
+        <StackPanel Margin="0,5,0,0" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+            <CheckBox Content="Recursiv"
+                      ToolTip="Create builders for all complex subtypes of class recursivly."
+                      Foreground="{StaticResource PrimaryText}"
+                      IsChecked="{Binding Recursive}">
+            </CheckBox>
+        </StackPanel>
 
-        <Grid Margin="0,5,0,0" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+        <Grid Margin="0,5,0,0" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
             
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
@@ -56,8 +65,8 @@
             </c:CustomIconButton>
         </Grid>
 
-        <Separator Margin="0,5,0,5" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" />
+        <Separator Margin="0,5,0,5" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" />
 
-        <c:CustomButton Grid.Row="3" Grid.Column="1" Command="{Binding GenerateCommand}">Generate</c:CustomButton>
+        <c:CustomButton Grid.Row="4" Grid.Column="1" Command="{Binding GenerateCommand}">Generate</c:CustomButton>
     </Grid>
 </UserControl>

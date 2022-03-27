@@ -66,7 +66,8 @@ public class BuilderViewModel : Reactive, IAsyncNavigatedTo
 
         var parameter = new BuilderTypeCodeGeneratorParameter
         {
-            Types = selectedType is not null ? new List<Type>{selectedType} : new List<Type>()
+            Type = selectedType,
+            Recursive = Recursive
         };
             
         var result = await _builderGenerator.GenerateAsync(parameter).ConfigureAwait(true);
@@ -84,5 +85,10 @@ public class BuilderViewModel : Reactive, IAsyncNavigatedTo
     public string? Output {
         get => Get<string?>();
         private set => Set(value);
+    }
+    
+    public bool Recursive {
+        get => Get<bool>();
+        set => Set(value);
     }
 }

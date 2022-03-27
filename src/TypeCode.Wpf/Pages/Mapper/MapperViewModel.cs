@@ -82,8 +82,8 @@ public class MapperViewModel : Reactive, IAsyncNavigatedTo
             )
             {
                 MappingStyle = _mappingStyle,
-                MapTree = MapTree,
-                MapSingleDirectionOnly = MapSingleDirectionOnly,
+                Recursiv = Recursiv,
+                SingleDirectionOnly = SingleDirectionOnly
             };
 
             var result = await _mapperGenerator.GenerateAsync(parameter).ConfigureAwait(true);
@@ -119,13 +119,13 @@ public class MapperViewModel : Reactive, IAsyncNavigatedTo
         private set => Set(value);
     }
     
-    public bool MapTree
+    public bool Recursiv
     {
         get => Get<bool>();
         set => Set(value);
     }
     
-    public bool MapSingleDirectionOnly
+    public bool SingleDirectionOnly
     {
         get => Get<bool>();
         set => Set(value);

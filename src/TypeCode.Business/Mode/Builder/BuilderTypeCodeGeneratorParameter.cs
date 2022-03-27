@@ -4,8 +4,11 @@ public class BuilderTypeCodeGeneratorParameter : ITypeCodeGeneratorParameter
 {
     public BuilderTypeCodeGeneratorParameter()
     {
-        Types = new List<Type>();
+        AlreadyMapped = new List<Type>();
     }
     
-    public IEnumerable<Type> Types { get; set; }
+    public Type? Type { get; set; }
+    
+    public List<Type> AlreadyMapped { get; }
+    public bool Recursive { get; set; }
 }

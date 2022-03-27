@@ -28,7 +28,7 @@ public class ExistingMapperStyleStrategy : IExistingMapperStyleStrategy
         GenerateUsingStyle(stringBuilder, firstType, secondType);
         stringBuilder.AppendLine();
         
-        if (!parameter.MapSingleDirectionOnly)
+        if (!parameter.SingleDirectionOnly)
         {
             stringBuilder.AppendLine($"{Cuts.Heading()} {secondType.Type.Name} -> {firstType.Type.Name}, {secondType.Type.FullName} -> {firstType.Type.FullName}");
             stringBuilder.AppendLine();
@@ -36,7 +36,7 @@ public class ExistingMapperStyleStrategy : IExistingMapperStyleStrategy
             stringBuilder.AppendLine();
         }
 
-        if (parameter.MapTree)
+        if (parameter.Recursiv)
         {
             MapSubClasses(parameter, stringBuilder);
         }
@@ -59,8 +59,8 @@ public class ExistingMapperStyleStrategy : IExistingMapperStyleStrategy
                 )
                 {
                     AlreadyMapped = parameter.AlreadyMapped,
-                    MapTree = parameter.MapTree,
-                    MapSingleDirectionOnly = parameter.MapSingleDirectionOnly
+                    Recursiv = parameter.Recursiv,
+                    SingleDirectionOnly = parameter.SingleDirectionOnly
                 }));
             }
         }
@@ -72,8 +72,8 @@ public class ExistingMapperStyleStrategy : IExistingMapperStyleStrategy
                 new MappingType(complexProperty.PropertyType)
             ){
                 AlreadyMapped = parameter.AlreadyMapped,
-                MapTree = parameter.MapTree,
-                MapSingleDirectionOnly = parameter.MapSingleDirectionOnly
+                Recursiv = parameter.Recursiv,
+                SingleDirectionOnly = parameter.SingleDirectionOnly
             }));
         }
     }
