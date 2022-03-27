@@ -31,7 +31,7 @@
                 <KeyBinding Key="Enter" Command="{Binding GenerateCommand}" />
             </TextBox.InputBindings>
         </TextBox>
-        
+
         <StackPanel Margin="0,5,0,0" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
             <CheckBox Content="Recursive"
                       ToolTip="Create builders for all complex subtypes of class recursively."
@@ -41,7 +41,7 @@
         </StackPanel>
 
         <Grid Margin="0,5,0,0" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
-            
+
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
@@ -50,17 +50,19 @@
                 <RowDefinition Height="*"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
-            
-            <TextBox
-                Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0"
-                Padding="2" Background="Transparent"
-                BorderThickness="0"
-                Text="{Binding Output, Mode=OneWay}"
-                IsReadOnly="True"
-                TextWrapping="Wrap"
-                VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-            </TextBox>
-            <c:CustomIconButton Grid.Column="0" Grid.Row="1" Command="{Binding CopyToClipboardCommand}">
+
+            <ScrollViewer Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0"
+                          VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                <TextBox
+                    Padding="2" Background="Transparent"
+                    BorderThickness="0"
+                    Text="{Binding Output, Mode=OneWay}"
+                    IsReadOnly="True"
+                    TextWrapping="Wrap"
+                    VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                </TextBox>
+            </ScrollViewer>
+            <c:CustomIconButton Margin="0,5,0,0" Grid.Column="0" Grid.Row="1" Command="{Binding CopyToClipboardCommand}">
                 <Image Source="{StaticResource CopyDrawingImage}" />
             </c:CustomIconButton>
         </Grid>

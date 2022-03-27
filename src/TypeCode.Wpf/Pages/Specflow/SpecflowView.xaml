@@ -61,14 +61,17 @@
                 <RowDefinition Height="*"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
-            <TextBox Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0"
-                     Padding="2" Background="Transparent"
-                     BorderThickness="0"
-                     Text="{Binding Output, Mode=OneWay}"
-                     IsReadOnly="True"
-                     TextWrapping="Wrap"
-                     VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
-            <c:CustomIconButton Grid.Column="0" Grid.Row="1" Command="{Binding CopyToClipboardCommand}">
+            <ScrollViewer Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0"
+                          VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                <TextBox
+                    Padding="2" Background="Transparent"
+                    BorderThickness="0"
+                    Text="{Binding Output, Mode=OneWay}"
+                    IsReadOnly="True"
+                    TextWrapping="Wrap"
+                    VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
+            </ScrollViewer>
+            <c:CustomIconButton Margin="0,5,0,0" Grid.Column="0" Grid.Row="1" Command="{Binding CopyToClipboardCommand}">
                 <Image Source="{StaticResource CopyDrawingImage}" />
             </c:CustomIconButton>
         </Grid>
