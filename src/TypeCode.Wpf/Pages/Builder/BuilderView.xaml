@@ -33,8 +33,8 @@
         </TextBox>
         
         <StackPanel Margin="0,5,0,0" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
-            <CheckBox Content="Recursiv"
-                      ToolTip="Create builders for all complex subtypes of class recursivly."
+            <CheckBox Content="Recursive"
+                      ToolTip="Create builders for all complex subtypes of class recursively."
                       Foreground="{StaticResource PrimaryText}"
                       IsChecked="{Binding Recursive}">
             </CheckBox>
