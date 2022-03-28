@@ -24,10 +24,10 @@
                                      Grid.Row="0" />
         </Grid>
 
-        <Grid ZIndex="2" x:Name="ModalOverlay" Visibility="Collapsed" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Grid ZIndex="2" x:Name="ModalOverlay" Visibility="Collapsed" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <Frame x:Name="ModalFrame"
                    Background="Transparent"
-                   Margin="0" Padding="0" Height="300" Width="500"
+                   Margin="200, 100, 200, 100" Padding="0"
                    NavigationUIVisibility="Hidden" />
         </Grid>
 
