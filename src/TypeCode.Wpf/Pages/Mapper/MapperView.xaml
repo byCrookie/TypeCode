@@ -27,7 +27,7 @@
                  Padding="2" Text="{Binding Input, UpdateSourceTrigger=PropertyChanged}"
                  HorizontalAlignment="Stretch"
                  HorizontalContentAlignment="Stretch"
-                 ToolTip="Input two type names seperated by ','">
+                 ToolTip="Input two type names seperated by ','. Regex is supported.">
             <TextBox.InputBindings>
                 <KeyBinding Key="Enter" Command="{Binding GenerateCommand}" />
             </TextBox.InputBindings>

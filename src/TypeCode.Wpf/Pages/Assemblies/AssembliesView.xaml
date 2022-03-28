@@ -24,7 +24,7 @@
                  Padding="2" Text="{Binding Input, UpdateSourceTrigger=PropertyChanged}"
                  HorizontalAlignment="Stretch"
                  HorizontalContentAlignment="Stretch"
-                 ToolTip="Input type name to search for">
+                 ToolTip="Input type name to search for. Regex is supported.">
             <TextBox.InputBindings>
                 <KeyBinding Key="Enter" Command="{Binding SearchCommand}" />
             </TextBox.InputBindings>
