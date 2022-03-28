@@ -22,16 +22,16 @@ public class TypeProvider : ITypeProvider
                 {
                     path.TypesByNameDictionary = path.AssemblyDirectories
                         .SelectMany(directory => directory.AssemblyCompounds.SelectMany(compund => compund.Types))
-                        .GroupBy(GetNameWithoutGeneric)
+                        .GroupBy(NameBuilder.GetNameWithoutGeneric)
                         .ToDictionary(nameGroup => nameGroup.Key, nameGroup => nameGroup.ToList());
-                    
+
                     LoadedKeys.AddRange(path.TypesByNameDictionary.Keys);
 
                     path.TypesByFullNameDictionary = path.AssemblyDirectories
                         .SelectMany(directory => directory.AssemblyCompounds.SelectMany(compund => compund.Types))
                         .GroupBy(NameBuilder.GetNameWithNamespace)
                         .ToDictionary(nameGroup => nameGroup.Key, nameGroup => nameGroup.ToList());
-                    
+
                     LoadedKeys.AddRange(path.TypesByFullNameDictionary.Keys);
                 }
 
@@ -39,21 +39,21 @@ public class TypeProvider : ITypeProvider
                 {
                     selector.TypesByNameDictionary = selector.AssemblyDirectories
                         .SelectMany(directory => directory.AssemblyCompounds.SelectMany(compund => compund.Types))
-                        .GroupBy(GetNameWithoutGeneric)
+                        .GroupBy(NameBuilder.GetNameWithoutGeneric)
                         .ToDictionary(nameGroup => nameGroup.Key, nameGroup => nameGroup.ToList());
-                    
+
                     LoadedKeys.AddRange(selector.TypesByNameDictionary.Keys);
 
                     selector.TypesByFullNameDictionary = selector.AssemblyDirectories
                         .SelectMany(directory => directory.AssemblyCompounds.SelectMany(compund => compund.Types))
                         .GroupBy(NameBuilder.GetNameWithNamespace)
                         .ToDictionary(nameGroup => nameGroup.Key, nameGroup => nameGroup.ToList());
-                    
+
                     LoadedKeys.AddRange(selector.TypesByFullNameDictionary.Keys);
                 }
             }
         }
-        
+
         await WriteKeysToFileAsync(LoadedKeys).ConfigureAwait(false);
         LoadedKeys.Clear();
 
@@ -64,7 +64,7 @@ public class TypeProvider : ITypeProvider
 
     public bool HasByName(string? name)
     {
-        return !string.IsNullOrEmpty(name) && GetTypesByName(name).Any();
+        return TryGetByName(name).Any();
     }
 
     public IEnumerable<Type> TryGetByName(string? name)
@@ -82,14 +82,29 @@ public class TypeProvider : ITypeProvider
         return GetTypesByCondition(condition);
     }
 
-    private static List<Type> GetTypesFromDicByNames(IReadOnlyCollection<string> names, IDictionaryHolder dictionaryHolder, Func<IDictionaryHolder, IDictionary<string, List<Type>>> dictionary)
+    private static IEnumerable<Type> GetTypesByCondition(Func<Type, bool> condition)
     {
-        if (names.Any(name => dictionary(dictionaryHolder).ContainsKey(name)))
+        return GetTypes(dictionary => GetTypesFromDicByCondition(condition, dictionary));
+    }
+
+    private static IEnumerable<Type> GetTypesByNames(IReadOnlyCollection<string> names)
+    {
+        return GetTypes(dictionary => GetTypesFromDicByNames(names, dictionary));
+    }
+
+    private static IEnumerable<Type> GetTypesByName(string name)
+    {
+        return GetTypes(dictionary => GetTypesFromDicByName(name, dictionary));
+    }
+    
+    private static List<Type> GetTypesFromDicByNames(IReadOnlyCollection<string> names, IDictionary<string, List<Type>> dictionary)
+    {
+        if (names.Any(dictionary.ContainsKey))
         {
             var types = new List<Type>();
             foreach (var name in names)
             {
-                types.AddRange(dictionary(dictionaryHolder)[name]);
+                types.AddRange(dictionary[name]);
             }
 
             return types;
@@ -98,23 +113,18 @@ public class TypeProvider : ITypeProvider
         return new List<Type>();
     }
 
-    private static List<Type> GetTypesFromDicByCondition(Func<Type, bool> condition, IDictionaryHolder dictionaryHolder, Func<IDictionaryHolder, IDictionary<string, List<Type>>> dictionary)
+    private static List<Type> GetTypesFromDicByCondition(Func<Type, bool> condition, IDictionary<string, List<Type>> dictionary)
     {
-        var typesLists = dictionary(dictionaryHolder).Values;
+        var typesLists = dictionary.Values;
         return typesLists.SelectMany(types => types.Where(condition)).ToList();
     }
 
-    private static List<Type> GetTypesFromDicByName(string name, IDictionaryHolder dictionaryHolder, Func<IDictionaryHolder, IDictionary<string, List<Type>>> dictionary)
+    private static List<Type> GetTypesFromDicByName(string name, IDictionary<string, List<Type>> dictionary)
     {
-        return dictionary(dictionaryHolder).ContainsKey(name) ? dictionary(dictionaryHolder)[name] : new List<Type>();
+        return dictionary.ContainsKey(name) ? dictionary[name] : new List<Type>();
     }
 
-    private static string GetNameWithoutGeneric(Type type)
-    {
-        return type.Name.Contains('`') ? type.Name.Remove(type.Name.IndexOf("`", StringComparison.Ordinal), 2) : type.Name;
-    }
-
-    private static IEnumerable<Type> GetTypesByCondition(Func<Type, bool> condition)
+    private static IEnumerable<Type> GetTypes(Func<IDictionary<string, List<Type>>, List<Type>> evaluate)
     {
         if (_configuration is null)
         {
@@ -127,59 +137,13 @@ public class TypeProvider : ITypeProvider
             {
                 foreach (var selector in group.AssemblyPathSelector)
                 {
-                    var types = GetTypesFromDicByCondition(condition, selector, holder => holder.TypesByNameDictionary);
+                    var types = evaluate(selector.TypesByNameDictionary);
                     if (types.Any())
                     {
                         return types;
                     }
-
-                    types = GetTypesFromDicByCondition(condition, selector, holder => holder.TypesByFullNameDictionary);
-                    if (types.Any())
-                    {
-                        return types;
-                    }
-                }
-
-                foreach (var path in group.AssemblyPath)
-                {
-                    var types = GetTypesFromDicByCondition(condition, path, holder => holder.TypesByNameDictionary);
-                    if (types.Any())
-                    {
-                        return types;
-                    }
-
-                    types = GetTypesFromDicByCondition(condition, path, holder => holder.TypesByFullNameDictionary);
-                    if (types.Any())
-                    {
-                        return types;
-                    }
-                }
-            }
-        }
-
-        return Enumerable.Empty<Type>();
-    }
-
-    private static IEnumerable<Type> GetTypesByNames(IReadOnlyCollection<string> names)
-    {
-        if (_configuration is null)
-        {
-            throw new ArgumentNullException($"{typeof(TypeCodeConfiguration)} not yet set");
-        }
-
-        foreach (var root in _configuration.AssemblyRoot)
-        {
-            foreach (var group in root.AssemblyGroup)
-            {
-                foreach (var selector in group.AssemblyPathSelector)
-                {
-                    var types = GetTypesFromDicByNames(names, selector, holder => holder.TypesByNameDictionary);
-                    if (types.Any())
-                    {
-                        return types;
-                    }
-
-                    types = GetTypesFromDicByNames(names, selector, holder => holder.TypesByFullNameDictionary);
+                    
+                    types = evaluate(selector.TypesByFullNameDictionary);
                     if (types.Any())
                     {
                         return types;
@@ -188,59 +152,13 @@ public class TypeProvider : ITypeProvider
 
                 foreach (var path in group.AssemblyPath)
                 {
-                    var types = GetTypesFromDicByNames(names, path, holder => holder.TypesByNameDictionary);
+                    var types = evaluate(path.TypesByNameDictionary);
                     if (types.Any())
                     {
                         return types;
                     }
-
-                    types = GetTypesFromDicByNames(names, path, holder => holder.TypesByFullNameDictionary);
-                    if (types.Any())
-                    {
-                        return types;
-                    }
-                }
-            }
-        }
-
-        return Enumerable.Empty<Type>();
-    }
-
-    private static IEnumerable<Type> GetTypesByName(string name)
-    {
-        if (_configuration is null)
-        {
-            throw new ArgumentNullException($"{typeof(TypeCodeConfiguration)} not yet set");
-        }
-
-        foreach (var root in _configuration.AssemblyRoot)
-        {
-            foreach (var group in root.AssemblyGroup)
-            {
-                foreach (var selector in group.AssemblyPathSelector)
-                {
-                    var types = GetTypesFromDicByName(name, selector, holder => holder.TypesByNameDictionary);
-                    if (types.Any())
-                    {
-                        return types;
-                    }
-
-                    types = GetTypesFromDicByName(name, selector, holder => holder.TypesByFullNameDictionary);
-                    if (types.Any())
-                    {
-                        return types;
-                    }
-                }
-
-                foreach (var path in group.AssemblyPath)
-                {
-                    var types = GetTypesFromDicByName(name, path, holder => holder.TypesByNameDictionary);
-                    if (types.Any())
-                    {
-                        return types;
-                    }
-
-                    types = GetTypesFromDicByName(name, path, holder => holder.TypesByFullNameDictionary);
+                    
+                    types = evaluate(path.TypesByFullNameDictionary);
                     if (types.Any())
                     {
                         return types;
@@ -248,7 +166,8 @@ public class TypeProvider : ITypeProvider
                 }
             }
         }
-
+        
+        
         return Enumerable.Empty<Type>();
     }
 
