@@ -47,7 +47,7 @@ public class ConfigurationLoader : IConfigurationLoader
     {
         foreach (var root in configuration.AssemblyRoot.OrderBy(r => r.Priority))
         {
-            foreach (var group in root.AssemblyGroup)
+            foreach (var group in root.AssemblyGroup.OrderBy(r => r.Priority))
             {
                 var messages = new List<PriorityString>();
 
@@ -67,7 +67,7 @@ public class ConfigurationLoader : IConfigurationLoader
                                 $@"{directory.AbsolutPath}")));
                 });
 
-                foreach (var message in messages.OrderBy(message => message.Priority).ToList())
+                foreach (var message in messages.OrderBy(message => message.Priority))
                 {
                     Log.Information("{0}", message.Message);
                 }
