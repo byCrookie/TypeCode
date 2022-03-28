@@ -17,20 +17,22 @@
         </Grid.RowDefinitions>
 
         <Label Grid.Row="0">Assembly Configuration</Label>
-        
+
         <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,5,0,5">
             <c:CustomButton Margin="5,0,5,0" BorderThickness="0" Command="{Binding FormatCommand}">Format</c:CustomButton>
             <c:CustomButton Margin="0,0,5,0" BorderThickness="0" Command="{Binding ReloadCommand}">Reload</c:CustomButton>
-            <c:CustomButton BorderThickness="0" Command="{Binding SaveCommand}">Save</c:CustomButton>  
+            <c:CustomButton BorderThickness="0" Command="{Binding SaveCommand}">Save</c:CustomButton>
         </StackPanel>
 
-        <TextBox Grid.Row="2"
-                 BorderThickness="0"
-                 Padding="2" Text="{Binding Configuration, UpdateSourceTrigger=PropertyChanged}"
-                 HorizontalAlignment="Stretch"
-                 HorizontalContentAlignment="Stretch"
-                 AcceptsReturn="True"
-                 TextWrapping="Wrap"
-                 AcceptsTab="True" />
+        <ScrollViewer Grid.Row="2" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+            <TextBox
+                BorderThickness="0"
+                Padding="2" Text="{Binding Configuration, UpdateSourceTrigger=PropertyChanged}"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Stretch"
+                AcceptsReturn="True"
+                TextWrapping="Wrap"
+                AcceptsTab="True" />
+        </ScrollViewer>
     </Grid>
 </UserControl>

@@ -31,8 +31,8 @@
         </TextBox>
         <controls:CustomButton Margin="5,0,0,0" Grid.Row="0" Grid.Column="1" Command="{Binding SearchCommand}">Search</controls:CustomButton>
 
-        <ScrollViewer Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" VerticalScrollBarVisibility="Auto"
-                      HorizontalScrollBarVisibility="Auto">
+        <ScrollViewer Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+                      VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
             <ItemsControl ItemsSource="{Binding LoadedAssemblies}"
                           Background="{StaticResource Primary}"
                           BorderThickness="0">
