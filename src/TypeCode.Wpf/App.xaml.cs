@@ -20,7 +20,13 @@ public partial class App
             var options = new LoggerBootStepOptions();
             options.Configuration.WriteTo.Console(LogEventLevel.Debug);
             
-            LogFiles.All.ForEach(File.Delete);
+            LogFilePaths.AllPaths.ForEach(path =>
+            {
+                if (File.Exists(path))
+                {
+                    File.Delete(path);
+                }
+            });
         
             Log.Logger = LoggerConfigurationProvider.Create(options).CreateLogger();
             
@@ -33,7 +39,7 @@ public partial class App
         catch (Exception exception)
         {
             Console.WriteLine(exception);
-            File.AppendAllText(LogFiles.FileFatal, $"{exception.Message} - {exception.InnerException?.Message} | {exception.StackTrace}");
+            File.AppendAllText(LogFilePaths.FileFatal, $"{exception.Message} - {exception.InnerException?.Message} | {exception.StackTrace}");
             throw;
         }
     }

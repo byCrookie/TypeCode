@@ -254,6 +254,6 @@ public class TypeProvider : ITypeProvider
 
     private static Task WriteKeysToFileAsync(IEnumerable<string> keys)
     {
-        return File.AppendAllLinesAsync(LogFiles.IndexedTypes, keys);
+        return File.AppendAllLinesAsync(LogFilePaths.IndexedTypes, keys);
     }
 }

@@ -12,7 +12,7 @@ public static class LoggerConfigurationProvider
             .MinimumLevel.Debug()
             .WriteTo.Debug()
             .WriteTo.Console(LogEventLevel.Information)
-            .WriteTo.File(LogFiles.File, rollOnFileSizeLimit: true, shared: true);
+            .WriteTo.File(LogFilePaths.File, rollOnFileSizeLimit: true, shared: true);
     }
 
     public static LoggerConfiguration Create(LoggerBootStepOptions loggerBootStepOptions)
@@ -22,6 +22,6 @@ public static class LoggerConfigurationProvider
             .MinimumLevel.Debug()
             .WriteTo.Debug()
             .WriteTo.Console(LogEventLevel.Information)
-            .WriteTo.File(LogFiles.File, rollOnFileSizeLimit: true, shared: true);
+            .WriteTo.File(LogFilePaths.File, rollOnFileSizeLimit: true, shared: true);
     }
 }
