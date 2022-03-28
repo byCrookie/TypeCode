@@ -15,7 +15,7 @@
                                                      False="Visible" />
     </UserControl.Resources>
 
-    <Grid>
+    <Grid Margin="5">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"></ColumnDefinition>
             <ColumnDefinition Width="Auto"></ColumnDefinition>
@@ -38,7 +38,7 @@
                      VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
         </ScrollViewer>
 
-        <c:CustomButton Margin="0,0,5,5" Grid.Row="2" Grid.Column="1" Command="{Binding OkCommand}"
+        <c:CustomButton Margin="0,5,0,0" Grid.Row="2" Grid.Column="1" Command="{Binding OkCommand}"
                         BorderBrush="{StaticResource Secondary}">
             Ok
         </c:CustomButton>
