@@ -1,4 +1,5 @@
-﻿using Serilog;
+﻿using System.Text.RegularExpressions;
+using Serilog;
 using TypeCode.Business.Configuration;
 using TypeCode.Business.Format;
 using TypeCode.Business.Logging;
@@ -69,34 +70,63 @@ public class TypeProvider : ITypeProvider
 
     public IEnumerable<Type> TryGetByName(string? name)
     {
-        return !string.IsNullOrEmpty(name) ? GetTypesByName(name) : new List<Type>();
+        if (!string.IsNullOrEmpty(name))
+        {
+            var types = GetTypes(dictionary => GetTypesFromDicByName(name, dictionary)).ToList();
+            
+            if (types.Any())
+            {
+                return types;
+            }
+            
+            return GetTypes(dictionary => GetTypesFromDicByNameUsingRegex(new Regex(name, RegexOptions.Compiled), dictionary));
+        }
+
+        return Enumerable.Empty<Type>();
     }
 
-    public IEnumerable<Type> TryGetByNames(IEnumerable<string> names)
+    public IEnumerable<Type> TryGetByNames(IReadOnlyList<string> names)
     {
-        return GetTypesByNames(names.ToList());
+        if (names.Any())
+        {
+            var types = GetTypes(dictionary => GetTypesFromDicByNames(names, dictionary)).ToList();
+
+            if (types.Any())
+            {
+                return types;
+            }
+
+            var nameRegexes = names.Select(name => new Regex(name, RegexOptions.Compiled)).ToList();
+            return GetTypes(dictionary => GetTypesFromDicByNamesUsingRegex(nameRegexes, dictionary));
+        }
+
+        return Enumerable.Empty<Type>();
     }
 
     public IEnumerable<Type> TryGetTypesByCondition(Func<Type, bool> condition)
     {
-        return GetTypesByCondition(condition);
-    }
-
-    private static IEnumerable<Type> GetTypesByCondition(Func<Type, bool> condition)
-    {
         return GetTypes(dictionary => GetTypesFromDicByCondition(condition, dictionary));
     }
 
-    private static IEnumerable<Type> GetTypesByNames(IReadOnlyCollection<string> names)
+    private static List<Type> GetTypesFromDicByName(string name, IDictionary<string, List<Type>> dictionary)
     {
-        return GetTypes(dictionary => GetTypesFromDicByNames(names, dictionary));
-    }
-
-    private static IEnumerable<Type> GetTypesByName(string name)
-    {
-        return GetTypes(dictionary => GetTypesFromDicByName(name, dictionary));
+        return dictionary.ContainsKey(name) ? dictionary[name] : new List<Type>();
     }
     
+    private static List<Type> GetTypesFromDicByNameUsingRegex(Regex regex, IDictionary<string, List<Type>> dictionary)
+    {
+        var matchingKeys = dictionary.Keys.Where(name =>  regex.IsMatch(name));
+
+        var types = new List<Type>();
+        
+        foreach (var key in matchingKeys)
+        {
+            types.AddRange(dictionary[key]);
+        }
+
+        return types;
+    }
+
     private static List<Type> GetTypesFromDicByNames(IReadOnlyCollection<string> names, IDictionary<string, List<Type>> dictionary)
     {
         if (names.Any(dictionary.ContainsKey))
@@ -113,15 +143,24 @@ public class TypeProvider : ITypeProvider
         return new List<Type>();
     }
 
+    private static List<Type> GetTypesFromDicByNamesUsingRegex(IReadOnlyCollection<Regex> regexes, IDictionary<string, List<Type>> dictionary)
+    {
+        var matchingKeys = dictionary.Keys.Where(name => regexes.Any(regex => regex.IsMatch(name)));
+
+        var types = new List<Type>();
+        
+        foreach (var key in matchingKeys)
+        {
+            types.AddRange(dictionary[key]);
+        }
+
+        return types;
+    }
+
     private static List<Type> GetTypesFromDicByCondition(Func<Type, bool> condition, IDictionary<string, List<Type>> dictionary)
     {
         var typesLists = dictionary.Values;
         return typesLists.SelectMany(types => types.Where(condition)).ToList();
-    }
-
-    private static List<Type> GetTypesFromDicByName(string name, IDictionary<string, List<Type>> dictionary)
-    {
-        return dictionary.ContainsKey(name) ? dictionary[name] : new List<Type>();
     }
 
     private static IEnumerable<Type> GetTypes(Func<IDictionary<string, List<Type>>, List<Type>> evaluate)
@@ -142,7 +181,7 @@ public class TypeProvider : ITypeProvider
                     {
                         return types;
                     }
-                    
+
                     types = evaluate(selector.TypesByFullNameDictionary);
                     if (types.Any())
                     {
@@ -157,7 +196,7 @@ public class TypeProvider : ITypeProvider
                     {
                         return types;
                     }
-                    
+
                     types = evaluate(path.TypesByFullNameDictionary);
                     if (types.Any())
                     {
@@ -166,8 +205,8 @@ public class TypeProvider : ITypeProvider
                 }
             }
         }
-        
-        
+
+
         return Enumerable.Empty<Type>();
     }
 
