@@ -19,7 +19,7 @@ public class AssemblyViewModel : Reactive, IAsyncNavigatedTo
         IModalNavigationService modalNavigationService,
         ITypeProvider typeProvider,
         IConfigurationProvider configurationProvider
-        )
+    )
     {
         _modalNavigationService = modalNavigationService;
         _typeProvider = typeProvider;
@@ -46,7 +46,7 @@ public class AssemblyViewModel : Reactive, IAsyncNavigatedTo
 
     private async Task SearchAsync()
     {
-        var types = _typeProvider.TryGetByName(Input).ToList();
+        var types = _typeProvider.TryGetByName(Input, new TypeEvaluationOptions { Regex = Regex }).ToList();
 
         if (types.Any())
         {
@@ -79,6 +79,12 @@ public class AssemblyViewModel : Reactive, IAsyncNavigatedTo
     public string? Input
     {
         get => Get<string?>();
+        set => Set(value);
+    }
+
+    public bool Regex
+    {
+        get => Get<bool>();
         set => Set(value);
     }
 

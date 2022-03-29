@@ -63,41 +63,37 @@ public class TypeProvider : ITypeProvider
         _configuration = configuration;
     }
 
-    public bool HasByName(string? name)
+    public bool HasByName(string? name, TypeEvaluationOptions? options = null)
     {
-        return TryGetByName(name).Any();
+        return TryGetByName(name, options).Any();
     }
 
-    public IEnumerable<Type> TryGetByName(string? name)
+    public IEnumerable<Type> TryGetByName(string? name, TypeEvaluationOptions? options = null)
     {
         if (!string.IsNullOrEmpty(name))
         {
-            var types = GetTypes(dictionary => GetTypesFromDicByName(name, dictionary)).ToList();
-            
-            if (types.Any())
+            if (options?.Regex ?? false)
             {
-                return types;
+                return GetTypes(dictionary => GetTypesFromDicByNameUsingRegex(new Regex(name, RegexOptions.Compiled), dictionary));
             }
-            
-            return GetTypes(dictionary => GetTypesFromDicByNameUsingRegex(new Regex(name, RegexOptions.Compiled), dictionary));
+
+            return GetTypes(dictionary => GetTypesFromDicByName(name, dictionary));
         }
 
         return Enumerable.Empty<Type>();
     }
 
-    public IEnumerable<Type> TryGetByNames(IReadOnlyList<string> names)
+    public IEnumerable<Type> TryGetByNames(IReadOnlyList<string> names, TypeEvaluationOptions? options = null)
     {
         if (names.Any())
         {
-            var types = GetTypes(dictionary => GetTypesFromDicByNames(names, dictionary)).ToList();
-
-            if (types.Any())
+            if (options?.Regex ?? false)
             {
-                return types;
+                var nameRegexes = names.Select(name => new Regex(name, RegexOptions.Compiled)).ToList();
+                return GetTypes(dictionary => GetTypesFromDicByNamesUsingRegex(nameRegexes, dictionary));
             }
 
-            var nameRegexes = names.Select(name => new Regex(name, RegexOptions.Compiled)).ToList();
-            return GetTypes(dictionary => GetTypesFromDicByNamesUsingRegex(nameRegexes, dictionary));
+            return GetTypes(dictionary => GetTypesFromDicByNames(names, dictionary));
         }
 
         return Enumerable.Empty<Type>();
