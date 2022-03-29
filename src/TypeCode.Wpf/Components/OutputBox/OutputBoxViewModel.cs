@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using AsyncAwaitBestPractices.MVVM;
+using TypeCode.Business.Format;
 using TypeCode.Wpf.Helper.Commands;
 using TypeCode.Wpf.Helper.ViewModel;
 
@@ -11,7 +12,14 @@ public class OutputBoxViewModel : Reactive
     {
         CopyToClipboardCommand = new AsyncRelayCommand(() =>
         {
-            Clipboard.SetText(Output ?? string.Empty);
+            var relevantLines = Output?
+                .Split(Environment.NewLine)
+                .Where(line => !line.StartsWith(Cuts.Point()))
+                .ToList() ?? new List<string>();
+            
+            var relevantOutput = string.Join(Environment.NewLine, relevantLines);
+            
+            Clipboard.SetText(relevantOutput);
             return Task.CompletedTask;
         }, _ => !string.IsNullOrEmpty(Output?.Trim()));
     }
