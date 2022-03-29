@@ -23,7 +23,7 @@ public class SpecflowTypeCodeGenerator : ISpecflowTypeCodeGenerator
 
         foreach (var (key, (header, defaultRow)) in tables)
         {
-            stringBuilder.AppendLine($@"{Cuts.Heading()} {key}");
+            stringBuilder.AppendLine($@"And Entity {key}");
             stringBuilder.AppendLine(header);
             stringBuilder.AppendLine(defaultRow);
             stringBuilder.AppendLine();
