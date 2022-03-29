@@ -19,7 +19,7 @@ public class InputBoxViewModel : Reactive, IAsyncEventHandler<LoadStartEvent>, I
         eventAggregator.Subscribe<LoadStartEvent>(this);
         eventAggregator.Subscribe<LoadEndEvent>(this);
         
-        SearchCommand = new AsyncRelayCommand(() => parameter.ActionAsync(Regex, Input), _ => _loaded);
+        SearchCommand = new AsyncRelayCommand(() => parameter.ActionAsync(Regex, Input), _ => _loaded && !string.IsNullOrEmpty(Input?.Trim()));
     }
     
     public IAsyncCommand SearchCommand { get; set; }
@@ -27,9 +27,13 @@ public class InputBoxViewModel : Reactive, IAsyncEventHandler<LoadStartEvent>, I
     public string? Input
     {
         get => Get<string?>();
-        set => Set(value);
+        set
+        {
+            Set(value);
+            SearchCommand.RaiseCanExecuteChanged();
+        }
     }
-    
+
     public string? ToolTip
     {
         get => Get<string?>();

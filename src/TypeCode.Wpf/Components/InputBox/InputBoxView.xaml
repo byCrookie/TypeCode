@@ -17,7 +17,8 @@
 
         <Border BorderBrush="{StaticResource Accent}"
                 BorderThickness="1"
-                VerticalAlignment="Center">
+                VerticalAlignment="Center"
+                ToolTip="{Binding ToolTip}">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"></ColumnDefinition>
@@ -29,8 +30,7 @@
                          BorderThickness="0"
                          Text="{Binding Input, UpdateSourceTrigger=PropertyChanged}"
                          HorizontalAlignment="Stretch"
-                         HorizontalContentAlignment="Stretch"
-                         ToolTip="{Binding ToolTip}">
+                         HorizontalContentAlignment="Stretch">
                     <TextBox.InputBindings>
                         <KeyBinding Key="Enter" Command="{Binding SearchCommand}" />
                     </TextBox.InputBindings>

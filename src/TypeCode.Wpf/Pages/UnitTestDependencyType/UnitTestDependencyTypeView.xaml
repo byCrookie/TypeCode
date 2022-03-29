@@ -4,8 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:unitTestDependencyType="clr-namespace:TypeCode.Wpf.Pages.UnitTestDependencyType"
-             xmlns:buttons="clr-namespace:TypeCode.Wpf.Components.Buttons"
              xmlns:inputBox="clr-namespace:TypeCode.Wpf.Components.InputBox"
+             xmlns:outputBox="clr-namespace:TypeCode.Wpf.Components.OutputBox"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance unitTestDependencyType:UnitTestDependencyTypeViewModel}">
@@ -14,40 +14,10 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="Auto" />
-        </Grid.ColumnDefinitions>
         
         <inputBox:InputBoxView Grid.Row="0" DataContext="{Binding InputBoxViewModel}"></inputBox:InputBoxView> 
 
-        <Grid Margin="0,5,0,0" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
-
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"></ColumnDefinition>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-            </Grid.RowDefinitions>
-
-            <ScrollViewer Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0"
-                          HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                <TextBox
-                    Padding="2" Background="Transparent"
-                    BorderThickness="0"
-                    Text="{Binding Output, Mode=OneWay}"
-                    IsReadOnly="True"
-                    TextWrapping="Wrap"
-                    VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
-            </ScrollViewer>
-            <buttons:CustomIconButton Margin="0,5,0,0" Grid.Column="0" Grid.Row="1" Command="{Binding CopyToClipboardCommand}">
-                <Image Source="{StaticResource CopyDrawingImage}" />
-            </buttons:CustomIconButton>
-        </Grid>
+        <outputBox:OutputBoxView Margin="0,5,0,0" Grid.Row="1" DataContext="{Binding OutputBoxViewModel}"></outputBox:OutputBoxView>
     </Grid>
 </UserControl>

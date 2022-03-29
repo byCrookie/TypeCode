@@ -1,10 +1,10 @@
-﻿using System.Windows;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using TypeCode.Business.Mode;
 using TypeCode.Business.Mode.Mapper;
 using TypeCode.Business.Mode.Mapper.Style;
 using TypeCode.Business.TypeEvaluation;
 using TypeCode.Wpf.Components.InputBox;
+using TypeCode.Wpf.Components.OutputBox;
 using TypeCode.Wpf.Helper.Commands;
 using TypeCode.Wpf.Helper.Navigation.Contract;
 using TypeCode.Wpf.Helper.Navigation.Service;
@@ -24,7 +24,8 @@ public class MapperViewModel : Reactive, IAsyncNavigatedTo
         ITypeCodeGenerator<MapperTypeCodeGeneratorParameter> mapperGenerator,
         ITypeProvider typeProvider,
         ITypeSelectionWizardStarter typeSelectionWizardStarter,
-        IInputBoxViewModelFactory inputBoxViewModelFactory
+        IInputBoxViewModelFactory inputBoxViewModelFactory,
+        IOutputBoxViewModelFactory outputBoxViewModelFactory
     )
     {
         _mapperGenerator = mapperGenerator;
@@ -37,13 +38,9 @@ public class MapperViewModel : Reactive, IAsyncNavigatedTo
         };
 
         InputBoxViewModel = inputBoxViewModelFactory.Create(parameter);
+        OutputBoxViewModel = outputBoxViewModelFactory.Create();
 
         StyleCommand = new AsyncRelayCommand<MappingStyle>(StyleAsync);
-        CopyToClipboardCommand = new AsyncRelayCommand(() =>
-        {
-            Clipboard.SetText(Output ?? string.Empty);
-            return Task.CompletedTask;
-        });
     }
 
     public Task OnNavigatedToAsync(NavigationContext context)
@@ -95,12 +92,11 @@ public class MapperViewModel : Reactive, IAsyncNavigatedTo
             };
 
             var result = await _mapperGenerator.GenerateAsync(parameter).ConfigureAwait(true);
-            Output = result;
+            OutputBoxViewModel?.SetOutput(result);
         }
     }
 
     public ICommand StyleCommand { get; set; }
-    public ICommand CopyToClipboardCommand { get; set; }
 
     public InputBoxViewModel? InputBoxViewModel
     {
@@ -108,10 +104,10 @@ public class MapperViewModel : Reactive, IAsyncNavigatedTo
         set => Set(value);
     }
 
-    public string? Output
+    public OutputBoxViewModel? OutputBoxViewModel
     {
-        get => Get<string?>();
-        private set => Set(value);
+        get => Get<OutputBoxViewModel?>();
+        set => Set(value);
     }
 
     public bool NewStyle

@@ -1,10 +1,8 @@
-﻿using System.Windows;
-using System.Windows.Input;
-using TypeCode.Business.Mode;
+﻿using TypeCode.Business.Mode;
 using TypeCode.Business.Mode.Composer;
 using TypeCode.Business.TypeEvaluation;
 using TypeCode.Wpf.Components.InputBox;
-using TypeCode.Wpf.Helper.Commands;
+using TypeCode.Wpf.Components.OutputBox;
 using TypeCode.Wpf.Helper.Navigation.Contract;
 using TypeCode.Wpf.Helper.Navigation.Service;
 using TypeCode.Wpf.Helper.ViewModel;
@@ -22,7 +20,8 @@ public class ComposerViewModel : Reactive, IAsyncNavigatedTo
         ITypeCodeGenerator<ComposerTypeCodeGeneratorParameter> composerTypeGenerator,
         ITypeProvider typeProvider,
         ITypeSelectionWizardStarter typeSelectionWizardStarter,
-        IInputBoxViewModelFactory inputBoxViewModelFactory
+        IInputBoxViewModelFactory inputBoxViewModelFactory,
+        IOutputBoxViewModelFactory outputBoxViewModelFactory
     )
     {
         _composerTypeGenerator = composerTypeGenerator;
@@ -35,12 +34,7 @@ public class ComposerViewModel : Reactive, IAsyncNavigatedTo
         };
 
         InputBoxViewModel = inputBoxViewModelFactory.Create(parameter);
-        
-        CopyToClipboardCommand = new AsyncRelayCommand(() =>
-        {
-            Clipboard.SetText(Output ?? string.Empty);
-            return Task.CompletedTask;
-        });
+        OutputBoxViewModel = outputBoxViewModelFactory.Create();
     }
 
     public Task OnNavigatedToAsync(NavigationContext context)
@@ -80,25 +74,19 @@ public class ComposerViewModel : Reactive, IAsyncNavigatedTo
                 _typeProvider.TryGetTypesByCondition(typ => typ.GetInterface(selectedType.Name) != null).ToList()
             ));
             var result = await _composerTypeGenerator.GenerateAsync(parameter).ConfigureAwait(true);
-            Output = result;
-        }
-        else
-        {
-            Output = null; 
+            OutputBoxViewModel?.SetOutput(result);
         }
     }
-    
-    public ICommand CopyToClipboardCommand { get; set; }
-    
+
     public InputBoxViewModel? InputBoxViewModel
     {
         get => Get<InputBoxViewModel?>();
         set => Set(value);
     }
-
-    public string? Output
+    
+    public OutputBoxViewModel? OutputBoxViewModel
     {
-        get => Get<string?>();
-        private set => Set(value);
+        get => Get<OutputBoxViewModel?>();
+        set => Set(value);
     }
 }
