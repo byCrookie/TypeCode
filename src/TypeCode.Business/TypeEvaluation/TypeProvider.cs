@@ -85,18 +85,12 @@ public class TypeProvider : ITypeProvider
 
     public IEnumerable<Type> TryGetByNames(IReadOnlyList<string> names, TypeEvaluationOptions? options = null)
     {
-        if (names.Any())
+        var types = new List<Type>();
+        foreach (var name in names)
         {
-            if (options?.Regex ?? false)
-            {
-                var nameRegexes = names.Select(name => new Regex(name, RegexOptions.Compiled)).ToList();
-                return GetTypes(dictionary => GetTypesFromDicByNamesUsingRegex(nameRegexes, dictionary));
-            }
-
-            return GetTypes(dictionary => GetTypesFromDicByNames(names, dictionary));
+            types.AddRange(TryGetByName(name, options));
         }
-
-        return Enumerable.Empty<Type>();
+        return types;
     }
 
     public IEnumerable<Type> TryGetTypesByCondition(Func<Type, bool> condition)
@@ -108,43 +102,13 @@ public class TypeProvider : ITypeProvider
     {
         return dictionary.ContainsKey(name) ? dictionary[name] : new List<Type>();
     }
-    
+
     private static List<Type> GetTypesFromDicByNameUsingRegex(Regex regex, IDictionary<string, List<Type>> dictionary)
     {
-        var matchingKeys = dictionary.Keys.Where(name =>  regex.IsMatch(name));
+        var matchingKeys = dictionary.Keys.Where(name => regex.IsMatch(name));
 
         var types = new List<Type>();
-        
-        foreach (var key in matchingKeys)
-        {
-            types.AddRange(dictionary[key]);
-        }
 
-        return types;
-    }
-
-    private static List<Type> GetTypesFromDicByNames(IReadOnlyCollection<string> names, IDictionary<string, List<Type>> dictionary)
-    {
-        if (names.Any(dictionary.ContainsKey))
-        {
-            var types = new List<Type>();
-            foreach (var name in names)
-            {
-                types.AddRange(dictionary[name]);
-            }
-
-            return types;
-        }
-
-        return new List<Type>();
-    }
-
-    private static List<Type> GetTypesFromDicByNamesUsingRegex(IReadOnlyCollection<Regex> regexes, IDictionary<string, List<Type>> dictionary)
-    {
-        var matchingKeys = dictionary.Keys.Where(name => regexes.Any(regex => regex.IsMatch(name)));
-
-        var types = new List<Type>();
-        
         foreach (var key in matchingKeys)
         {
             types.AddRange(dictionary[key]);
