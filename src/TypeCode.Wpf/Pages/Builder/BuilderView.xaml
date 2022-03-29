@@ -4,7 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:builder="clr-namespace:TypeCode.Wpf.Pages.Builder"
-             xmlns:c="clr-namespace:TypeCode.Wpf.Helper.Controls"
+             xmlns:components="clr-namespace:TypeCode.Wpf.Components"
+             xmlns:buttons="clr-namespace:TypeCode.Wpf.Components.Buttons"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance builder:BuilderViewModel}">
@@ -62,13 +63,13 @@
                     VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                 </TextBox>
             </ScrollViewer>
-            <c:CustomIconButton Margin="0,5,0,0" Grid.Column="0" Grid.Row="1" Command="{Binding CopyToClipboardCommand}">
+            <buttons:CustomIconButton Margin="0,5,0,0" Grid.Column="0" Grid.Row="1" Command="{Binding CopyToClipboardCommand}">
                 <Image Source="{StaticResource CopyDrawingImage}" />
-            </c:CustomIconButton>
+            </buttons:CustomIconButton>
         </Grid>
 
         <Separator Margin="0,5,0,5" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" />
 
-        <c:CustomButton Grid.Row="4" Grid.Column="1" Command="{Binding GenerateCommand}">Generate</c:CustomButton>
+        <buttons:CustomButton Grid.Row="4" Grid.Column="1" Command="{Binding GenerateCommand}">Generate</buttons:CustomButton>
     </Grid>
 </UserControl>

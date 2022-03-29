@@ -3,8 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:c="clr-namespace:TypeCode.Wpf.Helper.Controls"
              xmlns:assemblyRoot="clr-namespace:TypeCode.Wpf.Pages.Common.Configuration.AssemblyRoot"
+             xmlns:components="clr-namespace:TypeCode.Wpf.Components"
+             xmlns:buttons="clr-namespace:TypeCode.Wpf.Components.Buttons"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance assemblyRoot:AssemblyRootWizardViewModel}">
@@ -41,7 +42,7 @@
                      HorizontalAlignment="Stretch"
                      HorizontalContentAlignment="Stretch"
                      AcceptsReturn="False" />
-            <c:CustomButton Grid.Row="0" Grid.Column="3" BorderThickness="0" Command="{Binding SelectCommand}">Select</c:CustomButton>
+            <buttons:CustomButton Grid.Row="0" Grid.Column="3" BorderThickness="0" Command="{Binding SelectCommand}">Select</buttons:CustomButton>
             <Label Grid.Row="2" Grid.Column="0">Priority</Label>
             <TextBox Grid.Row="2" Grid.Column="1"
                      BorderThickness="1"

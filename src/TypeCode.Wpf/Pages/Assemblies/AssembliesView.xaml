@@ -4,7 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:assemblies="clr-namespace:TypeCode.Wpf.Pages.Assemblies"
-             xmlns:controls="clr-namespace:TypeCode.Wpf.Helper.Controls"
+             xmlns:components="clr-namespace:TypeCode.Wpf.Components"
+             xmlns:buttons="clr-namespace:TypeCode.Wpf.Components.Buttons"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance assemblies:AssemblyViewModel}">
@@ -46,7 +47,7 @@
         </Border>
 
 
-        <controls:CustomButton Margin="5,0,0,0" Grid.Row="0" Grid.Column="1" Command="{Binding SearchCommand}">Search</controls:CustomButton>
+        <buttons:CustomButton Margin="5,0,0,0" Grid.Row="0" Grid.Column="1" Command="{Binding SearchCommand}">Search</buttons:CustomButton>
 
         <ScrollViewer Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
                       VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">

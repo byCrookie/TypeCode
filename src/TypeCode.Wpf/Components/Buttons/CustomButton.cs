@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace TypeCode.Wpf.Helper.Controls;
+namespace TypeCode.Wpf.Components.Buttons;
 
 public class CustomButton : Button
 {

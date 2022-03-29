@@ -1,4 +1,4 @@
-﻿namespace TypeCode.Wpf.Helper.Controls;
+﻿namespace TypeCode.Wpf.Components.Buttons;
 
 public class CustomIconButton : CustomButton
 {
