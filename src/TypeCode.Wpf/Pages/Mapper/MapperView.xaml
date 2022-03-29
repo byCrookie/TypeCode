@@ -5,8 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:style="clr-namespace:TypeCode.Business.Mode.Mapper.Style;assembly=TypeCode.Business"
              xmlns:mapper="clr-namespace:TypeCode.Wpf.Pages.Mapper"
-             xmlns:components="clr-namespace:TypeCode.Wpf.Components"
              xmlns:buttons="clr-namespace:TypeCode.Wpf.Components.Buttons"
+             xmlns:inputBox="clr-namespace:TypeCode.Wpf.Components.InputBox"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance mapper:MapperViewModel}">
@@ -19,22 +19,10 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="Auto" />
-        </Grid.ColumnDefinitions>
 
-        <TextBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
-                 Padding="2" Text="{Binding Input, UpdateSourceTrigger=PropertyChanged}"
-                 HorizontalAlignment="Stretch"
-                 HorizontalContentAlignment="Stretch"
-                 ToolTip="Input two type names seperated by ','. Regex is supported.">
-            <TextBox.InputBindings>
-                <KeyBinding Key="Enter" Command="{Binding GenerateCommand}" />
-            </TextBox.InputBindings>
-        </TextBox>
+        <inputBox:InputBoxView Grid.Row="0" DataContext="{Binding InputBoxViewModel}"></inputBox:InputBoxView> 
 
-        <StackPanel Margin="0,5,0,0" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+        <StackPanel Margin="0,5,0,0" Grid.Row="1" Grid.Column="0">
             <RadioButton GroupName="Style" IsChecked="True" Command="{Binding StyleCommand}"
                          CommandParameter="{x:Static style:MappingStyle.New}">
                 Map to new
@@ -55,7 +43,7 @@
             </CheckBox>
         </StackPanel>
 
-        <Grid Margin="0,5,0,0" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
+        <Grid Margin="0,5,0,0" Grid.Row="2" Grid.Column="0">
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
@@ -80,9 +68,5 @@
                 <Image Source="{StaticResource CopyDrawingImage}" />
             </buttons:CustomIconButton>
         </Grid>
-
-        <Separator Margin="0,5,0,5" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" />
-
-        <buttons:CustomButton Grid.Row="4" Grid.Column="1" Command="{Binding GenerateCommand}">Generate</buttons:CustomButton>
     </Grid>
 </UserControl>

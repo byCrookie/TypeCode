@@ -16,7 +16,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <inputBox:InputBoxView DataContext="{Binding SearchBoxViewModel}"></inputBox:InputBoxView> 
+        <inputBox:InputBoxView DataContext="{Binding InputBoxViewModel}"></inputBox:InputBoxView> 
 
         <ScrollViewer Grid.Row="2"
                       VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">

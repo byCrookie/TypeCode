@@ -37,7 +37,7 @@ public class AssemblyViewModel : Reactive, IAsyncNavigatedTo, IAsyncEventHandler
             ToolTip = "Input type name to search for."
         };
 
-        SearchBoxViewModel = inputBoxViewModelFactory.Create(parameter);
+        InputBoxViewModel = inputBoxViewModelFactory.Create(parameter);
     }
 
     public Task OnNavigatedToAsync(NavigationContext context)
@@ -50,7 +50,7 @@ public class AssemblyViewModel : Reactive, IAsyncNavigatedTo, IAsyncEventHandler
         return Task.CompletedTask;
     }
 
-    public InputBoxViewModel? SearchBoxViewModel
+    public InputBoxViewModel? InputBoxViewModel
     {
         get => Get<InputBoxViewModel?>();
         set => Set(value);
@@ -82,7 +82,7 @@ public class AssemblyViewModel : Reactive, IAsyncNavigatedTo, IAsyncEventHandler
 
     private async Task SearchAsync(bool regex, string? input)
     {
-        var types = _typeProvider.TryGetByName(input, new TypeEvaluationOptions { Regex = regex }).ToList();
+        var types = _typeProvider.TryGetByName(input?.Trim(), new TypeEvaluationOptions { Regex = regex }).ToList();
 
         if (types.Any())
         {

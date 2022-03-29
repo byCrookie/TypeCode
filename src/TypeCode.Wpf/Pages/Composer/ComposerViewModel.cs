@@ -3,6 +3,7 @@ using System.Windows.Input;
 using TypeCode.Business.Mode;
 using TypeCode.Business.Mode.Composer;
 using TypeCode.Business.TypeEvaluation;
+using TypeCode.Wpf.Components.InputBox;
 using TypeCode.Wpf.Helper.Commands;
 using TypeCode.Wpf.Helper.Navigation.Contract;
 using TypeCode.Wpf.Helper.Navigation.Service;
@@ -20,14 +21,21 @@ public class ComposerViewModel : Reactive, IAsyncNavigatedTo
     public ComposerViewModel(
         ITypeCodeGenerator<ComposerTypeCodeGeneratorParameter> composerTypeGenerator,
         ITypeProvider typeProvider,
-        ITypeSelectionWizardStarter typeSelectionWizardStarter
+        ITypeSelectionWizardStarter typeSelectionWizardStarter,
+        IInputBoxViewModelFactory inputBoxViewModelFactory
     )
     {
         _composerTypeGenerator = composerTypeGenerator;
         _typeProvider = typeProvider;
         _typeSelectionWizardStarter = typeSelectionWizardStarter;
 
-        GenerateCommand = new AsyncRelayCommand(GenerateAsync);
+        var parameter = new InputBoxViewModelParameter("Generate", GenerateAsync)
+        {
+            ToolTip = "Input type name."
+        };
+
+        InputBoxViewModel = inputBoxViewModelFactory.Create(parameter);
+        
         CopyToClipboardCommand = new AsyncRelayCommand(() =>
         {
             Clipboard.SetText(Output ?? string.Empty);
@@ -40,9 +48,9 @@ public class ComposerViewModel : Reactive, IAsyncNavigatedTo
         return Task.CompletedTask;
     }
 
-    private async Task GenerateAsync()
+    private async Task GenerateAsync(bool regex, string? input)
     {
-        var types = _typeProvider.TryGetByName(Input?.Trim()).ToList();
+        var types = _typeProvider.TryGetByName(input?.Trim(), new TypeEvaluationOptions{ Regex = regex }).ToList();
         var selectedType = types.FirstOrDefault();
 
         if (types.Count > 1)
@@ -79,13 +87,12 @@ public class ComposerViewModel : Reactive, IAsyncNavigatedTo
             Output = null; 
         }
     }
-
-    public ICommand GenerateCommand { get; set; }
+    
     public ICommand CopyToClipboardCommand { get; set; }
-
-    public string? Input
+    
+    public InputBoxViewModel? InputBoxViewModel
     {
-        get => Get<string?>();
+        get => Get<InputBoxViewModel?>();
         set => Set(value);
     }
 

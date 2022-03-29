@@ -4,6 +4,7 @@ using TypeCode.Business.Mode;
 using TypeCode.Business.Mode.Mapper;
 using TypeCode.Business.Mode.Mapper.Style;
 using TypeCode.Business.TypeEvaluation;
+using TypeCode.Wpf.Components.InputBox;
 using TypeCode.Wpf.Helper.Commands;
 using TypeCode.Wpf.Helper.Navigation.Contract;
 using TypeCode.Wpf.Helper.Navigation.Service;
@@ -22,14 +23,21 @@ public class MapperViewModel : Reactive, IAsyncNavigatedTo
     public MapperViewModel(
         ITypeCodeGenerator<MapperTypeCodeGeneratorParameter> mapperGenerator,
         ITypeProvider typeProvider,
-        ITypeSelectionWizardStarter typeSelectionWizardStarter
+        ITypeSelectionWizardStarter typeSelectionWizardStarter,
+        IInputBoxViewModelFactory inputBoxViewModelFactory
     )
     {
         _mapperGenerator = mapperGenerator;
         _typeProvider = typeProvider;
         _typeSelectionWizardStarter = typeSelectionWizardStarter;
+        
+        var parameter = new InputBoxViewModelParameter("Generate", GenerateAsync)
+        {
+            ToolTip = "Input two type names seperated by ','."
+        };
 
-        GenerateCommand = new AsyncRelayCommand(GenerateAsync);
+        InputBoxViewModel = inputBoxViewModelFactory.Create(parameter);
+
         StyleCommand = new AsyncRelayCommand<MappingStyle>(StyleAsync);
         CopyToClipboardCommand = new AsyncRelayCommand(() =>
         {
@@ -51,11 +59,11 @@ public class MapperViewModel : Reactive, IAsyncNavigatedTo
         return Task.CompletedTask;
     }
 
-    private async Task GenerateAsync()
+    private async Task GenerateAsync(bool regex, string? input)
     {
-        var inputNames = Input?.Split(',').Select(name => name.Trim()).ToList() ?? new List<string>();
-        var types = _typeProvider.TryGetByName(inputNames.FirstOrDefault())
-            .Union(_typeProvider.TryGetByName(inputNames.LastOrDefault()))
+        var inputNames = input?.Split(',').Select(name => name.Trim()).ToList() ?? new List<string>();
+        var types = _typeProvider.TryGetByName(inputNames.FirstOrDefault(), new TypeEvaluationOptions { Regex = regex })
+            .Union(_typeProvider.TryGetByName(inputNames.LastOrDefault(), new TypeEvaluationOptions { Regex = regex }))
             .ToList();
 
         if (types.Any())
@@ -91,13 +99,12 @@ public class MapperViewModel : Reactive, IAsyncNavigatedTo
         }
     }
 
-    public ICommand GenerateCommand { get; set; }
     public ICommand StyleCommand { get; set; }
     public ICommand CopyToClipboardCommand { get; set; }
 
-    public string? Input
+    public InputBoxViewModel? InputBoxViewModel
     {
-        get => Get<string?>();
+        get => Get<InputBoxViewModel?>();
         set => Set(value);
     }
 
@@ -118,13 +125,13 @@ public class MapperViewModel : Reactive, IAsyncNavigatedTo
         get => Get<bool>();
         private set => Set(value);
     }
-    
+
     public bool Recursiv
     {
         get => Get<bool>();
         set => Set(value);
     }
-    
+
     public bool SingleDirectionOnly
     {
         get => Get<bool>();

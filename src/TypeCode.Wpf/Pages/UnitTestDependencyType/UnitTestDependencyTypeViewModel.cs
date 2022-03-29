@@ -3,6 +3,7 @@ using System.Windows.Input;
 using TypeCode.Business.Mode;
 using TypeCode.Business.Mode.UnitTestDependency.Type;
 using TypeCode.Business.TypeEvaluation;
+using TypeCode.Wpf.Components.InputBox;
 using TypeCode.Wpf.Helper.Commands;
 using TypeCode.Wpf.Helper.Navigation.Contract;
 using TypeCode.Wpf.Helper.Navigation.Service;
@@ -20,30 +21,37 @@ public class UnitTestDependencyTypeViewModel : Reactive, IAsyncNavigatedTo
     public UnitTestDependencyTypeViewModel(
         ITypeCodeGenerator<UnitTestDependencyTypeGeneratorParameter> unitTestDependencyTypeGenerator,
         ITypeProvider typeProvider,
-        ITypeSelectionWizardStarter typeSelectionWizardStarter
+        ITypeSelectionWizardStarter typeSelectionWizardStarter,
+        IInputBoxViewModelFactory inputBoxViewModelFactory
     )
     {
         _unitTestDependencyTypeGenerator = unitTestDependencyTypeGenerator;
         _typeProvider = typeProvider;
         _typeSelectionWizardStarter = typeSelectionWizardStarter;
 
-        GenerateCommand = new AsyncRelayCommand(GenerateAsync);
+        var parameter = new InputBoxViewModelParameter("Generate", GenerateAsync)
+        {
+            ToolTip = "Input type name. Multiple type names can be seperated by using ','."
+        };
+
+        InputBoxViewModel = inputBoxViewModelFactory.Create(parameter);
+        
         CopyToClipboardCommand = new AsyncRelayCommand(() =>
         {
             Clipboard.SetText(Output ?? string.Empty);
             return Task.CompletedTask;
         });
     }
-        
+
     public Task OnNavigatedToAsync(NavigationContext context)
     {
         return Task.CompletedTask;
     }
 
-    private async Task GenerateAsync()
+    private async Task GenerateAsync(bool regex, string? input)
     {
-        var inputNames = Input?.Split(',').Select(name => name.Trim()).ToList() ?? new List<string>();
-        var types = _typeProvider.TryGetByNames(inputNames).ToList();
+        var inputNames = input?.Split(',').Select(name => name.Trim()).ToList() ?? new List<string>();
+        var types = _typeProvider.TryGetByNames(inputNames, new TypeEvaluationOptions { Regex = regex }).ToList();
 
         if (types.Count > 1)
         {
@@ -63,25 +71,26 @@ public class UnitTestDependencyTypeViewModel : Reactive, IAsyncNavigatedTo
                 return Task.CompletedTask;
             }).ConfigureAwait(true);
         }
-            
+
         var parameter = new UnitTestDependencyTypeGeneratorParameter
         {
             Types = types
         };
-            
+
         var result = await _unitTestDependencyTypeGenerator.GenerateAsync(parameter).ConfigureAwait(true);
         Output = result;
     }
-        
-    public ICommand GenerateCommand { get; set; }
+
     public ICommand CopyToClipboardCommand { get; set; }
 
-    public string? Input {
-        get => Get<string?>();
+    public InputBoxViewModel? InputBoxViewModel
+    {
+        get => Get<InputBoxViewModel?>();
         set => Set(value);
     }
 
-    public string? Output {
+    public string? Output
+    {
         get => Get<string?>();
         private set => Set(value);
     }

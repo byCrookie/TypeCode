@@ -4,8 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:specflow="clr-namespace:TypeCode.Wpf.Pages.Specflow"
-             xmlns:components="clr-namespace:TypeCode.Wpf.Components"
              xmlns:buttons="clr-namespace:TypeCode.Wpf.Components.Buttons"
+             xmlns:inputBox="clr-namespace:TypeCode.Wpf.Components.InputBox"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance specflow:SpecflowViewModel}">
 
@@ -17,22 +17,10 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="Auto" />
-        </Grid.ColumnDefinitions>
+        
+        <inputBox:InputBoxView Grid.Row="0" DataContext="{Binding InputBoxViewModel}"></inputBox:InputBoxView> 
 
-        <TextBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
-                 Padding="2" Text="{Binding Input, UpdateSourceTrigger=PropertyChanged}"
-                 HorizontalAlignment="Stretch"
-                 HorizontalContentAlignment="Stretch"
-                 ToolTip="Input type name. Multiple type names can be seperated by using ','. Regex is supported.">
-            <TextBox.InputBindings>
-                <KeyBinding Key="Enter" Command="{Binding GenerateCommand}" />
-            </TextBox.InputBindings>
-        </TextBox>
-
-        <StackPanel Margin="0,5,0,5" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
+        <StackPanel Margin="0,5,0,5" Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
             <CheckBox Content="Include Strings"
                       ToolTip="Nullable strings can't be detected automatically with option required. Decision is yours."
                       Foreground="{StaticResource PrimaryText}"
@@ -52,7 +40,7 @@
             </CheckBox>
         </StackPanel>
 
-        <Grid Margin="0,5,0,0" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
+        <Grid Margin="0,5,0,0" Grid.Row="2" Grid.Column="0">
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
@@ -76,9 +64,5 @@
                 <Image Source="{StaticResource CopyDrawingImage}" />
             </buttons:CustomIconButton>
         </Grid>
-
-        <Separator Margin="0,5,0,5" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" />
-
-        <buttons:CustomButton Grid.Row="4" Grid.Column="1" Command="{Binding GenerateCommand}">Generate</buttons:CustomButton>
     </Grid>
 </UserControl>
