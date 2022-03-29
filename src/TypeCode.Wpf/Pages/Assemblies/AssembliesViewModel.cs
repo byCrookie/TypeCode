@@ -1,14 +1,16 @@
 ﻿using TypeCode.Business.Configuration;
 using TypeCode.Business.TypeEvaluation;
 using TypeCode.Wpf.Application;
-using TypeCode.Wpf.Components.SearchBox;
+using TypeCode.Wpf.Components.InputBox;
 using TypeCode.Wpf.Helper.Event;
+using TypeCode.Wpf.Helper.Navigation.Contract;
 using TypeCode.Wpf.Helper.Navigation.Modal.Service;
+using TypeCode.Wpf.Helper.Navigation.Service;
 using TypeCode.Wpf.Helper.ViewModel;
 
 namespace TypeCode.Wpf.Pages.Assemblies;
 
-public class AssemblyViewModel : Reactive, IAsyncEventHandler<LoadEndEvent>
+public class AssemblyViewModel : Reactive, IAsyncNavigatedTo, IAsyncEventHandler<LoadEndEvent>
 {
     private readonly IModalNavigationService _modalNavigationService;
     private readonly ITypeProvider _typeProvider;
@@ -18,7 +20,7 @@ public class AssemblyViewModel : Reactive, IAsyncEventHandler<LoadEndEvent>
         IModalNavigationService modalNavigationService,
         ITypeProvider typeProvider,
         IConfigurationProvider configurationProvider,
-        ISearchBoxViewModelFactory searchBoxViewModelFactory,
+        IInputBoxViewModelFactory inputBoxViewModelFactory,
         IEventAggregator eventAggregator
     )
     {
@@ -27,10 +29,55 @@ public class AssemblyViewModel : Reactive, IAsyncEventHandler<LoadEndEvent>
         _configurationProvider = configurationProvider;
 
         LoadedAssemblies = new List<string>();
-        
+
         eventAggregator.Subscribe<LoadEndEvent>(this);
 
-        SearchBoxViewModel = searchBoxViewModelFactory.Create(SearchAsync);
+        var parameter = new InputBoxViewModelParameter("Search", SearchAsync)
+        {
+            ToolTip = "Input type name to search for."
+        };
+
+        SearchBoxViewModel = inputBoxViewModelFactory.Create(parameter);
+    }
+
+    public Task OnNavigatedToAsync(NavigationContext context)
+    {
+        if (_configurationProvider.IsSet())
+        {
+            LoadAssemblies();
+        }
+
+        return Task.CompletedTask;
+    }
+
+    public InputBoxViewModel? SearchBoxViewModel
+    {
+        get => Get<InputBoxViewModel?>();
+        set => Set(value);
+    }
+
+    public List<string>? LoadedAssemblies
+    {
+        get => Get<List<string>?>();
+        private set => Set(value);
+    }
+
+    public Task HandleAsync(LoadEndEvent e)
+    {
+        LoadAssemblies();
+        return Task.CompletedTask;
+    }
+
+    private void LoadAssemblies()
+    {
+        var configuration = _configurationProvider.Get();
+        LoadedAssemblies = configuration.AssemblyRoot
+            .OrderBy(r => r.Priority)
+            .SelectMany(r => r.AssemblyGroup)
+            .SelectMany(r => r.PriorityAssemblyList)
+            .OrderBy(r => r.Priority)
+            .Select(r => $"{r.Priority} {r.Message}")
+            .ToList();
     }
 
     private async Task SearchAsync(bool regex, string? input)
@@ -61,30 +108,5 @@ public class AssemblyViewModel : Reactive, IAsyncEventHandler<LoadEndEvent>
                        $"{Environment.NewLine}- Type was not loaded because of error while executing TypeCode"
             }).ConfigureAwait(true);
         }
-    }
-
-    public SearchBoxViewModel? SearchBoxViewModel
-    {
-        get => Get<SearchBoxViewModel?>();
-        set => Set(value);
-    }
-
-    public List<string>? LoadedAssemblies
-    {
-        get => Get<List<string>?>();
-        private set => Set(value);
-    }
-
-    public Task HandleAsync(LoadEndEvent e)
-    {
-        var configuration = _configurationProvider.GetConfiguration();
-        LoadedAssemblies = configuration.AssemblyRoot
-            .OrderBy(r => r.Priority)
-            .SelectMany(r => r.AssemblyGroup)
-            .SelectMany(r => r.PriorityAssemblyList)
-            .OrderBy(r => r.Priority)
-            .Select(r => $"{r.Priority} {r.Message}")
-            .ToList();
-        return Task.CompletedTask;
     }
 }

@@ -2,6 +2,7 @@
 
 public interface IConfigurationProvider
 {
-    void SetConfiguration(TypeCodeConfiguration configuration);
-    TypeCodeConfiguration GetConfiguration();
+    void Set(TypeCodeConfiguration configuration);
+    TypeCodeConfiguration Get();
+    bool IsSet();
 }

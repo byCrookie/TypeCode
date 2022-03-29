@@ -4,12 +4,12 @@ public class ConfigurationProvider : IConfigurationProvider
 {
 	private static TypeCodeConfiguration? _configuration;
 
-	public void SetConfiguration(TypeCodeConfiguration? configuration)
+	public void Set(TypeCodeConfiguration? configuration)
 	{
 		_configuration = configuration;
 	}
 
-	public TypeCodeConfiguration GetConfiguration()
+	public TypeCodeConfiguration Get()
 	{
 		if (_configuration is null)
 		{
@@ -17,5 +17,10 @@ public class ConfigurationProvider : IConfigurationProvider
 		}
 		
 		return _configuration;
+	}
+
+	public bool IsSet()
+	{
+		return _configuration != null;
 	}
 }

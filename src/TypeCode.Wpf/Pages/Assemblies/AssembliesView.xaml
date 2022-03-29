@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:assemblies="clr-namespace:TypeCode.Wpf.Pages.Assemblies"
-             xmlns:searchBox="clr-namespace:TypeCode.Wpf.Components.SearchBox"
+             xmlns:inputBox="clr-namespace:TypeCode.Wpf.Components.InputBox"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance assemblies:AssemblyViewModel}">
@@ -16,7 +16,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <searchBox:SearchBoxView ToolTip="Input type name to search for." DataContext="{Binding SearchBoxViewModel}"></searchBox:SearchBoxView> 
+        <inputBox:InputBoxView DataContext="{Binding SearchBoxViewModel}"></inputBox:InputBoxView> 
 
         <ScrollViewer Grid.Row="2"
                       VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">

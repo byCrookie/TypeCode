@@ -4,25 +4,39 @@ using TypeCode.Wpf.Helper.Commands;
 using TypeCode.Wpf.Helper.Event;
 using TypeCode.Wpf.Helper.ViewModel;
 
-namespace TypeCode.Wpf.Components.SearchBox;
+namespace TypeCode.Wpf.Components.InputBox;
 
-public class SearchBoxViewModel : Reactive, IAsyncEventHandler<LoadStartEvent>, IAsyncEventHandler<LoadEndEvent>
+public class InputBoxViewModel : Reactive, IAsyncEventHandler<LoadStartEvent>, IAsyncEventHandler<LoadEndEvent>
 {
     private bool _loaded;
 
-    public SearchBoxViewModel(IEventAggregator eventAggregator, Func<bool, string?, Task> searchAsync)
+    public InputBoxViewModel(IEventAggregator eventAggregator, InputBoxViewModelParameter parameter)
     {
         _loaded = true;
-        
+        ActionName = parameter.ActionName;
+        ToolTip = parameter.ToolTip;
+
         eventAggregator.Subscribe<LoadStartEvent>(this);
         eventAggregator.Subscribe<LoadEndEvent>(this);
         
-        SearchCommand = new AsyncRelayCommand(() => searchAsync(Regex, Input), _ => _loaded);
+        SearchCommand = new AsyncRelayCommand(() => parameter.ActionAsync(Regex, Input), _ => _loaded);
     }
     
     public IAsyncCommand SearchCommand { get; set; }
     
     public string? Input
+    {
+        get => Get<string?>();
+        set => Set(value);
+    }
+    
+    public string? ToolTip
+    {
+        get => Get<string?>();
+        set => Set(value);
+    }
+    
+    public string? ActionName
     {
         get => Get<string?>();
         set => Set(value);

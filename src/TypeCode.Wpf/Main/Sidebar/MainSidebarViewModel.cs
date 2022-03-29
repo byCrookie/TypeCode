@@ -105,7 +105,7 @@ public class MainSidebarViewModel : Reactive, IAsyncEventHandler<LoadEndEvent>
         {
             var configuration = await _configurationLoader.LoadAsync().ConfigureAwait(false);
             await _typeProvider.InitalizeAsync(configuration).ConfigureAwait(false);
-            _configurationProvider.SetConfiguration(configuration);
+            _configurationProvider.Set(configuration);
             await _eventAggregator.PublishAsync(new LoadEndEvent()).ConfigureAwait(false);
         }).ConfigureAwait(false);
     }

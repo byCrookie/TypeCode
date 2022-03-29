@@ -114,6 +114,6 @@ internal class TypeCode<TContext> : ITypeCode<TContext> where TContext : BootCon
 
     private Task InitializeTypesAsync()
     {
-        return _typeProvider.InitalizeAsync(_configurationProvider.GetConfiguration());
+        return _typeProvider.InitalizeAsync(_configurationProvider.Get());
     }
 }
