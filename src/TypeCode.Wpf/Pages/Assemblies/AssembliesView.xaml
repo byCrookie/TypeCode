@@ -16,7 +16,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <searchBox:SearchBoxView DataContext="{Binding SearchBoxViewModel}"></searchBox:SearchBoxView> 
+        <searchBox:SearchBoxView ToolTip="Input type name to search for." DataContext="{Binding SearchBoxViewModel}"></searchBox:SearchBoxView> 
 
         <ScrollViewer Grid.Row="2"
                       VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
