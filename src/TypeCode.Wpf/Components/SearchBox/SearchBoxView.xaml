@@ -1,0 +1,45 @@
+﻿<UserControl x:Class="TypeCode.Wpf.Components.SearchBox.SearchBoxView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:searchBox="clr-namespace:TypeCode.Wpf.Components.SearchBox"
+             xmlns:buttons="clr-namespace:TypeCode.Wpf.Components.Buttons"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="300"
+             d:DataContext="{d:DesignInstance searchBox:SearchBoxViewModel}">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+        <Border BorderBrush="{StaticResource Accent}"
+                BorderThickness="1"
+                VerticalAlignment="Center">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <TextBox Grid.Column="0"
+                         Margin="4"
+                         BorderThickness="0"
+                         Text="{Binding Input, UpdateSourceTrigger=PropertyChanged}"
+                         HorizontalAlignment="Stretch"
+                         HorizontalContentAlignment="Stretch">
+                    <TextBox.InputBindings>
+                        <KeyBinding Key="Enter" Command="{Binding SearchCommand}" />
+                    </TextBox.InputBindings>
+                </TextBox>
+                <CheckBox Margin="2,0,2,0" Grid.Column="1" ToolTip="Regex" VerticalAlignment="Center"
+                          IsChecked="{Binding Regex}">
+                </CheckBox>
+            </Grid>
+        </Border>
+
+        <buttons:CustomButton Margin="5,0,0,0" Grid.Row="0" Grid.Column="1" Command="{Binding SearchCommand}">Search</buttons:CustomButton>
+    </Grid>
+</UserControl>

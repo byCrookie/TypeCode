@@ -1,15 +1,14 @@
-﻿using System.Windows.Input;
-using TypeCode.Business.Configuration;
+﻿using TypeCode.Business.Configuration;
 using TypeCode.Business.TypeEvaluation;
-using TypeCode.Wpf.Helper.Commands;
-using TypeCode.Wpf.Helper.Navigation.Contract;
+using TypeCode.Wpf.Application;
+using TypeCode.Wpf.Components.SearchBox;
+using TypeCode.Wpf.Helper.Event;
 using TypeCode.Wpf.Helper.Navigation.Modal.Service;
-using TypeCode.Wpf.Helper.Navigation.Service;
 using TypeCode.Wpf.Helper.ViewModel;
 
 namespace TypeCode.Wpf.Pages.Assemblies;
 
-public class AssemblyViewModel : Reactive, IAsyncNavigatedTo
+public class AssemblyViewModel : Reactive, IAsyncEventHandler<LoadEndEvent>
 {
     private readonly IModalNavigationService _modalNavigationService;
     private readonly ITypeProvider _typeProvider;
@@ -18,7 +17,9 @@ public class AssemblyViewModel : Reactive, IAsyncNavigatedTo
     public AssemblyViewModel(
         IModalNavigationService modalNavigationService,
         ITypeProvider typeProvider,
-        IConfigurationProvider configurationProvider
+        IConfigurationProvider configurationProvider,
+        ISearchBoxViewModelFactory searchBoxViewModelFactory,
+        IEventAggregator eventAggregator
     )
     {
         _modalNavigationService = modalNavigationService;
@@ -26,27 +27,15 @@ public class AssemblyViewModel : Reactive, IAsyncNavigatedTo
         _configurationProvider = configurationProvider;
 
         LoadedAssemblies = new List<string>();
+        
+        eventAggregator.Subscribe<LoadEndEvent>(this);
 
-        SearchCommand = new AsyncRelayCommand(SearchAsync);
+        SearchBoxViewModel = searchBoxViewModelFactory.Create(SearchAsync);
     }
 
-    public Task OnNavigatedToAsync(NavigationContext context)
+    private async Task SearchAsync(bool regex, string? input)
     {
-        var configuration = _configurationProvider.GetConfiguration();
-        LoadedAssemblies = configuration.AssemblyRoot
-            .OrderBy(r => r.Priority)
-            .SelectMany(r => r.AssemblyGroup)
-            .SelectMany(r => r.PriorityAssemblyList)
-            .OrderBy(r => r.Priority)
-            .Select(r => $"{r.Priority} {r.Message}")
-            .ToList();
-
-        return Task.CompletedTask;
-    }
-
-    private async Task SearchAsync()
-    {
-        var types = _typeProvider.TryGetByName(Input, new TypeEvaluationOptions { Regex = Regex }).ToList();
+        var types = _typeProvider.TryGetByName(input, new TypeEvaluationOptions { Regex = regex }).ToList();
 
         if (types.Any())
         {
@@ -55,7 +44,7 @@ public class AssemblyViewModel : Reactive, IAsyncNavigatedTo
                                                  $"{Environment.NewLine}-{type.Assembly.Location}");
             await _modalNavigationService.OpenModalAsync(new ModalParameter
             {
-                Title = $"Valid Type-Name {Input}",
+                Title = $"Valid Type-Name {input}",
                 Text = $"Types: {Environment.NewLine}{string.Join($"{Environment.NewLine}{Environment.NewLine}", typeNames)}"
             }).ConfigureAwait(true);
         }
@@ -63,8 +52,8 @@ public class AssemblyViewModel : Reactive, IAsyncNavigatedTo
         {
             await _modalNavigationService.OpenModalAsync(new ModalParameter
             {
-                Title = $"Invalid Type-Name {Input}",
-                Text = $"No types were found for name {Input}. {Environment.NewLine}" +
+                Title = $"Invalid Type-Name {input}",
+                Text = $"No types were found for name {input}. {Environment.NewLine}" +
                        $"{Environment.NewLine}Possible Reasons:" +
                        $"{Environment.NewLine}- Wrong typename" +
                        $"{Environment.NewLine}- Type does not exist in configured assemblies" +
@@ -74,17 +63,9 @@ public class AssemblyViewModel : Reactive, IAsyncNavigatedTo
         }
     }
 
-    public ICommand SearchCommand { get; set; }
-
-    public string? Input
+    public SearchBoxViewModel? SearchBoxViewModel
     {
-        get => Get<string?>();
-        set => Set(value);
-    }
-
-    public bool Regex
-    {
-        get => Get<bool>();
+        get => Get<SearchBoxViewModel?>();
         set => Set(value);
     }
 
@@ -92,5 +73,18 @@ public class AssemblyViewModel : Reactive, IAsyncNavigatedTo
     {
         get => Get<List<string>?>();
         private set => Set(value);
+    }
+
+    public Task HandleAsync(LoadEndEvent e)
+    {
+        var configuration = _configurationProvider.GetConfiguration();
+        LoadedAssemblies = configuration.AssemblyRoot
+            .OrderBy(r => r.Priority)
+            .SelectMany(r => r.AssemblyGroup)
+            .SelectMany(r => r.PriorityAssemblyList)
+            .OrderBy(r => r.Priority)
+            .Select(r => $"{r.Priority} {r.Message}")
+            .ToList();
+        return Task.CompletedTask;
     }
 }
