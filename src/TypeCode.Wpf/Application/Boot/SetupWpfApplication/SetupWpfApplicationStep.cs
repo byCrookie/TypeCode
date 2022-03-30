@@ -14,10 +14,11 @@ public class SetupWpfApplicationStep<TContext> : ISetupWpfApplicationStep<TConte
             typeof(System.Windows.Documents.Hyperlink),
             System.Windows.Documents.Hyperlink.RequestNavigateEvent,
             new System.Windows.Navigation.RequestNavigateEventHandler(
-                (_, en) => Process.Start(new ProcessStartInfo(
-                    en.Uri.ToString()
-                ) { UseShellExecute = true })
-            )
+                (_, en) =>
+                {
+                    Process.Start(new ProcessStartInfo(en.Uri.ToString()) { UseShellExecute = true });
+                    en.Handled = true;
+                })
         );
 
         return Task.CompletedTask;

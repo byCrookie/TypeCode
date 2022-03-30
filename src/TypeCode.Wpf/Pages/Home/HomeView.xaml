@@ -14,6 +14,7 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="3*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
 
         <Image Height="300" Width="300" Source="../../icon.ico" Grid.Row="1" Grid.RowSpan="2"></Image>
@@ -22,5 +23,14 @@
                Foreground="{StaticResource PrimaryText}" Content="TypeCode" />
         <Label HorizontalAlignment="Center" Grid.Row="3" FontSize="40"
                Foreground="{StaticResource PrimaryText}" Content="{Binding Version}" />
+
+        <StackPanel Opacity="0.8" Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Label Content="Copyright © 2022 by byCrookie," />
+            <TextBlock Margin="-5,0,0,0" Foreground="{StaticResource PrimaryText}">
+                <Hyperlink NavigateUri="https://github.com/byCrookie/TypeCode">
+                    <Label Content="https://github.com/byCrookie/TypeCode"></Label>
+                </Hyperlink>
+            </TextBlock>
+        </StackPanel>
     </Grid>
 </UserControl>
