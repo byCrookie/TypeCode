@@ -11,14 +11,15 @@ public class HomeViewModel : Reactive, IAsyncEventHandler<VersionLoadedEvent>
         eventAggregator.Subscribe<VersionLoadedEvent>(this);
     }
 
-    public bool Recursive
+    public string? Version
     {
-        get => Get<bool>();
+        get => Get<string?>();
         set => Set(value);
     }
 
     public Task HandleAsync(VersionLoadedEvent e)
     {
-       return Task.CompletedTask;
+        Version = e.Version;
+        return Task.CompletedTask;
     }
 }
