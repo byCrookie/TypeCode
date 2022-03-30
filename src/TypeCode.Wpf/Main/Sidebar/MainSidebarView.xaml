@@ -5,10 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:sidebar="clr-namespace:TypeCode.Wpf.Main.Sidebar"
              xmlns:converters="clr-namespace:TypeCode.Wpf.Helper.Converters"
-             xmlns:c="clr-namespace:TypeCode.Wpf.Components"
              xmlns:buttons="clr-namespace:TypeCode.Wpf.Components.Buttons"
              mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance sidebar:MainSidebarViewModel}">
+             d:DesignHeight="600" d:DesignWidth="1000" d:DataContext="{d:DesignInstance sidebar:MainSidebarViewModel}">
 
     <UserControl.Resources>
 
@@ -54,63 +53,69 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <buttons:CustomButton Grid.Row="0"
-                        Style="{StaticResource TabButtonStyle}"
-                        Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.Specflow}}"
-                        Command="{Binding SpecflowNavigationCommand}"
-                        Content="Specflow" />
+                              Style="{StaticResource TabButtonStyle}"
+                              Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.Home}}"
+                              Command="{Binding HomeNavigationCommand}"
+                              Content="Home" />
         <buttons:CustomButton Grid.Row="1"
-                        Style="{StaticResource TabButtonStyle}"
-                        Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.UnitTestType}}"
-                        Command="{Binding UnitTestDependencyTypeNavigationCommand}"
-                        Content="Unit-Test (type)" />
+                              Style="{StaticResource TabButtonStyle}"
+                              Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.Specflow}}"
+                              Command="{Binding SpecflowNavigationCommand}"
+                              Content="Specflow" />
         <buttons:CustomButton Grid.Row="2"
-                        Style="{StaticResource TabButtonStyle}"
-                        Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.UnitTestManually}}"
-                        Command="{Binding UnitTestDependencyManuallyNavigationCommand}"
-                        Content="Unit-Test (manually)" />
+                              Style="{StaticResource TabButtonStyle}"
+                              Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.UnitTestType}}"
+                              Command="{Binding UnitTestDependencyTypeNavigationCommand}"
+                              Content="Unit-Test (type)" />
         <buttons:CustomButton Grid.Row="3"
-                        Style="{StaticResource TabButtonStyle}"
-                        Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.Composer}}"
-                        Command="{Binding ComposerNavigationCommand}"
-                        Content="Composer" />
+                              Style="{StaticResource TabButtonStyle}"
+                              Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.UnitTestManually}}"
+                              Command="{Binding UnitTestDependencyManuallyNavigationCommand}"
+                              Content="Unit-Test (manually)" />
         <buttons:CustomButton Grid.Row="4"
-                        Style="{StaticResource TabButtonStyle}"
-                        Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.Mapper}}"
-                        Command="{Binding MapperNavigationCommand}"
-                        Content="Mapper" />
+                              Style="{StaticResource TabButtonStyle}"
+                              Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.Composer}}"
+                              Command="{Binding ComposerNavigationCommand}"
+                              Content="Composer" />
         <buttons:CustomButton Grid.Row="5"
-                        Style="{StaticResource TabButtonStyle}"
-                        Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.Builder}}"
-                        Command="{Binding BuilderNavigationCommand}"
-                        Content="Builder" />
+                              Style="{StaticResource TabButtonStyle}"
+                              Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.Mapper}}"
+                              Command="{Binding MapperNavigationCommand}"
+                              Content="Mapper" />
         <buttons:CustomButton Grid.Row="6"
-                        Style="{StaticResource TabButtonStyle}"
-                        Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.Assembly}}"
-                        Command="{Binding AssemblyNavigationCommand}"
-                        Content="Assemblies" />
+                              Style="{StaticResource TabButtonStyle}"
+                              Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.Builder}}"
+                              Command="{Binding BuilderNavigationCommand}"
+                              Content="Builder" />
+        <buttons:CustomButton Grid.Row="7"
+                              Style="{StaticResource TabButtonStyle}"
+                              Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.Assembly}}"
+                              Command="{Binding AssemblyNavigationCommand}"
+                              Content="Assemblies" />
 
-        <DockPanel Visibility="Visible" Margin="5,0,0,0" Grid.Row="8" HorizontalAlignment="Left">
+        <DockPanel Visibility="Visible" Margin="5,0,0,0" Grid.Row="9" HorizontalAlignment="Left">
             <buttons:InverseCustomButton MaxHeight="30" DockPanel.Dock="Left"
-                            Height="30"
-                            MinWidth="30"
-                            Width="30"
-                            ToolTip="Invalidate Cache and Reload"
-                            Padding="5"
-                            Command="{Binding InvalidateAndReloadCommand}">
-                <Image Source="{StaticResource ReloadDrawingImage}"/>
+                                         Height="30"
+                                         MinWidth="30"
+                                         Width="30"
+                                         ToolTip="Invalidate Cache and Reload"
+                                         Padding="5"
+                                         Command="{Binding InvalidateAndReloadCommand}">
+                <Image Source="{StaticResource ReloadDrawingImage}" />
             </buttons:InverseCustomButton>
         </DockPanel>
 
-        <buttons:CustomButton Grid.Row="9"
-                        Style="{StaticResource SettingsButtonStyle}"
-                        Command="{Binding OpenSettingsCommand}"
-                        Content="Settings" />
+        <buttons:CustomButton Grid.Row="10"
+                              Style="{StaticResource SettingsButtonStyle}"
+                              Command="{Binding OpenSettingsCommand}"
+                              Content="Settings" />
     </Grid>
 
 </UserControl>

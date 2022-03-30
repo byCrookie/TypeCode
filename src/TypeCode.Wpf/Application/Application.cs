@@ -8,6 +8,7 @@ using TypeCode.Business.Configuration;
 using TypeCode.Business.TypeEvaluation;
 using TypeCode.Wpf.Helper.Event;
 using TypeCode.Wpf.Helper.Navigation.Modal.Service;
+using TypeCode.Wpf.Helper.Navigation.Service;
 using TypeCode.Wpf.Helper.Thread;
 using TypeCode.Wpf.Main;
 
@@ -55,7 +56,7 @@ public class Application<TContext> : IApplication<TContext> where TContext : Boo
         });
         
         var mainViewModel = _factory.Create<MainViewModel>();
-
+        mainViewModel.OnNavigatedToAsync(new NavigationContext());
         mainWindow.DataContext = mainViewModel;
 
         Task.Run(LoadAssembliesAsync, cancellationToken);

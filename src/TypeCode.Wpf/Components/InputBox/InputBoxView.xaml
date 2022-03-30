@@ -32,7 +32,7 @@
                          HorizontalAlignment="Stretch"
                          HorizontalContentAlignment="Stretch">
                     <TextBox.InputBindings>
-                        <KeyBinding Key="Enter" Command="{Binding SearchCommand}" />
+                        <KeyBinding Key="Enter" Command="{Binding ActionCommand}" />
                     </TextBox.InputBindings>
                 </TextBox>
                 <CheckBox Margin="5,0,5,0" Grid.Column="1" ToolTip="Regex" VerticalAlignment="Center"
@@ -41,6 +41,6 @@
         </Border>
 
         <buttons:CustomButton Content="{Binding ActionName}" Margin="5,0,0,0" Grid.Row="0" Grid.Column="1"
-                              Command="{Binding SearchCommand}" />
+                              Command="{Binding ActionCommand}" />
     </Grid>
 </UserControl>

@@ -1,5 +1,4 @@
 ﻿using System.Windows.Input;
-using System.Windows.Threading;
 using AsyncAwaitBestPractices;
 using Framework.Time;
 using Serilog;
@@ -7,7 +6,6 @@ using TypeCode.Business.Version;
 using TypeCode.Wpf.Application;
 using TypeCode.Wpf.Helper.Commands;
 using TypeCode.Wpf.Helper.Event;
-using TypeCode.Wpf.Helper.Thread;
 using TypeCode.Wpf.Helper.ViewModel;
 
 namespace TypeCode.Wpf.Main.Content;

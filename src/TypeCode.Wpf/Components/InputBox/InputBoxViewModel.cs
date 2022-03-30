@@ -19,10 +19,10 @@ public class InputBoxViewModel : Reactive, IAsyncEventHandler<LoadStartEvent>, I
         eventAggregator.Subscribe<LoadStartEvent>(this);
         eventAggregator.Subscribe<LoadEndEvent>(this);
         
-        SearchCommand = new AsyncRelayCommand(() => parameter.ActionAsync(Regex, Input), _ => _loaded && !string.IsNullOrEmpty(Input?.Trim()));
+        ActionCommand = new AsyncRelayCommand(() => parameter.ActionAsync(Regex, Input), _ => _loaded && !string.IsNullOrEmpty(Input?.Trim()));
     }
     
-    public IAsyncCommand SearchCommand { get; set; }
+    public IAsyncCommand ActionCommand { get; set; }
     
     public string? Input
     {
@@ -30,7 +30,7 @@ public class InputBoxViewModel : Reactive, IAsyncEventHandler<LoadStartEvent>, I
         set
         {
             Set(value);
-            SearchCommand.RaiseCanExecuteChanged();
+            ActionCommand.RaiseCanExecuteChanged();
         }
     }
 
@@ -55,14 +55,14 @@ public class InputBoxViewModel : Reactive, IAsyncEventHandler<LoadStartEvent>, I
     public Task HandleAsync(LoadStartEvent e)
     {
         _loaded = false;
-        SearchCommand.RaiseCanExecuteChanged();
+        ActionCommand.RaiseCanExecuteChanged();
         return Task.CompletedTask;
     }
     
     public Task HandleAsync(LoadEndEvent e)
     {
         _loaded = true;
-        SearchCommand.RaiseCanExecuteChanged();
+        ActionCommand.RaiseCanExecuteChanged();
         return Task.CompletedTask;
     }
 }

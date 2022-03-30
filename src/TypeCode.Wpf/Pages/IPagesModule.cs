@@ -3,6 +3,7 @@ using TypeCode.Wpf.Pages.Assemblies;
 using TypeCode.Wpf.Pages.Builder;
 using TypeCode.Wpf.Pages.Common;
 using TypeCode.Wpf.Pages.Composer;
+using TypeCode.Wpf.Pages.Home;
 using TypeCode.Wpf.Pages.Mapper;
 using TypeCode.Wpf.Pages.Specflow;
 using TypeCode.Wpf.Pages.TypeSelection;
@@ -21,6 +22,7 @@ namespace TypeCode.Wpf.Pages;
 [Import(typeof(IAssembliesModule))]
 [Import(typeof(ITypeSelectionModule))]
 [Import(typeof(ICommonWizardModule))]
+[Import(typeof(IHomeModule))]
 public interface IPagesModule
 {
 }

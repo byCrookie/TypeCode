@@ -7,6 +7,7 @@ using TypeCode.Business.TypeEvaluation;
 using TypeCode.Wpf.Application;
 using TypeCode.Wpf.Helper.Commands;
 using TypeCode.Wpf.Helper.Event;
+using TypeCode.Wpf.Helper.Navigation.Contract;
 using TypeCode.Wpf.Helper.Navigation.Service;
 using TypeCode.Wpf.Helper.Navigation.Wizard.Complex;
 using TypeCode.Wpf.Helper.ViewModel;
@@ -14,6 +15,7 @@ using TypeCode.Wpf.Pages.Assemblies;
 using TypeCode.Wpf.Pages.Builder;
 using TypeCode.Wpf.Pages.Common.Configuration;
 using TypeCode.Wpf.Pages.Composer;
+using TypeCode.Wpf.Pages.Home;
 using TypeCode.Wpf.Pages.Mapper;
 using TypeCode.Wpf.Pages.Specflow;
 using TypeCode.Wpf.Pages.UnitTestDependencyManually;
@@ -21,7 +23,7 @@ using TypeCode.Wpf.Pages.UnitTestDependencyType;
 
 namespace TypeCode.Wpf.Main.Sidebar;
 
-public class MainSidebarViewModel : Reactive, IAsyncEventHandler<LoadEndEvent>
+public class MainSidebarViewModel : Reactive, IAsyncNavigatedTo, IAsyncEventHandler<LoadEndEvent>
 {
     private readonly INavigationService _navigationService;
     private readonly IFactory _factory;
@@ -53,6 +55,7 @@ public class MainSidebarViewModel : Reactive, IAsyncEventHandler<LoadEndEvent>
 
         _eventAggregator.Subscribe<LoadEndEvent>(this);
 
+        HomeNavigationCommand = new AsyncRelayCommand(NavigateToHomeAsync);
         SpecflowNavigationCommand = new AsyncRelayCommand(NavigateToSpecflowAsync);
         UnitTestDependencyTypeNavigationCommand = new AsyncRelayCommand(NavigateToUnitTestDependencyTypeAsync);
         UnitTestDependencyManuallyNavigationCommand = new AsyncRelayCommand(NavigateToUnitTestDependencyManuallyAsync);
@@ -63,9 +66,10 @@ public class MainSidebarViewModel : Reactive, IAsyncEventHandler<LoadEndEvent>
         InvalidateAndReloadCommand = new AsyncRelayCommand(InvalidateAndReloadAsync, CanInvalidateAndReload);
         OpenSettingsCommand = new AsyncRelayCommand(OpenSettingsAsync);
 
-        ActiveItem = ActiveItem.None;
+        ActiveItem = ActiveItem.Home;
     }
 
+    public ICommand HomeNavigationCommand { get; }
     public ICommand SpecflowNavigationCommand { get; }
     public ICommand UnitTestDependencyTypeNavigationCommand { get; }
     public ICommand UnitTestDependencyManuallyNavigationCommand { get; }
@@ -86,6 +90,11 @@ public class MainSidebarViewModel : Reactive, IAsyncEventHandler<LoadEndEvent>
     {
         get => Get<bool>();
         set => Set(value);
+    }
+    
+    public Task OnNavigatedToAsync(NavigationContext context)
+    {
+        return NavigateToHomeAsync();
     }
 
     public Task HandleAsync(LoadEndEvent e)
@@ -113,6 +122,12 @@ public class MainSidebarViewModel : Reactive, IAsyncEventHandler<LoadEndEvent>
     private bool CanInvalidateAndReload(object? arg)
     {
         return !IsLoading;
+    }
+    
+    private Task NavigateToHomeAsync()
+    {
+        ActiveItem = ActiveItem.Home;
+        return _navigationService.NavigateAsync<HomeViewModel>(new NavigationContext());
     }
 
     private Task NavigateToSpecflowAsync()

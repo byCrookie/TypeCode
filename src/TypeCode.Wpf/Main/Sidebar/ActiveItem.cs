@@ -9,5 +9,6 @@ public enum ActiveItem
     Composer,
     Mapper,
     Builder,
-    Assembly
+    Assembly,
+    Home
 }
