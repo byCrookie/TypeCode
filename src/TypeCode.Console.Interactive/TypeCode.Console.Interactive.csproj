@@ -5,6 +5,7 @@
         <Nullable>enable</Nullable>
         <OutputType>Exe</OutputType>
         <TargetFramework>net6.0-windows</TargetFramework>
+        <ApplicationIcon>icon.ico</ApplicationIcon>
     </PropertyGroup>
 
     <ItemGroup>
