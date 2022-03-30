@@ -15,6 +15,11 @@ public class TypeProvider : ITypeProvider
     {
         Log.Debug("Initialize Types");
 
+        if (File.Exists(LogFilePaths.IndexedTypes))
+        {
+            File.Delete(LogFilePaths.IndexedTypes);
+        }
+
         foreach (var root in configuration.AssemblyRoot.OrderBy(root => root.Priority).ToList())
         {
             foreach (var group in root.AssemblyGroup.OrderBy(group => group.Priority).ToList())
