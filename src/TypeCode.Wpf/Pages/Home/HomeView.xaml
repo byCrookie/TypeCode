@@ -17,7 +17,7 @@
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <Image Height="300" Width="300" Source="../../icon.ico" Grid.Row="1" Grid.RowSpan="2"></Image>
+        <Image Height="300" Width="300" Source="../../Assets/Icons/icon.ico" Grid.Row="1" Grid.RowSpan="2"></Image>
 
         <Label HorizontalAlignment="Center" Grid.Row="2" FontSize="100"
                Foreground="{StaticResource PrimaryText}" Content="TypeCode" />

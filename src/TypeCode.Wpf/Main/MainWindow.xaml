@@ -24,14 +24,16 @@
                                      Grid.Row="0" />
         </Grid>
 
-        <Grid ZIndex="2" x:Name="ModalOverlay" Visibility="Collapsed" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <Grid ZIndex="2" x:Name="ModalOverlay" Visibility="Collapsed" HorizontalAlignment="Stretch"
+              VerticalAlignment="Stretch">
             <Frame x:Name="ModalFrame"
                    Background="Transparent"
                    Margin="200, 100, 200, 100" Padding="0"
                    NavigationUIVisibility="Hidden" />
         </Grid>
 
-        <Grid ZIndex="1" x:Name="WizardOverlay" Visibility="Collapsed" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <Grid ZIndex="1" x:Name="WizardOverlay" Visibility="Collapsed" HorizontalAlignment="Stretch"
+              VerticalAlignment="Stretch">
             <Frame x:Name="WizardFrame"
                    Background="Transparent"
                    Margin="30" Padding="0"
