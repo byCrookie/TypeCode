@@ -10,9 +10,11 @@ Develop c# code faster by generating .NET specific boilerplate code using reflec
 * Generate builder for class using builder pattern
 
 ## Dependencies & Acknowledgement
-* Framework: This project is built on top of https://github.com/byCrookie/Framework
+* Framework: https://github.com/byCrookie/Framework
 * Icons: https://fontawesome.com/
 * Async-Commands: https://github.com/brminnick/AsyncAwaitBestPractices
+* Jab Dependency-Injection: https://github.com/pakrym/jab
+* Spectre-Console: https://github.com/spectreconsole/spectre.console
 
 ## How to use
 
