@@ -10,40 +10,23 @@
 
     <UserControl.Resources>
 
-        <converters:ItemToActiveConverter x:Key="ToActiveConverter" Active="{StaticResource Primary}"
+        <converters:ItemToActiveConverter x:Key="ToActiveConverter"
+                                          Active="{StaticResource Primary}"
                                           NotActive="{StaticResource Secondary}" />
 
-        <Style x:Key="TabButtonStyle" TargetType="{x:Type Button}"
-               BasedOn="{StaticResource {x:Type Button}}">
-            <Setter Property="Background" Value="{StaticResource Secondary}" />
-            <Setter Property="BorderThickness" Value="0" />
+        <Style x:Key="TabButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Background" Value="Transparent" />
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="{StaticResource Secondary}" />
-                    <Setter Property="BorderBrush" Value="{StaticResource Primary}" />
-                    <Setter Property="BorderThickness" Value="0,2,0,2" />
-                    <Setter Property="Padding" Value="3" />
+                    <Setter Property="Background" Value="{StaticResource Primary}" />
                 </Trigger>
             </Style.Triggers>
         </Style>
 
-        <Style x:Key="SettingsButtonStyle" TargetType="{x:Type Button}"
-               BasedOn="{StaticResource {x:Type Button}}">
-            <Setter Property="Background" Value="{StaticResource Secondary}" />
-            <Setter Property="BorderThickness" Value="0" />
-            <Setter Property="HorizontalContentAlignment" Value="Left"></Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="{StaticResource Secondary}" />
-                    <Setter Property="BorderBrush" Value="{StaticResource Primary}" />
-                    <Setter Property="BorderThickness" Value="0,2,0,2" />
-                    <Setter Property="Padding" Value="3" />
-                </Trigger>
-            </Style.Triggers>
-        </Style>
     </UserControl.Resources>
 
     <Grid Background="{StaticResource Secondary}">
+
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -58,53 +41,66 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Button Grid.Row="0"
+        <StackPanel Grid.Row="0"
+                    Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.Home}}">
+            <Button
                 Style="{StaticResource TabButtonStyle}"
-                Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.Home}}"
                 Command="{Binding HomeNavigationCommand}"
                 Content="Home" />
-        <Button Grid.Row="1"
+        </StackPanel>
+        <StackPanel Grid.Row="1"
+                    Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.Specflow}}">
+            <Button
                 Style="{StaticResource TabButtonStyle}"
-                Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.Specflow}}"
                 Command="{Binding SpecflowNavigationCommand}"
                 Content="Specflow" />
-        <Button Grid.Row="2"
+        </StackPanel>
+        <StackPanel Grid.Row="2"
+                    Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.UnitTestType}}">
+            <Button
                 Style="{StaticResource TabButtonStyle}"
-                Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.UnitTestType}}"
                 Command="{Binding UnitTestDependencyTypeNavigationCommand}"
                 Content="Unit-Test (type)" />
-        <Button Grid.Row="3"
+        </StackPanel>
+        <StackPanel Grid.Row="3"
+                    Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.UnitTestManually}}">
+            <Button
                 Style="{StaticResource TabButtonStyle}"
-                Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.UnitTestManually}}"
                 Command="{Binding UnitTestDependencyManuallyNavigationCommand}"
                 Content="Unit-Test (manually)" />
-        <Button Grid.Row="4"
+        </StackPanel>
+        <StackPanel Grid.Row="4"
+                    Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.Composer}}">
+            <Button
                 Style="{StaticResource TabButtonStyle}"
-                Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.Composer}}"
                 Command="{Binding ComposerNavigationCommand}"
                 Content="Composer" />
-        <Button Grid.Row="5"
+        </StackPanel>
+        <StackPanel Grid.Row="5"
+                    Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.Mapper}}">
+            <Button
                 Style="{StaticResource TabButtonStyle}"
-                Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.Mapper}}"
                 Command="{Binding MapperNavigationCommand}"
                 Content="Mapper" />
-        <Button Grid.Row="6"
+        </StackPanel>
+        <StackPanel Grid.Row="6"
+                    Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.Builder}}">
+            <Button
                 Style="{StaticResource TabButtonStyle}"
-                Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.Builder}}"
                 Command="{Binding BuilderNavigationCommand}"
                 Content="Builder" />
-        <Button Grid.Row="7"
+        </StackPanel>
+        <StackPanel Grid.Row="7"
+                    Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.Assembly}}">
+            <Button
                 Style="{StaticResource TabButtonStyle}"
-                Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.Assembly}}"
                 Command="{Binding AssemblyNavigationCommand}"
                 Content="Assemblies" />
+        </StackPanel>
 
         <DockPanel Visibility="Visible" Margin="5,0,0,0" Grid.Row="9" HorizontalAlignment="Left">
-            <Button Style="{StaticResource InverseButton}"
-                    MaxHeight="30" DockPanel.Dock="Left"
-                    Height="30"
-                    MinWidth="30"
-                    Width="30"
+            <Button DockPanel.Dock="Left"
+                    Style="{StaticResource InverseIconButton}"
                     ToolTip="Invalidate Cache and Reload"
                     Command="{Binding InvalidateAndReloadCommand}">
                 <Image Source="{StaticResource ReloadDrawingImage}" />
@@ -112,7 +108,7 @@
         </DockPanel>
 
         <Button Grid.Row="10"
-                Style="{StaticResource SettingsButtonStyle}"
+                Style="{StaticResource TabButtonStyle}"
                 Command="{Binding OpenSettingsCommand}"
                 Content="Settings" />
     </Grid>

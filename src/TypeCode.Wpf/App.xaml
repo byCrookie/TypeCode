@@ -48,8 +48,7 @@
         <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
             <Setter Property="Background" Value="{StaticResource Accent}" />
             <Setter Property="Foreground" Value="{StaticResource PrimaryText}" />
-            <Setter Property="BorderBrush" Value="{StaticResource Primary}"></Setter>
-            <Setter Property="BorderThickness" Value="2"></Setter>
+            <Setter Property="BorderThickness" Value="0"></Setter>
             <Setter Property="Padding" Value="5"></Setter>
             <Setter Property="MinWidth" Value="80"></Setter>
             <Setter Property="Template">
@@ -66,22 +65,7 @@
             </Setter>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="{StaticResource Primary}" />
-                    <Setter Property="BorderBrush" Value="{StaticResource Secondary}"></Setter>
-                </Trigger>
-                <Trigger Property="IsEnabled" Value="False">
-                    <Setter Property="Opacity" Value="0.5" />
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-        
-        <Style x:Key="InverseButton" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
-            <Setter Property="Background" Value="{StaticResource Secondary}" />
-            <Setter Property="BorderBrush" Value="{StaticResource Secondary}"></Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="{StaticResource Primary}" />
-                    <Setter Property="BorderBrush" Value="{StaticResource Primary}"></Setter>
+                    <Setter Property="Background" Value="{StaticResource Secondary}" />
                 </Trigger>
                 <Trigger Property="IsEnabled" Value="False">
                     <Setter Property="Opacity" Value="0.5" />
@@ -92,11 +76,24 @@
         <Style x:Key="IconButton" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
             <Setter Property="MinWidth" Value="30"></Setter>
             <Setter Property="Width" Value="30"></Setter>
+            <Setter Property="Background" Value="{StaticResource Primary}"></Setter>
+
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{StaticResource Secondary}" />
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Opacity" Value="0.5" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        
+        <Style x:Key="InverseIconButton" TargetType="{x:Type Button}" BasedOn="{StaticResource IconButton}">
+            <Setter Property="Background" Value="{StaticResource Secondary}"></Setter>
 
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
                     <Setter Property="Background" Value="{StaticResource Primary}" />
-                    <Setter Property="BorderBrush" Value="{StaticResource Secondary}"></Setter>
                 </Trigger>
                 <Trigger Property="IsEnabled" Value="False">
                     <Setter Property="Opacity" Value="0.5" />
@@ -138,7 +135,7 @@
             <DrawingGroup.Transform>
                 <TranslateTransform X="0.0099999997764825821" Y="0" />
             </DrawingGroup.Transform>
-            <GeometryDrawing Brush="#FF000000" Geometry="{StaticResource CopyGeometry}" />
+            <GeometryDrawing Brush="{StaticResource Accent}" Geometry="{StaticResource CopyGeometry}" />
         </DrawingGroup>
         <DrawingImage x:Key="CopyDrawingImage" Drawing="{StaticResource CopyDrawingGroup}" />
         <!-- End Copy Icon -->

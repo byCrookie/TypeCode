@@ -27,8 +27,7 @@
 
             <Border Grid.Column="0" BorderBrush="{StaticResource Accent}"
                     BorderThickness="1"
-                    VerticalAlignment="Center"
-                    Margin="0,1.5,0,0">
+                    VerticalAlignment="Center">
                 <TextBox
                     Margin="4"
                     BorderThickness="0"
