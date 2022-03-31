@@ -3,4 +3,5 @@
 public interface IVersionEvaluator
 {
     Task<VersionResult> EvaluateAsync();
+    Task<VersionResult> ReadCurrentVersionAsync();
 }

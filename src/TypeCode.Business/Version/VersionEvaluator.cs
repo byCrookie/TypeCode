@@ -7,6 +7,28 @@ public class VersionEvaluator : IVersionEvaluator
 {
     public async Task<VersionResult> EvaluateAsync()
     {
+        var currentVersion = await ReadCurrentVersionAsync().ConfigureAwait(false);
+        var latestVersion = await GetVersionAsync().ConfigureAwait(false);
+
+        if (!string.IsNullOrEmpty(currentVersion.CurrentVersion)
+            && !string.IsNullOrEmpty(latestVersion?.TagName)
+            && !string.Equals(currentVersion.CurrentVersion.Trim(), latestVersion.TagName.Trim(), StringComparison.CurrentCultureIgnoreCase))
+        {
+            return new VersionResult
+            {
+                CurrentVersion = currentVersion.CurrentVersion,
+                NewVersion = latestVersion.TagName
+            };
+        }
+
+        return new VersionResult
+        {
+            CurrentVersion = currentVersion.CurrentVersion
+        };
+    }
+
+    public async Task<VersionResult> ReadCurrentVersionAsync()
+    {
         var file = $"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\\version";
 
         if (!File.Exists(file))
@@ -15,23 +37,7 @@ public class VersionEvaluator : IVersionEvaluator
         }
 
         var version = await File.ReadAllTextAsync(file).ConfigureAwait(false);
-        var latestVersion = await GetVersionAsync().ConfigureAwait(false);
-
-        if (!string.IsNullOrEmpty(version)
-            && !string.IsNullOrEmpty(latestVersion?.TagName)
-            && !string.Equals(version.Trim(), latestVersion.TagName.Trim(), StringComparison.CurrentCultureIgnoreCase))
-        {
-            return new VersionResult
-            {
-                CurrentVersion = version,
-                NewVersion = latestVersion.TagName
-            };
-        }
-
-        return new VersionResult
-        {
-            CurrentVersion = version
-        };
+        return new VersionResult { CurrentVersion = version };
     }
 
     private static async Task<VersionResponse?> GetVersionAsync()

@@ -2,10 +2,10 @@
 
 public class VersionLoadedEvent
 {
-    public VersionLoadedEvent(string version)
+    public VersionLoadedEvent(string currentVersion)
     {
-        Version = version;
+        CurrentVersion = currentVersion;
     }
     
-    public string Version { get; }
+    public string CurrentVersion { get; }
 }

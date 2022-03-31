@@ -1,14 +1,17 @@
-﻿using TypeCode.Wpf.Helper.Event;
+﻿using TypeCode.Business.Version;
+using TypeCode.Wpf.Helper.Navigation.Contract;
+using TypeCode.Wpf.Helper.Navigation.Service;
 using TypeCode.Wpf.Helper.ViewModel;
-using TypeCode.Wpf.Main.Content;
 
 namespace TypeCode.Wpf.Pages.Home;
 
-public class HomeViewModel : Reactive, IAsyncEventHandler<VersionLoadedEvent>
+public class HomeViewModel : Reactive, IAsyncNavigatedTo
 {
-    public HomeViewModel(IEventAggregator eventAggregator)
+    private readonly IVersionEvaluator _versionEvaluator;
+
+    public HomeViewModel(IVersionEvaluator versionEvaluator)
     {
-        eventAggregator.Subscribe<VersionLoadedEvent>(this);
+        _versionEvaluator = versionEvaluator;
     }
 
     public string? Version
@@ -17,9 +20,9 @@ public class HomeViewModel : Reactive, IAsyncEventHandler<VersionLoadedEvent>
         set => Set(value);
     }
 
-    public Task HandleAsync(VersionLoadedEvent e)
+    public async Task OnNavigatedToAsync(NavigationContext context)
     {
-        Version = e.Version;
-        return Task.CompletedTask;
+        var version = await _versionEvaluator.ReadCurrentVersionAsync().ConfigureAwait(false);
+        Version = version.CurrentVersion;
     }
 }

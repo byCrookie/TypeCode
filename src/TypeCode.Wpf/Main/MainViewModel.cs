@@ -50,7 +50,7 @@ public class MainViewModel : Reactive, IAsyncNavigatedTo, IAsyncEventHandler<Ver
 
     public Task HandleAsync(VersionLoadedEvent e)
     {
-        Title = $"TypeCode {e.Version}";
+        Title = $"TypeCode {e.CurrentVersion}";
         return Task.CompletedTask;
     }
 }
