@@ -12,9 +12,12 @@ Develop c# code faster by generating .NET specific boilerplate code using reflec
 ## Dependencies & Acknowledgement
 * Framework: https://github.com/byCrookie/Framework
 * Icons: https://fontawesome.com/
-* Async-Commands: https://github.com/brminnick/AsyncAwaitBestPractices
-* Jab Dependency-Injection: https://github.com/pakrym/jab
-* Spectre-Console: https://github.com/spectreconsole/spectre.console
+* AsyncAwaitBestPractices.MVVM: https://github.com/brminnick/AsyncAwaitBestPractices
+* Jab: https://github.com/pakrym/jab
+* Spectre.Console: https://github.com/spectreconsole/spectre.console
+* Serilog: https://github.com/serilog/serilog
+* Nito.AsyncEx.Context: https://github.com/StephenCleary/AsyncEx
+* Humanizer.Core https://github.com/Humanizr/Humanizer
 
 ## How to use
 
