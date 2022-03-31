@@ -27,20 +27,24 @@
             <Setter Property="Foreground" Value="{StaticResource PrimaryText}" />
             <Setter Property="FontWeight" Value="SemiBold"></Setter>
         </Style>
+        
         <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="Foreground" Value="{StaticResource PrimaryText}" />
             <Setter Property="FontWeight" Value="SemiBold"></Setter>
         </Style>
+        
         <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="Foreground" Value="{StaticResource PrimaryText}" />
             <Setter Property="CaretBrush" Value="{StaticResource PrimaryText}" />
             <Setter Property="FontWeight" Value="SemiBold"></Setter>
         </Style>
+        
         <Style TargetType="{x:Type ListView}" BasedOn="{StaticResource {x:Type ListView}}">
             <Setter Property="FontWeight" Value="SemiBold"></Setter>
         </Style>
+        
         <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
             <Setter Property="Background" Value="{StaticResource Accent}" />
             <Setter Property="Foreground" Value="{StaticResource PrimaryText}" />
@@ -70,6 +74,7 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+        
         <Style x:Key="InverseButton" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
             <Setter Property="Background" Value="{StaticResource Secondary}" />
             <Setter Property="BorderBrush" Value="{StaticResource Secondary}"></Setter>
@@ -83,6 +88,7 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+        
         <Style x:Key="IconButton" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
             <Setter Property="MinWidth" Value="30"></Setter>
             <Setter Property="Width" Value="30"></Setter>
@@ -97,25 +103,30 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+        
         <Style TargetType="{x:Type Label}" BasedOn="{StaticResource {x:Type Label}}">
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="Foreground" Value="{StaticResource PrimaryText}" />
             <Setter Property="FontWeight" Value="SemiBold"></Setter>
         </Style>
+        
         <Style TargetType="{x:Type GroupBox}" BasedOn="{StaticResource {x:Type GroupBox}}">
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="Foreground" Value="{StaticResource PrimaryText}" />
             <Setter Property="BorderThickness" Value="0.5"></Setter>
         </Style>
+        
         <Style TargetType="{x:Type RadioButton}" BasedOn="{StaticResource {x:Type RadioButton}}">
             <Setter Property="Background" Value="{StaticResource PrimaryText}" />
             <Setter Property="Foreground" Value="{StaticResource PrimaryText}" />
         </Style>
+        
         <Style TargetType="{x:Type ProgressBar}" BasedOn="{StaticResource {x:Type ProgressBar}}">
             <Setter Property="Background" Value="{StaticResource Secondary}" />
             <Setter Property="Foreground" Value="{StaticResource Accent}" />
             <Setter Property="BorderThickness" Value="0"></Setter>
         </Style>
+        
         <Style TargetType="{x:Type ToolTip}" BasedOn="{StaticResource {x:Type ToolTip}}">
             <Setter Property="Background" Value="{StaticResource Shadow}" />
             <Setter Property="Foreground" Value="{StaticResource PrimaryText}" />
