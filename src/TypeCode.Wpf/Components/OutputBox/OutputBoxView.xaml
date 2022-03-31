@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:buttons="clr-namespace:TypeCode.Wpf.Components.Buttons"
              xmlns:outputBox="clr-namespace:TypeCode.Wpf.Components.OutputBox"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
@@ -36,10 +35,12 @@
                 </TextBox>
             </ScrollViewer>
         </Border>
-        <buttons:CustomIconButton Margin="0,5,0,0" Grid.Column="0" Grid.Row="1"
-                                  Command="{Binding CopyToClipboardCommand}"
-                                  ToolTip="Copy to clipboard">
+        
+        <Button Margin="0,5,0,0" Grid.Column="0" Grid.Row="1"
+                Style="{StaticResource IconButton}"
+                Command="{Binding CopyToClipboardCommand}"
+                ToolTip="Copy to clipboard">
             <Image Source="{StaticResource CopyDrawingImage}" />
-        </buttons:CustomIconButton>
+        </Button>
     </Grid>
 </UserControl>

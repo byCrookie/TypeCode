@@ -5,8 +5,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:converters="clr-namespace:TypeCode.Wpf.Helper.Converters"
              xmlns:complex="clr-namespace:TypeCode.Wpf.Helper.Navigation.Wizard.Complex"
-             xmlns:c="clr-namespace:TypeCode.Wpf.Components"
-             xmlns:buttons="clr-namespace:TypeCode.Wpf.Components.Buttons"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
              Background="{StaticResource Secondary}" d:DataContext="{d:DesignInstance complex:WizardViewModel}">
@@ -15,8 +13,8 @@
         <converters:BooleanToVisibilityConverterSelf x:Key="BooleanToVisibilityConverter" True="Visible"
                                                      False="Collapsed" />
 
-        <Style x:Key="WizardButtonStyle" TargetType="{x:Type buttons:CustomButton}"
-               BasedOn="{StaticResource {x:Type buttons:CustomButton}}">
+        <Style x:Key="WizardButtonStyle" TargetType="{x:Type Button}"
+               BasedOn="{StaticResource {x:Type Button}}">
             <Setter Property="BorderThickness" Value="0" />
         </Style>
     </UserControl.Resources>
@@ -34,25 +32,25 @@
         <ContentControl Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Content="{Binding WizardPage}" />
 
         <StackPanel Margin="0,5,5,5" Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
-            <buttons:CustomButton
+            <Button
                 Margin="5,0,0,0"
                 Content="Back"
                 Style="{StaticResource WizardButtonStyle}"
                 Command="{Binding BackCommand}"
                 Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Self}, Converter={StaticResource BooleanToVisibilityConverter}}" />
-            <buttons:CustomButton
+            <Button
                 Margin="5,0,0,0"
                 Content="Cancel"
                 Style="{StaticResource WizardButtonStyle}"
                 Command="{Binding CancelCommand}"
                 Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Self}, Converter={StaticResource BooleanToVisibilityConverter}}" />
-            <buttons:CustomButton
+            <Button
                 Margin="5,0,0,0"
                 Content="Next"
                 Style="{StaticResource WizardButtonStyle}"
                 Command="{Binding NextCommand}"
                 Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Self}, Converter={StaticResource BooleanToVisibilityConverter}}" />
-            <buttons:CustomButton
+            <Button
                 Margin="5,0,0,0"
                 Content="Finish"
                 Style="{StaticResource WizardButtonStyle}"

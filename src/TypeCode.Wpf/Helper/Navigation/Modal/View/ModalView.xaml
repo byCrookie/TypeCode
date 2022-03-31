@@ -5,8 +5,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:view="clr-namespace:TypeCode.Wpf.Helper.Navigation.Modal.View"
              xmlns:converters="clr-namespace:TypeCode.Wpf.Helper.Converters"
-             xmlns:components="clr-namespace:TypeCode.Wpf.Components"
-             xmlns:buttons="clr-namespace:TypeCode.Wpf.Components.Buttons"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance view:ModalViewModel }"
              Background="{StaticResource Secondary}">
@@ -39,9 +37,9 @@
                      VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
         </ScrollViewer>
 
-        <buttons:CustomButton Margin="0,5,0,0" Grid.Row="2" Grid.Column="1" Command="{Binding OkCommand}"
-                        BorderBrush="{StaticResource Secondary}">
-            Ok
-        </buttons:CustomButton>
+        <Button Margin="0,5,0,0" Grid.Row="2" Grid.Column="1"
+                Command="{Binding OkCommand}"
+                BorderBrush="{StaticResource Secondary}"
+                Content="Ok" />
     </Grid>
 </UserControl>

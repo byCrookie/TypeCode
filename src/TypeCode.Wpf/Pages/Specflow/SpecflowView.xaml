@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:specflow="clr-namespace:TypeCode.Wpf.Pages.Specflow"
-             xmlns:buttons="clr-namespace:TypeCode.Wpf.Components.Buttons"
              xmlns:inputBox="clr-namespace:TypeCode.Wpf.Components.InputBox"
              xmlns:outputBox="clr-namespace:TypeCode.Wpf.Components.OutputBox"
              mc:Ignorable="d"

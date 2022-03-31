@@ -5,7 +5,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:style="clr-namespace:TypeCode.Business.Mode.Mapper.Style;assembly=TypeCode.Business"
              xmlns:mapper="clr-namespace:TypeCode.Wpf.Pages.Mapper"
-             xmlns:buttons="clr-namespace:TypeCode.Wpf.Components.Buttons"
              xmlns:inputBox="clr-namespace:TypeCode.Wpf.Components.InputBox"
              xmlns:outputBox="clr-namespace:TypeCode.Wpf.Components.OutputBox"
              mc:Ignorable="d"

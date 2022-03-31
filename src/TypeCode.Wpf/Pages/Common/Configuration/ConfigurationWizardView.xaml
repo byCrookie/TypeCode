@@ -4,8 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:configuration="clr-namespace:TypeCode.Wpf.Pages.Common.Configuration"
-             xmlns:components="clr-namespace:TypeCode.Wpf.Components"
-             xmlns:buttons="clr-namespace:TypeCode.Wpf.Components.Buttons"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance configuration:ConfigurationWizardViewModel}">
@@ -20,9 +18,9 @@
         <Label Grid.Row="0">Assembly Configuration</Label>
 
         <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,5,0,5">
-            <buttons:CustomButton Margin="5,0,5,0" BorderThickness="0" Command="{Binding FormatCommand}">Format</buttons:CustomButton>
-            <buttons:CustomButton Margin="0,0,5,0" BorderThickness="0" Command="{Binding ReloadCommand}">Reload</buttons:CustomButton>
-            <buttons:CustomButton BorderThickness="0" Command="{Binding SaveCommand}">Save</buttons:CustomButton>
+            <Button Margin="5,0,5,0" BorderThickness="0" Command="{Binding FormatCommand}" Content="Format" />
+            <Button Margin="0,0,5,0" BorderThickness="0" Command="{Binding ReloadCommand}" Content="Reload" />
+            <Button BorderThickness="0" Command="{Binding SaveCommand}" Content="Save" />
         </StackPanel>
 
         <ScrollViewer Grid.Row="2" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
