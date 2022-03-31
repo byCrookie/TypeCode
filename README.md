@@ -9,7 +9,7 @@ Develop c# code faster by generating .NET specific boilerplate code using reflec
 * Generate mapper for two classes
 * Generate builder for class using builder pattern
 
-## Dependencies & Acknowledgement
+## Dependencies & Acknowledgements
 * Framework: https://github.com/byCrookie/Framework
 * Icons: https://fontawesome.com/
 * AsyncAwaitBestPractices.MVVM: https://github.com/brminnick/AsyncAwaitBestPractices
