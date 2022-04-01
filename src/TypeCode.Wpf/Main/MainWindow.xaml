@@ -11,9 +11,9 @@
         AllowsTransparency="True"
         Title="{Binding Title}" d:DataContext="{d:DesignInstance main:MainViewModel}">
 
-    <Border BorderBrush="{StaticResource Accent}" BorderThickness="1" >
+    <Border BorderBrush="{StaticResource Accent}" BorderThickness="1">
 
-        <Grid Background="{StaticResource Primary}">
+        <Grid Background="{StaticResource Secondary}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
@@ -23,7 +23,9 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" WindowChrome.IsHitTestVisibleInChrome="True">
+            <StackPanel Grid.Row="0" Grid.Column="1"
+                        Orientation="Horizontal"
+                        WindowChrome.IsHitTestVisibleInChrome="True">
                 <Button Style="{StaticResource IconButton}"
                         Content="-"
                         x:Name="MinimizeButton" />
