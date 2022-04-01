@@ -9,7 +9,8 @@
         mc:Ignorable="d"
         WindowStyle="None"
         AllowsTransparency="True"
-        Title="{Binding Title}" d:DataContext="{d:DesignInstance main:MainViewModel}">
+        Title="{Binding Title}" d:DataContext="{d:DesignInstance main:MainViewModel}"
+        MouseDown="MainWindow_OnMouseDown">
 
     <Border BorderBrush="{StaticResource Accent}" BorderThickness="1">
 
