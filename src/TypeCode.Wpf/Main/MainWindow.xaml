@@ -7,37 +7,66 @@
         xmlns:main="clr-namespace:TypeCode.Wpf.Main"
         xmlns:content="clr-namespace:TypeCode.Wpf.Main.Content"
         mc:Ignorable="d"
-        Title="{Binding Title}" Height="600" Width="1000" d:DataContext="{d:DesignInstance main:MainViewModel}"
-        Background="{StaticResource Primary}">
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Title="{Binding Title}" d:DataContext="{d:DesignInstance main:MainViewModel}">
 
-    <Grid>
-        <Grid ZIndex="0" x:Name="Main">
+    <Border BorderBrush="{StaticResource Accent}" BorderThickness="1" >
+
+        <Grid Background="{StaticResource Primary}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="140" />
-                <ColumnDefinition Width="*" />
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <sidebar:MainSidebarView x:Name="MainSidebar" DataContext="{Binding MainSidebarViewModel}" Grid.Column="0"
-                                     Grid.Row="0" />
+            <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" WindowChrome.IsHitTestVisibleInChrome="True">
+                <Button Style="{StaticResource IconButton}"
+                        Content="-"
+                        x:Name="MinimizeButton" />
+                <Button Style="{StaticResource IconButton}"
+                        Content="+"
+                        x:Name="MaximizeButton" />
+                <Button Style="{StaticResource IconButton}"
+                        Content="x"
+                        x:Name="CloseButton" />
+            </StackPanel>
 
-            <content:MainContentView x:Name="MainContent" DataContext="{Binding MainContentViewModel}" Grid.Column="1"
-                                     Grid.Row="0" />
-        </Grid>
+            <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" ZIndex="0" x:Name="Main">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="140" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
 
-        <Grid ZIndex="2" x:Name="ModalOverlay" Visibility="Collapsed" HorizontalAlignment="Stretch"
-              VerticalAlignment="Stretch">
-            <Frame x:Name="ModalFrame"
-                   Background="Transparent"
-                   Margin="200, 100, 200, 100" Padding="0"
-                   NavigationUIVisibility="Hidden" />
-        </Grid>
+                <sidebar:MainSidebarView x:Name="MainSidebar" DataContext="{Binding MainSidebarViewModel}"
+                                         Grid.Column="0"
+                                         Grid.Row="0" />
 
-        <Grid ZIndex="1" x:Name="WizardOverlay" Visibility="Collapsed" HorizontalAlignment="Stretch"
-              VerticalAlignment="Stretch">
-            <Frame x:Name="WizardFrame"
-                   Background="Transparent"
-                   Margin="30" Padding="0"
-                   NavigationUIVisibility="Hidden" />
+                <content:MainContentView x:Name="MainContent" DataContext="{Binding MainContentViewModel}"
+                                         Grid.Column="1"
+                                         Grid.Row="0" />
+            </Grid>
+
+            <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" ZIndex="2" x:Name="ModalOverlay"
+                  Visibility="Collapsed" HorizontalAlignment="Stretch"
+                  VerticalAlignment="Stretch">
+                <Frame x:Name="ModalFrame"
+                       Background="Transparent"
+                       Margin="200, 100, 200, 100" Padding="0"
+                       NavigationUIVisibility="Hidden" />
+            </Grid>
+
+            <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" ZIndex="1" x:Name="WizardOverlay"
+                  Visibility="Collapsed" HorizontalAlignment="Stretch"
+                  VerticalAlignment="Stretch">
+                <Frame x:Name="WizardFrame"
+                       Background="Transparent"
+                       Margin="30" Padding="0"
+                       NavigationUIVisibility="Hidden" />
+            </Grid>
         </Grid>
-    </Grid>
+    </Border>
 </Window>
