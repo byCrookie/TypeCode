@@ -14,32 +14,34 @@
                                                      False="Visible" />
     </UserControl.Resources>
 
-    <Grid Margin="5">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="Auto"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-        </Grid.RowDefinitions>
+    <Border BorderThickness="1" BorderBrush="{StaticResource Accent}">
+        <Grid Margin="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
 
-        <Label Content="{Binding Title}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"></Label>
-        <ScrollViewer Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
-                      HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
-                      Visibility="{Binding ScrollViewerEnabled, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
-            <TextBox Margin="0,5,0,0" Padding="2" Background="Transparent"
-                     BorderThickness="0"
-                     Text="{Binding Text, Mode=OneWay}"
-                     IsReadOnly="True"
-                     TextWrapping="Wrap"
-                     VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
-        </ScrollViewer>
+            <Label Content="{Binding Title}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"></Label>
+            <ScrollViewer Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                          HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
+                          Visibility="{Binding ScrollViewerEnabled, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
+                <TextBox Margin="0,5,0,0" Padding="2" Background="Transparent"
+                         BorderThickness="0"
+                         Text="{Binding Text, Mode=OneWay}"
+                         IsReadOnly="True"
+                         TextWrapping="Wrap"
+                         VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
+            </ScrollViewer>
 
-        <Button Margin="0,5,0,0" Grid.Row="2" Grid.Column="1"
-                Command="{Binding OkCommand}"
-                BorderBrush="{StaticResource Secondary}"
-                Content="Ok" />
-    </Grid>
+            <Button Margin="0,5,0,0" Grid.Row="2" Grid.Column="1"
+                    Command="{Binding OkCommand}"
+                    BorderBrush="{StaticResource Secondary}"
+                    Content="Ok" />
+        </Grid>
+    </Border>
 </UserControl>

@@ -27,13 +27,25 @@
             <StackPanel Grid.Row="0" Grid.Column="1"
                         Orientation="Horizontal"
                         WindowChrome.IsHitTestVisibleInChrome="True">
-                <Button Style="{StaticResource IconButton}"
-                        Content="-"
-                        x:Name="MinimizeButton" />
-                <Button Style="{StaticResource IconButton}"
+                
+                <StackPanel.Resources>
+                    <Style x:Key="WindowActionButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource IconButton}">
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{StaticResource Primary}"></Setter>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </StackPanel.Resources>
+                
+                <Button Content="-"
+                        x:Name="MinimizeButton"
+                        Style="{StaticResource WindowActionButtonStyle}">
+                </Button>
+                <Button Style="{StaticResource WindowActionButtonStyle}"
                         Content="+"
                         x:Name="MaximizeButton" />
-                <Button Style="{StaticResource IconButton}"
+                <Button Style="{StaticResource WindowActionButtonStyle}"
                         Content="x"
                         x:Name="CloseButton" />
             </StackPanel>

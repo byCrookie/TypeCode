@@ -13,50 +13,48 @@
         <converters:BooleanToVisibilityConverterSelf x:Key="BooleanToVisibilityConverter" True="Visible"
                                                      False="Collapsed" />
 
-        <Style x:Key="WizardButtonStyle" TargetType="{x:Type Button}"
-               BasedOn="{StaticResource {x:Type Button}}">
-            <Setter Property="BorderThickness" Value="0" />
-        </Style>
+        <Style x:Key="WizardButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}" />
     </UserControl.Resources>
 
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="Auto" />
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
+    <Border BorderThickness="1" BorderBrush="{StaticResource Accent}">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
 
-        <ContentControl Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Content="{Binding WizardPage}" />
+            <ContentControl Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Content="{Binding WizardPage}" />
 
-        <StackPanel Margin="0,5,5,5" Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
-            <Button
-                Margin="5,0,0,0"
-                Content="Back"
-                Style="{StaticResource WizardButtonStyle}"
-                Command="{Binding BackCommand}"
-                Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Self}, Converter={StaticResource BooleanToVisibilityConverter}}" />
-            <Button
-                Margin="5,0,0,0"
-                Content="Cancel"
-                Style="{StaticResource WizardButtonStyle}"
-                Command="{Binding CancelCommand}"
-                Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Self}, Converter={StaticResource BooleanToVisibilityConverter}}" />
-            <Button
-                Margin="5,0,0,0"
-                Content="Next"
-                Style="{StaticResource WizardButtonStyle}"
-                Command="{Binding NextCommand}"
-                Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Self}, Converter={StaticResource BooleanToVisibilityConverter}}" />
-            <Button
-                Margin="5,0,0,0"
-                Content="Finish"
-                Style="{StaticResource WizardButtonStyle}"
-                Command="{Binding FinishCommand}"
-                Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Self}, Converter={StaticResource BooleanToVisibilityConverter}}" />
-        </StackPanel>
-
-    </Grid>
+            <StackPanel Margin="0,5,5,5" Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
+                <Button
+                    Margin="5,0,0,0"
+                    Content="Back"
+                    Style="{StaticResource WizardButtonStyle}"
+                    Command="{Binding BackCommand}"
+                    Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Self}, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                <Button
+                    Margin="5,0,0,0"
+                    Content="Cancel"
+                    Style="{StaticResource WizardButtonStyle}"
+                    Command="{Binding CancelCommand}"
+                    Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Self}, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                <Button
+                    Margin="5,0,0,0"
+                    Content="Next"
+                    Style="{StaticResource WizardButtonStyle}"
+                    Command="{Binding NextCommand}"
+                    Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Self}, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                <Button
+                    Margin="5,0,0,0"
+                    Content="Finish"
+                    Style="{StaticResource WizardButtonStyle}"
+                    Command="{Binding FinishCommand}"
+                    Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Self}, Converter={StaticResource BooleanToVisibilityConverter}}" />
+            </StackPanel>
+        </Grid>
+    </Border>
 </UserControl>
