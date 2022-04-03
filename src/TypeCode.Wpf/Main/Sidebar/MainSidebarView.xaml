@@ -100,7 +100,7 @@
 
         <DockPanel Visibility="Visible" Margin="5,0,0,0" Grid.Row="9" HorizontalAlignment="Left">
             <Button DockPanel.Dock="Left"
-                    Style="{StaticResource InverseIconButton}"
+                    Style="{StaticResource IconButton}"
                     ToolTip="Invalidate Cache and Reload"
                     Command="{Binding InvalidateAndReloadCommand}">
                 <Image Source="{StaticResource ReloadDrawingImage}" />

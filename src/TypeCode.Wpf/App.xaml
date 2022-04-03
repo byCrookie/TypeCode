@@ -65,7 +65,7 @@
             </Setter>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="{StaticResource Secondary}" />
+                    <Setter Property="Opacity" Value="0.7" />
                 </Trigger>
                 <Trigger Property="IsEnabled" Value="False">
                     <Setter Property="Opacity" Value="0.5" />
@@ -76,25 +76,9 @@
         <Style x:Key="IconButton" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
             <Setter Property="MinWidth" Value="30"></Setter>
             <Setter Property="Width" Value="30"></Setter>
-            <Setter Property="Background" Value="Transparent"></Setter>
+            <Setter Property="Background" Value="Transparent" />
 
             <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Opacity" Value="0.5"></Setter>
-                    <Setter Property="Background" Value="Transparent"></Setter>
-                </Trigger>
-                <Trigger Property="IsEnabled" Value="False">
-                    <Setter Property="Opacity" Value="0.5" />
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-
-        <Style x:Key="InverseIconButton" TargetType="{x:Type Button}" BasedOn="{StaticResource IconButton}">
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Opacity" Value="0.5"></Setter>
-                    <Setter Property="Background" Value="Transparent"></Setter>
-                </Trigger>
                 <Trigger Property="IsEnabled" Value="False">
                     <Setter Property="Opacity" Value="0.5" />
                 </Trigger>
