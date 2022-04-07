@@ -12,15 +12,37 @@ public partial class MainWindow
     {
         InitializeComponent();
 
-        MinimizeButton.Click += (_, _) => WindowState = WindowState.Minimized;
-        MaximizeButton.Click += (_, _) => WindowState = WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
-        CloseButton.Click += (_, _) => Close();
+        MinimizeButton.Click += Minimize;
+        MaximizeButton.Click += Maximize;
+        CloseButton.Click += Close;
     }
 
-    private void MainWindow_OnMouseDown(object sender, MouseButtonEventArgs e)
+    private void Close(object sender, RoutedEventArgs e)
+    {
+        Close();
+    }
+
+    private void Maximize(object sender, RoutedEventArgs e)
+    {
+        WindowState = WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
+    }
+
+    private void Minimize(object sender, RoutedEventArgs routedEventArgs)
+    {
+        WindowState = WindowState.Minimized;
+    }
+
+    private void WindowOnMouseDown(object sender, MouseButtonEventArgs e)
     {
         if (e.ChangedButton == MouseButton.Left)
         {
+            if (WindowState == WindowState.Maximized)
+            {
+                WindowState = WindowState.Normal;
+                var mousePosition = e.GetPosition(this);
+                Top = mousePosition.Y - 10;
+            }
+
             DragMove();
         }
     }
