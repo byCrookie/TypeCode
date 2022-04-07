@@ -40,7 +40,15 @@ public partial class MainWindow
             {
                 WindowState = WindowState.Normal;
                 var mousePosition = e.GetPosition(this);
-                Top = mousePosition.Y - 10;
+                Top = mousePosition.Y - 15;
+
+                if (mousePosition.X < Left)
+                {
+                    Left = mousePosition.X - 15;
+                } else if (mousePosition.X > Left + Width)
+                {
+                    Left = mousePosition.X - Width + 15;
+                }
             }
 
             DragMove();
