@@ -6,13 +6,32 @@
         xmlns:sidebar="clr-namespace:TypeCode.Wpf.Main.Sidebar"
         xmlns:main="clr-namespace:TypeCode.Wpf.Main"
         xmlns:content="clr-namespace:TypeCode.Wpf.Main.Content"
+        xmlns:converters="clr-namespace:TypeCode.Wpf.Helper.Converters"
         mc:Ignorable="d"
         WindowStyle="None"
         AllowsTransparency="True"
         Title="{Binding Title}" d:DataContext="{d:DesignInstance main:MainViewModel}"
         MouseDown="WindowOnMouseDown">
+    
+    <Window.Resources>
+        <converters:AddTicknessConverter x:Key="AddValueConverter" Left="4" Top="4" Right="4" Bottom="4" />
+    </Window.Resources>
 
-    <Border BorderBrush="{StaticResource Accent}" BorderThickness="1">
+    <Border BorderBrush="{StaticResource Accent}">
+        <Border.Style>
+            <Style TargetType="{x:Type Border}">
+                <Setter Property="BorderThickness" Value="1" />
+                <Style.Triggers>
+                    <DataTrigger
+                        Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=WindowState}"
+                        Value="Maximized">
+                        <Setter Property="BorderThickness"
+                                Value="{Binding Source={x:Static SystemParameters.WindowResizeBorderThickness}, Converter={StaticResource AddValueConverter}}" />
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </Border.Style>
+
 
         <Grid Background="{StaticResource Secondary}">
             <Grid.RowDefinitions>
