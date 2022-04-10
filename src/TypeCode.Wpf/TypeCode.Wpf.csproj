@@ -13,6 +13,7 @@
       <PackageReference Include="AsyncAwaitBestPractices.MVVM" Version="6.0.4" />
       <PackageReference Include="bycrookie.appsdk" Version="1.0.7-pre-202203190634" />
       <PackageReference Include="bycrookie.framework.jab" Version="1.0.6-pre-202203190621" />
+      <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
       <PackageReference Include="Nito.AsyncEx.Context" Version="5.1.2" />
       <PackageReference Include="Serilog.Sinks.Console" Version="4.0.1" />
       <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
@@ -69,6 +70,10 @@
       <Resource Include="Assets\Fonts\Roboto\Roboto-ThinItalic.ttf" />
       <None Remove="Assets\Fonts\Oswald\Oswald-VariableFont_wght.ttf" />
       <Resource Include="Assets\Fonts\Oswald\Oswald-VariableFont_wght.ttf" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Helper\AttachedProperties" />
     </ItemGroup>
     
 </Project>

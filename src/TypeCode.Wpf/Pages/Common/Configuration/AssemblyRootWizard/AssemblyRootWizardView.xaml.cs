@@ -1,4 +1,4 @@
-﻿namespace TypeCode.Wpf.Pages.Common.Configuration.AssemblyRoot;
+﻿namespace TypeCode.Wpf.Pages.Common.Configuration.AssemblyRootWizard;
 
 public partial class AssemblyRootWizardView
 {

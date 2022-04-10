@@ -177,8 +177,7 @@ public class MainSidebarViewModel : Reactive, IAsyncNavigatedTo, IAsyncEventHand
         var wizardBuilder = _factory.Create<IWizardBuilder>();
 
         var wizard = wizardBuilder
-            //.Then<SetupWizardViewModel>((options, _) => options.AllowNext(_ => true))
-            .Then<ConfigurationWizardViewModel>((options, _) => options.AllowBack(_ => true))
+            .Then<SetupWizardViewModel>((options, _) => options.AllowNext(_ => true))
             .Build();
 
         return _settingsWizardRunner.RunAsync(wizard);

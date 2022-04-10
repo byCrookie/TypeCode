@@ -1,0 +1,55 @@
+﻿<UserControl x:Class="TypeCode.Wpf.Pages.Common.Configuration.AssemblyRootWizard.AssemblyRootWizardView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:assemblyRootWizard="clr-namespace:TypeCode.Wpf.Pages.Common.Configuration.AssemblyRootWizard"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="300"
+             d:DataContext="{d:DesignInstance assemblyRootWizard:AssemblyRootWizardViewModel}">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="5"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="5"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="5" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Label Grid.Column="1" Grid.Row="0">Assembly Root</Label>
+
+        <Grid Grid.Column="1" Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="5"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition Height="5"></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <TextBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+                     BorderThickness="1"
+                     Padding="2" Text="{Binding Path, Mode=OneWay}"
+                     HorizontalAlignment="Stretch"
+                     HorizontalContentAlignment="Stretch"
+                     AcceptsReturn="False" />
+            <Button Grid.Row="0" Grid.Column="3"
+                    BorderThickness="0" Command="{Binding SelectCommand}"
+                    Content="Select" />
+            <Label Grid.Row="2" Grid.Column="0" Content="Priority" />
+            <TextBox Grid.Row="2" Grid.Column="1"
+                     BorderThickness="1"
+                     Padding="2" Text="{Binding Priority}"
+                     HorizontalAlignment="Stretch"
+                     HorizontalContentAlignment="Stretch"
+                     AcceptsReturn="False" />
+        </Grid>
+    </Grid>
+</UserControl>

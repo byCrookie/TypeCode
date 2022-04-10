@@ -1,6 +1,4 @@
-using System.Collections.Concurrent;
 using System.Text.RegularExpressions;
-using TypeCode.Business.Bootstrapping;
 using TypeCode.Business.Configuration.Assemblies;
 
 namespace TypeCode.Business.Configuration;
@@ -13,14 +11,12 @@ public class AssemblyGroup
         AssemblyPath = new List<AssemblyPath>();
         PriorityAssemblyList = new List<PriorityString>();
         Name = string.Empty;
-        Text = string.Empty;
     }
         
     public List<AssemblyPathSelector> AssemblyPathSelector { get; set; }
     public List<AssemblyPath> AssemblyPath { get; set; }
     public string Name { get; set; }
     public int Priority { get; set; }
-    public string Text { get; set; }
     public List<PriorityString> PriorityAssemblyList { get; set; }
 }
     
@@ -45,7 +41,8 @@ public class TypeCodeConfiguration
     {
         AssemblyRoot = new List<AssemblyRoot>();
     }
-        
+    
+    public bool CloseCmd { get; set; }
     public List<AssemblyRoot> AssemblyRoot { get; set; }
 }
 

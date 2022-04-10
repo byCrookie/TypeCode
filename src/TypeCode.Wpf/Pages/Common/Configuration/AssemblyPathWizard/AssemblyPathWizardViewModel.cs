@@ -1,0 +1,55 @@
+﻿using System.Windows.Input;
+using Microsoft.Win32;
+using TypeCode.Wpf.Helper.Commands;
+using TypeCode.Wpf.Helper.Navigation.Service;
+using TypeCode.Wpf.Helper.Navigation.Wizard.Complex;
+using TypeCode.Wpf.Helper.ViewModel;
+
+namespace TypeCode.Wpf.Pages.Common.Configuration.AssemblyPathWizard;
+
+public class AssemblyPathWizardViewModel : Reactive, IAsyncInitialNavigated
+{
+    public AssemblyPathWizardViewModel()
+    {
+        SelectCommand = new AsyncRelayCommand(SelectAsync);
+    }
+
+    public Task OnInititalNavigationAsync(NavigationContext context)
+    {
+        return Task.CompletedTask;
+    }
+
+    private Task SelectAsync()
+    {
+        var openFileDialog = new OpenFileDialog
+        {
+            Multiselect = false,
+            Title = "Select Assembly Path",
+            ValidateNames = false,
+            CheckFileExists = false,
+            CheckPathExists = true,
+            FileName = "Selected Folder"
+        };
+
+        if (openFileDialog.ShowDialog() == true)
+        {
+            Path = System.IO.Path.GetDirectoryName(openFileDialog.FileName);
+        }
+
+        return Task.CompletedTask;
+    }
+
+    public ICommand SelectCommand { get; set; }
+
+    public string? Path
+    {
+        get => Get<string?>();
+        set => Set(value);
+    }
+
+    public int? Priority
+    {
+        get => Get<int?>();
+        set => Set(value);
+    }
+}

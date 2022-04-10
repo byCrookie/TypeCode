@@ -5,7 +5,7 @@ using TypeCode.Wpf.Helper.Navigation.Service;
 using TypeCode.Wpf.Helper.Navigation.Wizard.Complex;
 using TypeCode.Wpf.Helper.ViewModel;
 
-namespace TypeCode.Wpf.Pages.Common.Configuration.AssemblyRoot;
+namespace TypeCode.Wpf.Pages.Common.Configuration.AssemblyRootWizard;
 
 public class AssemblyRootWizardViewModel : Reactive, IAsyncInitialNavigated
 {
