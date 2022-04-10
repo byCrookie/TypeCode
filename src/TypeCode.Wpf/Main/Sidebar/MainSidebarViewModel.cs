@@ -178,6 +178,7 @@ public class MainSidebarViewModel : Reactive, IAsyncNavigatedTo, IAsyncEventHand
 
         var wizard = wizardBuilder
             .Then<SetupWizardViewModel>((options, _) => options.AllowNext(_ => true))
+            .FinishAsync(context => context.GetParameter<SetupConfigurator>().ExportAsync())
             .Build();
 
         return _settingsWizardRunner.RunAsync(wizard);

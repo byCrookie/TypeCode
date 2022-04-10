@@ -80,6 +80,9 @@ public class SetupWizardViewModel : Reactive, IAsyncInitialNavigated
         ConfigurationViewModel = await _configurationViewModelFactory.CreateAsync().ConfigureAwait(true);
         var treeViewItem = await _setupConfigurator.InitializeAsync().ConfigureAwait(true);
         TreeViewItems = new List<TreeViewItem> { treeViewItem };
+        
+        context.AddParameter(_setupConfigurator);
+        
         Refresh();
     }
 
