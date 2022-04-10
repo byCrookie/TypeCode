@@ -31,4 +31,5 @@ public class Wizard
     public WizardStepConfiguration? CurrentStepConfiguration { get; set; }
     public Func<NavigationContext, Task> CompletedAction { get; set; }
     public object? CompletedEvent { get; set; }
+    public string FinishText { get; set; }
 }

@@ -117,6 +117,7 @@ public class SetupWizardViewModel : Reactive, IAsyncInitialNavigated
     private void Refresh()
     {
         AddRootCommand.RaiseCanExecuteChanged();
+        AddIncludePatternCommand.RaiseCanExecuteChanged();
         AddGroupCommand.RaiseCanExecuteChanged();
         AddPathCommand.RaiseCanExecuteChanged();
         AddSelectorCommand.RaiseCanExecuteChanged();

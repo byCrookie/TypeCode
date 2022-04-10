@@ -51,9 +51,10 @@ public class WizardBuilder : IWizardAfterInitialBuilder
         return this;
     }
 
-    public IWizardAfterInitialBuilder FinishAsync(Func<NavigationContext, Task> completedAction)
+    public IWizardAfterInitialBuilder FinishAsync(Func<NavigationContext, Task> completedAction, string? finishText = null)
     {
         _wizard.CompletedAction = completedAction;
+        _wizard.FinishText = finishText ?? "Close";
         return this;
     }
 

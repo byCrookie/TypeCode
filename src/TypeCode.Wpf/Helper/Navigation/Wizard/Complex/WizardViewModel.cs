@@ -45,6 +45,7 @@ public class WizardViewModel : Reactive, IWizardHost
         CancelCommand = new AsyncRelayCommand(CancelAsync);
         FinishCommand = new AsyncRelayCommand(FinishAsync, _ => wizard.CurrentStepConfiguration == wizard.StepConfigurations.LastOrDefault()
                                                                 && wizard.CurrentStepConfiguration.AllowNext(wizard.NavigationContext));
+        FinishText = wizard.FinishText;
 
         if (wizard.CurrentStepConfiguration.Instances.ViewInstance is not UserControl wizardPage)
         {
@@ -145,6 +146,12 @@ public class WizardViewModel : Reactive, IWizardHost
     public ICommand? FinishCommand
     {
         get => Get<ICommand?>();
+        set => Set(value);
+    }
+
+    public string? FinishText
+    {
+        get => Get<string?>();
         set => Set(value);
     }
 }
