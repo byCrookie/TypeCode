@@ -8,10 +8,18 @@
         xmlns:content="clr-namespace:TypeCode.Wpf.Main.Content"
         xmlns:converters="clr-namespace:TypeCode.Wpf.Helper.Converters"
         mc:Ignorable="d"
-        WindowStyle="None"
-        AllowsTransparency="True"
         Title="{Binding Title}" d:DataContext="{d:DesignInstance main:MainViewModel}"
         MouseDown="WindowOnMouseDown">
+    
+    <Window.Style>
+        <Style>
+            <Setter Property="WindowChrome.WindowChrome">
+                <Setter.Value>
+                    <WindowChrome CaptionHeight="0" />
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Style>
     
     <Window.Resources>
         <converters:AddTicknessConverter x:Key="AddValueConverter" Left="4" Top="4" Right="4" Bottom="4" />
@@ -31,7 +39,6 @@
                 </Style.Triggers>
             </Style>
         </Border.Style>
-
 
         <Grid Background="{StaticResource Secondary}">
             <Grid.RowDefinitions>
