@@ -66,6 +66,9 @@ public class WizardNavigationService : IWizardNavigationService
         }
 
         viewInstance.DataContext = viewModelInstance;
+
+        await parameter.InitializeAsync(viewModelInstance).ConfigureAwait(true);
+        
         // Nav
 
         _mainViewProvider.MainWindow().Main.Opacity = 0.1;

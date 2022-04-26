@@ -193,9 +193,19 @@ internal class SetupConfigurator : ISetupConfigurator
         return WriteXmlConfigurationAsync(xmlConfiguration);
     }
 
-    public Task UpdateAsync(TreeViewItem selectedItem)
+    public async Task UpdateAsync(TreeViewItem selectedItem)
     {
-        throw new NotImplementedException();
+        // if (_setupRootMappings.ContainsKey(selectedItem))
+        // {
+        //     var mapping = _setupRootMappings[selectedItem];
+        //     DeleteRoot(selectedItem);
+        //     await AddRootAsync(mapping.ParentItem, model =>
+        //     {
+        //         model.Path = mapping.Type.Path;
+        //         model.Priority = mapping.Type.Priority;
+        //         return Task.CompletedTask;
+        //     }).ConfigureAwait(true);
+        // }
     }
 
     public bool CanUpdate(TreeViewItem? selectedItem)
@@ -205,41 +215,16 @@ internal class SetupConfigurator : ISetupConfigurator
 
     public Task DeleteAsync(TreeViewItem selectedItem)
     {
-        if (_setupRootMappings.ContainsKey(selectedItem))
-        {
-            var mapping = _setupRootMappings[selectedItem];
-            _configuration.AssemblyRoot.Remove(mapping.Type);
-            mapping.ParentItem.Items.Remove(selectedItem);
-            _setupRootMappings.Remove(selectedItem);
-        }
+        DeleteRoot(selectedItem);
+        DeleteGroup(selectedItem);
+        DeletePath(selectedItem);
+        DeletePathSelector(selectedItem);
+        DeleteIncludePattern(selectedItem);
+        return Task.CompletedTask;
+    }
 
-        if (_setupGroupMappings.ContainsKey(selectedItem))
-        {
-            var mapping = _setupGroupMappings[selectedItem];
-            var parentMapping = _setupRootMappings[mapping.ParentItem];
-            parentMapping.Type.AssemblyGroup.Remove(mapping.Type);
-            mapping.ParentItem.Items.Remove(selectedItem);
-            _setupGroupMappings.Remove(selectedItem);
-        }
-        
-        if (_setupPathMappings.ContainsKey(selectedItem))
-        {
-            var mapping = _setupPathMappings[selectedItem];
-            var parentMapping = _setupGroupMappings[mapping.ParentItem];
-            parentMapping.Type.AssemblyPath.Remove(mapping.Type);
-            mapping.ParentItem.Items.Remove(selectedItem);
-            _setupPathMappings.Remove(selectedItem);
-        }
-        
-        if (_setupPathSelectorMappings.ContainsKey(selectedItem))
-        {
-            var mapping = _setupPathSelectorMappings[selectedItem];
-            var parentMapping = _setupGroupMappings[mapping.ParentItem];
-            parentMapping.Type.AssemblyPathSelector.Remove(mapping.Type);
-            mapping.ParentItem.Items.Remove(selectedItem);
-            _setupPathSelectorMappings.Remove(selectedItem);
-        }
-
+    private void DeleteIncludePattern(TreeViewItem selectedItem)
+    {
         if (_setupIncludePatternMappings.ContainsKey(selectedItem))
         {
             var mapping = _setupIncludePatternMappings[selectedItem];
@@ -248,8 +233,53 @@ internal class SetupConfigurator : ISetupConfigurator
             mapping.ParentItem.Items.Remove(selectedItem);
             _setupIncludePatternMappings.Remove(selectedItem);
         }
+    }
 
-        return Task.CompletedTask;
+    private void DeletePathSelector(TreeViewItem selectedItem)
+    {
+        if (_setupPathSelectorMappings.ContainsKey(selectedItem))
+        {
+            var mapping = _setupPathSelectorMappings[selectedItem];
+            var parentMapping = _setupGroupMappings[mapping.ParentItem];
+            parentMapping.Type.AssemblyPathSelector.Remove(mapping.Type);
+            mapping.ParentItem.Items.Remove(selectedItem);
+            _setupPathSelectorMappings.Remove(selectedItem);
+        }
+    }
+
+    private void DeletePath(TreeViewItem selectedItem)
+    {
+        if (_setupPathMappings.ContainsKey(selectedItem))
+        {
+            var mapping = _setupPathMappings[selectedItem];
+            var parentMapping = _setupGroupMappings[mapping.ParentItem];
+            parentMapping.Type.AssemblyPath.Remove(mapping.Type);
+            mapping.ParentItem.Items.Remove(selectedItem);
+            _setupPathMappings.Remove(selectedItem);
+        }
+    }
+
+    private void DeleteGroup(TreeViewItem selectedItem)
+    {
+        if (_setupGroupMappings.ContainsKey(selectedItem))
+        {
+            var mapping = _setupGroupMappings[selectedItem];
+            var parentMapping = _setupRootMappings[mapping.ParentItem];
+            parentMapping.Type.AssemblyGroup.Remove(mapping.Type);
+            mapping.ParentItem.Items.Remove(selectedItem);
+            _setupGroupMappings.Remove(selectedItem);
+        }
+    }
+
+    private void DeleteRoot(TreeViewItem selectedItem)
+    {
+        if (_setupRootMappings.ContainsKey(selectedItem))
+        {
+            var mapping = _setupRootMappings[selectedItem];
+            _configuration.AssemblyRoot.Remove(mapping.Type);
+            mapping.ParentItem.Items.Remove(selectedItem);
+            _setupRootMappings.Remove(selectedItem);
+        }
     }
 
     public bool CanDelete(TreeViewItem? selectedItem)
@@ -377,11 +407,12 @@ internal class SetupConfigurator : ISetupConfigurator
         };
     }
 
-    private Task<T> OpenWizardAsync<T>() where T : notnull
+    private Task<T> OpenWizardAsync<T>(Func<T, Task>? initialize = null) where T : notnull
     {
         return _wizardNavigationService.OpenWizardAsync(new WizardParameter<T>
         {
-            FinishButtonText = "Add"
+            FinishButtonText = "Add",
+            InitializeAsync = initialize ?? new Func<T, Task>(_ => Task.CompletedTask)
         }, new NavigationContext());
     }
 

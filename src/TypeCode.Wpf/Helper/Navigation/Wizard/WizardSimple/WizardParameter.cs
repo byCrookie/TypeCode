@@ -9,10 +9,12 @@ public class WizardParameter<T>
         CanSave = _ => true;
         OnSaveAsync = (_, _) => Task.CompletedTask;
         OnCancelAsync = (_, _) => Task.CompletedTask;
+        InitializeAsync = _ => Task.CompletedTask;
     }
     
     public string? FinishButtonText { get; set; }
     public Func<T, bool> CanSave { get; set; }
     public Func<T, NavigationContext, Task> OnSaveAsync { get; set; }
     public Func<T, NavigationContext, Task> OnCancelAsync { get; set; }
+    public Func<T, Task> InitializeAsync { get; set; }
 }
