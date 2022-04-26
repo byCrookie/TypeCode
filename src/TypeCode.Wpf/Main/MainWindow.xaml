@@ -8,19 +8,13 @@
         xmlns:content="clr-namespace:TypeCode.Wpf.Main.Content"
         xmlns:converters="clr-namespace:TypeCode.Wpf.Helper.Converters"
         mc:Ignorable="d"
-        Title="{Binding Title}" d:DataContext="{d:DesignInstance main:MainViewModel}"
-        MouseDown="WindowOnMouseDown">
-    
-    <Window.Style>
-        <Style>
-            <Setter Property="WindowChrome.WindowChrome">
-                <Setter.Value>
-                    <WindowChrome CaptionHeight="0" />
-                </Setter.Value>
-            </Setter>
-        </Style>
-    </Window.Style>
-    
+        Title="{Binding Title}" d:DataContext="{d:DesignInstance main:MainViewModel}">
+
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="30">
+        </WindowChrome>
+    </WindowChrome.WindowChrome>
+
     <Window.Resources>
         <converters:AddTicknessConverter x:Key="AddValueConverter" Left="4" Top="4" Right="4" Bottom="4" />
     </Window.Resources>
@@ -42,7 +36,7 @@
 
         <Grid Background="{StaticResource Secondary}">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
+                <RowDefinition Height="30" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
@@ -50,8 +44,7 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <StackPanel Grid.Row="0" Grid.Column="1"
-                        Orientation="Horizontal"
+            <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal"
                         WindowChrome.IsHitTestVisibleInChrome="True">
 
                 <StackPanel.Resources>
