@@ -64,8 +64,14 @@ internal class SetupConfigurator : ISetupConfigurator
 
     public async Task AddRootAsync(TreeViewItem parentItem)
     {
-        var result = await OpenWizardAsync<AssemblyRootWizardViewModel>().ConfigureAwait(false);
-        var newItem = CreateAssemblyRootItem(result.Path ?? string.Empty, result.Priority.GetValueOrDefault());
+        var result = await OpenWizardAsync<AssemblyRootWizardViewModel>().ConfigureAwait(true);
+
+        if (string.IsNullOrEmpty(result.Path) || result.Priority is null)
+        {
+            return;
+        }
+        
+        var newItem = CreateAssemblyRootItem(result.Path, result.Priority.Value);
         parentItem.Items.Add(newItem);
         var newAssemblyRoot = new AssemblyRoot
         {
@@ -84,8 +90,14 @@ internal class SetupConfigurator : ISetupConfigurator
     public async Task AddGroupAsync(TreeViewItem parentItem)
     {
         var parentRoot = _setupRootMappings[parentItem];
-        var result = await OpenWizardAsync<AssemblyGroupWizardViewModel>().ConfigureAwait(false);
-        var newItem = CreateAssemblyGroupItem(result.Name ?? string.Empty, result.Priority.GetValueOrDefault());
+        var result = await OpenWizardAsync<AssemblyGroupWizardViewModel>().ConfigureAwait(true);
+        
+        if (string.IsNullOrEmpty(result.Name) || result.Priority is null)
+        {
+            return;
+        }
+        
+        var newItem = CreateAssemblyGroupItem(result.Name, result.Priority.Value);
         parentItem.Items.Add(newItem);
         var newAssemblyGroup = new AssemblyGroup
         {
@@ -104,8 +116,14 @@ internal class SetupConfigurator : ISetupConfigurator
     public async Task AddPathAsync(TreeViewItem parentItem)
     {
         var parentGroup = _setupGroupMappings[parentItem];
-        var result = await OpenWizardAsync<AssemblyPathWizardViewModel>().ConfigureAwait(false);
-        var newItem = CreateAssemblyPathItem(result.Priority.GetValueOrDefault(), result.Path ?? string.Empty);
+        var result = await OpenWizardAsync<AssemblyPathWizardViewModel>().ConfigureAwait(true);
+        
+        if (string.IsNullOrEmpty(result.Path) || result.Priority is null)
+        {
+            return;
+        }
+        
+        var newItem = CreateAssemblyPathItem(result.Priority.Value, result.Path);
         parentItem.Items.Add(newItem);
         var newAssemblyPath = new AssemblyPath
         {
@@ -124,8 +142,14 @@ internal class SetupConfigurator : ISetupConfigurator
     public async Task AddIncludePatternAsync(TreeViewItem parentItem)
     {
         var parentRoot = _setupRootMappings[parentItem];
-        var result = await OpenWizardAsync<IncludeAssemblyPatternWizardViewModel>().ConfigureAwait(false);
-        var newItem = CreateIncludeAssemblyPatternItem(result.Pattern ?? string.Empty);
+        var result = await OpenWizardAsync<IncludeAssemblyPatternWizardViewModel>().ConfigureAwait(true);
+        
+        if (string.IsNullOrEmpty(result.Pattern))
+        {
+            return;
+        }
+        
+        var newItem = CreateIncludeAssemblyPatternItem(result.Pattern);
         parentItem.Items.Add(newItem);
         var pattern = new Regex(result.Pattern ?? string.Empty, RegexOptions.Compiled);
         parentRoot.Type.IncludeAssemblyPattern.Add(pattern);
@@ -140,8 +164,14 @@ internal class SetupConfigurator : ISetupConfigurator
     public async Task AddSelectorAsync(TreeViewItem parentItem)
     {
         var parentGroup = _setupGroupMappings[parentItem];
-        var result = await OpenWizardAsync<AssemblyPathSelectorWizardViewModel>().ConfigureAwait(false);
-        var newItem = CreateAssemblyPathSelectorItem(result.Priority.GetValueOrDefault(), result.Selector ?? string.Empty);
+        var result = await OpenWizardAsync<AssemblyPathSelectorWizardViewModel>().ConfigureAwait(true);
+        
+        if (string.IsNullOrEmpty(result.Selector) || result.Priority is null)
+        {
+            return;
+        }
+        
+        var newItem = CreateAssemblyPathSelectorItem(result.Priority.Value, result.Selector);
         parentItem.Items.Add(newItem);
         var newAssemblyPathSelector = new AssemblyPathSelector
         {
