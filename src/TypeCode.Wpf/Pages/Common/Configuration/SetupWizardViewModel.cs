@@ -17,62 +17,11 @@ public class SetupWizardViewModel : Reactive, IAsyncInitialNavigated
         _setupConfigurator = setupConfigurator;
         _configurationViewModelFactory = configurationViewModelFactory;
 
-        AddRootCommand = new AsyncRelayCommand(AddRootAsync, CanAddRoot);
-        AddGroupCommand = new AsyncRelayCommand(AddGroupAsync, CanAddGroup);
-        AddIncludePatternCommand = new AsyncRelayCommand(AddIncludePatternAsync, CanAddIncludePattern);
-        AddPathCommand = new AsyncRelayCommand(AddPathAsync, CanAddPath);
-        AddSelectorCommand = new AsyncRelayCommand(AddSelectorAsync, CanAddSelector);
-    }
-
-    private bool CanAddRoot(object? arg)
-    {
-        return _setupConfigurator.CanAddRoot(SelectedItem);
-    }
-
-    private Task AddRootAsync()
-    {
-        return _setupConfigurator.AddRootAsync(SelectedItem!);
-    }
-
-    private bool CanAddGroup(object? arg)
-    {
-        return _setupConfigurator.CanAddGroup(SelectedItem);
-    }
-
-    private Task AddGroupAsync()
-    {
-        return _setupConfigurator.AddGroupAsync(SelectedItem!);
-    }
-    
-    private bool CanAddIncludePattern(object? arg)
-    {
-        return _setupConfigurator.CanAddIncludePattern(SelectedItem);
-    }
-
-    private Task AddIncludePatternAsync()
-    {
-        return _setupConfigurator.AddIncludePatternAsync(SelectedItem!);
-    }
-
-    private bool CanAddPath(object? arg)
-    {
-        return _setupConfigurator.CanAddPath(SelectedItem);
-    }
-
-    private Task AddPathAsync()
-    {
-        return _setupConfigurator.AddPathAsync(SelectedItem!);
-    }
-
-    private bool CanAddSelector(object? arg)
-    {
-        return _setupConfigurator.CanAddSelector(SelectedItem);
-
-    }
-
-    private Task AddSelectorAsync()
-    {
-        return _setupConfigurator.AddSelectorAsync(SelectedItem!);
+        AddRootCommand = new AsyncRelayCommand(() =>  _setupConfigurator.AddRootAsync(SelectedItem!), _ => _setupConfigurator.CanAddRoot(SelectedItem));
+        AddGroupCommand = new AsyncRelayCommand(() =>  _setupConfigurator.AddGroupAsync(SelectedItem!), _ => _setupConfigurator.CanAddGroup(SelectedItem));
+        AddIncludePatternCommand = new AsyncRelayCommand(() =>  _setupConfigurator.AddIncludePatternAsync(SelectedItem!), _ => _setupConfigurator.CanAddIncludePattern(SelectedItem));
+        AddPathCommand = new AsyncRelayCommand(() =>  _setupConfigurator.AddPathAsync(SelectedItem!), _ => _setupConfigurator.CanAddPath(SelectedItem));
+        AddSelectorCommand = new AsyncRelayCommand(() =>  _setupConfigurator.AddSelectorAsync(SelectedItem!), _ => _setupConfigurator.CanAddSelector(SelectedItem));;
     }
 
     public async Task OnInititalNavigationAsync(NavigationContext context)
