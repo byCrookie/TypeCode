@@ -20,8 +20,20 @@ internal class SetupConfigurator : ISetupConfigurator
     private readonly IWizardNavigationService _wizardNavigationService;
     private TypeCodeConfiguration _configuration;
 
-    private readonly IDictionary<TreeViewItem, AssemblyRoot> _setupRootMappings = new Dictionary<TreeViewItem, AssemblyRoot>();
-    private readonly IDictionary<TreeViewItem, AssemblyGroup> _setupGroupMappings = new Dictionary<TreeViewItem, AssemblyGroup>();
+    private readonly IDictionary<TreeViewItem, SetupTreeViewItemMapping<AssemblyRoot>> _setupRootMappings
+        = new Dictionary<TreeViewItem, SetupTreeViewItemMapping<AssemblyRoot>>();
+
+    private readonly IDictionary<TreeViewItem, SetupTreeViewItemMapping<AssemblyGroup>> _setupGroupMappings
+        = new Dictionary<TreeViewItem, SetupTreeViewItemMapping<AssemblyGroup>>();
+
+    private readonly IDictionary<TreeViewItem, SetupTreeViewItemMapping<AssemblyPath>> _setupPathMappings
+        = new Dictionary<TreeViewItem, SetupTreeViewItemMapping<AssemblyPath>>();
+
+    private readonly IDictionary<TreeViewItem, SetupTreeViewItemMapping<AssemblyPathSelector>> _setupPathSelectorMappings
+        = new Dictionary<TreeViewItem, SetupTreeViewItemMapping<AssemblyPathSelector>>();
+
+    private readonly IDictionary<TreeViewItem, SetupTreeViewItemMapping<Regex>> _setupIncludePatternMappings
+        = new Dictionary<TreeViewItem, SetupTreeViewItemMapping<Regex>>();
 
     private const string TypeCodeConfigurationName = "TypeCodeConfiguration";
     private const string AssemblyRootName = "AssemblyRoot";
@@ -61,7 +73,7 @@ internal class SetupConfigurator : ISetupConfigurator
             Priority = result.Priority ?? throw new Exception()
         };
         _configuration.AssemblyRoot.Add(newAssemblyRoot);
-        _setupRootMappings.Add(newItem, newAssemblyRoot);
+        _setupRootMappings.Add(newItem, new SetupTreeViewItemMapping<AssemblyRoot>(newItem, parentItem, newAssemblyRoot));
     }
 
     public bool CanAddRoot(TreeViewItem? parentItem)
@@ -80,8 +92,8 @@ internal class SetupConfigurator : ISetupConfigurator
             Name = result.Name ?? throw new Exception(),
             Priority = result.Priority ?? throw new Exception()
         };
-        parentRoot.AssemblyGroup.Add(newAssemblyGroup);
-        _setupGroupMappings.Add(newItem, newAssemblyGroup);
+        parentRoot.Type.AssemblyGroup.Add(newAssemblyGroup);
+        _setupGroupMappings.Add(newItem, new SetupTreeViewItemMapping<AssemblyGroup>(newItem, parentItem, newAssemblyGroup));
     }
 
     public bool CanAddGroup(TreeViewItem? parentItem)
@@ -100,7 +112,8 @@ internal class SetupConfigurator : ISetupConfigurator
             Path = result.Path ?? throw new Exception(),
             Priority = result.Priority ?? throw new Exception()
         };
-        parentGroup.AssemblyPath.Add(newAssemblyPath);
+        parentGroup.Type.AssemblyPath.Add(newAssemblyPath);
+        _setupPathMappings.Add(newItem, new SetupTreeViewItemMapping<AssemblyPath>(newItem, parentItem, newAssemblyPath));
     }
 
     public bool CanAddPath(TreeViewItem? parentItem)
@@ -114,7 +127,9 @@ internal class SetupConfigurator : ISetupConfigurator
         var result = await OpenWizardAsync<IncludeAssemblyPatternWizardViewModel>().ConfigureAwait(false);
         var newItem = CreateIncludeAssemblyPatternItem(result.Pattern ?? string.Empty);
         parentItem.Items.Add(newItem);
-        parentRoot.IncludeAssemblyPattern.Add(new Regex(result.Pattern ?? string.Empty, RegexOptions.Compiled));
+        var pattern = new Regex(result.Pattern ?? string.Empty, RegexOptions.Compiled);
+        parentRoot.Type.IncludeAssemblyPattern.Add(pattern);
+        _setupIncludePatternMappings.Add(newItem, new SetupTreeViewItemMapping<Regex>(newItem, parentItem, pattern));
     }
 
     public bool CanAddIncludePattern(TreeViewItem? parentItem)
@@ -133,7 +148,8 @@ internal class SetupConfigurator : ISetupConfigurator
             Selector = result.Selector ?? throw new Exception(),
             Priority = result.Priority ?? throw new Exception()
         };
-        parentGroup.AssemblyPathSelector.Add(newAssemblyPathSelector);
+        parentGroup.Type.AssemblyPathSelector.Add(newAssemblyPathSelector);
+        _setupPathSelectorMappings.Add(newItem, new SetupTreeViewItemMapping<AssemblyPathSelector>(newItem, parentItem, newAssemblyPathSelector));
     }
 
     public bool CanAddSelector(TreeViewItem? parentItem)
@@ -145,6 +161,70 @@ internal class SetupConfigurator : ISetupConfigurator
     {
         var xmlConfiguration = _configurationMapper.MapToXml(_configuration);
         return WriteXmlConfigurationAsync(xmlConfiguration);
+    }
+
+    public Task UpdateAsync(TreeViewItem selectedItem)
+    {
+        throw new NotImplementedException();
+    }
+
+    public bool CanUpdate(TreeViewItem? selectedItem)
+    {
+        return selectedItem is not null && !$"{selectedItem.Header}".StartsWith(TypeCodeConfigurationName);
+    }
+
+    public Task DeleteAsync(TreeViewItem selectedItem)
+    {
+        if (_setupRootMappings.ContainsKey(selectedItem))
+        {
+            var mapping = _setupRootMappings[selectedItem];
+            _configuration.AssemblyRoot.Remove(mapping.Type);
+            mapping.ParentItem.Items.Remove(selectedItem);
+            _setupRootMappings.Remove(selectedItem);
+        }
+
+        if (_setupGroupMappings.ContainsKey(selectedItem))
+        {
+            var mapping = _setupGroupMappings[selectedItem];
+            var parentMapping = _setupRootMappings[mapping.ParentItem];
+            parentMapping.Type.AssemblyGroup.Remove(mapping.Type);
+            mapping.ParentItem.Items.Remove(selectedItem);
+            _setupGroupMappings.Remove(selectedItem);
+        }
+        
+        if (_setupPathMappings.ContainsKey(selectedItem))
+        {
+            var mapping = _setupPathMappings[selectedItem];
+            var parentMapping = _setupGroupMappings[mapping.ParentItem];
+            parentMapping.Type.AssemblyPath.Remove(mapping.Type);
+            mapping.ParentItem.Items.Remove(selectedItem);
+            _setupPathMappings.Remove(selectedItem);
+        }
+        
+        if (_setupPathSelectorMappings.ContainsKey(selectedItem))
+        {
+            var mapping = _setupPathSelectorMappings[selectedItem];
+            var parentMapping = _setupGroupMappings[mapping.ParentItem];
+            parentMapping.Type.AssemblyPathSelector.Remove(mapping.Type);
+            mapping.ParentItem.Items.Remove(selectedItem);
+            _setupPathSelectorMappings.Remove(selectedItem);
+        }
+
+        if (_setupIncludePatternMappings.ContainsKey(selectedItem))
+        {
+            var mapping = _setupIncludePatternMappings[selectedItem];
+            var parentMapping = _setupRootMappings[mapping.ParentItem];
+            parentMapping.Type.IncludeAssemblyPattern.Remove(mapping.Type);
+            mapping.ParentItem.Items.Remove(selectedItem);
+            _setupIncludePatternMappings.Remove(selectedItem);
+        }
+
+        return Task.CompletedTask;
+    }
+
+    public bool CanDelete(TreeViewItem? selectedItem)
+    {
+        return selectedItem is not null && !$"{selectedItem.Header}".StartsWith(TypeCodeConfigurationName);
     }
 
     private Task<TreeViewItem> BuildTreeViewAsync(TypeCodeConfiguration configuration)
@@ -159,7 +239,7 @@ internal class SetupConfigurator : ISetupConfigurator
         return Task.FromResult(typeCodeConfigurationItem);
     }
 
-    private void BuildAssemblyRoots(TypeCodeConfiguration typeCodeConfiguration, ItemsControl typeCodeConfigurationItem)
+    private void BuildAssemblyRoots(TypeCodeConfiguration typeCodeConfiguration, TreeViewItem typeCodeConfigurationItem)
     {
         foreach (var assemblyRoot in typeCodeConfiguration.AssemblyRoot)
         {
@@ -167,11 +247,11 @@ internal class SetupConfigurator : ISetupConfigurator
             BuildIncludeAssemblyPatterns(assemblyRoot, assemblyRootItem);
             BuildAssemblyGroups(assemblyRoot, assemblyRootItem);
             typeCodeConfigurationItem.Items.Add(assemblyRootItem);
-            _setupRootMappings.Add(assemblyRootItem, assemblyRoot);
+            _setupRootMappings.Add(assemblyRootItem, new SetupTreeViewItemMapping<AssemblyRoot>(assemblyRootItem, typeCodeConfigurationItem, assemblyRoot));
         }
     }
 
-    private void BuildAssemblyGroups(AssemblyRoot assemblyRoot, ItemsControl assemblyRootItem)
+    private void BuildAssemblyGroups(AssemblyRoot assemblyRoot, TreeViewItem assemblyRootItem)
     {
         foreach (var assemblyGroup in assemblyRoot.AssemblyGroup)
         {
@@ -179,34 +259,37 @@ internal class SetupConfigurator : ISetupConfigurator
             BuildAssemblyPaths(assemblyGroup, assemblyGroupItem);
             BuildAssemblyPathSelectors(assemblyGroup, assemblyGroupItem);
             assemblyRootItem.Items.Add(assemblyGroupItem);
-            _setupGroupMappings.Add(assemblyGroupItem, assemblyGroup);
+            _setupGroupMappings.Add(assemblyGroupItem, new SetupTreeViewItemMapping<AssemblyGroup>(assemblyGroupItem, assemblyRootItem, assemblyGroup));
         }
     }
 
-    private static void BuildIncludeAssemblyPatterns(AssemblyRoot assemblyRoot, ItemsControl assemblyRootItem)
+    private void BuildIncludeAssemblyPatterns(AssemblyRoot assemblyRoot, TreeViewItem assemblyRootItem)
     {
-        foreach (var includeAssemblyPatternItem in assemblyRoot.IncludeAssemblyPattern
-                     .Select(pattern => CreateIncludeAssemblyPatternItem($"{pattern}")))
+        foreach (var includeAssemblyPattern in assemblyRoot.IncludeAssemblyPattern)
         {
+            var includeAssemblyPatternItem = CreateIncludeAssemblyPatternItem($"{includeAssemblyPattern}");
             assemblyRootItem.Items.Add(includeAssemblyPatternItem);
+            _setupIncludePatternMappings.Add(includeAssemblyPatternItem, new SetupTreeViewItemMapping<Regex>(includeAssemblyPatternItem, assemblyRootItem, includeAssemblyPattern));
         }
     }
 
-    private static void BuildAssemblyPaths(AssemblyGroup assemblyGroup, ItemsControl assemblyGroupItem)
+    private void BuildAssemblyPaths(AssemblyGroup assemblyGroup, TreeViewItem assemblyGroupItem)
     {
-        foreach (var assemblyPathItem in assemblyGroup.AssemblyPath
-                     .Select(assemblyPath => CreateAssemblyPathItem(assemblyPath.Priority, assemblyPath.Path)))
+        foreach (var assemblyPath in assemblyGroup.AssemblyPath)
         {
+            var assemblyPathItem = CreateAssemblyPathItem(assemblyPath.Priority, assemblyPath.Path);
             assemblyGroupItem.Items.Add(assemblyPathItem);
+            _setupPathMappings.Add(assemblyPathItem, new SetupTreeViewItemMapping<AssemblyPath>(assemblyPathItem, assemblyGroupItem, assemblyPath));
         }
     }
 
-    private static void BuildAssemblyPathSelectors(AssemblyGroup assemblyGroup, ItemsControl assemblyGroupItem)
+    private void BuildAssemblyPathSelectors(AssemblyGroup assemblyGroup, TreeViewItem assemblyGroupItem)
     {
-        foreach (var assemblyPathSelectorItem in assemblyGroup.AssemblyPathSelector
-                     .Select(assemblyPathSelector => CreateAssemblyPathSelectorItem(assemblyPathSelector.Priority, assemblyPathSelector.Selector)))
+        foreach (var assemblyPathSelector in assemblyGroup.AssemblyPathSelector)
         {
+            var assemblyPathSelectorItem = CreateAssemblyPathSelectorItem(assemblyPathSelector.Priority, assemblyPathSelector.Selector);
             assemblyGroupItem.Items.Add(assemblyPathSelectorItem);
+            _setupPathSelectorMappings.Add(assemblyPathSelectorItem, new SetupTreeViewItemMapping<AssemblyPathSelector>(assemblyPathSelectorItem, assemblyGroupItem, assemblyPathSelector));
         }
     }
 

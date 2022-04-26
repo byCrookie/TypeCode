@@ -21,7 +21,9 @@ public class SetupWizardViewModel : Reactive, IAsyncInitialNavigated
         AddGroupCommand = new AsyncRelayCommand(() =>  _setupConfigurator.AddGroupAsync(SelectedItem!), _ => _setupConfigurator.CanAddGroup(SelectedItem));
         AddIncludePatternCommand = new AsyncRelayCommand(() =>  _setupConfigurator.AddIncludePatternAsync(SelectedItem!), _ => _setupConfigurator.CanAddIncludePattern(SelectedItem));
         AddPathCommand = new AsyncRelayCommand(() =>  _setupConfigurator.AddPathAsync(SelectedItem!), _ => _setupConfigurator.CanAddPath(SelectedItem));
-        AddSelectorCommand = new AsyncRelayCommand(() =>  _setupConfigurator.AddSelectorAsync(SelectedItem!), _ => _setupConfigurator.CanAddSelector(SelectedItem));;
+        AddSelectorCommand = new AsyncRelayCommand(() =>  _setupConfigurator.AddSelectorAsync(SelectedItem!), _ => _setupConfigurator.CanAddSelector(SelectedItem));
+        UpdateCommand = new AsyncRelayCommand(() =>  _setupConfigurator.UpdateAsync(SelectedItem!), _ => _setupConfigurator.CanUpdate(SelectedItem));
+        DeleteCommand = new AsyncRelayCommand(() =>  _setupConfigurator.DeleteAsync(SelectedItem!), _ => _setupConfigurator.CanDelete(SelectedItem));
     }
 
     public async Task OnInititalNavigationAsync(NavigationContext context)
@@ -40,6 +42,8 @@ public class SetupWizardViewModel : Reactive, IAsyncInitialNavigated
     public IAsyncCommand AddIncludePatternCommand { get; set; }
     public IAsyncCommand AddPathCommand { get; set; }
     public IAsyncCommand AddSelectorCommand { get; set; }
+    public IAsyncCommand UpdateCommand { get; set; }
+    public IAsyncCommand DeleteCommand { get; set; }
 
     public List<TreeViewItem>? TreeViewItems
     {
@@ -70,5 +74,7 @@ public class SetupWizardViewModel : Reactive, IAsyncInitialNavigated
         AddGroupCommand.RaiseCanExecuteChanged();
         AddPathCommand.RaiseCanExecuteChanged();
         AddSelectorCommand.RaiseCanExecuteChanged();
+        UpdateCommand.RaiseCanExecuteChanged();
+        DeleteCommand.RaiseCanExecuteChanged();
     }
 }

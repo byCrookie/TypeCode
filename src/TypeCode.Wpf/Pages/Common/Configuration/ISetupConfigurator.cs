@@ -16,4 +16,8 @@ public interface ISetupConfigurator
     public Task AddSelectorAsync(TreeViewItem parentItem);
     public bool CanAddSelector(TreeViewItem? parentItem);
     public Task ExportAsync();
+    Task UpdateAsync(TreeViewItem selectedItem);
+    bool CanUpdate(TreeViewItem? selectedItem);
+    Task DeleteAsync(TreeViewItem selectedItem);
+    bool CanDelete(TreeViewItem? selectedItem);
 }
