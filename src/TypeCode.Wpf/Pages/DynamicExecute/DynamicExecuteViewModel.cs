@@ -1,6 +1,6 @@
-﻿using System.CodeDom.Compiler;
+﻿using System.IO;
+using System.Text;
 using System.Windows.Input;
-using Microsoft.CSharp;
 using TypeCode.Business.Mode;
 using TypeCode.Business.Mode.UnitTestDependency.Manually;
 using TypeCode.Wpf.Components.OutputBox;
@@ -8,19 +8,26 @@ using TypeCode.Wpf.Helper.Commands;
 using TypeCode.Wpf.Helper.Navigation.Contract;
 using TypeCode.Wpf.Helper.Navigation.Service;
 using TypeCode.Wpf.Helper.ViewModel;
+using TypeCode.Wpf.Pages.DynamicExecute.Code;
 
 namespace TypeCode.Wpf.Pages.DynamicExecute;
 
 public class DynamicExecuteViewModel : Reactive, IAsyncNavigatedTo
 {
     private readonly ITypeCodeGenerator<UnitTestDependencyManuallyGeneratorParameter> _unitTestDependencyManuallyGenerator;
+    private readonly ICompiler _compiler;
+    private readonly IRunner _runner;
 
     public DynamicExecuteViewModel(
         ITypeCodeGenerator<UnitTestDependencyManuallyGeneratorParameter> unitTestDependencyManuallyGenerator,
-        IOutputBoxViewModelFactory outputBoxViewModelFactory
+        IOutputBoxViewModelFactory outputBoxViewModelFactory,
+        ICompiler compiler,
+        IRunner runner
     )
     {
         _unitTestDependencyManuallyGenerator = unitTestDependencyManuallyGenerator;
+        _compiler = compiler;
+        _runner = runner;
 
         OutputBoxViewModel = outputBoxViewModelFactory.Create();
 
@@ -30,33 +37,25 @@ public class DynamicExecuteViewModel : Reactive, IAsyncNavigatedTo
     public Task OnNavigatedToAsync(NavigationContext context)
     {
         Input =
-            @"using System.Linq;
+            @"
+using System;
+using System.Linq;
+using System.IO;
 
-class Program 
-{
-    public static void Main(string[] args) 
-    {
-                
-    }
-}";
+Console.WriteLine(""Output"");
+
+";
 
         return Task.CompletedTask;
     }
 
     private Task ExecuteAsync()
     {
-        var csc = new CSharpCodeProvider(new Dictionary<string, string>() { { "CompilerVersion", "v3.5" } });
-        var parameters = new CompilerParameters(new[] { "mscorlib.dll", "System.Core.dll" }, "foo.exe", true)
-        {
-            GenerateExecutable = true
-        };
+        File.WriteAllText("DynamicProgram.cs", Input);
 
-        var results = csc.CompileAssemblyFromSource(parameters, Input);
+        var result = _runner.Execute(_compiler.Compile("DynamicProgram.cs"));
 
-        OutputBoxViewModel?.SetOutput(results.Output.ToString());
-        results.Errors.Cast<CompilerError>()
-            .ToList()
-            .ForEach(error => OutputBoxViewModel?.SetOutput($"{OutputBoxViewModel.Output}{Environment.NewLine}{error.ErrorText}"));
+        OutputBoxViewModel?.SetOutput(result);
 
         return Task.CompletedTask;
     }
