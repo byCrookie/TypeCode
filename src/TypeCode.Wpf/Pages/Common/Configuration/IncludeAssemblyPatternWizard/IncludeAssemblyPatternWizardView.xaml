@@ -12,7 +12,6 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <Label Grid.Row="0">Include Assembly Pattern</Label>
@@ -24,16 +23,6 @@
                 Width="200"
                 MaxWidth="200"
                 Text="{Binding Pattern}"
-                AcceptsReturn="False" />
-        </StackPanel>
-
-        <StackPanel Grid.Row="2" Orientation="Horizontal">
-            <Label Content="Priority" />
-            <TextBox
-                BorderThickness="1"
-                Width="200"
-                MaxWidth="200"
-                Text="{Binding Priority}"
                 AcceptsReturn="False" />
         </StackPanel>
 

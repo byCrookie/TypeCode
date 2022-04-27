@@ -16,10 +16,4 @@ public class IncludeAssemblyPatternWizardViewModel : Reactive, IAsyncInitialNavi
         get => Get<string?>();
         set => Set(value);
     }
-
-    public int? Priority
-    {
-        get => Get<int?>();
-        set => Set(value);
-    }
 }
