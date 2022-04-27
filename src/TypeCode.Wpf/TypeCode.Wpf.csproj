@@ -79,4 +79,9 @@
         <Folder Include="Helper\AttachedProperties" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Remove="Pages\DynamicExecute\DynamicExecutionTemplate.txt" />
+      <EmbeddedResource Include="Pages\DynamicExecute\DynamicExecutionTemplate.txt" />
+    </ItemGroup>
+
 </Project>

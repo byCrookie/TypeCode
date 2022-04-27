@@ -39,7 +39,7 @@
                     AcceptsReturn="True"
                     TextWrapping="NoWrap"
                     AcceptsTab="True"
-                    MinHeight="100"
+                    MinHeight="200"
                     MaxHeight="400"
                     ToolTip="Input c# code you want to execute">
                 </TextBox>

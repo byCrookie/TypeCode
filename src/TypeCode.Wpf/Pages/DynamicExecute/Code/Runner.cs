@@ -8,6 +8,10 @@ public class Runner : IRunner
 {
     public string Execute(byte[] compiledAssembly)
     {
+        var sw = new StringWriter();
+        Console.SetOut(sw);
+        Console.SetError(sw);
+
         var weakReference = LoadAndExecute(compiledAssembly);
 
         for (var i = 0; i < 8 && weakReference.IsAlive; i++)
@@ -21,7 +25,7 @@ public class Runner : IRunner
             Log.Error("Unloading failed");
         }
 
-        return string.Empty;
+        return sw.ToString();
     }
 
     [MethodImpl(MethodImplOptions.NoInlining)]

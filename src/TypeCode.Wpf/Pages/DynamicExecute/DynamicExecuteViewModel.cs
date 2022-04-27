@@ -1,6 +1,8 @@
 ﻿using System.IO;
+using System.Reflection;
 using System.Text;
 using System.Windows.Input;
+using TypeCode.Business.Embedded;
 using TypeCode.Business.Mode;
 using TypeCode.Business.Mode.UnitTestDependency.Manually;
 using TypeCode.Wpf.Components.OutputBox;
@@ -14,20 +16,20 @@ namespace TypeCode.Wpf.Pages.DynamicExecute;
 
 public class DynamicExecuteViewModel : Reactive, IAsyncNavigatedTo
 {
-    private readonly ITypeCodeGenerator<UnitTestDependencyManuallyGeneratorParameter> _unitTestDependencyManuallyGenerator;
     private readonly ICompiler _compiler;
     private readonly IRunner _runner;
+    private readonly IResourceReader _resourceReader;
 
     public DynamicExecuteViewModel(
-        ITypeCodeGenerator<UnitTestDependencyManuallyGeneratorParameter> unitTestDependencyManuallyGenerator,
         IOutputBoxViewModelFactory outputBoxViewModelFactory,
         ICompiler compiler,
-        IRunner runner
+        IRunner runner,
+        IResourceReader resourceReader
     )
     {
-        _unitTestDependencyManuallyGenerator = unitTestDependencyManuallyGenerator;
         _compiler = compiler;
         _runner = runner;
+        _resourceReader = resourceReader;
 
         OutputBoxViewModel = outputBoxViewModelFactory.Create();
 
@@ -36,15 +38,7 @@ public class DynamicExecuteViewModel : Reactive, IAsyncNavigatedTo
 
     public Task OnNavigatedToAsync(NavigationContext context)
     {
-        Input =
-            @"
-using System;
-using System.Linq;
-using System.IO;
-
-Console.WriteLine(""Output"");
-
-";
+        Input = _resourceReader.ReadResource(Assembly.GetExecutingAssembly(), "Pages.DynamicExecute.DynamicExecutionTemplate.txt");
 
         return Task.CompletedTask;
     }
