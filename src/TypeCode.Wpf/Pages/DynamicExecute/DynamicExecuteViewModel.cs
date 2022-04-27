@@ -1,4 +1,6 @@
-﻿using System.Windows.Input;
+﻿using System.CodeDom.Compiler;
+using System.Windows.Input;
+using Microsoft.CSharp;
 using TypeCode.Business.Mode;
 using TypeCode.Business.Mode.UnitTestDependency.Manually;
 using TypeCode.Wpf.Components.OutputBox;
@@ -19,26 +21,50 @@ public class DynamicExecuteViewModel : Reactive, IAsyncNavigatedTo
     )
     {
         _unitTestDependencyManuallyGenerator = unitTestDependencyManuallyGenerator;
-        
+
         OutputBoxViewModel = outputBoxViewModelFactory.Create();
-        
-        GenerateCommand = new AsyncRelayCommand(GenerateAsync);
+
+        ExecuteCommand = new AsyncRelayCommand(ExecuteAsync);
     }
-        
+
     public Task OnNavigatedToAsync(NavigationContext context)
     {
-        return Task.CompletedTask;
-    }
+        Input =
+            @"using System.Linq;
 
-    private Task GenerateAsync()
+class Program 
+{
+    public static void Main(string[] args) 
     {
-        OutputBoxViewModel?.SetOutput(Input);
+                
+    }
+}";
+
         return Task.CompletedTask;
     }
-        
-    public ICommand GenerateCommand { get; set; }
 
-    public string? Input {
+    private Task ExecuteAsync()
+    {
+        var csc = new CSharpCodeProvider(new Dictionary<string, string>() { { "CompilerVersion", "v3.5" } });
+        var parameters = new CompilerParameters(new[] { "mscorlib.dll", "System.Core.dll" }, "foo.exe", true)
+        {
+            GenerateExecutable = true
+        };
+
+        var results = csc.CompileAssemblyFromSource(parameters, Input);
+
+        OutputBoxViewModel?.SetOutput(results.Output.ToString());
+        results.Errors.Cast<CompilerError>()
+            .ToList()
+            .ForEach(error => OutputBoxViewModel?.SetOutput($"{OutputBoxViewModel.Output}{Environment.NewLine}{error.ErrorText}"));
+
+        return Task.CompletedTask;
+    }
+
+    public ICommand ExecuteCommand { get; set; }
+
+    public string? Input
+    {
         get => Get<string?>();
         set => Set(value);
     }
