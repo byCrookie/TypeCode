@@ -15,6 +15,7 @@ using TypeCode.Wpf.Pages.Assemblies;
 using TypeCode.Wpf.Pages.Builder;
 using TypeCode.Wpf.Pages.Common.Configuration;
 using TypeCode.Wpf.Pages.Composer;
+using TypeCode.Wpf.Pages.DynamicExecute;
 using TypeCode.Wpf.Pages.Home;
 using TypeCode.Wpf.Pages.Mapper;
 using TypeCode.Wpf.Pages.Specflow;
@@ -63,6 +64,7 @@ public class MainSidebarViewModel : Reactive, IAsyncNavigatedTo, IAsyncEventHand
         MapperNavigationCommand = new AsyncRelayCommand(NavigateToMapperAsync);
         BuilderNavigationCommand = new AsyncRelayCommand(NavigateToBuilderAsync);
         AssemblyNavigationCommand = new AsyncRelayCommand(NavigateToAssemblyAsync);
+        DynamicExecuteNavigationCommand = new AsyncRelayCommand(NavigateToDynamicExecuteAsync);
         InvalidateAndReloadCommand = new AsyncRelayCommand(InvalidateAndReloadAsync, CanInvalidateAndReload);
         OpenSettingsCommand = new AsyncRelayCommand(OpenSettingsAsync);
 
@@ -77,6 +79,7 @@ public class MainSidebarViewModel : Reactive, IAsyncNavigatedTo, IAsyncEventHand
     public ICommand MapperNavigationCommand { get; }
     public ICommand BuilderNavigationCommand { get; }
     public ICommand AssemblyNavigationCommand { get; }
+    public ICommand DynamicExecuteNavigationCommand { get; }
     public IAsyncCommand InvalidateAndReloadCommand { get; }
     public ICommand OpenSettingsCommand { get; }
 
@@ -170,6 +173,12 @@ public class MainSidebarViewModel : Reactive, IAsyncNavigatedTo, IAsyncEventHand
     {
         ActiveItem = ActiveItem.Assembly;
         return _navigationService.NavigateAsync<AssemblyViewModel>(new NavigationContext());
+    }
+    
+    private Task NavigateToDynamicExecuteAsync()
+    {
+        ActiveItem = ActiveItem.DynamicExecute;
+        return _navigationService.NavigateAsync<DynamicExecuteViewModel>(new NavigationContext());
     }
 
     private Task OpenSettingsAsync()

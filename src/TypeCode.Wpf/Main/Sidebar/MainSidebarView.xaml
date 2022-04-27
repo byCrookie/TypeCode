@@ -36,6 +36,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -97,8 +98,15 @@
                 Command="{Binding AssemblyNavigationCommand}"
                 Content="Assemblies" />
         </StackPanel>
+        <StackPanel Grid.Row="8"
+                    Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.DynamicExecute}}">
+            <Button
+                Style="{StaticResource TabButtonStyle}"
+                Command="{Binding DynamicExecuteNavigationCommand}"
+                Content="Dynamic Execute (c#)" />
+        </StackPanel>
 
-        <DockPanel Visibility="Visible" Margin="5,0,0,0" Grid.Row="9" HorizontalAlignment="Left">
+        <DockPanel Visibility="Visible" Margin="5,0,0,0" Grid.Row="10" HorizontalAlignment="Left">
             <Button DockPanel.Dock="Left"
                     Style="{StaticResource IconButton}"
                     ToolTip="Invalidate Cache and Reload"
@@ -107,7 +115,7 @@
             </Button>
         </DockPanel>
 
-        <Button Grid.Row="10"
+        <Button Grid.Row="11"
                 Style="{StaticResource TabButtonStyle}"
                 Command="{Binding OpenSettingsCommand}"
                 Content="Settings" />

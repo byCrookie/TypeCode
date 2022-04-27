@@ -10,5 +10,6 @@ public enum ActiveItem
     Mapper,
     Builder,
     Assembly,
-    Home
+    Home,
+    DynamicExecute
 }
