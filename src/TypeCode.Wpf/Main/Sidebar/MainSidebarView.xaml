@@ -36,8 +36,8 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
@@ -91,14 +91,8 @@
                 Command="{Binding BuilderNavigationCommand}"
                 Content="Builder" />
         </StackPanel>
+
         <StackPanel Grid.Row="7"
-                    Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.Assembly}}">
-            <Button
-                Style="{StaticResource TabButtonStyle}"
-                Command="{Binding AssemblyNavigationCommand}"
-                Content="Assemblies" />
-        </StackPanel>
-        <StackPanel Grid.Row="8"
                     Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.DynamicExecute}}">
             <Button
                 Style="{StaticResource TabButtonStyle}"
@@ -106,7 +100,7 @@
                 Content="Dynamic Execution" />
         </StackPanel>
 
-        <DockPanel Visibility="Visible" Margin="5,0,0,0" Grid.Row="10" HorizontalAlignment="Left">
+        <DockPanel Visibility="Visible" Margin="5,0,0,0" Grid.Row="9" HorizontalAlignment="Left">
             <Button DockPanel.Dock="Left"
                     Style="{StaticResource IconButton}"
                     ToolTip="Invalidate Cache and Reload"
@@ -114,6 +108,14 @@
                 <Image Source="{StaticResource ReloadDrawingImage}" />
             </Button>
         </DockPanel>
+        
+        <StackPanel Grid.Row="10"
+                    Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.Assembly}}">
+            <Button
+                Style="{StaticResource TabButtonStyle}"
+                Command="{Binding AssemblyNavigationCommand}"
+                Content="Assemblies" />
+        </StackPanel>
 
         <Button Grid.Row="11"
                 Style="{StaticResource TabButtonStyle}"
