@@ -103,7 +103,7 @@
             <Button
                 Style="{StaticResource TabButtonStyle}"
                 Command="{Binding DynamicExecuteNavigationCommand}"
-                Content="(In Development)" />
+                Content="Dynamic Execution" />
         </StackPanel>
 
         <DockPanel Visibility="Visible" Margin="5,0,0,0" Grid.Row="10" HorizontalAlignment="Left">

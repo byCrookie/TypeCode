@@ -45,9 +45,7 @@ public class DynamicExecuteViewModel : Reactive, IAsyncNavigatedTo
 
     private Task ExecuteAsync()
     {
-        File.WriteAllText("DynamicProgram.cs", Input);
-
-        var result = _runner.Execute(_compiler.Compile("DynamicProgram.cs"));
+        var result = _runner.Execute(_compiler.Compile(Input!));
 
         OutputBoxViewModel?.SetOutput(result);
 

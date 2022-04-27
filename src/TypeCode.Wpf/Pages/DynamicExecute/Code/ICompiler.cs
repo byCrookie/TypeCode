@@ -2,5 +2,5 @@
 
 public interface ICompiler
 {
-    byte[] Compile(string filepath);
+    byte[] Compile(string sourceCode);
 }

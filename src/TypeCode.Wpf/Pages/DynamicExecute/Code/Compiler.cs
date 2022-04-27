@@ -10,11 +10,9 @@ namespace TypeCode.Wpf.Pages.DynamicExecute.Code;
 
 public class Compiler : ICompiler
 {
-    public byte[] Compile(string filepath)
+    public byte[] Compile(string sourceCode)
     {
-        Log.Debug("Starting compilation of: '{0}'", filepath);
-
-        var sourceCode = File.ReadAllText(filepath);
+        Log.Debug("Starting compilation");
 
         using (var peStream = new MemoryStream())
         {
@@ -34,7 +32,7 @@ public class Compiler : ICompiler
                 }
 
                 Log.Error("{0}", error.ToString());
-                throw new ArgumentException($"compilation for {filepath} failed: {error}");
+                throw new ArgumentException($"compilation failed: {error}");
             }
 
             Log.Debug("Compilation done without any error");
