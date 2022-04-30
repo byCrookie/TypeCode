@@ -10,14 +10,16 @@
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance configuration:SetupWizardViewModel}">
 
-    <StackPanel>
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+
         <Grid>
+
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
 
             <Label Grid.Row="0" Background="{StaticResource Primary}">Customize Configuration</Label>
@@ -29,18 +31,17 @@
                 <Button Margin="5,0,0,0" Command="{Binding AddPathCommand}" Content="Add Path" />
                 <Button Margin="5,0,0,0" Command="{Binding AddSelectorCommand}" Content="Add Selector" />
             </StackPanel>
-            
+
             <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,5,0,5">
                 <Button Margin="5,0,0,0" Command="{Binding UpdateCommand}" Content="Update" />
                 <Button Margin="5,0,0,0" Command="{Binding DeleteCommand}" Content="Delete" />
             </StackPanel>
 
-            <TreeView
-                Grid.Row="4"
-                Background="{StaticResource Secondary}"
-                Foreground="{StaticResource PrimaryText}"
-                BorderThickness="0"
-                ItemsSource="{Binding TreeViewItems, Mode=OneWay}">
+            <TreeView Grid.Row="3"
+                      Background="{StaticResource Secondary}"
+                      Foreground="{StaticResource PrimaryText}"
+                      BorderThickness="0"
+                      ItemsSource="{Binding TreeViewItems, Mode=OneWay}">
                 <b:Interaction.Behaviors>
                     <behaviours:BindableSelectedItemBehavior SelectedItem="{Binding SelectedItem, Mode=TwoWay}" />
                 </b:Interaction.Behaviors>
@@ -51,11 +52,13 @@
                     </Style>
                 </TreeView.Resources>
             </TreeView>
+
+            <Expander Grid.Row="4" Margin="5" Header="Advanced">
+                <configuration:ConfigurationWizardView DataContext="{Binding ConfigurationViewModel}" />
+            </Expander>
+
         </Grid>
 
-        <Expander Margin="5" Header="Advanced">
-            <configuration:ConfigurationWizardView DataContext="{Binding ConfigurationViewModel}" />
-        </Expander>
-    </StackPanel>
+    </ScrollViewer>
 
 </UserControl>

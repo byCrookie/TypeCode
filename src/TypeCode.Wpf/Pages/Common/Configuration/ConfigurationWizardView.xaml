@@ -19,16 +19,18 @@
             <Button Margin="0,0,5,0" BorderThickness="0" Command="{Binding ReloadCommand}" Content="Reload" />
             <Button BorderThickness="0" Command="{Binding SaveCommand}" Content="Save" />
         </StackPanel>
-
-        <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-            <TextBox
-                BorderThickness="0"
-                Padding="2" Text="{Binding Configuration, UpdateSourceTrigger=PropertyChanged}"
-                HorizontalAlignment="Stretch"
-                HorizontalContentAlignment="Stretch"
-                AcceptsReturn="True"
-                TextWrapping="Wrap"
-                AcceptsTab="True" />
-        </ScrollViewer>
+        
+        <TextBox
+            Grid.Row="1"
+            BorderThickness="0"
+            Padding="2" 
+            Text="{Binding Configuration, UpdateSourceTrigger=PropertyChanged}"
+            HorizontalAlignment="Stretch"
+            HorizontalContentAlignment="Stretch"
+            HorizontalScrollBarVisibility="Auto"
+            VerticalScrollBarVisibility="Auto"
+            AcceptsReturn="True"
+            TextWrapping="NoWrap"
+            AcceptsTab="True" />
     </Grid>
 </UserControl>
