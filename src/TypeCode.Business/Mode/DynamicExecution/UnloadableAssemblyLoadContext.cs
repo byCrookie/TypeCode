@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using System.Runtime.Loader;
 
-namespace TypeCode.Wpf.Pages.DynamicExecute.Code;
+namespace TypeCode.Business.Mode.DynamicExecution;
 
 internal class UnloadableAssemblyLoadContext : AssemblyLoadContext
 {

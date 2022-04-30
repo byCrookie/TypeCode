@@ -1,12 +1,11 @@
-﻿using System.IO;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Text;
 using Serilog;
 
-namespace TypeCode.Wpf.Pages.DynamicExecute.Code;
+namespace TypeCode.Business.Mode.DynamicExecution;
 
 public class Compiler : ICompiler
 {

@@ -1,8 +1,7 @@
-﻿using System.IO;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 using Serilog;
 
-namespace TypeCode.Wpf.Pages.DynamicExecute.Code;
+namespace TypeCode.Business.Mode.DynamicExecution;
 
 public class Runner : IRunner
 {

@@ -1,4 +1,4 @@
-﻿namespace TypeCode.Wpf.Pages.DynamicExecute.Code;
+﻿namespace TypeCode.Business.Mode.DynamicExecution;
 
 public interface ICompiler
 {

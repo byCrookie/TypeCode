@@ -17,9 +17,6 @@
         <PackageReference Include="Nito.AsyncEx.Context" Version="5.1.2" />
         <PackageReference Include="Serilog.Sinks.Console" Version="4.0.1" />
         <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
-        <PackageReference Include="Microsoft.CodeAnalysis.Compilers" Version="4.1.0" />
-        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.1.0" />
-        <PackageReference Include="System.Reactive" Version="5.0.0" />
     </ItemGroup>
 
     <ItemGroup>
@@ -81,7 +78,7 @@
 
     <ItemGroup>
       <None Remove="Pages\DynamicExecute\DynamicExecutionTemplate.txt" />
-      <EmbeddedResource Include="Pages\DynamicExecute\DynamicExecutionTemplate.txt" />
+      <EmbeddedResource Include="Pages\DynamicExecution\DynamicExecutionTemplate.txt" />
     </ItemGroup>
 
 </Project>

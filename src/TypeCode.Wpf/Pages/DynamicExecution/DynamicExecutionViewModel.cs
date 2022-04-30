@@ -1,26 +1,22 @@
-﻿using System.IO;
-using System.Reflection;
-using System.Text;
+﻿using System.Reflection;
 using System.Windows.Input;
 using TypeCode.Business.Embedded;
-using TypeCode.Business.Mode;
-using TypeCode.Business.Mode.UnitTestDependency.Manually;
+using TypeCode.Business.Mode.DynamicExecution;
 using TypeCode.Wpf.Components.OutputBox;
 using TypeCode.Wpf.Helper.Commands;
 using TypeCode.Wpf.Helper.Navigation.Contract;
 using TypeCode.Wpf.Helper.Navigation.Service;
 using TypeCode.Wpf.Helper.ViewModel;
-using TypeCode.Wpf.Pages.DynamicExecute.Code;
 
-namespace TypeCode.Wpf.Pages.DynamicExecute;
+namespace TypeCode.Wpf.Pages.DynamicExecution;
 
-public class DynamicExecuteViewModel : Reactive, IAsyncNavigatedTo
+public class DynamicExecutionViewModel : Reactive, IAsyncNavigatedTo
 {
     private readonly ICompiler _compiler;
     private readonly IRunner _runner;
     private readonly IResourceReader _resourceReader;
 
-    public DynamicExecuteViewModel(
+    public DynamicExecutionViewModel(
         IOutputBoxViewModelFactory outputBoxViewModelFactory,
         ICompiler compiler,
         IRunner runner,
@@ -38,7 +34,7 @@ public class DynamicExecuteViewModel : Reactive, IAsyncNavigatedTo
 
     public Task OnNavigatedToAsync(NavigationContext context)
     {
-        Input = _resourceReader.ReadResource(Assembly.GetExecutingAssembly(), "Pages.DynamicExecute.DynamicExecutionTemplate.txt");
+        Input = _resourceReader.ReadResource(Assembly.GetExecutingAssembly(), "Pages.DynamicExecution.DynamicExecutionTemplate.txt");
 
         return Task.CompletedTask;
     }
