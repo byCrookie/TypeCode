@@ -108,7 +108,7 @@
                     Command="{Binding InvalidateAndReloadCommand}">
                 <Image Source="{StaticResource ReloadDrawingImage}" />
             </Button>
-            <infoLink:InfoLinkView Margin="5,0,0,0" DataContext="{Binding InfoLink}" />
+            <infoLink:InfoLinkView DataContext="{Binding InfoLink}" />
         </DockPanel>
         
         <StackPanel Grid.Row="10"
