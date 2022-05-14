@@ -32,7 +32,7 @@ Develop c# code faster by generating .NET specific boilerplate code using reflec
 > Right-click the exe and select properties.
 > Then enable/allow execution.
 
-Further documentation can be found here: [Wiki](https://github.com/byCrookie/TypeCode/wiki/Documentation)
+Further documentation can be found here: [Wiki](https://github.com/byCrookie/TypeCode/wiki)
 
 ### Dev
 
