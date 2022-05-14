@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:sidebar="clr-namespace:TypeCode.Wpf.Main.Sidebar"
              xmlns:converters="clr-namespace:TypeCode.Wpf.Helper.Converters"
+             xmlns:infoLink="clr-namespace:TypeCode.Wpf.Components.InfoLink"
              mc:Ignorable="d"
              d:DesignHeight="600" d:DesignWidth="1000" d:DataContext="{d:DesignInstance sidebar:MainSidebarViewModel}">
 
@@ -107,6 +108,7 @@
                     Command="{Binding InvalidateAndReloadCommand}">
                 <Image Source="{StaticResource ReloadDrawingImage}" />
             </Button>
+            <infoLink:InfoLinkView Margin="5,0,0,0" DataContext="{Binding InfoLink}" />
         </DockPanel>
         
         <StackPanel Grid.Row="10"

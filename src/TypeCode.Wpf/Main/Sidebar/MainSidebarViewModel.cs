@@ -5,6 +5,7 @@ using Serilog;
 using TypeCode.Business.Configuration;
 using TypeCode.Business.TypeEvaluation;
 using TypeCode.Wpf.Application;
+using TypeCode.Wpf.Components.InfoLink;
 using TypeCode.Wpf.Helper.Commands;
 using TypeCode.Wpf.Helper.Event;
 using TypeCode.Wpf.Helper.Navigation.Contract;
@@ -33,6 +34,7 @@ public class MainSidebarViewModel : Reactive, IAsyncNavigatedTo, IAsyncEventHand
     private readonly IConfigurationProvider _configurationProvider;
     private readonly IConfigurationLoader _configurationLoader;
     private readonly ITypeProvider _typeProvider;
+    private readonly IInfoLinkViewModelFactory _infoLinkViewModelFactory;
 
     public MainSidebarViewModel(
         INavigationService navigationService,
@@ -41,7 +43,8 @@ public class MainSidebarViewModel : Reactive, IAsyncNavigatedTo, IAsyncEventHand
         IEventAggregator eventAggregator,
         IConfigurationProvider configurationProvider,
         IConfigurationLoader configurationLoader,
-        ITypeProvider typeProvider
+        ITypeProvider typeProvider,
+        IInfoLinkViewModelFactory infoLinkViewModelFactory
     )
     {
         _navigationService = navigationService;
@@ -51,6 +54,7 @@ public class MainSidebarViewModel : Reactive, IAsyncNavigatedTo, IAsyncEventHand
         _configurationProvider = configurationProvider;
         _configurationLoader = configurationLoader;
         _typeProvider = typeProvider;
+        _infoLinkViewModelFactory = infoLinkViewModelFactory;
 
         IsLoading = true;
 
@@ -95,8 +99,17 @@ public class MainSidebarViewModel : Reactive, IAsyncNavigatedTo, IAsyncEventHand
         set => Set(value);
     }
     
+    public InfoLinkViewModel? InfoLink
+    {
+        get => Get<InfoLinkViewModel?>();
+        set => Set(value);
+    }
+    
     public Task OnNavigatedToAsync(NavigationContext context)
     {
+        InfoLink = _infoLinkViewModelFactory
+            .Create(new InfoLinkViewModelParameter("https://github.com/byCrookie/TypeCode/wiki"));
+        
         return NavigateToHomeAsync();
     }
 

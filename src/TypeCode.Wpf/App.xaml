@@ -119,6 +119,12 @@
             <Setter Property="Background" Value="{StaticResource Shadow}" />
             <Setter Property="Foreground" Value="{StaticResource PrimaryText}" />
         </Style>
+        
+        <!-- Info Icon -->
+        <Geometry x:Key="InfoIcon">
+            M13,9H11V7H13M13,17H11V11H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z
+        </Geometry>
+        <!-- -->
 
         <!-- Copy Icon -->
         <Geometry x:Key="CopyGeometry">F1 M512,512z M0,0z M502.6,70.63L441.35,9.38C435.4,3.371,427.2,0,418.7,0L255.1,0C219.75,0,191.1,28.66,191.1,64L191.1195,320C192,355.4,220.7,384,256,384L448,384C483.2,384,512,355.2,512,320L512,93.25C512,84.77,508.6,76.63,502.6,70.63z M464,320C464,328.836,456.836,336,448,336L255.1,336C246.262,336,239.1,328.836,239.1,320L239.1,64.13C239.1,55.294,246.264,48.13,255.1,48.13L383.1,48.13 384,96C384,113.67,398.33,128,416,128L463.1,128 463.1,320z M272,448C272,456.836,264.836,464,256,464L63.1,464C54.262,464,47.1,456.836,47.1,448L47.98,192.1C47.98,183.264,55.144,176.1,63.98,176.1L160,176.1 160,128 63.99,128C28.64,128,-0.00999999999999801,156.65,-0.00999999999999801,192L-0.000199999999998011,448C0.002,483.3,28.66,512,64,512L256,512C291.2,512,320,483.2,320,448L320,416 272.9,416 272,448z</Geometry>
@@ -257,45 +263,6 @@
             </Setter>
         </Style>
         <!-- End Scrollbar -->
-
-        <!-- <Style x:Key="WindowStyle" TargetType="{x:Type main:MainWindow}"> -->
-        <!--     <Setter Property="WindowStyle" Value="None"></Setter> -->
-        <!--     <Setter Property="ResizeMode" Value="CanResize"></Setter> -->
-        <!--     <Setter Property="WindowChrome.WindowChrome"> -->
-        <!--         <Setter.Value> -->
-        <!--             <WindowChrome CaptionHeight="0" -->
-        <!--                           GlassFrameThickness="0" -->
-        <!--                           NonClientFrameEdges="None" -->
-        <!--                           ResizeBorderThickness="5" /> -->
-        <!--         </Setter.Value> -->
-        <!--     </Setter> -->
-        <!--     <Setter Property="Template"> -->
-        <!--         <Setter.Value> -->
-        <!--             <ControlTemplate TargetType="{x:Type Window}"> -->
-        <!--                 <Border Background="Transparent" -->
-        <!--                         BorderBrush="{StaticResource Accent}" -->
-        <!--                         BorderThickness="1"> -->
-        <!--                      -->
-        <!--                     <Grid> -->
-        <!--                         <Grid.RowDefinitions> -->
-        <!--                             <RowDefinition Height="Auto" /> -->
-        <!--                             <RowDefinition Height="*" /> -->
-        <!--                         </Grid.RowDefinitions> -->
-        <!-- -->
-        <!--                         <StackPanel Grid.Row="0" Orientation="Horizontal"> -->
-        <!--                             <TextBlock -->
-        <!--                                 Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Title}" /> -->
-        <!--                             <Button -->
-        <!--                                 Command="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=CloseCommand}" /> -->
-        <!--                         </StackPanel> -->
-        <!-- -->
-        <!--                         <ContentPresenter Grid.Row="1" /> -->
-        <!--                     </Grid> -->
-        <!--                 </Border> -->
-        <!--             </ControlTemplate> -->
-        <!--         </Setter.Value> -->
-        <!--     </Setter> -->
-        <!-- </Style> -->
 
     </Application.Resources>
 </Application>
