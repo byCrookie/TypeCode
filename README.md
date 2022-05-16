@@ -45,6 +45,7 @@ All contributions are welcome! If you have any issues or feature requests, eithe
 ## Donation
 If you like this project, feel free to donate and support the further development. Thank you.
 
+* Bitcoin (BTC) Donations using Bitcoin (BTC) Network -> bc1qygqya2w3hgpvy8hupctfkv5x06l69ydq4su2e2
 * Ethereum (ETH) Donations using Ethereum (ETH) Network -> 0x1C0416cC1DDaAEEb3017D4b8Dcd3f0B82f4d94C1
 
 
