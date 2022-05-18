@@ -18,7 +18,7 @@
         <WixVariable Id="WixUIBannerBmp" Value="Images\Banner.bmp" />
         <WixVariable Id="WixUIDialogBmp" Value="Images\Dialog.bmp" />
 
-        <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed."/>
+        <MajorUpgrade AllowDowngrades="yes"/>
         <MediaTemplate EmbedCab="yes"/>
 
         <Feature Id="ProductFeature" Title="TypeCode.Wpf" Level="1" Absent='disallow'>
