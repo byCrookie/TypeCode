@@ -7,24 +7,37 @@
 
         <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine"/>
 
-        <Icon Id="icon.ico" SourceFile="$(var.ProjectDir)icon.ico" />
-        <Property Id="ARPPRODUCTICON" Value="icon.ico" />
-        
+        <Icon Id="icon.ico" SourceFile="$(var.SolutionDir)\src\TypeCode.Wpf\Assets\Icons\icon.ico"/>
+        <Property Id="ARPPRODUCTICON" Value="icon.ico"/>
+
+        <UIRef Id="WixUI_Advanced"/>
+        <Property Id="ApplicationFolderName" Value="TypeCode"/>
+        <Property Id="WixAppFolder" Value="WixPerMachineFolder"/>
+        <WixVariable Id="WixUISupportPerUser" Value="0"/>
+        <WixVariable Id="WixUILicenseRtf" Value="License.rtf" />
+        <WixVariable Id="WixUIBannerBmp" Value="Images\Banner.bmp" />
+        <WixVariable Id="WixUIDialogBmp" Value="Images\Dialog.bmp" />
+
         <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed."/>
         <MediaTemplate EmbedCab="yes"/>
 
         <Feature Id="ProductFeature" Title="TypeCode.Wpf" Level="1">
             <ComponentGroupRef Id="ProductComponents"/>
             <ComponentGroupRef Id="ProgramFilesFolder_files"/>
-            <ComponentRef Id="ApplicationShortcut" />
-            <ComponentRef Id="ApplicationShortcutDesktop" />
+            <ComponentGroupRef Id="Assets_files"/>
+            <ComponentRef Id="ApplicationShortcut"/>
+            <ComponentRef Id="ApplicationShortcutDesktop"/>
         </Feature>
     </Product>
 
     <Fragment>
         <Directory Id="TARGETDIR" Name="SourceDir">
             <Directory Id="ProgramFilesFolder">
-                <Directory Id="INSTALLFOLDER" Name="TypeCode" />
+                <Directory Id="APPLICATIONFOLDER" Name="TypeCode">
+                    <Directory Id="Assets" Name="Assets">
+                        <Directory Id="Assets_Icons" Name="Icons"/>
+                    </Directory>
+                </Directory>
             </Directory>
             <Directory Id="ProgramMenuFolder">
                 <Directory Id="ApplicationProgramsFolder" Name="TypeCode"/>
@@ -37,7 +50,7 @@
         <DirectoryRef Id="ApplicationProgramsFolder">
             <Component Id="ApplicationShortcut" Guid="9bd13330-6540-406f-a3a8-d7f7c69ae7f9">
                 <Shortcut Id="ApplicationStartMenuShortcut" Name="TypeCode" Description="TypeCode"
-                          Target="[INSTALLFOLDER]TypeCode.Wpf.exe" WorkingDirectory="INSTALLFOLDER"/>
+                          Target="[APPLICATIONFOLDER]TypeCode.Wpf.exe" WorkingDirectory="APPLICATIONFOLDER"/>
                 <RemoveFolder Id="RemoveApplicationProgramsFolder" Directory="ApplicationProgramsFolder"
                               On="uninstall"/>
                 <RegistryValue Root="HKCU" Key="Software\TypeCode.Wpf" Name="installed" Type="integer" Value="1"
@@ -47,7 +60,7 @@
         <DirectoryRef Id="DesktopFolder">
             <Component Id="ApplicationShortcutDesktop" Guid="cde1e030-eb64-49a5-b7b8-400b379c2d1a">
                 <Shortcut Id="ApplicationDesktopShortcut" Name="TypeCode" Description="TypeCode"
-                          Target="[INSTALLFOLDER]TypeCode.Wpf.exe" WorkingDirectory="INSTALLFOLDER"/>
+                          Target="[APPLICATIONFOLDER]TypeCode.Wpf.exe" WorkingDirectory="APPLICATIONFOLDER"/>
                 <RemoveFolder Id="RemoveDesktopFolder" Directory="DesktopFolder" On="uninstall"/>
                 <RegistryValue Root="HKCU" Key="Software\TypeCode.Wpf" Name="installed" Type="integer" Value="1"
                                KeyPath="yes"/>
@@ -56,7 +69,7 @@
     </Fragment>
 
     <Fragment>
-        <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+        <ComponentGroup Id="ProductComponents" Directory="APPLICATIONFOLDER">
             <Component Id="Assets_Icons_icon.ico" Guid="b6eecaf0-28b2-47ce-8acf-b94f4e8b8b0c">
                 <File Id="Assets_Icons_icon.ico" Name="icon.ico"
                       Source="$(var.TypeCode_TargetDir)Assets\Icons\icon.ico"/>
@@ -65,7 +78,7 @@
     </Fragment>
 
     <Fragment>
-        <ComponentGroup Id="ProgramFilesFolder_files" Directory="INSTALLFOLDER">
+        <ComponentGroup Id="ProgramFilesFolder_files" Directory="APPLICATIONFOLDER">
             <Component Id="Fare.dll" Guid="1ef97e6b-e374-4639-851a-8fa6870ed070">
                 <File Id="Fare.dll" Name="Fare.dll" Source="$(var.TypeCode_TargetDir)Fare.dll"/>
             </Component>
@@ -153,7 +166,7 @@
                 <File Id="TypeCode.Wpf.runtimeconfig.json" Name="TypeCode.Wpf.runtimeconfig.json"
                       Source="$(var.TypeCode_TargetDir)TypeCode.Wpf.runtimeconfig.json"/>
             </Component>
-            <Component Id="Configuration.cfg.xml" Guid="6dfa8ca5-204c-41c4-b926-227d3e919f80">
+            <Component Id="Configuration.cfg.xml" NeverOverwrite="yes" Guid="6dfa8ca5-204c-41c4-b926-227d3e919f80">
                 <File Id="Configuration.cfg.xml" Name="Configuration.cfg.xml"
                       Source="$(var.TypeCode_TargetDir)Configuration.cfg.xml"/>
             </Component>
@@ -166,6 +179,15 @@
             <Component Id="Nito.AsyncEx.Tasks.dll" Guid="e3f1f0f0-3a4b-4f1b-819e-593851f54f6d">
                 <File Id="Nito.AsyncEx.Tasks.dll" Name="Nito.AsyncEx.Tasks.dll"
                       Source="$(var.TypeCode_TargetDir)Nito.AsyncEx.Tasks.dll"/>
+            </Component>
+        </ComponentGroup>
+    </Fragment>
+
+    <Fragment>
+        <ComponentGroup Id="Assets_files" Directory="Assets_Icons">
+            <Component Id="Assets_files_icon.ico" Guid="aea868c1-2d18-400d-88fa-e506b16ef130">
+                <File Id="AssetsIcons_files_icon.ico" Name="icon.ico"
+                      Source="$(var.TypeCode_TargetDir)Assets\Icons\icon.ico"/>
             </Component>
         </ComponentGroup>
     </Fragment>
