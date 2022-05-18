@@ -7,6 +7,8 @@
 /Nuget/*
 !/Nuget/Packages/
 version
+wix
+wix.zip
 
 # Rider
 .idea

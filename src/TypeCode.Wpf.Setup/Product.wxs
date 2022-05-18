@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <?define TypeCode_TargetDir=$(var.TypeCode.Wpf.TargetDir)?>
+
+    <Product Id="*" Name="TypeCode" Language="1033" Version="1.0.0.0" Manufacturer="byCrookie"
+             UpgradeCode="9f57777b-619a-41c8-afec-d7f7412d4047">
+
+        <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine"/>
+
+        <Icon Id="icon.ico" SourceFile="$(var.ProjectDir)icon.ico" />
+        <Property Id="ARPPRODUCTICON" Value="icon.ico" />
+        
+        <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed."/>
+        <MediaTemplate EmbedCab="yes"/>
+
+        <Feature Id="ProductFeature" Title="TypeCode.Wpf" Level="1">
+            <ComponentGroupRef Id="ProductComponents"/>
+            <ComponentGroupRef Id="ProgramFilesFolder_files"/>
+            <ComponentRef Id="ApplicationShortcut" />
+            <ComponentRef Id="ApplicationShortcutDesktop" />
+        </Feature>
+    </Product>
+
+    <Fragment>
+        <Directory Id="TARGETDIR" Name="SourceDir">
+            <Directory Id="ProgramFilesFolder">
+                <Directory Id="INSTALLFOLDER" Name="TypeCode" />
+            </Directory>
+            <Directory Id="ProgramMenuFolder">
+                <Directory Id="ApplicationProgramsFolder" Name="TypeCode"/>
+            </Directory>
+            <Directory Id="DesktopFolder" Name="Desktop"/>
+        </Directory>
+    </Fragment>
+
+    <Fragment>
+        <DirectoryRef Id="ApplicationProgramsFolder">
+            <Component Id="ApplicationShortcut" Guid="9bd13330-6540-406f-a3a8-d7f7c69ae7f9">
+                <Shortcut Id="ApplicationStartMenuShortcut" Name="TypeCode" Description="TypeCode"
+                          Target="[INSTALLFOLDER]TypeCode.Wpf.exe" WorkingDirectory="INSTALLFOLDER"/>
+                <RemoveFolder Id="RemoveApplicationProgramsFolder" Directory="ApplicationProgramsFolder"
+                              On="uninstall"/>
+                <RegistryValue Root="HKCU" Key="Software\TypeCode.Wpf" Name="installed" Type="integer" Value="1"
+                               KeyPath="yes"/>
+            </Component>
+        </DirectoryRef>
+        <DirectoryRef Id="DesktopFolder">
+            <Component Id="ApplicationShortcutDesktop" Guid="cde1e030-eb64-49a5-b7b8-400b379c2d1a">
+                <Shortcut Id="ApplicationDesktopShortcut" Name="TypeCode" Description="TypeCode"
+                          Target="[INSTALLFOLDER]TypeCode.Wpf.exe" WorkingDirectory="INSTALLFOLDER"/>
+                <RemoveFolder Id="RemoveDesktopFolder" Directory="DesktopFolder" On="uninstall"/>
+                <RegistryValue Root="HKCU" Key="Software\TypeCode.Wpf" Name="installed" Type="integer" Value="1"
+                               KeyPath="yes"/>
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+
+    <Fragment>
+        <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+            <Component Id="Assets_Icons_icon.ico" Guid="b6eecaf0-28b2-47ce-8acf-b94f4e8b8b0c">
+                <File Id="Assets_Icons_icon.ico" Name="icon.ico"
+                      Source="$(var.TypeCode_TargetDir)Assets\Icons\icon.ico"/>
+            </Component>
+        </ComponentGroup>
+    </Fragment>
+
+    <Fragment>
+        <ComponentGroup Id="ProgramFilesFolder_files" Directory="INSTALLFOLDER">
+            <Component Id="Fare.dll" Guid="1ef97e6b-e374-4639-851a-8fa6870ed070">
+                <File Id="Fare.dll" Name="Fare.dll" Source="$(var.TypeCode_TargetDir)Fare.dll"/>
+            </Component>
+            <Component Id="AutoFixture.dll" Guid="cd27280d-c475-4de4-9dcc-9eabebfdcee5">
+                <File Id="AutoFixture.dll" Name="AutoFixture.dll"
+                      Source="$(var.TypeCode_TargetDir)AutoFixture.dll"/>
+            </Component>
+            <Component Id="Serilog.Sinks.File.dll" Guid="41c542cd-b741-4da5-9670-19b89f215005">
+                <File Id="Serilog.Sinks.File.dll" Name="Serilog.Sinks.File.dll"
+                      Source="$(var.TypeCode_TargetDir)Serilog.Sinks.File.dll"/>
+            </Component>
+            <Component Id="Serilog.Sinks.Debug.dll" Guid="8ae0ba02-a9f0-473e-b3d4-562745860d3c">
+                <File Id="Serilog.Sinks.Debug.dll" Name="Serilog.Sinks.Debug.dll"
+                      Source="$(var.TypeCode_TargetDir)Serilog.Sinks.Debug.dll"/>
+            </Component>
+            <Component Id="Humanizer.dll" Guid="e9e4acee-7cad-4e9e-8acd-1bcb12e1f026">
+                <File Id="Humanizer.dll" Name="Humanizer.dll" Source="$(var.TypeCode_TargetDir)Humanizer.dll"/>
+            </Component>
+            <Component Id="Microsoft.Extensions.DependencyModel.dll" Guid="5f11331a-9745-44a6-93cb-477e3f7ceeee">
+                <File Id="Microsoft.Extensions.DependencyModel.dll" Name="Microsoft.Extensions.DependencyModel.dll"
+                      Source="$(var.TypeCode_TargetDir)Microsoft.Extensions.DependencyModel.dll"/>
+            </Component>
+            <Component Id="Microsoft.CodeAnalysis.CSharp.dll" Guid="c4f5fb96-7887-4032-8eac-d2f533e0e354">
+                <File Id="Microsoft.CodeAnalysis.CSharp.dll" Name="Microsoft.CodeAnalysis.CSharp.dll"
+                      Source="$(var.TypeCode_TargetDir)Microsoft.CodeAnalysis.CSharp.dll"/>
+            </Component>
+            <Component Id="Nito.AsyncEx.Context.dll" Guid="6bf7223d-81be-4f1c-94ff-d4925181d48f">
+                <File Id="Nito.AsyncEx.Context.dll" Name="Nito.AsyncEx.Context.dll"
+                      Source="$(var.TypeCode_TargetDir)Nito.AsyncEx.Context.dll"/>
+            </Component>
+            <Component Id="Microsoft.CodeAnalysis.dll" Guid="fcc89240-025b-49bd-b2d7-1df4f3ad466d">
+                <File Id="Microsoft.CodeAnalysis.dll" Name="Microsoft.CodeAnalysis.dll"
+                      Source="$(var.TypeCode_TargetDir)Microsoft.CodeAnalysis.dll"/>
+            </Component>
+            <Component Id="AsyncAwaitBestPractices.dll" Guid="82c615a7-d2b4-440d-864f-5b444f1c28bb">
+                <File Id="AsyncAwaitBestPractices.dll" Name="AsyncAwaitBestPractices.dll"
+                      Source="$(var.TypeCode_TargetDir)AsyncAwaitBestPractices.dll"/>
+            </Component>
+            <Component Id="Serilog.Sinks.Console.dll" Guid="e4c58eab-ad66-44fb-bc65-48cad66a8dd4">
+                <File Id="Serilog.Sinks.Console.dll" Name="Serilog.Sinks.Console.dll"
+                      Source="$(var.TypeCode_TargetDir)Serilog.Sinks.Console.dll"/>
+            </Component>
+            <Component Id="Nito.Disposables.dll" Guid="a490e459-aaa8-44af-8fe7-37ba4170dc00">
+                <File Id="Nito.Disposables.dll" Name="Nito.Disposables.dll"
+                      Source="$(var.TypeCode_TargetDir)Nito.Disposables.dll"/>
+            </Component>
+            <Component Id="Workflow.Jab.dll" Guid="a0d2e2a3-b9e5-47c1-b684-a1d445da4d34">
+                <File Id="Workflow.Jab.dll" Name="Workflow.Jab.dll"
+                      Source="$(var.TypeCode_TargetDir)Workflow.Jab.dll"/>
+            </Component>
+            <Component Id="AsyncAwaitBestPractices.MVVM.dll" Guid="21ae76e4-4fef-4b1a-b8c9-3c9f8593488e">
+                <File Id="AsyncAwaitBestPractices.MVVM.dll" Name="AsyncAwaitBestPractices.MVVM.dll"
+                      Source="$(var.TypeCode_TargetDir)AsyncAwaitBestPractices.MVVM.dll"/>
+            </Component>
+            <Component Id="Workflow.dll" Guid="244a3a96-f5c4-43c8-8654-2ea1c99aee4c">
+                <File Id="Workflow.dll" Name="Workflow.dll" Source="$(var.TypeCode_TargetDir)Workflow.dll"/>
+            </Component>
+            <Component Id="Framework.dll" Guid="8ef44631-3921-45e2-9ba1-123bf9fe46ac">
+                <File Id="Framework.dll" Name="Framework.dll" Source="$(var.TypeCode_TargetDir)Framework.dll"/>
+            </Component>
+            <Component Id="Serilog.dll" Guid="25640c36-fc0c-43ac-aca9-7a0d4f27388a">
+                <File Id="Serilog.dll" Name="Serilog.dll" Source="$(var.TypeCode_TargetDir)Serilog.dll"/>
+            </Component>
+            <Component Id="Framework.Jab.dll" Guid="7754bcc6-7027-4713-8003-a94bbef9f67b">
+                <File Id="Framework.Jab.dll" Name="Framework.Jab.dll"
+                      Source="$(var.TypeCode_TargetDir)Framework.Jab.dll"/>
+            </Component>
+            <Component Id="Microsoft.Xaml.Behaviors.dll" Guid="90373a3e-280e-45a0-98f0-606aaa070716">
+                <File Id="Microsoft.Xaml.Behaviors.dll" Name="Microsoft.Xaml.Behaviors.dll"
+                      Source="$(var.TypeCode_TargetDir)Microsoft.Xaml.Behaviors.dll"/>
+            </Component>
+            <Component Id="TypeCode.Business.dll" Guid="97939a1b-1716-4756-871b-937c86289c89">
+                <File Id="TypeCode.Business.dll" Name="TypeCode.Business.dll"
+                      Source="$(var.TypeCode_TargetDir)TypeCode.Business.dll"/>
+            </Component>
+            <Component Id="TypeCode.Wpf.dll" Guid="a7fa2670-a04f-4256-804e-de38331ac931">
+                <File Id="TypeCode.Wpf.dll" Name="TypeCode.Wpf.dll"
+                      Source="$(var.TypeCode_TargetDir)TypeCode.Wpf.dll"/>
+            </Component>
+            <Component Id="TypeCode.Wpf.exe" Guid="6a5d0125-0f0b-44fd-8ed0-35a75f9835eb">
+                <File Id="TypeCode.Wpf.exe" Name="TypeCode.Wpf.exe"
+                      Source="$(var.TypeCode_TargetDir)TypeCode.Wpf.exe"/>
+            </Component>
+            <Component Id="TypeCode.Wpf.runtimeconfig.json" Guid="2c76b554-07b6-4a7a-9000-1b963a1a0353">
+                <File Id="TypeCode.Wpf.runtimeconfig.json" Name="TypeCode.Wpf.runtimeconfig.json"
+                      Source="$(var.TypeCode_TargetDir)TypeCode.Wpf.runtimeconfig.json"/>
+            </Component>
+            <Component Id="Configuration.cfg.xml" Guid="6dfa8ca5-204c-41c4-b926-227d3e919f80">
+                <File Id="Configuration.cfg.xml" Name="Configuration.cfg.xml"
+                      Source="$(var.TypeCode_TargetDir)Configuration.cfg.xml"/>
+            </Component>
+            <Component Id="Microsoft.Extensions.DependencyInjection.Abstractions.dll"
+                       Guid="0884ba58-15b1-436d-82e9-12795f8fbe6f">
+                <File Id="Microsoft.Extensions.DependencyInjection.Abstractions.dll"
+                      Name="Microsoft.Extensions.DependencyInjection.Abstractions.dll"
+                      Source="$(var.TypeCode_TargetDir)Microsoft.Extensions.DependencyInjection.Abstractions.dll"/>
+            </Component>
+            <Component Id="Nito.AsyncEx.Tasks.dll" Guid="e3f1f0f0-3a4b-4f1b-819e-593851f54f6d">
+                <File Id="Nito.AsyncEx.Tasks.dll" Name="Nito.AsyncEx.Tasks.dll"
+                      Source="$(var.TypeCode_TargetDir)Nito.AsyncEx.Tasks.dll"/>
+            </Component>
+        </ComponentGroup>
+    </Fragment>
+</Wix>
