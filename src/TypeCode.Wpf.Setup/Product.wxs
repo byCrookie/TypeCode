@@ -21,7 +21,7 @@
         <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed."/>
         <MediaTemplate EmbedCab="yes"/>
 
-        <Feature Id="ProductFeature" Title="TypeCode.Wpf" Level="1">
+        <Feature Id="ProductFeature" Title="TypeCode.Wpf" Level="1" Absent='disallow'>
             <ComponentGroupRef Id="ProductComponents"/>
             <ComponentGroupRef Id="ProgramFilesFolder_files"/>
             <ComponentGroupRef Id="Assets_files"/>
