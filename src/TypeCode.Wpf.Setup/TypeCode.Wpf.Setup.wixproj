@@ -1,64 +1,72 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" InitialTargets="EnsureWixToolsetInstalled" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  
-  <PropertyGroup>
-    <WixToolPath>wix</WixToolPath>
-    <WixTargetsPath>$(WixToolPath)\wix.targets</WixTargetsPath>
-  </PropertyGroup>
-  
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Release</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProductVersion>3.10</ProductVersion>
-    <ProjectGuid>{2B03ED1E-E150-4427-97B2-798EADBCB728}</ProjectGuid>
-    <SchemaVersion>2.0</SchemaVersion>
-    <OutputName>TypeCode.Wpf.Setup</OutputName>
-    <OutputType>Package</OutputType>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
-    <OutputPath>bin\$(Configuration)\</OutputPath>
-    <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
-    <DefineConstants>Debug</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-    <OutputPath>bin\$(Configuration)\</OutputPath>
-    <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
-  </PropertyGroup>
-  <ItemGroup>
-    <Compile Include="Product.wxs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="DownloadAndExtractWix.ps1" />
-    <Content Include="Images\Banner.bmp" />
-    <Content Include="Images\Banner.xcf" />
-    <Content Include="Images\Dialog.bmp" />
-    <Content Include="Images\Dialog.xcf" />
-    <Content Include="License.rtf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TypeCode.Wpf.Setup.wax" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\TypeCode.Wpf\TypeCode.Wpf.csproj">
-      <Name>TypeCode.Wpf</Name>
-      <Project>{31cb4c50-dfde-485c-af0f-a340c2fabd2b}</Project>
-      <Private>True</Private>
-      <DoNotHarvest>True</DoNotHarvest>
-      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
-      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
-    </ProjectReference>
-  </ItemGroup>
 
-  <Import Project="$(WixTargetsPath)" Condition=" '$(WixTargetsPath)' != '' " />
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets" Condition=" '$(WixTargetsPath)' == '' AND Exists('$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets') " />
-  <Target Name="EnsureWixToolsetInstalled" Condition=" '$(WixTargetsImported)' != 'true' ">
-    <Error Text="The WiX Toolset v3.11 (or newer) build tools must be installed to build this project. To download the WiX Toolset, see http://wixtoolset.org/releases/" />
-  </Target>
+    <PropertyGroup>
+        <WixToolPath>wix</WixToolPath>
+        <WixTargetsPath>$(WixToolPath)\wix.targets</WixTargetsPath>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <WixExtension Include="WixUIExtension">
-      <HintPath>$(WixToolPath)\WixUIExtension.dll</HintPath>
-      <Name>WixUIExtension</Name>
-    </WixExtension>
-  </ItemGroup>
+    <PropertyGroup>
+        <Configuration Condition=" '$(Configuration)' == '' ">Release</Configuration>
+        <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+        <ProductVersion>3.10</ProductVersion>
+        <ProjectGuid>{2B03ED1E-E150-4427-97B2-798EADBCB728}</ProjectGuid>
+        <SchemaVersion>2.0</SchemaVersion>
+        <OutputName>TypeCode.Wpf.Setup</OutputName>
+        <OutputType>Package</OutputType>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+        <OutputPath>bin\$(Configuration)\</OutputPath>
+        <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
+        <DefineConstants>Debug</DefineConstants>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+        <OutputPath>bin\$(Configuration)\</OutputPath>
+        <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
+    </PropertyGroup>
+
+    <Target Name="WriteVersionFile" BeforeTargets="BeforeBuild">
+        <WriteLinesToFile
+                File="..\TypeCode.Wpf\$(OutputPath)net6.0-windows\version"
+                Lines="$(TypeCodeVersion)"
+                Overwrite="true"/>
+    </Target>
+    
+    <ItemGroup>
+        <Compile Include="Product.wxs"/>
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="DownloadAndExtractWix.ps1"/>
+        <Content Include="Images\Banner.bmp"/>
+        <Content Include="Images\Banner.xcf"/>
+        <Content Include="Images\Dialog.bmp"/>
+        <Content Include="Images\Dialog.xcf"/>
+        <Content Include="License.rtf">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Include="TypeCode.Wpf.Setup.wax"/>
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\TypeCode.Wpf\TypeCode.Wpf.csproj">
+            <Name>TypeCode.Wpf</Name>
+            <Project>{31cb4c50-dfde-485c-af0f-a340c2fabd2b}</Project>
+            <Private>True</Private>
+            <DoNotHarvest>True</DoNotHarvest>
+            <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+            <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+        </ProjectReference>
+    </ItemGroup>
+
+    <Import Project="$(WixTargetsPath)" Condition=" '$(WixTargetsPath)' != '' "/>
+    <Import Project="$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets" Condition=" '$(WixTargetsPath)' == '' AND Exists('$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets') "/>
+    <Target Name="EnsureWixToolsetInstalled" Condition=" '$(WixTargetsImported)' != 'true' ">
+        <Error Text="The WiX Toolset v3.11 (or newer) build tools must be installed to build this project. To download the WiX Toolset, see http://wixtoolset.org/releases/"/>
+    </Target>
+
+    <ItemGroup>
+        <WixExtension Include="WixUIExtension">
+            <HintPath>$(WixToolPath)\WixUIExtension.dll</HintPath>
+            <Name>WixUIExtension</Name>
+        </WixExtension>
+    </ItemGroup>
 </Project>
