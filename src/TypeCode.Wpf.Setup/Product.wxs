@@ -170,10 +170,6 @@
                 <File Id="Configuration.cfg.xml" Name="Configuration.cfg.xml"
                       Source="$(var.TypeCode_TargetDir)Configuration.cfg.xml"/>
             </Component>
-            <Component Id="version" Guid="280635a8-8462-462a-98c7-4ee47c9a5560">
-                <File Id="version" Name="version"
-                      Source="$(var.TypeCode_TargetDir)version"/>
-            </Component>
             <Component Id="Microsoft.Extensions.DependencyInjection.Abstractions.dll"
                        Guid="0884ba58-15b1-436d-82e9-12795f8fbe6f">
                 <File Id="Microsoft.Extensions.DependencyInjection.Abstractions.dll"

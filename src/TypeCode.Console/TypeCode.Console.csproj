@@ -13,7 +13,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="bycrookie.appsdk" Version="1.0.7-pre-202203190634" />
+      <PackageReference Include="bycrookie.appsdk" Version="1.0.9-pre-202205190534" />
       <PackageReference Include="bycrookie.framework.jab" Version="1.0.6-pre-202203190621" />
       <PackageReference Include="Spectre.Console" Version="0.43.0" />
     </ItemGroup>

@@ -24,13 +24,6 @@
         <OutputPath>bin\$(Configuration)\</OutputPath>
         <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
     </PropertyGroup>
-
-    <Target Name="WriteVersionFile" BeforeTargets="BeforeBuild">
-        <WriteLinesToFile
-                File="..\TypeCode.Wpf\$(OutputPath)net6.0-windows\version"
-                Lines="$(TypeCodeVersion)"
-                Overwrite="true"/>
-    </Target>
     
     <ItemGroup>
         <Compile Include="Product.wxs"/>

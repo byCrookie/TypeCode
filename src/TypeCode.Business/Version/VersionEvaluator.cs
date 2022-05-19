@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Diagnostics;
+using System.Reflection;
 using System.Text.Json;
 
 namespace TypeCode.Business.Version;
@@ -12,7 +13,7 @@ public class VersionEvaluator : IVersionEvaluator
 
         if (!string.IsNullOrEmpty(currentVersion.CurrentVersion)
             && !string.IsNullOrEmpty(latestVersion?.TagName)
-            && !string.Equals(currentVersion.CurrentVersion.Trim(), latestVersion.TagName.Trim(), StringComparison.CurrentCultureIgnoreCase))
+            && !string.Equals(currentVersion.CurrentVersion.Trim(), GetVersionNumerFromTag(latestVersion), StringComparison.CurrentCultureIgnoreCase))
         {
             return new VersionResult
             {
@@ -27,17 +28,17 @@ public class VersionEvaluator : IVersionEvaluator
         };
     }
 
-    public async Task<VersionResult> ReadCurrentVersionAsync()
+    public Task<VersionResult> ReadCurrentVersionAsync()
     {
-        var file = $"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\\version";
+        var versionInfo = FileVersionInfo.GetVersionInfo($"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\\TypeCode.Wpf.exe");
+        var result = versionInfo.ProductVersion is null ? new VersionResult() : new VersionResult { CurrentVersion = versionInfo.ProductVersion };
+        return Task.FromResult(result);
+    }
 
-        if (!File.Exists(file))
-        {
-            return new VersionResult();
-        }
-
-        var version = await File.ReadAllTextAsync(file).ConfigureAwait(false);
-        return new VersionResult { CurrentVersion = version };
+    private static string GetVersionNumerFromTag(VersionResponse latestVersion)
+    {
+        var tag = latestVersion.TagName.Trim();
+        return tag[1..];
     }
 
     private static async Task<VersionResponse?> GetVersionAsync()

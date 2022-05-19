@@ -40,6 +40,9 @@ jobs:
 
     - name: Build Wpf
       run: dotnet build --configuration Release -o publish/wpf ./src/TypeCode.Wpf
+      
+    - name: Build Wpf Setup
+      run: dotnet build --configuration Release -o publish/setup/wpf ./src/TypeCode.Wpf.Setup
 
     - name: Build Console
       run: dotnet build --configuration Release -o publish/console ./src/TypeCode.Console
@@ -47,26 +50,14 @@ jobs:
     - name: Build Console Interactive
       run: dotnet build --configuration Release -o publish/interactive ./src/TypeCode.Console.Interactive
       
-    - name: Add Version Wpf
-      run: | 
-        New-Item publish/wpf/version
-        Set-Content publish/wpf/version ${{ steps.previoustag.outputs.tag }}
-        
-    - name: Add Version Console
-      run: |
-        New-Item publish/console/version
-        Set-Content publish/console/version ${{ steps.previoustag.outputs.tag }}
-      
-    - name: Add Version Console Interactive
-      run: |
-        New-Item publish/interactive/version
-        Set-Content publish/interactive/version ${{ steps.previoustag.outputs.tag }}
-      
     - name: Test
       run: dotnet test --verbosity normal
       
     - name: Zip Wpf
       run: Compress-Archive -Path ./publish/wpf/* -DestinationPath TypeCode.Wpf_${{ steps.previoustag.outputs.tag }}.zip
+      
+    - name: Copy / Rename Wpf Setup
+      run: Copy-Item ./publish/wpf/TypeCode.Wpf.Setup.msi -DestinationPath TypeCode.Wpf.Setup_${{ steps.previoustag.outputs.tag }}.msi
 
     - name: Zip Console
       run: Compress-Archive -Path ./publish/console/* -DestinationPath TypeCode.Console_${{ steps.previoustag.outputs.tag }}.zip
@@ -95,6 +86,16 @@ jobs:
         asset_path: ./TypeCode.Wpf_${{ steps.previoustag.outputs.tag }}.zip
         asset_name: TypeCode.Wpf_${{ steps.previoustag.outputs.tag }}.zip
         asset_content_type: application/zip
+        
+    - name: Upload Release Assets Wpf Setup
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./TypeCode.Wpf.Setup_${{ steps.previoustag.outputs.tag }}.msi
+        asset_name: TypeCode.Wpf.Setup_${{ steps.previoustag.outputs.tag }}.msi
+        asset_content_type: application/octet-stream
         
     - name: Upload Release Assets Console
       uses: actions/upload-release-asset@v1
