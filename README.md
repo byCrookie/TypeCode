@@ -39,7 +39,8 @@ Further documentation can be found here: [Wiki](https://github.com/byCrookie/Typ
 * Clone the git repository
 * Change the "localPackages" path in the nuget.config
 * {Token}: Z2hwX1hybmFLaVIyTm1zaGVWRVpqMjVLbHZsNTBjdldKYjMzQ2hPeQ== -> Convert Base64 back to Text First
-* Execute dotnet nuget add source --username byCrookie --password {Token} --name byCrookie_Github https://nuget.pkg.github.com/byCrookie/index.json
+* Execute dotnet nuget add source --username byCrookie --password {Token} --name byCrookie_Github --store-password-in-clear-te
+xt https://nuget.pkg.github.com/byCrookie/index.json
 
 ## Contributing / Issues
 All contributions are welcome! If you have any issues or feature requests, either implement it yourself or create an issue, thank you.
