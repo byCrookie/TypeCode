@@ -89,35 +89,42 @@ public class ConfigurationLoader : IConfigurationLoader
             .ConfigureAwait(false);
 
         await Parallel.ForEachAsync(assemblyGroup.AssemblyPath, async
-                (assemblyPath, _) => await PrepareAssemblyDirectoriesAsync(root, $@"{root.Path}{assemblyPath.Path}", assemblyPath).ConfigureAwait(false))
+                (assemblyPath, _) => await PrepareAssemblyDirectoriesAsync($@"{root.Path}{assemblyPath.Path}", assemblyPath).ConfigureAwait(false))
             .ConfigureAwait(false);
     }
 
     private static Task EvaluateAssemblyPathSelectorAsync(AssemblyRoot root, AssemblyPathSelector assemblyPathSelector)
     {
+        if (!Directory.Exists(root.Path))
+        {
+            return Task.CompletedTask;
+        }
+
         var directories = Directory.GetDirectories(root.Path)
             .Where(directory => Regex.IsMatch(directory, assemblyPathSelector.Selector))
             .Select(directory => $@"{directory}\{assemblyPathSelector.Path}");
 
-        return Parallel.ForEachAsync(directories, async (directory, _) => await PrepareAssemblyDirectoriesAsync(root, directory, assemblyPathSelector).ConfigureAwait(false));
+        return Parallel.ForEachAsync(directories, async (directory, _) => await PrepareAssemblyDirectoriesAsync(directory, assemblyPathSelector).ConfigureAwait(false));
     }
 
-    private static Task PrepareAssemblyDirectoriesAsync(AssemblyRoot assemblyRoot, string absolutPath, IAssemblyHolder assemblyHolder)
+    private static Task PrepareAssemblyDirectoriesAsync(string absolutPath, IAssemblyHolder assemblyHolder)
     {
-        if (Directory.Exists(absolutPath))
+        if (!Directory.Exists(absolutPath))
         {
-            var assemblyDirectory = new AssemblyDirectory(
-                assemblyHolder.Path,
-                absolutPath
-            );
-
-            var files = Directory.GetFiles(absolutPath.Trim(), "*.dll")
-                .Select(file => new { FileName = Path.GetFileName(file), Path = file });
-
-            assemblyDirectory.AssemblyCompounds = files
-                .Select(file => new AssemblyCompound(file.Path)).ToList();
-            assemblyHolder.AssemblyDirectories.Add(assemblyDirectory);
+            return Task.CompletedTask;
         }
+
+        var assemblyDirectory = new AssemblyDirectory(
+            assemblyHolder.Path,
+            absolutPath
+        );
+
+        var files = Directory.GetFiles(absolutPath.Trim(), "*.dll")
+            .Select(file => new { FileName = Path.GetFileName(file), Path = file });
+
+        assemblyDirectory.AssemblyCompounds = files
+            .Select(file => new AssemblyCompound(file.Path)).ToList();
+        assemblyHolder.AssemblyDirectories.Add(assemblyDirectory);
 
         return Task.CompletedTask;
     }

@@ -114,12 +114,15 @@ public class AssemblyLoader : IAssemblyLoader
 
     private void ClearUnusedCaches()
     {
-        var caches = Directory.GetDirectories(CacheDirectory, $"{CacheDirectoryPattern}*");
-        foreach (var cache in caches)
+        if (Directory.Exists(CacheDirectory))
         {
-            if (!_usedCacheDirectories.Contains(cache) && Directory.Exists(cache))
+            var caches = Directory.GetDirectories(CacheDirectory, $"{CacheDirectoryPattern}*");
+            foreach (var cache in caches)
             {
-                Directory.Delete(cache, true);
+                if (!_usedCacheDirectories.Contains(cache) && Directory.Exists(cache))
+                {
+                    Directory.Delete(cache, true);
+                }
             }
         }
 

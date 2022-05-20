@@ -31,14 +31,16 @@ public class AssemblyDependencyLoader : IAssemblyDependencyLoader
     {
         Log.Debug("Load referenced assemblies from {Assembly} to context {Context}", assembly.FullName, assemblyDirectory.AssemblyDirectory.AssemblyLoadContext!.Name);
 
-        var filesInDirectory = Directory.GetFiles(directory!)
-            .Where(x => x != fileName)
-            .Select(Path.GetFileName)
-            .Where(fileInDirectoryName =>
-                fileInDirectoryName is not null
-                && assemblyDirectory.AssemblyRoot.IncludeAssemblyPattern.Any(pattern => pattern.IsMatch(fileInDirectoryName)))
-            .Select(Path.GetFileNameWithoutExtension)
-            .ToList();
+        var filesInDirectory = Directory.Exists(directory)
+            ? Directory.GetFiles(directory)
+                .Where(x => x != fileName)
+                .Select(Path.GetFileName)
+                .Where(fileInDirectoryName =>
+                    fileInDirectoryName is not null
+                    && assemblyDirectory.AssemblyRoot.IncludeAssemblyPattern.Any(pattern => pattern.IsMatch(fileInDirectoryName)))
+                .Select(Path.GetFileNameWithoutExtension)
+                .ToList()
+            : new List<string?>();
 
         var references = assembly.GetReferencedAssemblies();
 
@@ -52,7 +54,7 @@ public class AssemblyDependencyLoader : IAssemblyDependencyLoader
                 var path = Path.Combine(directory!, loadFileName);
                 LoadFromLoadedOrFile(assemblyDirectory, path, reference.Name!);
             }
-            
+
             return ValueTask.CompletedTask;
         });
     }
@@ -67,7 +69,7 @@ public class AssemblyDependencyLoader : IAssemblyDependencyLoader
             }
         }
     }
-    
+
     private Assembly LoadFromLoadedOrFile(AssemblyRootCompound assemblyDirectory, string assemblyFullPath, string fileNameWithOutExtension)
     {
         var inCompileLibraries = DependencyContext.Default.CompileLibraries

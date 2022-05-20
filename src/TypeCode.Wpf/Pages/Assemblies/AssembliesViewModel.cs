@@ -78,6 +78,11 @@ public class AssemblyViewModel : Reactive, IAsyncNavigatedTo, IAsyncEventHandler
             .OrderBy(r => r.Priority)
             .Select(r => $"{r.Priority} {r.Message}")
             .ToList();
+
+        if (!LoadedAssemblies.Any())
+        {
+            LoadedAssemblies.Add("No assemblies have been loaded");
+        }
     }
 
     private async Task SearchAsync(bool regex, string? input)
