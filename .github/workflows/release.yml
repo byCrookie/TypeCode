@@ -57,7 +57,7 @@ jobs:
       run: |
         ./src/TypeCode.Wpf.Setup/DownloadAndExtractWix.ps1
         msbuild ./src/TypeCode.Wpf.Setup -p:SolutionDir=M:\Development\Home\TypeCode\,Configuration=Release
-        Copy-Item ./src/TypeCode.Wpf.Setup/bin/release/TypeCode.Wpf.Setup.msi -DestinationPath publish/setup/wpf/TypeCode.Wpf.Setup.msi
+        Copy-Item ./src/TypeCode.Wpf.Setup/bin/Release/TypeCode.Wpf.Setup.msi -DestinationPath publish/setup/wpf/TypeCode.Wpf.Setup.msi
 
     - name: Build Console
       run: dotnet build --configuration Release -o publish/console ./src/TypeCode.Console
