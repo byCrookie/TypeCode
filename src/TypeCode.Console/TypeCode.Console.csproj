@@ -1,11 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
+    
     <PropertyGroup>
         <OutputType>Exe</OutputType>
         <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <ApplicationIcon>icon.ico</ApplicationIcon>
+        <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
     </PropertyGroup>
 
     <ItemGroup>
@@ -13,9 +14,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="bycrookie.appsdk" Version="1.0.11-pre-202205190547" />
-      <PackageReference Include="bycrookie.framework.jab" Version="1.0.6-pre-202203190621" />
-      <PackageReference Include="Spectre.Console" Version="0.43.0" />
+      <PackageReference Include="bycrookie.appsdk" />
+      <PackageReference Include="bycrookie.framework.jab" />
+      <PackageReference Include="Spectre.Console" />
     </ItemGroup>
 
     <ItemGroup>
