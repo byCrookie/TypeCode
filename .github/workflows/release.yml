@@ -51,7 +51,9 @@ jobs:
       run: dotnet build --configuration Release -o publish/wpf ./src/TypeCode.Wpf
       
     - name: Build Wpf Setup
-      run: dotnet build --configuration Release -o publish/setup/wpf ./src/TypeCode.Wpf.Setup
+      run: |
+        ./src/TypeCode.Wpf.Setup/DownloadAndExtractWix.ps1
+        dotnet build --configuration Release -o publish/setup/wpf ./src/TypeCode.Wpf.Setup
 
     - name: Build Console
       run: dotnet build --configuration Release -o publish/console ./src/TypeCode.Console
