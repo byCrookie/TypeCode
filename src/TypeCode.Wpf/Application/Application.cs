@@ -4,6 +4,7 @@ using AsyncAwaitBestPractices;
 using Framework.Jab.Boot;
 using Framework.DependencyInjection.Factory;
 using Nito.AsyncEx;
+using Serilog;
 using TypeCode.Business.Configuration;
 using TypeCode.Business.TypeEvaluation;
 using TypeCode.Wpf.Helper.Event;
@@ -46,21 +47,18 @@ public class Application<TContext> : IApplication<TContext> where TContext : Boo
     public Task RunAsync(TContext context, CancellationToken cancellationToken)
     {
         var mainWindow = _mainViewProvider.MainWindow();
-            
+
         System.Windows.Application.Current.DispatcherUnhandledException +=
             (_, args) => HandleDispatcherUnhandledException(args, mainWindow);
-        
-        SafeFireAndForgetExtensions.SetDefaultExceptionHandling(e =>
-        {
-            OpenExceptionDialog(e, mainWindow);
-        });
-        
+
+        SafeFireAndForgetExtensions.SetDefaultExceptionHandling(e => { HandleException(e, mainWindow); });
+
         var mainViewModel = _factory.Create<MainViewModel>();
         mainViewModel.OnNavigatedToAsync(new NavigationContext());
         mainWindow.DataContext = mainViewModel;
 
-        Task.Run(LoadAssembliesAsync, cancellationToken);
-        
+        LoadAssembliesAsync().SafeFireAndForget();
+
         mainWindow.ShowDialog();
 
         return Task.CompletedTask;
@@ -76,15 +74,17 @@ public class Application<TContext> : IApplication<TContext> where TContext : Boo
     private void HandleDispatcherUnhandledException(DispatcherUnhandledExceptionEventArgs e, MainWindow mainWindow)
     {
         e.Handled = true;
-        OpenExceptionDialog(e.Exception, mainWindow);
+        HandleException(e.Exception, mainWindow);
     }
 
-    private void OpenExceptionDialog(Exception exception, MainWindow mainWindow)
+    private void HandleException(Exception exception, MainWindow mainWindow)
     {
+        Log.Error(exception, "{0}", exception.Message);
+
         MainThread.BackgroundFireAndForget(() =>
         {
             CloseOverlays(mainWindow);
-        
+
             AsyncContext.Run(() => _modalNavigationService.OpenModalAsync(new ModalParameter
             {
                 Title = "ERROR",
@@ -99,9 +99,15 @@ public class Application<TContext> : IApplication<TContext> where TContext : Boo
 
     private async Task LoadAssembliesAsync()
     {
-        var configuration = await _configurationLoader.LoadAsync().ConfigureAwait(false);
-        await _typeProvider.InitalizeAsync(configuration).ConfigureAwait(false);
-        _configurationProvider.Set(configuration);
-        await _eventAggregator.PublishAsync(new LoadEndEvent()).ConfigureAwait(false);
+        try
+        {
+            var configuration = await _configurationLoader.LoadAsync().ConfigureAwait(false);
+            await _typeProvider.InitalizeAsync(configuration).ConfigureAwait(false);
+            _configurationProvider.Set(configuration);
+        }
+        finally
+        {
+            await _eventAggregator.PublishAsync(new LoadEndEvent()).ConfigureAwait(false);
+        }
     }
 }

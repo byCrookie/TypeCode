@@ -13,6 +13,7 @@
         <PackageReference Include="Microsoft.Extensions.DependencyModel"/>
         <PackageReference Include="Serilog.Sinks.Console"/>
         <PackageReference Include="Serilog.Sinks.File"/>
+        <PackageReference Include="Serilog.Exceptions"/>
         <PackageReference Include="Microsoft.CodeAnalysis.Compilers"/>
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp"/>
         <PackageReference Include="System.Reactive"/>
