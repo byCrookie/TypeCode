@@ -56,8 +56,8 @@ jobs:
     - name: Build Wpf Setup
       run: |
         ./src/TypeCode.Wpf.Setup/DownloadAndExtractWix.ps1
-        msbuild ./src/TypeCode.Wpf.Setup -p:SolutionDir=M:\Development\Home\TypeCode\,Configuration=Release
-        Copy-Item ./src/TypeCode.Wpf.Setup/bin/Release/TypeCode.Wpf.Setup.msi -DestinationPath publish/setup/wpf/TypeCode.Wpf.Setup.msi
+        msbuild ./src/TypeCode.Wpf.Setup -p:SolutionDir=,Configuration=Release
+        Copy-Item ./src/TypeCode.Wpf.Setup/bin/Release/TypeCode.Wpf.Setup.msi -Destination publish/setup/wpf/TypeCode.Wpf.Setup.msi
 
     - name: Build Console
       run: dotnet build --configuration Release -o publish/console ./src/TypeCode.Console
@@ -72,7 +72,7 @@ jobs:
       run: Compress-Archive -Path ./publish/wpf/* -DestinationPath TypeCode.Wpf_${{ steps.previoustag.outputs.tag }}.zip
       
     - name: Copy / Rename Wpf Setup
-      run: Copy-Item ./publish/wpf/TypeCode.Wpf.Setup.msi -DestinationPath TypeCode.Wpf.Setup_${{ steps.previoustag.outputs.tag }}.msi
+      run: Copy-Item ./publish/wpf/TypeCode.Wpf.Setup.msi -Destination TypeCode.Wpf.Setup_${{ steps.previoustag.outputs.tag }}.msi
 
     - name: Zip Console
       run: Compress-Archive -Path ./publish/console/* -DestinationPath TypeCode.Console_${{ steps.previoustag.outputs.tag }}.zip
