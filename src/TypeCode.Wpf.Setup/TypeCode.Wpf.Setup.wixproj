@@ -24,21 +24,21 @@
         <OutputPath>bin\$(Configuration)\</OutputPath>
         <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
     </PropertyGroup>
-    
+
     <ItemGroup>
         <Compile Include="Product.wxs"/>
     </ItemGroup>
+    
     <ItemGroup>
         <Content Include="DownloadAndExtractWix.ps1"/>
         <Content Include="Images\Banner.bmp"/>
         <Content Include="Images\Banner.xcf"/>
         <Content Include="Images\Dialog.bmp"/>
         <Content Include="Images\Dialog.xcf"/>
-        <Content Include="License.rtf">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Content>
+        <Content Include="License.rtf"/>
         <Content Include="TypeCode.Wpf.Setup.wax"/>
     </ItemGroup>
+    
     <ItemGroup>
         <ProjectReference Include="..\TypeCode.Wpf\TypeCode.Wpf.csproj">
             <Name>TypeCode.Wpf</Name>
