@@ -56,7 +56,7 @@ jobs:
     - name: Build Wpf Setup
       run: |
         ./src/TypeCode.Wpf.Setup/DownloadAndExtractWix.ps1
-        msbuild ./src/TypeCode.Wpf.Setup -p:SolutionDir=M:\Development\Home\TypeCode\,Configuration=Release
+        msbuild ./src/TypeCode.Wpf.Setup -p:SolutionDir=M:\Development\Home\TypeCode,Configuration=Release
         Copy-Item ./src/TypeCode.Wpf.Setup/bin/Release/TypeCode.Wpf.Setup.msi -DestinationPath publish/setup/wpf/TypeCode.Wpf.Setup.msi
 
     - name: Build Console

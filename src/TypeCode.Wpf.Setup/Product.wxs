@@ -7,7 +7,7 @@
 
         <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine"/>
 
-        <Icon Id="icon.ico" SourceFile="$(var.SolutionDir)\src\TypeCode.Wpf\Assets\Icons\icon.ico"/>
+        <Icon Id="icon.ico" SourceFile="$(var.SolutionDir)src\TypeCode.Wpf\Assets\Icons\icon.ico"/>
         <Property Id="ARPPRODUCTICON" Value="icon.ico"/>
 
         <UIRef Id="WixUI_Advanced"/>
