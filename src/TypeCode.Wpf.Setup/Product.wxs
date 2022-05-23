@@ -25,7 +25,7 @@
             <ComponentGroupRef Id="Binaries"/>
         </Feature>
 
-        <Feature Id="Configuration" Title="TypeCode.Wpf Configuration.cfg.xml" Level="5">
+        <Feature Id="Configuration" Title="TypeCode.Wpf Configuration.cfg.xml" Level="1">
             <ComponentRef Id="ConfigurationFile"/>
         </Feature>
 
@@ -59,7 +59,7 @@
 
     <Fragment>
         <DirectoryRef Id="APPDATAFOLDER">
-            <Component Id="ConfigurationFile" Guid="d3549b60-baba-4831-81fe-99e40f838f20">
+            <Component Id="ConfigurationFile" NeverOverwrite="yes" Guid="d3549b60-baba-4831-81fe-99e40f838f20">
                 <File Id="Configuration.cfg.xml" Source="$(var.BasePath)\Configuration.cfg.xml"/>
                 <RemoveFolder Id="RemoveAppDataFolder" Directory="APPDATAFOLDER"
                               On="uninstall"/>
