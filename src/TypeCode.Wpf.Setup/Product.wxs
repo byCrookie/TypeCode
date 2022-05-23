@@ -14,9 +14,9 @@
         <Property Id="ApplicationFolderName" Value="TypeCode"/>
         <Property Id="WixAppFolder" Value="WixPerMachineFolder"/>
         <WixVariable Id="WixUISupportPerUser" Value="0"/>
-        <WixVariable Id="WixUILicenseRtf" Value="License.rtf" />
-        <WixVariable Id="WixUIBannerBmp" Value="Images\Banner.bmp" />
-        <WixVariable Id="WixUIDialogBmp" Value="Images\Dialog.bmp" />
+        <WixVariable Id="WixUILicenseRtf" Value="Assets\License.rtf" />
+        <WixVariable Id="WixUIBannerBmp" Value="Assets\Banner.bmp" />
+        <WixVariable Id="WixUIDialogBmp" Value="Assets\Dialog.bmp" />
 
         <MajorUpgrade AllowDowngrades="yes"/>
         <MediaTemplate EmbedCab="yes"/>

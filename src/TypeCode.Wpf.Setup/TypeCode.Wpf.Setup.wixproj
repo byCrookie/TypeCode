@@ -26,17 +26,16 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Include="Product.wxs"/>
+        <Compile Include="Product.wxs" />
     </ItemGroup>
     
     <ItemGroup>
-        <Content Include="DownloadAndExtractWix.ps1"/>
-        <Content Include="Images\Banner.bmp"/>
-        <Content Include="Images\Banner.xcf"/>
-        <Content Include="Images\Dialog.bmp"/>
-        <Content Include="Images\Dialog.xcf"/>
-        <Content Include="License.rtf"/>
-        <Content Include="TypeCode.Wpf.Setup.wax"/>
+        <Content Include="Assets\License.rtf" />
+        <Content Include="DownloadAndExtractWix.ps1" />
+        <Content Include="Assets\Banner.bmp" />
+        <Content Include="Assets\Banner.xcf" />
+        <Content Include="Assets\Dialog.bmp" />
+        <Content Include="Assets\Dialog.xcf" />
     </ItemGroup>
     
     <ItemGroup>
@@ -50,10 +49,10 @@
         </ProjectReference>
     </ItemGroup>
 
-    <Import Project="$(WixTargetsPath)" Condition=" '$(WixTargetsPath)' != '' "/>
-    <Import Project="$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets" Condition=" '$(WixTargetsPath)' == '' AND Exists('$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets') "/>
+    <Import Project="$(WixTargetsPath)" Condition=" '$(WixTargetsPath)' != '' " />
+    <Import Project="$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets" Condition=" '$(WixTargetsPath)' == '' AND Exists('$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets') " />
     <Target Name="EnsureWixToolsetInstalled" Condition=" '$(WixTargetsImported)' != 'true' ">
-        <Error Text="The WiX Toolset v3.11 (or newer) build tools must be installed to build this project. To download the WiX Toolset, see http://wixtoolset.org/releases/"/>
+        <Error Text="The WiX Toolset v3.11 (or newer) build tools must be installed to build this project. To download the WiX Toolset, see http://wixtoolset.org/releases/" />
     </Target>
 
     <ItemGroup>
