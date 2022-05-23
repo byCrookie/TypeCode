@@ -7,16 +7,16 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="AsyncAwaitBestPractices.MVVM"/>
-        <PackageReference Include="bycrookie.framework.jab"/>
-        <PackageReference Include="Humanizer.Core"/>
-        <PackageReference Include="Microsoft.Extensions.DependencyModel"/>
-        <PackageReference Include="Serilog.Sinks.Console"/>
-        <PackageReference Include="Serilog.Sinks.File"/>
-        <PackageReference Include="Serilog.Exceptions"/>
-        <PackageReference Include="Microsoft.CodeAnalysis.Compilers"/>
-        <PackageReference Include="Microsoft.CodeAnalysis.CSharp"/>
-        <PackageReference Include="System.Reactive"/>
+        <PackageReference Include="AsyncAwaitBestPractices.MVVM" />
+        <PackageReference Include="bycrookie.framework.jab" />
+        <PackageReference Include="Humanizer.Core" />
+        <PackageReference Include="Microsoft.Extensions.DependencyModel" />
+        <PackageReference Include="Serilog.Sinks.Console" />
+        <PackageReference Include="Serilog.Sinks.File" />
+        <PackageReference Include="Serilog.Exceptions" />
+        <PackageReference Include="Microsoft.CodeAnalysis.Compilers" />
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" />
+        <PackageReference Include="System.Reactive" />
     </ItemGroup>
 
     <ItemGroup>

@@ -52,16 +52,16 @@
             </Directory>
             <Directory Id="DesktopFolder" Name="Desktop"/>
             <Directory Id="AppDataFolder">
-                <Directory Id="APPDATAFOLDER" Name="TypeCode"/>
+                <Directory Id="APPDATAFOLDERTYPECODE" Name="TypeCode"/>
             </Directory>
         </Directory>
     </Fragment>
 
     <Fragment>
-        <DirectoryRef Id="APPDATAFOLDER">
+        <DirectoryRef Id="APPDATAFOLDERTYPECODE">
             <Component Id="ConfigurationFile" NeverOverwrite="yes" Guid="d3549b60-baba-4831-81fe-99e40f838f20">
                 <File Id="Configuration.cfg.xml" Source="$(var.BasePath)\Configuration.cfg.xml"/>
-                <RemoveFolder Id="RemoveAppDataFolder" Directory="APPDATAFOLDER"
+                <RemoveFolder Id="RemoveAppDataFolder" Directory="APPDATAFOLDERTYPECODE"
                               On="uninstall"/>
                 <RegistryValue Root="HKCU" Key="Software\TypeCode.Wpf" Name="installed" Type="integer" Value="1"
                                KeyPath="yes"/>

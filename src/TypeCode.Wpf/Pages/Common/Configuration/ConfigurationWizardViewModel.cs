@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Windows.Input;
 using System.Xml.Linq;
+using TypeCode.Business.Configuration.Location;
 using TypeCode.Wpf.Helper.Commands;
 using TypeCode.Wpf.Helper.Navigation.Service;
 using TypeCode.Wpf.Helper.Navigation.Wizard.Complex;
@@ -10,8 +11,12 @@ namespace TypeCode.Wpf.Pages.Common.Configuration;
 
 public class ConfigurationWizardViewModel : Reactive, IAsyncInitialNavigated
 {
-    public ConfigurationWizardViewModel()
+    private readonly IConfigurationLocationProvider _configurationLocationProvider;
+
+    public ConfigurationWizardViewModel(IConfigurationLocationProvider configurationLocationProvider)
     {
+        _configurationLocationProvider = configurationLocationProvider;
+        
         ReloadCommand = new AsyncRelayCommand(ReloadAsync);
         SaveCommand = new AsyncRelayCommand(SaveAsync);
         FormatCommand = new AsyncRelayCommand(FormatAsync);
@@ -30,14 +35,14 @@ public class ConfigurationWizardViewModel : Reactive, IAsyncInitialNavigated
 
     private async Task SaveAsync()
     {
-        var cfg = $@"{Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location)}\Configuration.cfg.xml";
+        var cfg = _configurationLocationProvider.GetLocation();
         await File.WriteAllTextAsync(cfg, FormatXml(Configuration)).ConfigureAwait(true);
         await ReloadAsync().ConfigureAwait(true);
     }
 
     private async Task ReloadAsync()
     {
-        var cfg = $@"{Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location)}\Configuration.cfg.xml";
+        var cfg = _configurationLocationProvider.GetLocation();
         var xml = await File.ReadAllTextAsync(cfg).ConfigureAwait(true);
         Configuration = FormatXml(xml);
     }

@@ -1,8 +1,8 @@
 ﻿using System.IO;
-using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Windows.Controls;
 using TypeCode.Business.Configuration;
+using TypeCode.Business.Configuration.Location;
 using TypeCode.Wpf.Helper.Navigation.Service;
 using TypeCode.Wpf.Helper.Navigation.Wizard.WizardSimple;
 using TypeCode.Wpf.Pages.Common.Configuration.AssemblyGroupWizard;
@@ -18,6 +18,7 @@ internal class SetupConfigurator : ISetupConfigurator
     private readonly IGenericXmlSerializer _genericXmlSerializer;
     private readonly IConfigurationMapper _configurationMapper;
     private readonly IWizardNavigationService _wizardNavigationService;
+    private readonly IConfigurationLocationProvider _configurationLocationProvider;
     private TypeCodeConfiguration _configuration;
 
     private readonly IDictionary<TreeViewItem, SetupTreeViewItemMapping<AssemblyRoot>> _setupRootMappings
@@ -45,12 +46,14 @@ internal class SetupConfigurator : ISetupConfigurator
     public SetupConfigurator(
         IGenericXmlSerializer genericXmlSerializer,
         IConfigurationMapper configurationMapper,
-        IWizardNavigationService wizardNavigationService
+        IWizardNavigationService wizardNavigationService,
+        IConfigurationLocationProvider configurationLocationProvider
     )
     {
         _genericXmlSerializer = genericXmlSerializer;
         _configurationMapper = configurationMapper;
         _wizardNavigationService = wizardNavigationService;
+        _configurationLocationProvider = configurationLocationProvider;
 
         _configuration = new TypeCodeConfiguration();
     }
@@ -577,14 +580,14 @@ internal class SetupConfigurator : ISetupConfigurator
 
     private async Task<XmlTypeCodeConfiguration> ReadXmlConfigurationAsync()
     {
-        var cfg = $@"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\Configuration.cfg.xml";
+        var cfg = _configurationLocationProvider.GetLocation();
         var xml = await File.ReadAllTextAsync(cfg).ConfigureAwait(true);
         return _genericXmlSerializer.Deserialize<XmlTypeCodeConfiguration>(xml) ?? throw new Exception($"{cfg} can not be parsed");
     }
 
     private Task WriteXmlConfigurationAsync(XmlTypeCodeConfiguration xmlConfiguration)
     {
-        var cfg = $@"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\Configuration.cfg.xml";
+        var cfg = _configurationLocationProvider.GetLocation();
         var serialized = _genericXmlSerializer.Serialize(xmlConfiguration);
         return File.WriteAllTextAsync(cfg, serialized);
     }

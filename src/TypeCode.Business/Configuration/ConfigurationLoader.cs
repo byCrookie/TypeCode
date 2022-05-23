@@ -1,7 +1,7 @@
-﻿using System.Reflection;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using Serilog;
 using TypeCode.Business.Configuration.Assemblies;
+using TypeCode.Business.Configuration.Location;
 using TypeCode.Business.Format;
 
 namespace TypeCode.Business.Configuration;
@@ -11,16 +11,19 @@ public class ConfigurationLoader : IConfigurationLoader
     private readonly IConfigurationMapper _configurationMapper;
     private readonly IGenericXmlSerializer _genericXmlSerializer;
     private readonly IAssemblyLoader _assemblyLoader;
+    private readonly IConfigurationLocationProvider _configurationLocationProvider;
 
     public ConfigurationLoader(
         IConfigurationMapper configurationMapper,
         IGenericXmlSerializer genericXmlSerializer,
-        IAssemblyLoader assemblyLoader
+        IAssemblyLoader assemblyLoader,
+        IConfigurationLocationProvider configurationLocationProvider
     )
     {
         _configurationMapper = configurationMapper;
         _genericXmlSerializer = genericXmlSerializer;
         _assemblyLoader = assemblyLoader;
+        _configurationLocationProvider = configurationLocationProvider;
     }
 
     public async Task<TypeCodeConfiguration> LoadAsync()
@@ -131,7 +134,7 @@ public class ConfigurationLoader : IConfigurationLoader
 
     private XmlTypeCodeConfiguration ReadXmlConfiguration()
     {
-        var cfg = $@"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\Configuration.cfg.xml";
+        var cfg = _configurationLocationProvider.GetLocation();
         var xml = File.ReadAllText(cfg);
         return _genericXmlSerializer.Deserialize<XmlTypeCodeConfiguration>(xml) ?? throw new Exception($"{cfg} can not be parsed");
     }

@@ -2,7 +2,6 @@
 using Framework.Jab.Boot.Jab;
 using Framework.Jab.Boot.Logger;
 using Framework.Jab.Boot.Start;
-using TypeCode.Business.Bootstrapping;
 using TypeCode.Business.Logging;
 using TypeCode.Wpf.Application.Boot.SetupWpfApplication;
 
