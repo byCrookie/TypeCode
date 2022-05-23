@@ -25,7 +25,13 @@
             <ComponentGroupRef Id="ProductComponents"/>
             <ComponentGroupRef Id="ProgramFilesFolder_files"/>
             <ComponentGroupRef Id="Assets_files"/>
+        </Feature>
+
+        <Feature Id="MenuShortcut" Title="TypeCode.Wpf Menu Shortcut" Level="1">
             <ComponentRef Id="ApplicationShortcut"/>
+        </Feature>
+
+        <Feature Id="DesktopShortcut" Title="TypeCode.Wpf Desktop Shortcut" Level="2">
             <ComponentRef Id="ApplicationShortcutDesktop"/>
         </Feature>
     </Product>
