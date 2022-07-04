@@ -12,8 +12,10 @@
 
     <ItemGroup>
         <PackageReference Include="AsyncAwaitBestPractices.MVVM" />
-        <PackageReference Include="bycrookie.appsdk" />
-        <PackageReference Include="bycrookie.framework.jab" />
+        <PackageReference Include="byCrookie.AppSdk" />
+        <PackageReference Include="byCrookie.Framework" />
+        <PackageReference Include="byCrookie.Framework.DependencyInjection" />
+        <PackageReference Include="byCrookie.Framework.Boot" />
         <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" />
         <PackageReference Include="Nito.AsyncEx.Context" />
         <PackageReference Include="Serilog.Sinks.Console" />

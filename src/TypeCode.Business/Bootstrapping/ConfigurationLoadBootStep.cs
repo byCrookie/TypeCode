@@ -1,4 +1,4 @@
-﻿using Framework.Jab.Boot;
+﻿using Framework.Boot;
 using TypeCode.Business.Configuration;
 using TypeCode.Business.TypeEvaluation;
 using Workflow;

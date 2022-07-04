@@ -1,4 +1,4 @@
-﻿using Framework.Jab.Boot;
+﻿using Framework.Boot;
 using Jab;
 
 namespace TypeCode.Business.Bootstrapping;

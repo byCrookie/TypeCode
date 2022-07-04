@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Threading;
 using AsyncAwaitBestPractices;
-using Framework.Jab.Boot;
+using Framework.Boot;
 using Framework.DependencyInjection.Factory;
 using Nito.AsyncEx;
 using Serilog;

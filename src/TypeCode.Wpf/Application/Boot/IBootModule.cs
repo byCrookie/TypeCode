@@ -1,5 +1,5 @@
-﻿using Framework.Jab.Boot;
-using Framework.Jab.Boot.Start;
+﻿using Framework.Boot;
+using Framework.Boot.Start;
 using Jab;
 using TypeCode.Business.Modules;
 

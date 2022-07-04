@@ -1,8 +1,8 @@
 ﻿using System.IO;
 using System.Windows;
 using System.Windows.Threading;
+using Framework.Boot.Logger;
 using Framework.Extensions.List;
-using Framework.Jab.Boot.Logger;
 using Nito.AsyncEx;
 using Serilog;
 using Serilog.Events;

@@ -1,4 +1,4 @@
-﻿using Framework.Jab.Boot;
+﻿using Framework.Boot;
 using Jab;
 using TypeCode.Wpf.Application.Boot;
 

@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Windows;
-using Framework.Jab.Boot;
+using Framework.Boot;
 using Workflow;
 
 namespace TypeCode.Wpf.Application.Boot.SetupWpfApplication;

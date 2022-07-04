@@ -1,7 +1,7 @@
-﻿using Framework.Jab.Boot;
-using Framework.Jab.Boot.Jab;
-using Framework.Jab.Boot.Logger;
-using Framework.Jab.Boot.Start;
+﻿using Framework.Boot;
+using Framework.Boot.Configuration;
+using Framework.Boot.Logger;
+using Framework.Boot.Start;
 using TypeCode.Business.Logging;
 using TypeCode.Wpf.Application.Boot.SetupWpfApplication;
 

@@ -1,8 +1,10 @@
 <Project>
     <ItemGroup>
         <PackageVersion Include="AsyncAwaitBestPractices.MVVM" Version="6.0.4"/>
-        <PackageVersion Include="bycrookie.appsdk" Version="1.0.10"/>
-        <PackageVersion Include="bycrookie.framework.jab" Version="1.0.6"/>
+        <PackageVersion Include="byCrookie.AppSdk" Version="1.0.10"/>
+        <PackageVersion Include="byCrookie.Framework" Version="1.0.9"/>
+        <PackageVersion Include="byCrookie.Framework.Boot" Version="1.0.9"/>
+        <PackageVersion Include="byCrookie.Framework.DependencyInjection" Version="1.0.9"/>
         <PackageVersion Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39"/>
         <PackageVersion Include="Nito.AsyncEx.Context" Version="5.1.2"/>
         <PackageVersion Include="Serilog.Sinks.Console" Version="4.0.1"/>

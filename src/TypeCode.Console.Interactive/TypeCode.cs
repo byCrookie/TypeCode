@@ -1,6 +1,6 @@
 ﻿using System.Text;
+using Framework.Boot;
 using Framework.Extensions.List;
-using Framework.Jab.Boot;
 using TypeCode.Business.Configuration;
 using TypeCode.Business.Format;
 using TypeCode.Business.TypeEvaluation;

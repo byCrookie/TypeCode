@@ -1,7 +1,6 @@
-﻿using System.Reflection;
-using Framework.Jab.Boot;
-using Framework.Jab.Boot.Jab;
-using Framework.Jab.Boot.Logger;
+﻿using Framework.Boot;
+using Framework.Boot.Configuration;
+using Framework.Boot.Logger;
 using Serilog;
 using Serilog.Events;
 using TypeCode.Business.Bootstrapping;

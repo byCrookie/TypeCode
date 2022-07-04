@@ -1,4 +1,4 @@
-﻿using Framework.Jab.Boot;
+﻿using Framework.Boot;
 
 namespace TypeCode.Console.Interactive;
 

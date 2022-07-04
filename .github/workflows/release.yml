@@ -44,11 +44,6 @@ jobs:
       run: |
         Remove-Item Directory.Build.props
         Rename-Item -Path Github.Directory.Build.props -NewName Directory.Build.props
-        
-    - name: Use Github Packages Props
-      run: |
-        Remove-Item Directory.Packages.props
-        Rename-Item -Path Github.Directory.Packages.props -NewName Directory.Packages.props
 
     - name: Build Wpf
       run: dotnet build --configuration Release -o publish/wpf ./src/TypeCode.Wpf

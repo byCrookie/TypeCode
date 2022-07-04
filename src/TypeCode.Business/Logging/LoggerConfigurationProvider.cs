@@ -1,4 +1,4 @@
-﻿using Framework.Jab.Boot.Logger;
+﻿using Framework.Boot.Logger;
 using Serilog;
 using Serilog.Events;
 using Serilog.Exceptions;

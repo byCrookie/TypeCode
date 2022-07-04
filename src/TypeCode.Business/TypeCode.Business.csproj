@@ -8,7 +8,9 @@
 
     <ItemGroup>
         <PackageReference Include="AsyncAwaitBestPractices.MVVM" />
-        <PackageReference Include="bycrookie.framework.jab" />
+        <PackageReference Include="byCrookie.Framework" />
+        <PackageReference Include="byCrookie.Framework.DependencyInjection" />
+        <PackageReference Include="byCrookie.Framework.Boot" />
         <PackageReference Include="Humanizer.Core" />
         <PackageReference Include="Microsoft.Extensions.DependencyModel" />
         <PackageReference Include="Serilog.Sinks.Console" />
