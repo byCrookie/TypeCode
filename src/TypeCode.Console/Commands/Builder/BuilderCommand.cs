@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using JetBrains.Annotations;
 using Spectre.Console.Cli;
 using TypeCode.Business.Mode;
 using TypeCode.Business.Mode.Builder;
@@ -16,7 +15,6 @@ public class BuilderCommand : AsyncCommand<BuilderCommand.Settings>
             TypeName = typeName;
         }
         
-        [UsedImplicitly]
         [Description("Type for which the builder is generated.")]
         [CommandArgument(0, "[TypeName]")]
         public string TypeName { get; }

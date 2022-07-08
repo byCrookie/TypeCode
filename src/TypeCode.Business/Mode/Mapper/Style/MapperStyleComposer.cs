@@ -1,4 +1,4 @@
-﻿using Framework.DependencyInjection.Factory;
+﻿using DependencyInjection.Factory;
 
 namespace TypeCode.Business.Mode.Mapper.Style;
 

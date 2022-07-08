@@ -1,5 +1,5 @@
 ﻿using System.Windows.Controls;
-using Framework.DependencyInjection.Factory;
+using DependencyInjection.Factory;
 using TypeCode.Wpf.Helper.Navigation.Contract;
 using TypeCode.Wpf.Main;
 

@@ -1,6 +1,6 @@
 ﻿using System.Windows.Input;
 using AsyncAwaitBestPractices.MVVM;
-using Framework.DependencyInjection.Factory;
+using DependencyInjection.Factory;
 using Serilog;
 using TypeCode.Business.Configuration;
 using TypeCode.Business.TypeEvaluation;
@@ -28,7 +28,7 @@ namespace TypeCode.Wpf.Main.Sidebar;
 public class MainSidebarViewModel : Reactive, IAsyncNavigatedTo, IAsyncEventHandler<LoadEndEvent>
 {
     private readonly INavigationService _navigationService;
-    private readonly IFactory _factory;
+    private readonly IFactory<IWizardBuilder> _wizardBuilderFactory;
     private readonly IWizardRunner _settingsWizardRunner;
     private readonly IEventAggregator _eventAggregator;
     private readonly IConfigurationProvider _configurationProvider;
@@ -38,7 +38,7 @@ public class MainSidebarViewModel : Reactive, IAsyncNavigatedTo, IAsyncEventHand
 
     public MainSidebarViewModel(
         INavigationService navigationService,
-        IFactory factory,
+        IFactory<IWizardBuilder> wizardBuilderFactory,
         IWizardRunner settingsWizardRunner,
         IEventAggregator eventAggregator,
         IConfigurationProvider configurationProvider,
@@ -48,7 +48,7 @@ public class MainSidebarViewModel : Reactive, IAsyncNavigatedTo, IAsyncEventHand
     )
     {
         _navigationService = navigationService;
-        _factory = factory;
+        _wizardBuilderFactory = wizardBuilderFactory;
         _settingsWizardRunner = settingsWizardRunner;
         _eventAggregator = eventAggregator;
         _configurationProvider = configurationProvider;
@@ -196,7 +196,7 @@ public class MainSidebarViewModel : Reactive, IAsyncNavigatedTo, IAsyncEventHand
 
     private Task OpenSettingsAsync()
     {
-        var wizardBuilder = _factory.Create<IWizardBuilder>();
+        var wizardBuilder = _wizardBuilderFactory.Create();
 
         var wizard = wizardBuilder
             .Then<SetupWizardViewModel>((options, _) => options.AllowNext(_ => true))

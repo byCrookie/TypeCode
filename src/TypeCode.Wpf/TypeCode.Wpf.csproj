@@ -14,8 +14,8 @@
         <PackageReference Include="AsyncAwaitBestPractices.MVVM" />
         <PackageReference Include="byCrookie.AppSdk" />
         <PackageReference Include="byCrookie.Framework" />
-        <PackageReference Include="byCrookie.Framework.DependencyInjection" />
         <PackageReference Include="byCrookie.Framework.Boot" />
+        <PackageReference Include="byCrookie.DependencyInjection" />
         <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" />
         <PackageReference Include="Nito.AsyncEx.Context" />
         <PackageReference Include="Serilog.Sinks.Console" />
@@ -75,10 +75,6 @@
         <None Remove="Assets\Fonts\Roboto\Roboto-Thin.ttf" />
         <None Remove="Assets\Fonts\Roboto\Roboto-ThinItalic.ttf" />
         <None Remove="Assets\Fonts\Oswald\Oswald-VariableFont_wght.ttf" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <Folder Include="Helper\AttachedProperties" />
     </ItemGroup>
 
     <ItemGroup>

@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using Framework.DependencyInjection.Factory;
+using DependencyInjection.Factory;
 using TypeCode.Business.Format;
 using TypeCode.Wpf.Helper.Event;
 using TypeCode.Wpf.Helper.Navigation.Contract;

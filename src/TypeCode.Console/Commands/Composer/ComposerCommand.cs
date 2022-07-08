@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using JetBrains.Annotations;
 using Spectre.Console.Cli;
 using TypeCode.Business.Mode;
 using TypeCode.Business.Mode.Composer;
@@ -15,8 +14,7 @@ public class ComposerCommand : AsyncCommand<ComposerCommand.Settings>
         {
             TypeName = typeName;
         }
-
-        [UsedImplicitly]
+        
         [Description("Type for which the builder is generated.")]
         [CommandArgument(0, "[TypeName]")]
         public string TypeName { get; }

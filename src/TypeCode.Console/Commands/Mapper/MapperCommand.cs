@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using JetBrains.Annotations;
 using Spectre.Console.Cli;
 using TypeCode.Business.Format;
 using TypeCode.Business.Mode;
@@ -17,13 +16,11 @@ public class MapperCommand : AsyncCommand<MapperCommand.Settings>
             From = from;
             To = to;
         }
-
-        [UsedImplicitly]
+        
         [Description("Type for left side of mapping.")]
         [CommandOption("-f|--from")]
         public string From { get; }
         
-        [UsedImplicitly]
         [Description("Type for right side of mapping.")]
         [CommandOption("-t|--to")]
         public string To { get; }

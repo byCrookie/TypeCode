@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using Framework.DependencyInjection.Factory;
+using DependencyInjection.Factory;
 using TypeCode.Wpf.Helper.Navigation.Contract;
 using TypeCode.Wpf.Helper.Navigation.Modal.View;
 using TypeCode.Wpf.Helper.Navigation.Service;
@@ -11,19 +11,19 @@ namespace TypeCode.Wpf.Helper.Navigation.Modal.Service;
 public class ModalNavigationService : IModalNavigationService
 {
     private readonly IMainViewProvider _mainViewProvider;
-    private readonly IFactory _factory;
+    private readonly IFactory<ModalViewModel> _modalViewModelFactory;
     private ModalParameter? _lastModalParameter;
 
-    public ModalNavigationService(IMainViewProvider mainViewProvider, IFactory factory)
+    public ModalNavigationService(IMainViewProvider mainViewProvider, IFactory<ModalViewModel> modalViewModelFactory)
     {
         _mainViewProvider = mainViewProvider;
-        _factory = factory;
+        _modalViewModelFactory = modalViewModelFactory;
     }
 
     public async Task OpenModalAsync(ModalParameter modalParameter)
     {
         var viewModelType = typeof(ModalViewModel);
-        var viewModelInstance = _factory.Create<ModalViewModel>();
+        var viewModelInstance = _modalViewModelFactory.Create();
 
         if (viewModelInstance is null)
         {

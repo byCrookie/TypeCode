@@ -1,20 +1,17 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
         <OutputType>Exe</OutputType>
         <TargetFramework>net6.0-windows</TargetFramework>
         <ApplicationIcon>icon.ico</ApplicationIcon>
-        <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
     </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="AsyncAwaitBestPractices.MVVM" />
         <PackageReference Include="byCrookie.AppSdk" />
         <PackageReference Include="byCrookie.Framework" />
-        <PackageReference Include="byCrookie.Framework.DependencyInjection" />
         <PackageReference Include="byCrookie.Framework.Boot" />
+        <PackageReference Include="byCrookie.DependencyInjection" />
         <PackageReference Include="Serilog.Sinks.Console" />
         <PackageReference Include="Serilog.Sinks.File" />
     </ItemGroup>

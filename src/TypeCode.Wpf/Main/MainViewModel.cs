@@ -1,4 +1,4 @@
-﻿using Framework.DependencyInjection.Factory;
+﻿using DependencyInjection.Factory;
 using TypeCode.Wpf.Helper.Event;
 using TypeCode.Wpf.Helper.Navigation.Contract;
 using TypeCode.Wpf.Helper.Navigation.Service;

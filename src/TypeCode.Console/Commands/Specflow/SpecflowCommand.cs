@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using JetBrains.Annotations;
 using Spectre.Console.Cli;
 using TypeCode.Business.Mode;
 using TypeCode.Business.Mode.Specflow;
@@ -16,24 +15,20 @@ public class SpecflowCommand : AsyncCommand<SpecflowCommand.Settings>
             TypeNames = typeNames;
         }
         
-        [UsedImplicitly]
         [Description("Typenames for which the tables are generated.")]
         [CommandArgument(0, "[TypeNames]")]
         public string[] TypeNames { get; }
-
-        [UsedImplicitly]
+        
         [Description("Only use required properties for specflow execution.")]
         [CommandOption("-o|--only-required")]
         [DefaultValue(false)]
         public bool OnyRequired { get; init; }
         
-        [UsedImplicitly]
         [Description("Sort the table columns alphabetically.")]
         [CommandOption("-s|--sort-alphabetically")]
         [DefaultValue(false)]
         public bool SortAlphabetically { get; init; }
         
-        [UsedImplicitly]
         [Description("Include properties of type string.")]
         [CommandOption("-i|--include-strings")]
         [DefaultValue(true)]

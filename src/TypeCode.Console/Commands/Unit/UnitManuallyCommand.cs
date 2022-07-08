@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using JetBrains.Annotations;
 using Spectre.Console.Cli;
 using TypeCode.Business.Mode;
 using TypeCode.Business.Mode.UnitTestDependency.Manually;
@@ -15,7 +14,6 @@ public class UnitManuallyCommand  : AsyncCommand<UnitManuallyCommand.Settings>
             Content = content;
         }
         
-        [UsedImplicitly]
         [Description("Constructor-declaration for which the code is generated.")]
         [CommandArgument(0, "[ConstructorDeclaration]")]
         public string Content { get; }

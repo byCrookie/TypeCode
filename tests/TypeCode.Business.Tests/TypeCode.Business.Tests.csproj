@@ -1,21 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
-        <LangVersion>10</LangVersion>
-        
         <IsPackable>false</IsPackable>
-
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="AsyncAwaitBestPractices.MVVM" Version="6.0.4" />
-        <PackageReference Include="bycrookie.framework.autofac" Version="1.0.6-pre-202203190621" />
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
-        <PackageReference Include="Serilog.Sinks.Console" Version="4.0.1" />
-        <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
+        <PackageReference Include="byCrookie.LibrarySdk" />
     </ItemGroup>
 
     <ItemGroup>

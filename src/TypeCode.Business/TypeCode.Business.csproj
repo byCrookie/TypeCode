@@ -1,16 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
-    <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
-        <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
-    </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="AsyncAwaitBestPractices.MVVM" />
+        <PackageReference Include="byCrookie.LibrarySdk" />
         <PackageReference Include="byCrookie.Framework" />
-        <PackageReference Include="byCrookie.Framework.DependencyInjection" />
         <PackageReference Include="byCrookie.Framework.Boot" />
+        <PackageReference Include="byCrookie.DependencyInjection" />
         <PackageReference Include="Humanizer.Core" />
         <PackageReference Include="Microsoft.Extensions.DependencyModel" />
         <PackageReference Include="Serilog.Sinks.Console" />

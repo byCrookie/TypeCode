@@ -1,8 +1,8 @@
 ﻿using System.Windows;
 using System.Windows.Threading;
 using AsyncAwaitBestPractices;
+using DependencyInjection.Factory;
 using Framework.Boot;
-using Framework.DependencyInjection.Factory;
 using Nito.AsyncEx;
 using Serilog;
 using TypeCode.Business.Configuration;
@@ -17,7 +17,7 @@ namespace TypeCode.Wpf.Application;
 
 public class Application<TContext> : IApplication<TContext> where TContext : BootContext
 {
-    private readonly IFactory _factory;
+    private readonly IFactory<MainViewModel> _mainViewModelFactory;
     private readonly ITypeProvider _typeProvider;
     private readonly IEventAggregator _eventAggregator;
     private readonly IModalNavigationService _modalNavigationService;
@@ -26,7 +26,7 @@ public class Application<TContext> : IApplication<TContext> where TContext : Boo
     private readonly IConfigurationLoader _configurationLoader;
 
     public Application(
-        IFactory factory,
+        IFactory<MainViewModel> mainViewModelFactory,
         ITypeProvider typeProvider,
         IEventAggregator eventAggregator,
         IModalNavigationService modalNavigationService,
@@ -35,7 +35,7 @@ public class Application<TContext> : IApplication<TContext> where TContext : Boo
         IConfigurationLoader configurationLoader
     )
     {
-        _factory = factory;
+        _mainViewModelFactory = mainViewModelFactory;
         _typeProvider = typeProvider;
         _eventAggregator = eventAggregator;
         _modalNavigationService = modalNavigationService;
@@ -53,7 +53,7 @@ public class Application<TContext> : IApplication<TContext> where TContext : Boo
 
         SafeFireAndForgetExtensions.SetDefaultExceptionHandling(e => { HandleException(e, mainWindow); });
 
-        var mainViewModel = _factory.Create<MainViewModel>();
+        var mainViewModel = _mainViewModelFactory.Create();
         mainViewModel.OnNavigatedToAsync(new NavigationContext());
         mainWindow.DataContext = mainViewModel;
 

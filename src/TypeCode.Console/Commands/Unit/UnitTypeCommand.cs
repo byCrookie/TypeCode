@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using JetBrains.Annotations;
 using Spectre.Console.Cli;
 using TypeCode.Business.Mode;
 using TypeCode.Business.Mode.UnitTestDependency.Type;
@@ -16,7 +15,6 @@ public class UnitTypeCommand : AsyncCommand<UnitTypeCommand.Settings>
             TypeNames = typeNames;
         }
         
-        [UsedImplicitly]
         [Description("Typenames for which the tables are generated.")]
         [CommandArgument(0, "[TypeNames]")]
         public string[] TypeNames { get; }

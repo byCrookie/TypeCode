@@ -1,4 +1,4 @@
-﻿using Framework.DependencyInjection.Factory;
+﻿using DependencyInjection.Factory;
 using TypeCode.Console.Interactive.Mode.Builder;
 using TypeCode.Console.Interactive.Mode.Composer;
 using TypeCode.Console.Interactive.Mode.Exit;
