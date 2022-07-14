@@ -31,7 +31,8 @@
                     Text="{Binding Output, Mode=OneWay}"
                     IsReadOnly="True"
                     TextWrapping="Wrap"
-                    VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                    VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                    FontFamily="Courier New">
                 </TextBox>
             </ScrollViewer>
         </Border>

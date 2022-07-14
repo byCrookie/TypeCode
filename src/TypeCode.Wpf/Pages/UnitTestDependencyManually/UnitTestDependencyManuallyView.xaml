@@ -41,6 +41,7 @@
                     AcceptsTab="True"
                     MinHeight="50"
                     MaxHeight="200"
+                    FontFamily="Courier New"
                     ToolTip="Input constructor from access modifier to end of constructor dependencies including ')'">
                 </TextBox>
             </Border>

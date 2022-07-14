@@ -41,6 +41,7 @@
                     AcceptsTab="True"
                     MinHeight="200"
                     MaxHeight="400"
+                    FontFamily="Courier New"
                     ToolTip="Input c# code you want to execute">
                 </TextBox>
             </Border>

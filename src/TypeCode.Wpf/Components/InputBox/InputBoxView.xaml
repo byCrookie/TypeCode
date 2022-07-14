@@ -29,7 +29,8 @@
                          BorderThickness="0"
                          Text="{Binding Input, UpdateSourceTrigger=PropertyChanged}"
                          HorizontalAlignment="Stretch"
-                         HorizontalContentAlignment="Stretch">
+                         HorizontalContentAlignment="Stretch"
+                         FontFamily="Courier New">
                     <TextBox.InputBindings>
                         <KeyBinding Key="Enter" Command="{Binding ActionCommand}" />
                     </TextBox.InputBindings>

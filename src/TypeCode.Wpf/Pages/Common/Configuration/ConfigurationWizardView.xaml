@@ -31,6 +31,7 @@
             VerticalScrollBarVisibility="Auto"
             AcceptsReturn="True"
             TextWrapping="NoWrap"
-            AcceptsTab="True" />
+            AcceptsTab="True"
+            FontFamily="Courier New"/>
     </Grid>
 </UserControl>

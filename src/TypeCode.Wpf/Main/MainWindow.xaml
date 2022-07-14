@@ -72,7 +72,7 @@
 
             <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" ZIndex="0" x:Name="Main">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="140" />
+                    <ColumnDefinition Width="160" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 

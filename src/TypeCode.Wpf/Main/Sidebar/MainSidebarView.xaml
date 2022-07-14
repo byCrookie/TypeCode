@@ -101,15 +101,20 @@
                 Content="Dynamic Execution" />
         </StackPanel>
 
-        <DockPanel Visibility="Visible" Margin="5,0,0,0" Grid.Row="9" HorizontalAlignment="Left">
-            <Button DockPanel.Dock="Left"
-                    Style="{StaticResource IconButton}"
+        <Grid Visibility="Visible" Grid.Row="9">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="1" Style="{StaticResource IconButton}"
                     ToolTip="Invalidate Cache and Reload"
                     Command="{Binding InvalidateAndReloadCommand}">
                 <Image Source="{StaticResource ReloadDrawingImage}" />
             </Button>
-            <infoLink:InfoLinkView DataContext="{Binding InfoLink}" />
-        </DockPanel>
+            <infoLink:InfoLinkView Grid.Column="2" DataContext="{Binding InfoLink}" />
+        </Grid>
         
         <StackPanel Grid.Row="10"
                     Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.Assembly}}">
