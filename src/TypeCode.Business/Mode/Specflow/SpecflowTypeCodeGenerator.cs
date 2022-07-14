@@ -7,6 +7,13 @@ namespace TypeCode.Business.Mode.Specflow;
 
 public class SpecflowTypeCodeGenerator : ISpecflowTypeCodeGenerator
 {
+    private readonly ITableGenerator _tableGenerator;
+
+    public SpecflowTypeCodeGenerator(ITableGenerator tableGenerator)
+    {
+        _tableGenerator = tableGenerator;
+    }
+    
     public Task<string?> GenerateAsync(SpecflowTypeCodeGeneratorParameter parameter)
     {
         return parameter.Types.Any()
@@ -14,7 +21,7 @@ public class SpecflowTypeCodeGenerator : ISpecflowTypeCodeGenerator
             : Task.FromResult<string?>(null);
     }
 
-    private static string GenerateTable(SpecflowTypeCodeGeneratorParameter parameter)
+    private string GenerateTable(SpecflowTypeCodeGeneratorParameter parameter)
     {
         var stringBuilder = new StringBuilder();
 
@@ -22,18 +29,23 @@ public class SpecflowTypeCodeGenerator : ISpecflowTypeCodeGenerator
 
         foreach (var (key, (header, defaultRow)) in tables)
         {
+            var rows = new List<List<string>>
+            {
+                header,
+                defaultRow
+            };
+            
             stringBuilder.AppendLine($@"And Entity {key}");
-            stringBuilder.AppendLine(header);
-            stringBuilder.AppendLine(defaultRow);
+            stringBuilder.AppendLine(_tableGenerator.Build(rows));
             stringBuilder.AppendLine();
         }
 
         return stringBuilder.ToString();
     }
 
-    private static IDictionary<Type, (string, string)> CreateTables(SpecflowTypeCodeGeneratorParameter parameter)
+    private static IDictionary<Type, (List<string>, List<string>)> CreateTables(SpecflowTypeCodeGeneratorParameter parameter)
     {
-        var tables = new Dictionary<Type, (string, string)>();
+        var tables = new Dictionary<Type, (List<string>, List<string>)>();
 
         foreach (var type in parameter.Types)
         {
@@ -48,25 +60,17 @@ public class SpecflowTypeCodeGenerator : ISpecflowTypeCodeGenerator
         return tables;
     }
 
-    private static void CreateTableForType(IReadOnlyCollection<KeyValuePair<PropertyInfo, string>> properties, IDictionary<Type, (string, string)> tables, Type type)
+    private static void CreateTableForType(IReadOnlyCollection<KeyValuePair<PropertyInfo, string>> properties, IDictionary<Type, (List<string>, List<string>)> tables, Type type)
     {
-        var header = string.Concat(new List<string>
+        var header = new List<string>
         {
-            "| ",
-            "#",
-            " | ",
-            string.Join(" | ", properties.Select(property => property.Value)),
-            " |"
-        });
+            "#"
+        }.Concat(properties.Select(property => property.Value)).ToList();
 
-        var defaultRow = string.Concat(new List<string>
+        var defaultRow = new List<string>
         {
-            "| ",
-            $"{string.Concat(type.Name.Where(char.IsUpper))}1",
-            " | ",
-            string.Join(" | ", properties.Select(GetDefault).ToList()),
-            " |"
-        });
+            $"{type.Name.ToUpper()}1"
+        }.Concat(properties.Select(GetDefault)).ToList();
 
         tables.Add(type, (header, defaultRow));
     }

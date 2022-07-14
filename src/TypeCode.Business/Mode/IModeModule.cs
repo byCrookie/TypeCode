@@ -20,6 +20,7 @@ namespace TypeCode.Business.Mode;
 [Transient(typeof(IExistingMapperStyleStrategy), typeof(ExistingMapperStyleStrategy))]
 [Transient(typeof(INewMapperStyleStrategy), typeof(NewMapperStyleStrategy))]
 [Transient(typeof(IMapperStyleComposer), typeof(MapperStyleComposer))]
+[Transient(typeof(ITableGenerator), typeof(TableGenerator))]
 [Import(typeof(IDynamicExecutionModule))]
 public interface IModeModule
 {
