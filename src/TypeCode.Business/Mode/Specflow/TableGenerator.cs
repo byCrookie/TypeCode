@@ -4,7 +4,7 @@ namespace TypeCode.Business.Mode.Specflow;
 
 public class TableGenerator : ITableGenerator
 {
-    public string Build(List<List<string>> rows)
+    public string Build(List<List<string?>> rows)
     {
         var invertedRows = Invert(rows);
 

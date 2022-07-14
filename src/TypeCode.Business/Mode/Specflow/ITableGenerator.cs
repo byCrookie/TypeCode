@@ -2,5 +2,5 @@
 
 public interface ITableGenerator
 {
-    string Build(List<List<string>> rows);
+    string Build(List<List<string?>> rows);
 }
