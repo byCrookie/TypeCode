@@ -40,11 +40,6 @@ jobs:
     - name: Add Github NuGet Source
       run: dotnet nuget add source --username byCrookie --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/byCrookie/index.json"
 
-    - name: Use Github Build Props
-      run: |
-        Remove-Item Directory.Build.props
-        Rename-Item -Path Github.Directory.Build.props -NewName Directory.Build.props
-
     - name: Build Wpf
       run: dotnet build --configuration Release -o publish/wpf ./src/TypeCode.Wpf
       
