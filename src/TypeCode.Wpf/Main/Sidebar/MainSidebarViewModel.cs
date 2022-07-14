@@ -1,13 +1,6 @@
 ﻿using System.Windows.Input;
-using AsyncAwaitBestPractices.MVVM;
 using DependencyInjection.Factory;
-using Serilog;
-using TypeCode.Business.Configuration;
-using TypeCode.Business.TypeEvaluation;
-using TypeCode.Wpf.Application;
-using TypeCode.Wpf.Components.InfoLink;
 using TypeCode.Wpf.Helper.Commands;
-using TypeCode.Wpf.Helper.Event;
 using TypeCode.Wpf.Helper.Navigation.Contract;
 using TypeCode.Wpf.Helper.Navigation.Service;
 using TypeCode.Wpf.Helper.Navigation.Wizard.Complex;
@@ -25,40 +18,21 @@ using TypeCode.Wpf.Pages.UnitTestDependencyType;
 
 namespace TypeCode.Wpf.Main.Sidebar;
 
-public class MainSidebarViewModel : Reactive, IAsyncNavigatedTo, IAsyncEventHandler<LoadEndEvent>
+public class MainSidebarViewModel : Reactive, IAsyncNavigatedTo
 {
     private readonly INavigationService _navigationService;
     private readonly IFactory<IWizardBuilder> _wizardBuilderFactory;
     private readonly IWizardRunner _settingsWizardRunner;
-    private readonly IEventAggregator _eventAggregator;
-    private readonly IConfigurationProvider _configurationProvider;
-    private readonly IConfigurationLoader _configurationLoader;
-    private readonly ITypeProvider _typeProvider;
-    private readonly IInfoLinkViewModelFactory _infoLinkViewModelFactory;
 
     public MainSidebarViewModel(
         INavigationService navigationService,
         IFactory<IWizardBuilder> wizardBuilderFactory,
-        IWizardRunner settingsWizardRunner,
-        IEventAggregator eventAggregator,
-        IConfigurationProvider configurationProvider,
-        IConfigurationLoader configurationLoader,
-        ITypeProvider typeProvider,
-        IInfoLinkViewModelFactory infoLinkViewModelFactory
+        IWizardRunner settingsWizardRunner
     )
     {
         _navigationService = navigationService;
         _wizardBuilderFactory = wizardBuilderFactory;
         _settingsWizardRunner = settingsWizardRunner;
-        _eventAggregator = eventAggregator;
-        _configurationProvider = configurationProvider;
-        _configurationLoader = configurationLoader;
-        _typeProvider = typeProvider;
-        _infoLinkViewModelFactory = infoLinkViewModelFactory;
-
-        IsLoading = true;
-
-        _eventAggregator.Subscribe<LoadEndEvent>(this);
 
         HomeNavigationCommand = new AsyncRelayCommand(NavigateToHomeAsync);
         SpecflowNavigationCommand = new AsyncRelayCommand(NavigateToSpecflowAsync);
@@ -69,7 +43,6 @@ public class MainSidebarViewModel : Reactive, IAsyncNavigatedTo, IAsyncEventHand
         BuilderNavigationCommand = new AsyncRelayCommand(NavigateToBuilderAsync);
         AssemblyNavigationCommand = new AsyncRelayCommand(NavigateToAssemblyAsync);
         DynamicExecuteNavigationCommand = new AsyncRelayCommand(NavigateToDynamicExecuteAsync);
-        InvalidateAndReloadCommand = new AsyncRelayCommand(InvalidateAndReloadAsync, CanInvalidateAndReload);
         OpenSettingsCommand = new AsyncRelayCommand(OpenSettingsAsync);
 
         ActiveItem = ActiveItem.Home;
@@ -84,7 +57,6 @@ public class MainSidebarViewModel : Reactive, IAsyncNavigatedTo, IAsyncEventHand
     public ICommand BuilderNavigationCommand { get; }
     public ICommand AssemblyNavigationCommand { get; }
     public ICommand DynamicExecuteNavigationCommand { get; }
-    public IAsyncCommand InvalidateAndReloadCommand { get; }
     public ICommand OpenSettingsCommand { get; }
 
     public ActiveItem ActiveItem
@@ -93,53 +65,11 @@ public class MainSidebarViewModel : Reactive, IAsyncNavigatedTo, IAsyncEventHand
         set => Set(value);
     }
 
-    public bool IsLoading
-    {
-        get => Get<bool>();
-        set => Set(value);
-    }
-    
-    public InfoLinkViewModel? InfoLink
-    {
-        get => Get<InfoLinkViewModel?>();
-        set => Set(value);
-    }
-    
     public Task OnNavigatedToAsync(NavigationContext context)
     {
-        InfoLink = _infoLinkViewModelFactory
-            .Create(new InfoLinkViewModelParameter("https://github.com/byCrookie/TypeCode/wiki"));
-        
         return NavigateToHomeAsync();
     }
 
-    public Task HandleAsync(LoadEndEvent e)
-    {
-        IsLoading = false;
-        InvalidateAndReloadCommand.RaiseCanExecuteChanged();
-        Log.Debug("Loading Ended {In}", GetType().FullName);
-        return Task.CompletedTask;
-    }
-
-    private async Task InvalidateAndReloadAsync()
-    {
-        IsLoading = true;
-        InvalidateAndReloadCommand.RaiseCanExecuteChanged();
-        await _eventAggregator.PublishAsync(new LoadStartEvent()).ConfigureAwait(true);
-        await Task.Run(async () =>
-        {
-            var configuration = await _configurationLoader.LoadAsync().ConfigureAwait(false);
-            await _typeProvider.InitalizeAsync(configuration).ConfigureAwait(false);
-            _configurationProvider.Set(configuration);
-            await _eventAggregator.PublishAsync(new LoadEndEvent()).ConfigureAwait(false);
-        }).ConfigureAwait(false);
-    }
-
-    private bool CanInvalidateAndReload(object? arg)
-    {
-        return !IsLoading;
-    }
-    
     private Task NavigateToHomeAsync()
     {
         ActiveItem = ActiveItem.Home;
@@ -187,7 +117,7 @@ public class MainSidebarViewModel : Reactive, IAsyncNavigatedTo, IAsyncEventHand
         ActiveItem = ActiveItem.Assembly;
         return _navigationService.NavigateAsync<AssemblyViewModel>(new NavigationContext());
     }
-    
+
     private Task NavigateToDynamicExecuteAsync()
     {
         ActiveItem = ActiveItem.DynamicExecute;

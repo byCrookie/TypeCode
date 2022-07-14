@@ -78,7 +78,7 @@ public class MainContentViewModel :
         set => Set(value);
     }
 
-    public ICommand CloseBannerCommand { get; set; }
+    public ICommand CloseBannerCommand { get; }
     private Guid? CurrentBanner { get; set; }
 
     public Task HandleAsync(LoadStartEvent e)

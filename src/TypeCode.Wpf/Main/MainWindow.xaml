@@ -7,6 +7,7 @@
         xmlns:main="clr-namespace:TypeCode.Wpf.Main"
         xmlns:content="clr-namespace:TypeCode.Wpf.Main.Content"
         xmlns:converters="clr-namespace:TypeCode.Wpf.Helper.Converters"
+        xmlns:infoLink="clr-namespace:TypeCode.Wpf.Components.InfoLink"
         mc:Ignorable="d"
         Title="{Binding Title}" d:DataContext="{d:DesignInstance main:MainViewModel}">
 
@@ -58,9 +59,16 @@
                     </Style>
                 </StackPanel.Resources>
 
+                <Button Style="{StaticResource IconButton}"
+                        ToolTip="Invalidate Cache and Reload"
+                        Command="{Binding InvalidateAndReloadCommand}">
+                    <Image Source="{StaticResource ReloadDrawingImage}" />
+                </Button>
+                <infoLink:InfoLinkView DataContext="{Binding InfoLink}" />
                 <Button Content="-"
                         x:Name="MinimizeButton"
-                        Style="{StaticResource WindowActionButtonStyle}">
+                        Style="{StaticResource WindowActionButtonStyle}"
+                        Margin="5,0,0,0">
                 </Button>
                 <Button Style="{StaticResource WindowActionButtonStyle}"
                         Content="+"

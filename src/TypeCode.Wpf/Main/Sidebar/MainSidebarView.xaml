@@ -40,7 +40,6 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0"
@@ -101,22 +100,7 @@
                 Content="Dynamic Execution" />
         </StackPanel>
 
-        <Grid Visibility="Visible" Grid.Row="9">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-                <ColumnDefinition Width="Auto"></ColumnDefinition>
-                <ColumnDefinition Width="Auto"></ColumnDefinition>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            <Button Grid.Column="1" Style="{StaticResource IconButton}"
-                    ToolTip="Invalidate Cache and Reload"
-                    Command="{Binding InvalidateAndReloadCommand}">
-                <Image Source="{StaticResource ReloadDrawingImage}" />
-            </Button>
-            <infoLink:InfoLinkView Grid.Column="2" DataContext="{Binding InfoLink}" />
-        </Grid>
-        
-        <StackPanel Grid.Row="10"
+        <StackPanel Grid.Row="9"
                     Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.Assembly}}">
             <Button
                 Style="{StaticResource TabButtonStyle}"
@@ -124,7 +108,7 @@
                 Content="Assemblies" />
         </StackPanel>
 
-        <Button Grid.Row="11"
+        <Button Grid.Row="10"
                 Style="{StaticResource TabButtonStyle}"
                 Command="{Binding OpenSettingsCommand}"
                 Content="Settings" />
