@@ -29,7 +29,7 @@ public class SpecflowTypeCodeGenerator : ISpecflowTypeCodeGenerator
 
         foreach (var (key, (header, defaultRow)) in tables)
         {
-            var rows = new List<List<string>>
+            var rows = new List<List<string?>>
             {
                 header,
                 defaultRow
@@ -43,9 +43,9 @@ public class SpecflowTypeCodeGenerator : ISpecflowTypeCodeGenerator
         return stringBuilder.ToString();
     }
 
-    private static IDictionary<Type, (List<string>, List<string>)> CreateTables(SpecflowTypeCodeGeneratorParameter parameter)
+    private static IDictionary<Type, (List<string?>, List<string?>)> CreateTables(SpecflowTypeCodeGeneratorParameter parameter)
     {
-        var tables = new Dictionary<Type, (List<string>, List<string>)>();
+        var tables = new Dictionary<Type, (List<string?>, List<string?>)>();
 
         foreach (var type in parameter.Types)
         {
@@ -60,14 +60,14 @@ public class SpecflowTypeCodeGenerator : ISpecflowTypeCodeGenerator
         return tables;
     }
 
-    private static void CreateTableForType(IReadOnlyCollection<KeyValuePair<PropertyInfo, string>> properties, IDictionary<Type, (List<string>, List<string>)> tables, Type type)
+    private static void CreateTableForType(IReadOnlyCollection<KeyValuePair<PropertyInfo, string>> properties, IDictionary<Type, (List<string?>, List<string?>)> tables, Type type)
     {
-        var header = new List<string>
+        var header = new List<string?>
         {
             "#"
         }.Concat(properties.Select(property => property.Value)).ToList();
 
-        var defaultRow = new List<string>
+        var defaultRow = new List<string?>
         {
             $"{type.Name.ToUpper()}1"
         }.Concat(properties.Select(GetDefault)).ToList();
