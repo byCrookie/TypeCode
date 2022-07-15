@@ -7,13 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="AsyncAwaitBestPractices.MVVM" />
         <PackageReference Include="byCrookie.AppSdk" />
-        <PackageReference Include="byCrookie.Framework" />
-        <PackageReference Include="byCrookie.Framework.Boot" />
-        <PackageReference Include="byCrookie.DependencyInjection" />
-        <PackageReference Include="Serilog.Sinks.Console" />
-        <PackageReference Include="Serilog.Sinks.File" />
     </ItemGroup>
 
     <ItemGroup>

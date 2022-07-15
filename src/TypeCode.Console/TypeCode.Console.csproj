@@ -3,19 +3,16 @@
     <PropertyGroup>
         <OutputType>Exe</OutputType>
         <ApplicationIcon>icon.ico</ApplicationIcon>
-        <TargetFramework>net6.0</TargetFramework>
     </PropertyGroup>
-
+    
     <ItemGroup>
-        <ProjectReference Include="..\TypeCode.Business\TypeCode.Business.csproj"/>
+        <PackageReference Include="byCrookie.AppSdk"/>
+        <PackageReference Include="byCrookie.Framework.Boot"/>
+        <PackageReference Include="Spectre.Console"/>
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="byCrookie.AppSdk"/>
-        <PackageReference Include="byCrookie.Framework"/>
-        <PackageReference Include="byCrookie.DependencyInjection"/>
-        <PackageReference Include="byCrookie.Framework.Boot"/>
-        <PackageReference Include="Spectre.Console"/>
+        <ProjectReference Include="..\TypeCode.Business\TypeCode.Business.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
