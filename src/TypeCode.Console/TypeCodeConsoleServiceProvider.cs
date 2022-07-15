@@ -9,7 +9,7 @@ namespace TypeCode.Console;
 [Import(typeof(IFrameworkModule))]
 [Import(typeof(IFrameworkBootModule))]
 [Import(typeof(ITypeCodeBusinessModule))]
-public partial class TypeCodeConsoleServiceProvider
+internal partial class TypeCodeConsoleServiceProvider
 {
     
 }

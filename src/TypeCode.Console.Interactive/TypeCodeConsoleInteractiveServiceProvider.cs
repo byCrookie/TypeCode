@@ -11,7 +11,7 @@ namespace TypeCode.Console.Interactive;
 [Import(typeof(IFrameworkBootModule))]
 [Import(typeof(ITypeCodeBusinessModule))]
 [Import(typeof(ITypeCodeConsoleModule))]
-public partial class TypeCodeConsoleInteractiveServiceProvider
+internal partial class TypeCodeConsoleInteractiveServiceProvider
 {
     
 }

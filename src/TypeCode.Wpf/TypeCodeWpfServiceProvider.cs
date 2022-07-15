@@ -17,6 +17,6 @@ namespace TypeCode.Wpf;
 [Import(typeof(IHelperModule))]
 [Import(typeof(IPagesModule))]
 [Import(typeof(IMainModule))]
-public partial class TypeCodeWpfServiceProvider
+internal partial class TypeCodeWpfServiceProvider
 {
 }
