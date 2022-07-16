@@ -31,27 +31,4 @@ public partial class MainWindow
     {
         WindowState = WindowState.Minimized;
     }
-
-    private void WindowOnMouseDown(object sender, MouseButtonEventArgs e)
-    {
-        if (e.ChangedButton == MouseButton.Left)
-        {
-            if (WindowState == WindowState.Maximized)
-            {
-                WindowState = WindowState.Normal;
-                var mousePosition = e.GetPosition(this);
-                Top = mousePosition.Y - 15;
-            
-                if (mousePosition.X < Left)
-                {
-                    Left = mousePosition.X - 15;
-                } else if (mousePosition.X > Left + Width)
-                {
-                    Left = mousePosition.X - Width + 15;
-                }
-            }
-
-            DragMove();
-        }
-    }
 }
