@@ -23,9 +23,9 @@ jobs:
         fallback: 1.0.0
 
     - name: Setup .NET
-      uses: actions/setup-dotnet@v1
+    - uses: actions/setup-dotnet@v2
       with:
-        dotnet-version: 6.0.x
+        dotnet-version: '6.0.300'
         
     - name: Install NuGet Client
       uses: nuget/setup-nuget@v1
