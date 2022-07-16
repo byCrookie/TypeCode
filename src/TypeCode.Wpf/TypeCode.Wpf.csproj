@@ -18,14 +18,11 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Remove="Configuration.Development.cfg.xml" />
         <DevConfigFile Include="Configuration.Development.cfg.xml" />
-        <None Remove="Configuration.Production.cfg.xml" />
         <ProdConfigFile Include="Configuration.Production.cfg.xml" />
     </ItemGroup>
 
     <ItemGroup>
-        <None Remove="Configuration.cfg.xml" />
         <Content Include="Assets\Icons\icon.ico">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
@@ -53,23 +50,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Remove="Assets\Fonts\Roboto\Roboto-Black.ttf" />
-        <None Remove="Assets\Fonts\Roboto\Roboto-BlackItalic.ttf" />
-        <None Remove="Assets\Fonts\Roboto\Roboto-Bold.ttf" />
-        <None Remove="Assets\Fonts\Roboto\Roboto-BoldItalic.ttf" />
-        <None Remove="Assets\Fonts\Roboto\Roboto-Italic.ttf" />
-        <None Remove="Assets\Fonts\Roboto\Roboto-Light.ttf" />
-        <None Remove="Assets\Fonts\Roboto\Roboto-LightItalic.ttf" />
-        <None Remove="Assets\Fonts\Roboto\Roboto-Medium.ttf" />
-        <None Remove="Assets\Fonts\Roboto\Roboto-MediumItalic.ttf" />
-        <None Remove="Assets\Fonts\Roboto\Roboto-Regular.ttf" />
-        <None Remove="Assets\Fonts\Roboto\Roboto-Thin.ttf" />
-        <None Remove="Assets\Fonts\Roboto\Roboto-ThinItalic.ttf" />
-        <None Remove="Assets\Fonts\Oswald\Oswald-VariableFont_wght.ttf" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <None Remove="Pages\DynamicExecute\DynamicExecutionTemplate.txt" />
       <EmbeddedResource Include="Pages\DynamicExecution\DynamicExecutionTemplate.txt" />
     </ItemGroup>
 
