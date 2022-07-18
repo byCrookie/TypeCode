@@ -9,6 +9,8 @@ Develop c# code faster by generating .NET specific boilerplate code using reflec
 * Generate mapper for two classes
 * Generate builder for class using builder pattern
 
+Further documentation can be found here: [Wiki](https://github.com/byCrookie/TypeCode/wiki)
+
 ## Dependencies & Acknowledgements
 * Framework: https://github.com/byCrookie/Framework
 * Icons: https://fontawesome.com/
@@ -19,12 +21,10 @@ Develop c# code faster by generating .NET specific boilerplate code using reflec
 * Nito.AsyncEx.Context: https://github.com/StephenCleary/AsyncEx
 * Humanizer.Core https://github.com/Humanizr/Humanizer
 
+
 ## How to use
 
 * Make sure that you have installed ".NET 6.0 Desktop Runtime". If not, download it from Microsoft.
-* Download wpf or console application zip from releases
-* Change Configuration.xml using the documentation
-* Start the .exe
 
 > :warning: **Information: Windows Defender** <br />
 > Windows Defender blocks execution of the exe.
@@ -32,7 +32,21 @@ Develop c# code faster by generating .NET specific boilerplate code using reflec
 > Right-click the exe and select properties.
 > Then enable/allow execution.
 
-Further documentation can be found here: [Wiki](https://github.com/byCrookie/TypeCode/wiki)
+### Zip
+
+* Download wpf or console application zip from releases
+* Extract zip
+* Start the .exe
+* Change configuration in settings
+
+### Installer (Wpf)
+
+* Download wpf msi installer from releases
+* Click the msi installer
+* Walk through the installation pages
+* Search with window search for TypeCode
+* Start the app
+* Change configuration in settings
 
 ### Dev
 
@@ -45,7 +59,7 @@ Further documentation can be found here: [Wiki](https://github.com/byCrookie/Typ
 All contributions are welcome! If you have any issues or feature requests, either implement it yourself or create an issue, thank you.
 
 ## Donation
-If you like this project, feel free to donate and support the further development. Thank you.
+If you like this project, feel free to donate and support further development. Thank you.
 
 * Bitcoin (BTC) Donations using Bitcoin (BTC) Network -> bc1qygqya2w3hgpvy8hupctfkv5x06l69ydq4su2e2
 * Ethereum (ETH) Donations using Ethereum (ETH) Network -> 0x1C0416cC1DDaAEEb3017D4b8Dcd3f0B82f4d94C1
