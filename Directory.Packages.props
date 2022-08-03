@@ -16,5 +16,9 @@
         <PackageVersion Include="Microsoft.CodeAnalysis.Compilers" Version="4.2.0"/>
         <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="4.2.0"/>
         <PackageVersion Include="System.Reactive" Version="5.0.0"/>
+        
+        <PackageVersion Include="WPF-UI" Version="2.0.2"/>
+        <PackageVersion Include="Microsoft.Extensions.Hosting" Version="6.0.1"/>
+        <PackageVersion Include="Microsoft.Toolkit.Mvvm" Version="7.1.2"/>
     </ItemGroup>
 </Project>
