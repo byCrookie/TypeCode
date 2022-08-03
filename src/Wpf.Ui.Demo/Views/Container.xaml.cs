@@ -126,14 +126,14 @@ public partial class Container : INavigationWindow
         {
             // Remember to always include Delays and Sleeps in
             // your applications to be able to charge the client for optimizations later.
-            await Task.Delay(4000);
+            await Task.Delay(1000);
 
             await Dispatcher.InvokeAsync(() =>
             {
                 RootWelcomeGrid.Visibility = Visibility.Hidden;
                 RootMainGrid.Visibility = Visibility.Visible;
 
-                Navigate(typeof(Pages.Dashboard));
+                Navigate(typeof(Pages.Home));
 
                 _taskBarService.SetState(this, TaskBarProgressState.None);
             });

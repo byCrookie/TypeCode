@@ -29,6 +29,6 @@ public partial class Input : INavigableView<InputViewModel>
 
     private void OnLoaded(object sender, RoutedEventArgs e)
     {
-        RootPanel.ScrollOwner = ScrollHost;
+        InputRootPanel.ScrollOwner = ScrollHost;
     }
 }
