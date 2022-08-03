@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
 namespace TypeCode.Wpf.Helper.ViewModel;
@@ -10,7 +9,7 @@ public class Reactive : INotifyPropertyChanged
 
     protected T? Get<T>([CallerMemberName] string? name = null)
     {
-        Debug.Assert(name != null, "name != null");
+        if (name is null) throw new ArgumentNullException(name);
         if (_properties.TryGetValue(name, out var value))
         {
             return value is null ? default : (T)value;
@@ -21,7 +20,7 @@ public class Reactive : INotifyPropertyChanged
 
     protected void Set<T>(T value, [CallerMemberName] string? name = null)
     {
-        Debug.Assert(name != null, "name != null");
+        if (name is null) throw new ArgumentNullException(name);
         if (!Equals(value, Get<T>(name)))
         {
             _properties[name] = value;

@@ -16,23 +16,25 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <inputBox:InputBoxView DataContext="{Binding InputBoxViewModel}"></inputBox:InputBoxView> 
+        <inputBox:InputBoxView DataContext="{Binding InputBoxViewModel}"></inputBox:InputBoxView>
 
         <ScrollViewer Grid.Row="2"
                       VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-            <ItemsControl ItemsSource="{Binding LoadedAssemblies}"
-                          Background="{StaticResource Primary}"
-                          BorderThickness="0">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding}"
-                                   Padding="0,5,0,0"
-                                   Background="{StaticResource Secondary}"
-                                   Foreground="{StaticResource PrimaryText}"
-                                   Height="30" />
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
+            <VirtualizingStackPanel IsVirtualizing="True" VirtualizationMode="Recycling">
+                <ItemsControl ItemsSource="{Binding LoadedAssemblies}"
+                              Background="{StaticResource Primary}"
+                              BorderThickness="0">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}"
+                                       Padding="0,5,0,0"
+                                       Background="{StaticResource Secondary}"
+                                       Foreground="{StaticResource PrimaryText}"
+                                       Height="30" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </VirtualizingStackPanel>
         </ScrollViewer>
     </Grid>
 </UserControl>
