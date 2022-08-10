@@ -3,32 +3,25 @@
 // Copyright (C) Leszek Pomianowski and WPF UI Contributors.
 // All Rights Reserved.
 
-using System.Windows;
 using Wpf.Ui.Common.Interfaces;
 using Wpf.Ui.Demo.ViewModels;
 
 namespace Wpf.Ui.Demo.Views.Pages;
 
 /// <summary>
-/// Interaction logic for Input.xaml
+/// Interaction logic for Dashboard.xaml
 /// </summary>
-public partial class Input : INavigableView<InputViewModel>
+public partial class Dashboard : INavigableView<DashboardViewModel>
 {
-    public InputViewModel ViewModel
+    public DashboardViewModel ViewModel
     {
         get;
     }
 
-    public Input(InputViewModel viewModel)
+    public Dashboard(DashboardViewModel viewModel)
     {
         ViewModel = viewModel;
-        Loaded += OnLoaded;
 
         InitializeComponent();
-    }
-
-    private void OnLoaded(object sender, RoutedEventArgs e)
-    {
-        RootPanel.ScrollOwner = ScrollHost;
     }
 }

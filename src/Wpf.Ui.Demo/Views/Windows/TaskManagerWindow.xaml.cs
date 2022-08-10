@@ -3,32 +3,25 @@
 // Copyright (C) Leszek Pomianowski and WPF UI Contributors.
 // All Rights Reserved.
 
-using System.Windows;
-using Wpf.Ui.Common.Interfaces;
 using Wpf.Ui.Demo.ViewModels;
 
-namespace Wpf.Ui.Demo.Views.Pages;
+namespace Wpf.Ui.Demo.Views.Windows;
 
 /// <summary>
-/// Interaction logic for Input.xaml
+/// Interaction logic for TaskManagerWindow.xaml
 /// </summary>
-public partial class Home : INavigableView<HomeViewModel>
+public partial class TaskManagerWindow
 {
-    public HomeViewModel ViewModel
+    public TaskManagerViewModel ViewModel
     {
         get;
     }
 
-    public Home(HomeViewModel viewModel)
+    public TaskManagerWindow(TaskManagerViewModel viewModel)
     {
         ViewModel = viewModel;
-        Loaded += OnLoaded;
+        DataContext = this;
 
         InitializeComponent();
-    }
-
-    private void OnLoaded(object sender, RoutedEventArgs e)
-    {
-        HomeRootPanel.ScrollOwner = ScrollHost;
     }
 }

@@ -2,10 +2,12 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net6.0-windows10.0.22000.0</TargetFramework>
     <UseWPF>true</UseWPF>
     <StartupObject>Wpf.Ui.Demo.App</StartupObject>
-    <ApplicationIcon>Assets\Icons\icon.ico</ApplicationIcon>
+    <ApplicationIcon>wpfui.ico</ApplicationIcon>
+    <AssemblyName>WPF UI - Demo App</AssemblyName>
+    <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
 
@@ -56,6 +58,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="wpfui.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="Resources\fluent-ui-microsoft.png" />
     <Resource Include="Resources\geo_icons.png" />
     <Resource Include="Resources\halo_infinite.jpg" />
@@ -74,38 +80,6 @@
     <Resource Include="Resources\wpfui.png" />
     <Resource Include="Resources\wpfui_full.png" />
     <Resource Include="Resources\the_witcher_wallpaper.jpg" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <DevConfigFile Include="Configuration.Development.cfg.xml" />
-    <ProdConfigFile Include="Configuration.Production.cfg.xml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="Assets\Icons\icon.ico">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Images\icon-1.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Images\icon-2.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Images\icon-3.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Images\icon-4.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Images\icon-5.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Images\icon-6.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Configuration.cfg.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
 
 </Project>

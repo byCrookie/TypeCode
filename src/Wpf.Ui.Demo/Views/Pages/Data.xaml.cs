@@ -10,16 +10,16 @@ using Wpf.Ui.Demo.ViewModels;
 namespace Wpf.Ui.Demo.Views.Pages;
 
 /// <summary>
-/// Interaction logic for Input.xaml
+/// Interaction logic for Data.xaml
 /// </summary>
-public partial class Input : INavigableView<InputViewModel>
+public partial class Data : INavigableView<DataViewModel>
 {
-    public InputViewModel ViewModel
+    public DataViewModel ViewModel
     {
         get;
     }
 
-    public Input(InputViewModel viewModel)
+    public Data(DataViewModel viewModel)
     {
         ViewModel = viewModel;
         Loaded += OnLoaded;
@@ -32,3 +32,4 @@ public partial class Input : INavigableView<InputViewModel>
         RootPanel.ScrollOwner = ScrollHost;
     }
 }
+

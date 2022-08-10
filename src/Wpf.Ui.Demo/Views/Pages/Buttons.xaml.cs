@@ -3,32 +3,25 @@
 // Copyright (C) Leszek Pomianowski and WPF UI Contributors.
 // All Rights Reserved.
 
-using System.Windows;
 using Wpf.Ui.Common.Interfaces;
 using Wpf.Ui.Demo.ViewModels;
 
 namespace Wpf.Ui.Demo.Views.Pages;
 
 /// <summary>
-/// Interaction logic for Input.xaml
+/// Interaction logic for Buttons.xaml
 /// </summary>
-public partial class Input : INavigableView<InputViewModel>
+public partial class Buttons : INavigableView<ButtonsViewModel>
 {
-    public InputViewModel ViewModel
+    public ButtonsViewModel ViewModel
     {
         get;
     }
 
-    public Input(InputViewModel viewModel)
+    public Buttons(ButtonsViewModel viewModel)
     {
         ViewModel = viewModel;
-        Loaded += OnLoaded;
 
         InitializeComponent();
-    }
-
-    private void OnLoaded(object sender, RoutedEventArgs e)
-    {
-        RootPanel.ScrollOwner = ScrollHost;
     }
 }

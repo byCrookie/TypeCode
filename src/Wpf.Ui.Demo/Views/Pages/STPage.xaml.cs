@@ -3,18 +3,21 @@
 // Copyright (C) Leszek Pomianowski and WPF UI Contributors.
 // All Rights Reserved.
 
-using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Wpf.Ui.Common.Interfaces;
+namespace Wpf.Ui.Demo.Views.Pages;
 
-namespace Wpf.Ui.Demo.ViewModels;
-
-public class HomeViewModel : ObservableObject, INavigationAware
+/// <summary>
+/// Interaction logic for STPage.xaml
+/// </summary>
+public partial class STPage
 {
-    public void OnNavigatedTo()
+    public STPage()
     {
+        InitializeComponent();
     }
 
-    public void OnNavigatedFrom()
+    public STPage(string viewModel)
     {
+        InitializeComponent();
     }
 }
+
