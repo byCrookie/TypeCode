@@ -1,12 +1,11 @@
 ﻿using System.Windows.Controls;
-using System.Windows.Input;
-using TypeCode.Wpf.Helper.Commands;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using TypeCode.Wpf.Helper.Navigation.Contract;
-using TypeCode.Wpf.Helper.ViewModel;
 
 namespace TypeCode.Wpf.Helper.Navigation.Wizard.Complex;
 
-public class WizardViewModel : Reactive, IWizardHost
+public partial class WizardViewModel : ObservableObject, IWizardHost
 {
     private readonly IWizardNavigator _wizardNavigator;
     private Wizard? _wizard;
@@ -15,10 +14,10 @@ public class WizardViewModel : Reactive, IWizardHost
     {
         _wizardNavigator = wizardNavigator;
 
-        BackCommand = new AsyncDefaultCommand();
-        NextCommand = new AsyncDefaultCommand();
-        CancelCommand = new AsyncDefaultCommand();
-        FinishCommand = new AsyncDefaultCommand();
+        BackCommand = new AsyncRelayCommand(() => Task.CompletedTask);
+        NextCommand = new AsyncRelayCommand(() => Task.CompletedTask);
+        CancelCommand = new AsyncRelayCommand(() => Task.CompletedTask);
+        FinishCommand = new AsyncRelayCommand(() => Task.CompletedTask);
     }
 
     public async Task NavigateToAsync(Wizard wizard, NavigationAction navigationAction)
@@ -38,13 +37,13 @@ public class WizardViewModel : Reactive, IWizardHost
 
         await wizard.CurrentStepConfiguration.BeforeAction(wizard.NavigationContext).ConfigureAwait(true);
 
-        BackCommand = new AsyncRelayCommand(BackAsync, _ => wizard.CurrentStepConfiguration != wizard.StepConfigurations.FirstOrDefault()
-                                                            && wizard.CurrentStepConfiguration.AllowBack(wizard.NavigationContext));
-        NextCommand = new AsyncRelayCommand(NextAsync, _ => wizard.CurrentStepConfiguration != wizard.StepConfigurations.LastOrDefault()
-                                                            && wizard.CurrentStepConfiguration.AllowNext(wizard.NavigationContext));
+        BackCommand = new AsyncRelayCommand(BackAsync, () => wizard.CurrentStepConfiguration != wizard.StepConfigurations.FirstOrDefault()
+                                                              && wizard.CurrentStepConfiguration.AllowBack(wizard.NavigationContext));
+        NextCommand = new AsyncRelayCommand(NextAsync, () => wizard.CurrentStepConfiguration != wizard.StepConfigurations.LastOrDefault()
+                                                             && wizard.CurrentStepConfiguration.AllowNext(wizard.NavigationContext));
         CancelCommand = new AsyncRelayCommand(CancelAsync);
-        FinishCommand = new AsyncRelayCommand(FinishAsync, _ => wizard.CurrentStepConfiguration == wizard.StepConfigurations.LastOrDefault()
-                                                                && wizard.CurrentStepConfiguration.AllowNext(wizard.NavigationContext));
+        FinishCommand = new AsyncRelayCommand(FinishAsync, () => wizard.CurrentStepConfiguration == wizard.StepConfigurations.LastOrDefault()
+                                                                 && wizard.CurrentStepConfiguration.AllowNext(wizard.NavigationContext));
         FinishText = wizard.FinishText;
 
         if (wizard.CurrentStepConfiguration.Instances.ViewInstance is not UserControl wizardPage)
@@ -119,39 +118,21 @@ public class WizardViewModel : Reactive, IWizardHost
         return _wizardNavigator.FinishAsync(_wizard);
     }
 
-    public UserControl? WizardPage
-    {
-        get => Get<UserControl?>();
-        set => Set(value);
-    }
+    [ObservableProperty]
+    private UserControl? _wizardPage;
 
-    public ICommand? BackCommand
-    {
-        get => Get<ICommand?>();
-        set => Set(value);
-    }
+    [ObservableProperty]
+    private AsyncRelayCommand? _backCommand;
 
-    public ICommand? NextCommand
-    {
-        get => Get<ICommand?>();
-        set => Set(value);
-    }
+    [ObservableProperty]
+    private AsyncRelayCommand? _nextCommand;
 
-    public ICommand? CancelCommand
-    {
-        get => Get<ICommand?>();
-        set => Set(value);
-    }
+    [ObservableProperty]
+    private AsyncRelayCommand? _cancelCommand;
 
-    public ICommand? FinishCommand
-    {
-        get => Get<ICommand?>();
-        set => Set(value);
-    }
+    [ObservableProperty]
+    private AsyncRelayCommand? _finishCommand;
 
-    public string? FinishText
-    {
-        get => Get<string?>();
-        set => Set(value);
-    }
+    [ObservableProperty]
+    private string? _finishText;
 }

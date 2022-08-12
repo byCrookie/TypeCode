@@ -1,22 +1,21 @@
-﻿using AsyncAwaitBestPractices.MVVM;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using DependencyInjection.Factory;
 using Serilog;
 using TypeCode.Business.Configuration;
 using TypeCode.Business.TypeEvaluation;
 using TypeCode.Wpf.Application;
 using TypeCode.Wpf.Components.InfoLink;
-using TypeCode.Wpf.Helper.Commands;
 using TypeCode.Wpf.Helper.Event;
 using TypeCode.Wpf.Helper.Navigation.Contract;
 using TypeCode.Wpf.Helper.Navigation.Service;
-using TypeCode.Wpf.Helper.ViewModel;
 using TypeCode.Wpf.Main.Content;
 using TypeCode.Wpf.Main.Sidebar;
 
 namespace TypeCode.Wpf.Main;
 
-public class MainViewModel :
-    Reactive,
+public partial class MainViewModel :
+    ObservableObject,
     IAsyncNavigatedTo,
     IAsyncEventHandler<VersionLoadedEvent>,
     IAsyncEventHandler<LoadEndEvent>
@@ -54,8 +53,6 @@ public class MainViewModel :
         MainSidebarViewModel = factory.Create<MainSidebarViewModel>();
 
         _navigationContext = new NavigationContext();
-
-        InvalidateAndReloadCommand = new AsyncRelayCommand(InvalidateAndReloadAsync, CanInvalidateAndReload);
     }
 
     public Task OnNavigatedToAsync(NavigationContext context)
@@ -71,22 +68,17 @@ public class MainViewModel :
         return Task.CompletedTask;
     }
 
-    public IAsyncCommand InvalidateAndReloadCommand { get; }
+    [ObservableProperty]
+    private MainContentViewModel? _mainContentViewModel;
 
-    public MainContentViewModel MainContentViewModel { get; }
-    public MainSidebarViewModel MainSidebarViewModel { get; }
+    [ObservableProperty]
+    private MainSidebarViewModel? _mainSidebarViewModel;
 
-    public string? Title
-    {
-        get => Get<string?>();
-        set => Set(value);
-    }
+    [ObservableProperty]
+    private string? _title;
 
-    public InfoLinkViewModel? InfoLink
-    {
-        get => Get<InfoLinkViewModel?>();
-        set => Set(value);
-    }
+    [ObservableProperty]
+    private InfoLinkViewModel? _infoLink;
 
     public Task HandleAsync(VersionLoadedEvent e)
     {
@@ -97,15 +89,16 @@ public class MainViewModel :
     public Task HandleAsync(LoadEndEvent e)
     {
         _isLoading = false;
-        InvalidateAndReloadCommand.RaiseCanExecuteChanged();
+        InvalidateAndReloadCommand.NotifyCanExecuteChanged();
         Log.Debug("Loading Ended {In}", GetType().FullName);
         return Task.CompletedTask;
     }
 
+    [RelayCommand(CanExecute = nameof(CanInvalidateAndReload))]
     private async Task InvalidateAndReloadAsync()
     {
         _isLoading = true;
-        InvalidateAndReloadCommand.RaiseCanExecuteChanged();
+        InvalidateAndReloadCommand.NotifyCanExecuteChanged();
         await _eventAggregator.PublishAsync(new LoadStartEvent()).ConfigureAwait(true);
         await Task.Run(async () =>
         {
@@ -116,7 +109,7 @@ public class MainViewModel :
         }).ConfigureAwait(false);
     }
 
-    private bool CanInvalidateAndReload(object? arg)
+    private bool CanInvalidateAndReload()
     {
         return !_isLoading;
     }

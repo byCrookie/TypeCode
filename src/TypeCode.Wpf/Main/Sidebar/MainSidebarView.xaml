@@ -5,7 +5,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:sidebar="clr-namespace:TypeCode.Wpf.Main.Sidebar"
              xmlns:converters="clr-namespace:TypeCode.Wpf.Helper.Converters"
-             xmlns:infoLink="clr-namespace:TypeCode.Wpf.Components.InfoLink"
              mc:Ignorable="d"
              d:DesignHeight="600" d:DesignWidth="1000" d:DataContext="{d:DesignInstance sidebar:MainSidebarViewModel}">
 
@@ -46,49 +45,49 @@
                     Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.Home}}">
             <Button
                 Style="{StaticResource TabButtonStyle}"
-                Command="{Binding HomeNavigationCommand}"
+                Command="{Binding NavigateToHomeCommand}"
                 Content="Home" />
         </StackPanel>
         <StackPanel Grid.Row="1"
                     Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.Specflow}}">
             <Button
                 Style="{StaticResource TabButtonStyle}"
-                Command="{Binding SpecflowNavigationCommand}"
+                Command="{Binding NavigateToSpecflowCommand}"
                 Content="Specflow" />
         </StackPanel>
         <StackPanel Grid.Row="2"
                     Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.UnitTestType}}">
             <Button
                 Style="{StaticResource TabButtonStyle}"
-                Command="{Binding UnitTestDependencyTypeNavigationCommand}"
+                Command="{Binding NavigateToUnitTestDependencyTypeCommand}"
                 Content="Unit-Test (type)" />
         </StackPanel>
         <StackPanel Grid.Row="3"
                     Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.UnitTestManually}}">
             <Button
                 Style="{StaticResource TabButtonStyle}"
-                Command="{Binding UnitTestDependencyManuallyNavigationCommand}"
+                Command="{Binding NavigateToUnitTestDependencyManuallyCommand}"
                 Content="Unit-Test (manually)" />
         </StackPanel>
         <StackPanel Grid.Row="4"
                     Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.Composer}}">
             <Button
                 Style="{StaticResource TabButtonStyle}"
-                Command="{Binding ComposerNavigationCommand}"
+                Command="{Binding NavigateToComposerCommand}"
                 Content="Composer" />
         </StackPanel>
         <StackPanel Grid.Row="5"
                     Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.Mapper}}">
             <Button
                 Style="{StaticResource TabButtonStyle}"
-                Command="{Binding MapperNavigationCommand}"
+                Command="{Binding NavigateToMapperCommand}"
                 Content="Mapper" />
         </StackPanel>
         <StackPanel Grid.Row="6"
                     Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.Builder}}">
             <Button
                 Style="{StaticResource TabButtonStyle}"
-                Command="{Binding BuilderNavigationCommand}"
+                Command="{Binding NavigateToBuilderCommand}"
                 Content="Builder" />
         </StackPanel>
 
@@ -96,7 +95,7 @@
                     Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.DynamicExecute}}">
             <Button
                 Style="{StaticResource TabButtonStyle}"
-                Command="{Binding DynamicExecuteNavigationCommand}"
+                Command="{Binding NavigateToDynamicExecuteCommand}"
                 Content="Dynamic Execution" />
         </StackPanel>
 
@@ -104,7 +103,7 @@
                     Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.Assembly}}">
             <Button
                 Style="{StaticResource TabButtonStyle}"
-                Command="{Binding AssemblyNavigationCommand}"
+                Command="{Binding NavigateToAssemblyCommand}"
                 Content="Assemblies" />
         </StackPanel>
 

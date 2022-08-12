@@ -1,25 +1,20 @@
 ﻿using System.IO;
-using System.Windows.Input;
 using System.Xml.Linq;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using TypeCode.Business.Configuration.Location;
-using TypeCode.Wpf.Helper.Commands;
 using TypeCode.Wpf.Helper.Navigation.Service;
 using TypeCode.Wpf.Helper.Navigation.Wizard.Complex;
-using TypeCode.Wpf.Helper.ViewModel;
 
 namespace TypeCode.Wpf.Pages.Common.Configuration;
 
-public class ConfigurationWizardViewModel : Reactive, IAsyncInitialNavigated
+public partial class ConfigurationWizardViewModel : ObservableObject, IAsyncInitialNavigated
 {
     private readonly IConfigurationLocationProvider _configurationLocationProvider;
 
     public ConfigurationWizardViewModel(IConfigurationLocationProvider configurationLocationProvider)
     {
         _configurationLocationProvider = configurationLocationProvider;
-        
-        ReloadCommand = new AsyncRelayCommand(ReloadAsync);
-        SaveCommand = new AsyncRelayCommand(SaveAsync);
-        FormatCommand = new AsyncRelayCommand(FormatAsync);
     }
     
     public Task OnInititalNavigationAsync(NavigationContext context)
@@ -27,12 +22,14 @@ public class ConfigurationWizardViewModel : Reactive, IAsyncInitialNavigated
         return ReloadAsync();
     }
 
+    [RelayCommand]
     private Task FormatAsync()
     {
         Configuration = FormatXml(Configuration);
         return Task.CompletedTask;
     }
 
+    [RelayCommand]
     private async Task SaveAsync()
     {
         var cfg = _configurationLocationProvider.GetLocation();
@@ -40,6 +37,7 @@ public class ConfigurationWizardViewModel : Reactive, IAsyncInitialNavigated
         await ReloadAsync().ConfigureAwait(true);
     }
 
+    [RelayCommand]
     private async Task ReloadAsync()
     {
         var cfg = _configurationLocationProvider.GetLocation();
@@ -65,13 +63,6 @@ public class ConfigurationWizardViewModel : Reactive, IAsyncInitialNavigated
         }
     }
 
-    public ICommand ReloadCommand { get; set; }
-    public ICommand SaveCommand { get; set; }
-    public ICommand FormatCommand { get; set; }
-
-    public string? Configuration
-    {
-        get => Get<string?>();
-        set => Set(value);
-    }
+    [ObservableProperty]
+    private string? _configuration;
 }

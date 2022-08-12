@@ -1,16 +1,14 @@
-﻿using TypeCode.Business.Mode;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using TypeCode.Business.Mode;
 using TypeCode.Business.Mode.UnitTestDependency.Type;
 using TypeCode.Business.TypeEvaluation;
 using TypeCode.Wpf.Components.InputBox;
 using TypeCode.Wpf.Components.OutputBox;
-using TypeCode.Wpf.Helper.Navigation.Contract;
-using TypeCode.Wpf.Helper.Navigation.Service;
-using TypeCode.Wpf.Helper.ViewModel;
 using TypeCode.Wpf.Pages.TypeSelection;
 
 namespace TypeCode.Wpf.Pages.UnitTestDependencyType;
 
-public class UnitTestDependencyTypeViewModel : Reactive, IAsyncNavigatedTo
+public partial class UnitTestDependencyTypeViewModel : ObservableObject
 {
     private readonly ITypeCodeGenerator<UnitTestDependencyTypeGeneratorParameter> _unitTestDependencyTypeGenerator;
     private readonly ITypeProvider _typeProvider;
@@ -35,11 +33,6 @@ public class UnitTestDependencyTypeViewModel : Reactive, IAsyncNavigatedTo
 
         InputBoxViewModel = inputBoxViewModelFactory.Create(parameter);
         OutputBoxViewModel = outputBoxViewModelFactory.Create();
-    }
-
-    public Task OnNavigatedToAsync(NavigationContext context)
-    {
-        return Task.CompletedTask;
     }
 
     private async Task GenerateAsync(bool regex, string? input)
@@ -75,15 +68,9 @@ public class UnitTestDependencyTypeViewModel : Reactive, IAsyncNavigatedTo
         OutputBoxViewModel?.SetOutput(result);
     }
 
-    public InputBoxViewModel? InputBoxViewModel
-    {
-        get => Get<InputBoxViewModel?>();
-        set => Set(value);
-    }
+    [ObservableProperty]
+    private InputBoxViewModel? _inputBoxViewModel;
 
-    public OutputBoxViewModel? OutputBoxViewModel
-    {
-        get => Get<OutputBoxViewModel?>();
-        set => Set(value);
-    }
+    [ObservableProperty]
+    private OutputBoxViewModel? _outputBoxViewModel;
 }

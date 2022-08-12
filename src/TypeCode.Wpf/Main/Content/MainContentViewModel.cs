@@ -1,17 +1,16 @@
-﻿using System.Windows.Input;
-using AsyncAwaitBestPractices;
+﻿using AsyncAwaitBestPractices;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Framework.Time;
 using Serilog;
 using TypeCode.Business.Version;
 using TypeCode.Wpf.Application;
-using TypeCode.Wpf.Helper.Commands;
 using TypeCode.Wpf.Helper.Event;
-using TypeCode.Wpf.Helper.ViewModel;
 
 namespace TypeCode.Wpf.Main.Content;
 
-public class MainContentViewModel :
-    Reactive,
+public partial class MainContentViewModel :
+    ObservableObject,
     IAsyncEventHandler<LoadStartEvent>,
     IAsyncEventHandler<LoadEndEvent>,
     IAsyncEventHandler<BannerOpenEvent>
@@ -20,7 +19,12 @@ public class MainContentViewModel :
     private readonly IVersionEvaluator _versionEvaluator;
     private readonly IDateTimeProvider _dateTimeProvider;
 
-    public MainContentViewModel(IEventAggregator eventAggregator, IVersionEvaluator versionEvaluator, IDateTimeProvider dateTimeProvider)
+    private Guid? _currentBanner;
+
+    public MainContentViewModel(
+        IEventAggregator eventAggregator,
+        IVersionEvaluator versionEvaluator,
+        IDateTimeProvider dateTimeProvider)
     {
         _eventAggregator = eventAggregator;
         _versionEvaluator = versionEvaluator;
@@ -33,53 +37,33 @@ public class MainContentViewModel :
         eventAggregator.Subscribe<LoadStartEvent>(this);
         eventAggregator.Subscribe<LoadEndEvent>(this);
 
-        CloseBannerCommand = new AsyncRelayCommand(() =>
-        {
-            IsBannerVisible = false;
-            return Task.CompletedTask;
-        });
-
         CheckVersionAsync().SafeFireAndForget();
     }
 
-    public bool IsLoading
+    [RelayCommand]
+    private Task CloseBannerAsync()
     {
-        get => Get<bool>();
-        set => Set(value);
+        IsBannerVisible = false;
+        return Task.CompletedTask;
     }
 
-    public DateTime LoadingStarted
-    {
-        get => Get<DateTime>();
-        set => Set(value);
-    }
+    [ObservableProperty]
+    private bool _isLoading;
 
-    public bool IsBannerVisible
-    {
-        get => Get<bool>();
-        set => Set(value);
-    }
+    [ObservableProperty]
+    private DateTime _loadingStarted;
 
-    public bool IsBannerLink
-    {
-        get => Get<bool>();
-        set => Set(value);
-    }
+    [ObservableProperty]
+    private bool _isBannerVisible;
 
-    public string? BannerLink
-    {
-        get => Get<string?>();
-        set => Set(value);
-    }
+    [ObservableProperty]
+    private bool _isBannerLink;
 
-    public string? BannerMessage
-    {
-        get => Get<string?>();
-        set => Set(value);
-    }
+    [ObservableProperty]
+    private string? _bannerLink;
 
-    public ICommand CloseBannerCommand { get; }
-    private Guid? CurrentBanner { get; set; }
+    [ObservableProperty]
+    private string? _bannerMessage;
 
     public Task HandleAsync(LoadStartEvent e)
     {
@@ -116,11 +100,11 @@ public class MainContentViewModel :
         BannerMessage = e.Message;
 
         IsBannerVisible = true;
-        CurrentBanner = Guid.NewGuid();
+        _currentBanner = Guid.NewGuid();
 
         if (e.VisibleTime is not null)
         {
-            HideBannerAsync(CurrentBanner, e.VisibleTime.Value).SafeFireAndForget();
+            HideBannerAsync(_currentBanner, e.VisibleTime.Value).SafeFireAndForget();
         }
 
         return Task.CompletedTask;
@@ -129,7 +113,7 @@ public class MainContentViewModel :
     private async Task HideBannerAsync(Guid? currentBanner, TimeSpan timeSpan)
     {
         await Task.Delay(timeSpan).ConfigureAwait(false);
-        if (CurrentBanner == currentBanner)
+        if (_currentBanner == currentBanner)
         {
             IsBannerVisible = false;
         }
@@ -143,9 +127,9 @@ public class MainContentViewModel :
 
             if (version.CurrentVersion is not null)
             {
-                await _eventAggregator.PublishAsync(new VersionLoadedEvent(version.CurrentVersion)).ConfigureAwait(false); 
+                await _eventAggregator.PublishAsync(new VersionLoadedEvent(version.CurrentVersion)).ConfigureAwait(false);
             }
-            
+
             if (version.NewVersion is null)
             {
                 return;

@@ -1,24 +1,12 @@
-﻿using System.Windows.Input;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Microsoft.Win32;
-using TypeCode.Wpf.Helper.Commands;
-using TypeCode.Wpf.Helper.Navigation.Service;
-using TypeCode.Wpf.Helper.Navigation.Wizard.Complex;
-using TypeCode.Wpf.Helper.ViewModel;
 
 namespace TypeCode.Wpf.Pages.Common.Configuration.AssemblyPathWizard;
 
-public class AssemblyPathWizardViewModel : Reactive, IAsyncInitialNavigated
+public partial class AssemblyPathWizardViewModel : ObservableObject
 {
-    public AssemblyPathWizardViewModel()
-    {
-        SelectCommand = new AsyncRelayCommand(SelectAsync);
-    }
-
-    public Task OnInititalNavigationAsync(NavigationContext context)
-    {
-        return Task.CompletedTask;
-    }
-
+    [RelayCommand]
     private Task SelectAsync()
     {
         var openFileDialog = new OpenFileDialog
@@ -39,17 +27,9 @@ public class AssemblyPathWizardViewModel : Reactive, IAsyncInitialNavigated
         return Task.CompletedTask;
     }
 
-    public ICommand SelectCommand { get; set; }
+    [ObservableProperty]
+    private string? _path;
 
-    public string? Path
-    {
-        get => Get<string?>();
-        set => Set(value);
-    }
-
-    public int? Priority
-    {
-        get => Get<int?>();
-        set => Set(value);
-    }
+    [ObservableProperty]
+    private int? _priority;
 }

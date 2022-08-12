@@ -1,15 +1,12 @@
-﻿using System.Windows.Input;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using TypeCode.Business.Mode;
 using TypeCode.Business.Mode.UnitTestDependency.Manually;
 using TypeCode.Wpf.Components.OutputBox;
-using TypeCode.Wpf.Helper.Commands;
-using TypeCode.Wpf.Helper.Navigation.Contract;
-using TypeCode.Wpf.Helper.Navigation.Service;
-using TypeCode.Wpf.Helper.ViewModel;
 
 namespace TypeCode.Wpf.Pages.UnitTestDependencyManually;
 
-public class UnitTestDependencyManuallyViewModel : Reactive, IAsyncNavigatedTo
+public partial class UnitTestDependencyManuallyViewModel : ObservableObject
 {
     private readonly ITypeCodeGenerator<UnitTestDependencyManuallyGeneratorParameter> _unitTestDependencyManuallyGenerator;
 
@@ -19,38 +16,25 @@ public class UnitTestDependencyManuallyViewModel : Reactive, IAsyncNavigatedTo
     )
     {
         _unitTestDependencyManuallyGenerator = unitTestDependencyManuallyGenerator;
-        
+
         OutputBoxViewModel = outputBoxViewModelFactory.Create();
-        
-        GenerateCommand = new AsyncRelayCommand(GenerateAsync);
-    }
-        
-    public Task OnNavigatedToAsync(NavigationContext context)
-    {
-        return Task.CompletedTask;
     }
 
+    [RelayCommand]
     private async Task GenerateAsync()
     {
         var parameter = new UnitTestDependencyManuallyGeneratorParameter
         {
             Input = Input
         };
-            
+
         var result = await _unitTestDependencyManuallyGenerator.GenerateAsync(parameter).ConfigureAwait(true);
         OutputBoxViewModel?.SetOutput(result);
     }
-        
-    public ICommand GenerateCommand { get; set; }
 
-    public string? Input {
-        get => Get<string?>();
-        set => Set(value);
-    }
+    [ObservableProperty]
+    private string? _input;
 
-    public OutputBoxViewModel? OutputBoxViewModel
-    {
-        get => Get<OutputBoxViewModel?>();
-        set => Set(value);
-    }
+    [ObservableProperty]
+    private OutputBoxViewModel? _outputBoxViewModel;
 }

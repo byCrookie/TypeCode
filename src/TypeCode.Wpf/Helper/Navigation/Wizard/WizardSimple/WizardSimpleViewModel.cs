@@ -1,16 +1,14 @@
 ﻿using System.Windows.Controls;
-using System.Windows.Input;
-using AsyncAwaitBestPractices.MVVM;
-using TypeCode.Wpf.Helper.Commands;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using TypeCode.Wpf.Helper.Event;
 using TypeCode.Wpf.Helper.Navigation.Contract;
 using TypeCode.Wpf.Helper.Navigation.Service;
-using TypeCode.Wpf.Helper.ViewModel;
 
 namespace TypeCode.Wpf.Helper.Navigation.Wizard.WizardSimple;
 
-public class WizardSimpleViewModel<T> : 
-    Reactive,
+public partial class WizardSimpleViewModel<T> : 
+    ObservableObject,
     IAsyncEventHandler<WizardUpdateEvent>,
     IAsyncNavigatedTo where T : notnull
 {
@@ -26,9 +24,6 @@ public class WizardSimpleViewModel<T> :
 
         _parameter = new WizardParameter<T>();
         _context = new NavigationContext();
-        
-        CancelCommand = new AsyncRelayCommand(CancelAsync);
-        FinishCommand = new AsyncRelayCommand(FinishAsync, CanFinish);
     }
 
     public Task OnNavigatedToAsync(NavigationContext context)
@@ -40,37 +35,32 @@ public class WizardSimpleViewModel<T> :
         return Task.CompletedTask;
     }
 
+    [RelayCommand]
     private Task CancelAsync()
     {
         return _wizardNavigationService.CloseWizardAsync<T>();
     }
-    
-    private bool CanFinish(object? arg)
-    {
-        return _parameter.CanSave(_context.GetParameter<T>("ViewModel"));
-    }
 
+    [RelayCommand(CanExecute = nameof(CanFinish))]
     private Task FinishAsync()
     {
         return _wizardNavigationService.SaveWizardAsync<T>();
     }
-
-    public IAsyncCommand FinishCommand { get; set; }
-    public ICommand CancelCommand { get; set; }
-
-    public UserControl? WizardPage {
-        get => Get<UserControl?>();
-        set => Set(value);
+    
+    private bool CanFinish()
+    {
+        return _parameter.CanSave(_context.GetParameter<T>("ViewModel"));
     }
 
-    public string? FinishText {
-        get => Get<string?>();
-        set => Set(value);
-    }
+    [ObservableProperty]
+    private UserControl? _wizardPage;
+
+    [ObservableProperty]
+    private string? _finishText;
 
     public Task HandleAsync(WizardUpdateEvent e)
     {
-        FinishCommand.RaiseCanExecuteChanged();
+        FinishCommand.NotifyCanExecuteChanged();
         return Task.CompletedTask;
     }
 }

@@ -1,12 +1,9 @@
-﻿using TypeCode.Wpf.Helper.ViewModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace TypeCode.Wpf.Components.InfoLink;
 
-public class InfoLinkViewModel : Reactive
+public partial class InfoLinkViewModel : ObservableObject
 {
-    public string? Link
-    {
-        get => Get<string?>();
-        set => Set(value);
-    }
+    [ObservableProperty]
+    private string? _link;
 }

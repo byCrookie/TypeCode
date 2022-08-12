@@ -1,13 +1,12 @@
 ﻿using System.Windows.Controls;
-using AsyncAwaitBestPractices.MVVM;
-using TypeCode.Wpf.Helper.Commands;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using TypeCode.Wpf.Helper.Navigation.Service;
 using TypeCode.Wpf.Helper.Navigation.Wizard.Complex;
-using TypeCode.Wpf.Helper.ViewModel;
 
 namespace TypeCode.Wpf.Pages.Common.Configuration;
 
-public class SetupWizardViewModel : Reactive, IAsyncInitialNavigated
+public partial class SetupWizardViewModel : ObservableObject, IAsyncInitialNavigated
 {
     private readonly ISetupConfigurator _setupConfigurator;
     private readonly IConfigurationViewModelFactory _configurationViewModelFactory;
@@ -17,13 +16,13 @@ public class SetupWizardViewModel : Reactive, IAsyncInitialNavigated
         _setupConfigurator = setupConfigurator;
         _configurationViewModelFactory = configurationViewModelFactory;
 
-        AddRootCommand = new AsyncRelayCommand(() =>  _setupConfigurator.AddRootAsync(SelectedItem!), _ => _setupConfigurator.CanAddRoot(SelectedItem));
-        AddGroupCommand = new AsyncRelayCommand(() =>  _setupConfigurator.AddGroupAsync(SelectedItem!), _ => _setupConfigurator.CanAddGroup(SelectedItem));
-        AddIncludePatternCommand = new AsyncRelayCommand(() =>  _setupConfigurator.AddIncludePatternAsync(SelectedItem!), _ => _setupConfigurator.CanAddIncludePattern(SelectedItem));
-        AddPathCommand = new AsyncRelayCommand(() =>  _setupConfigurator.AddPathAsync(SelectedItem!), _ => _setupConfigurator.CanAddPath(SelectedItem));
-        AddSelectorCommand = new AsyncRelayCommand(() =>  _setupConfigurator.AddSelectorAsync(SelectedItem!), _ => _setupConfigurator.CanAddSelector(SelectedItem));
-        UpdateCommand = new AsyncRelayCommand(() =>  _setupConfigurator.UpdateAsync(SelectedItem!), _ => _setupConfigurator.CanUpdate(SelectedItem));
-        DeleteCommand = new AsyncRelayCommand(() =>  _setupConfigurator.DeleteAsync(SelectedItem!), _ => _setupConfigurator.CanDelete(SelectedItem));
+        AddRootCommand = new AsyncRelayCommand(() =>  _setupConfigurator.AddRootAsync(SelectedItem!), () => _setupConfigurator.CanAddRoot(SelectedItem));
+        AddGroupCommand = new AsyncRelayCommand(() =>  _setupConfigurator.AddGroupAsync(SelectedItem!), () => _setupConfigurator.CanAddGroup(SelectedItem));
+        AddIncludePatternCommand = new AsyncRelayCommand(() =>  _setupConfigurator.AddIncludePatternAsync(SelectedItem!), () => _setupConfigurator.CanAddIncludePattern(SelectedItem));
+        AddPathCommand = new AsyncRelayCommand(() =>  _setupConfigurator.AddPathAsync(SelectedItem!), () => _setupConfigurator.CanAddPath(SelectedItem));
+        AddSelectorCommand = new AsyncRelayCommand(() =>  _setupConfigurator.AddSelectorAsync(SelectedItem!), () => _setupConfigurator.CanAddSelector(SelectedItem));
+        UpdateCommand = new AsyncRelayCommand(() =>  _setupConfigurator.UpdateAsync(SelectedItem!), () => _setupConfigurator.CanUpdate(SelectedItem));
+        DeleteCommand = new AsyncRelayCommand(() =>  _setupConfigurator.DeleteAsync(SelectedItem!), () => _setupConfigurator.CanDelete(SelectedItem));
     }
 
     public async Task OnInititalNavigationAsync(NavigationContext context)
@@ -37,44 +36,38 @@ public class SetupWizardViewModel : Reactive, IAsyncInitialNavigated
         Refresh();
     }
 
-    public IAsyncCommand AddRootCommand { get; set; }
-    public IAsyncCommand AddGroupCommand { get; set; }
-    public IAsyncCommand AddIncludePatternCommand { get; set; }
-    public IAsyncCommand AddPathCommand { get; set; }
-    public IAsyncCommand AddSelectorCommand { get; set; }
-    public IAsyncCommand UpdateCommand { get; set; }
-    public IAsyncCommand DeleteCommand { get; set; }
+    public AsyncRelayCommand AddRootCommand { get; }
+    public AsyncRelayCommand AddGroupCommand { get; }
+    public AsyncRelayCommand AddIncludePatternCommand { get; }
+    public AsyncRelayCommand AddPathCommand { get; }
+    public AsyncRelayCommand AddSelectorCommand { get; }
+    public AsyncRelayCommand UpdateCommand { get; }
+    public AsyncRelayCommand DeleteCommand { get; }
 
-    public List<TreeViewItem>? TreeViewItems
-    {
-        get => Get<List<TreeViewItem>?>();
-        set => Set(value);
-    }
+    [ObservableProperty]
+    private List<TreeViewItem>? _treeViewItems;
 
-    public TreeViewItem? SelectedItem
-    {
-        get => Get<TreeViewItem?>();
-        set
-        {
-            Set(value);
-            Refresh();
-        }
-    }
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(AddRootCommand))]
+    [NotifyCanExecuteChangedFor(nameof(AddGroupCommand))]
+    [NotifyCanExecuteChangedFor(nameof(AddIncludePatternCommand))]
+    [NotifyCanExecuteChangedFor(nameof(AddPathCommand))]
+    [NotifyCanExecuteChangedFor(nameof(AddSelectorCommand))]
+    [NotifyCanExecuteChangedFor(nameof(UpdateCommand))]
+    [NotifyCanExecuteChangedFor(nameof(DeleteCommand))]
+    private TreeViewItem? _selectedItem;
+
+    [ObservableProperty]
+    private ConfigurationWizardViewModel? _configurationViewModel;
     
-    public ConfigurationWizardViewModel? ConfigurationViewModel
-    {
-        get => Get<ConfigurationWizardViewModel?>();
-        set => Set(value);
-    }
-
     private void Refresh()
     {
-        AddRootCommand.RaiseCanExecuteChanged();
-        AddIncludePatternCommand.RaiseCanExecuteChanged();
-        AddGroupCommand.RaiseCanExecuteChanged();
-        AddPathCommand.RaiseCanExecuteChanged();
-        AddSelectorCommand.RaiseCanExecuteChanged();
-        UpdateCommand.RaiseCanExecuteChanged();
-        DeleteCommand.RaiseCanExecuteChanged();
+        AddRootCommand.NotifyCanExecuteChanged();
+        AddIncludePatternCommand.NotifyCanExecuteChanged();
+        AddGroupCommand.NotifyCanExecuteChanged();
+        AddPathCommand.NotifyCanExecuteChanged();
+        AddSelectorCommand.NotifyCanExecuteChanged();
+        UpdateCommand.NotifyCanExecuteChanged();
+        DeleteCommand.NotifyCanExecuteChanged();
     }
 }

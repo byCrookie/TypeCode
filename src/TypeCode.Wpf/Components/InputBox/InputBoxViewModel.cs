@@ -1,13 +1,13 @@
-﻿using AsyncAwaitBestPractices.MVVM;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using TypeCode.Wpf.Application;
-using TypeCode.Wpf.Helper.Commands;
 using TypeCode.Wpf.Helper.Event;
-using TypeCode.Wpf.Helper.ViewModel;
 
 namespace TypeCode.Wpf.Components.InputBox;
 
-public class InputBoxViewModel : Reactive, IAsyncEventHandler<LoadStartEvent>, IAsyncEventHandler<LoadEndEvent>
+public partial class InputBoxViewModel : ObservableObject, IAsyncEventHandler<LoadStartEvent>, IAsyncEventHandler<LoadEndEvent>
 {
+    private readonly InputBoxViewModelParameter _parameter;
     private bool _loaded;
 
     public InputBoxViewModel(IEventAggregator eventAggregator, InputBoxViewModelParameter parameter)
@@ -15,54 +15,47 @@ public class InputBoxViewModel : Reactive, IAsyncEventHandler<LoadStartEvent>, I
         _loaded = true;
         ActionName = parameter.ActionName;
         ToolTip = parameter.ToolTip;
+        _parameter = parameter;
 
         eventAggregator.Subscribe<LoadStartEvent>(this);
         eventAggregator.Subscribe<LoadEndEvent>(this);
-        
-        ActionCommand = new AsyncRelayCommand(() => parameter.ActionAsync(Regex, Input), _ => _loaded && !string.IsNullOrEmpty(Input?.Trim()));
-    }
-    
-    public IAsyncCommand ActionCommand { get; set; }
-    
-    public string? Input
-    {
-        get => Get<string?>();
-        set
-        {
-            Set(value);
-            ActionCommand.RaiseCanExecuteChanged();
-        }
     }
 
-    public string? ToolTip
+    [RelayCommand(CanExecute = nameof(CanAction))]
+    private Task ActionAsync()
     {
-        get => Get<string?>();
-        set => Set(value);
+        return _parameter.ActionAsync(Regex, Input);
     }
     
-    public string? ActionName
+    private bool CanAction()
     {
-        get => Get<string?>();
-        set => Set(value);
+        return _loaded && !string.IsNullOrEmpty(Input?.Trim());
     }
-    
-    public bool Regex
-    {
-        get => Get<bool>();
-        set => Set(value);
-    }
+
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(ActionCommand))]
+    private string? _input;
+
+    [ObservableProperty]
+    private string? _toolTip;
+
+    [ObservableProperty]
+    private string? _actionName;
+
+    [ObservableProperty]
+    private bool _regex;
 
     public Task HandleAsync(LoadStartEvent e)
     {
         _loaded = false;
-        ActionCommand.RaiseCanExecuteChanged();
+        ActionCommand.NotifyCanExecuteChanged();
         return Task.CompletedTask;
     }
     
     public Task HandleAsync(LoadEndEvent e)
     {
         _loaded = true;
-        ActionCommand.RaiseCanExecuteChanged();
+        ActionCommand.NotifyCanExecuteChanged();
         return Task.CompletedTask;
     }
 }

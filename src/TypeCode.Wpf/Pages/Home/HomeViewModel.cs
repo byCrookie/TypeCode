@@ -1,11 +1,11 @@
-﻿using TypeCode.Business.Version;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using TypeCode.Business.Version;
 using TypeCode.Wpf.Helper.Navigation.Contract;
 using TypeCode.Wpf.Helper.Navigation.Service;
-using TypeCode.Wpf.Helper.ViewModel;
 
 namespace TypeCode.Wpf.Pages.Home;
 
-public class HomeViewModel : Reactive, IAsyncNavigatedTo
+public partial class HomeViewModel : ObservableObject, IAsyncNavigatedTo
 {
     private readonly IVersionEvaluator _versionEvaluator;
 
@@ -14,11 +14,8 @@ public class HomeViewModel : Reactive, IAsyncNavigatedTo
         _versionEvaluator = versionEvaluator;
     }
 
-    public string? Version
-    {
-        get => Get<string?>();
-        set => Set(value);
-    }
+    [ObservableProperty]
+    private string? _version;
 
     public async Task OnNavigatedToAsync(NavigationContext context)
     {

@@ -13,6 +13,7 @@
         <PackageReference Include="Microsoft.CodeAnalysis.Compilers" />
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp" />
         <PackageReference Include="System.Reactive" />
+        <PackageReference Include="CommunityToolkit.Mvvm" />
     </ItemGroup>
 
     <ItemGroup>

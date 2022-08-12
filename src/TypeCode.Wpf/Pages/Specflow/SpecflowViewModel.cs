@@ -1,16 +1,14 @@
-﻿using TypeCode.Business.Mode;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using TypeCode.Business.Mode;
 using TypeCode.Business.Mode.Specflow;
 using TypeCode.Business.TypeEvaluation;
 using TypeCode.Wpf.Components.InputBox;
 using TypeCode.Wpf.Components.OutputBox;
-using TypeCode.Wpf.Helper.Navigation.Contract;
-using TypeCode.Wpf.Helper.Navigation.Service;
-using TypeCode.Wpf.Helper.ViewModel;
 using TypeCode.Wpf.Pages.TypeSelection;
 
 namespace TypeCode.Wpf.Pages.Specflow;
 
-public class SpecflowViewModel : Reactive, IAsyncNavigatedTo
+public partial class SpecflowViewModel : ObservableObject
 {
     private readonly ITypeCodeGenerator<SpecflowTypeCodeGeneratorParameter> _specflowGenerator;
     private readonly ITypeProvider _typeProvider;
@@ -37,11 +35,6 @@ public class SpecflowViewModel : Reactive, IAsyncNavigatedTo
 
         InputBoxViewModel = inputBoxViewModelFactory.Create(parameter);
         OutputBoxViewModel = outputBoxViewModelFactory.Create();
-    }
-
-    public Task OnNavigatedToAsync(NavigationContext context)
-    {
-        return Task.CompletedTask;
     }
 
     private async Task GenerateAsync(bool regex, string? input)
@@ -80,33 +73,18 @@ public class SpecflowViewModel : Reactive, IAsyncNavigatedTo
         OutputBoxViewModel?.SetOutput(result);
     }
 
-    public InputBoxViewModel? InputBoxViewModel
-    {
-        get => Get<InputBoxViewModel?>();
-        set => Set(value);
-    }
+    [ObservableProperty]
+    private InputBoxViewModel? _inputBoxViewModel;
 
-    public OutputBoxViewModel? OutputBoxViewModel
-    {
-        get => Get<OutputBoxViewModel?>();
-        set => Set(value);
-    }
+    [ObservableProperty]
+    private OutputBoxViewModel? _outputBoxViewModel;
 
-    public bool IncludeStrings
-    {
-        get => Get<bool>();
-        set => Set(value);
-    }
+    [ObservableProperty]
+    private bool _includeStrings;
 
-    public bool OnlyRequired
-    {
-        get => Get<bool>();
-        set => Set(value);
-    }
+    [ObservableProperty]
+    private bool _onlyRequired;
 
-    public bool SortAlphabetically
-    {
-        get => Get<bool>();
-        set => Set(value);
-    }
+    [ObservableProperty]
+    private bool _sortAlphabetically;
 }

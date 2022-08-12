@@ -1,10 +1,9 @@
-﻿using System.Windows.Input;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using DependencyInjection.Factory;
-using TypeCode.Wpf.Helper.Commands;
 using TypeCode.Wpf.Helper.Navigation.Contract;
 using TypeCode.Wpf.Helper.Navigation.Service;
 using TypeCode.Wpf.Helper.Navigation.Wizard.Complex;
-using TypeCode.Wpf.Helper.ViewModel;
 using TypeCode.Wpf.Pages.Assemblies;
 using TypeCode.Wpf.Pages.Builder;
 using TypeCode.Wpf.Pages.Common.Configuration;
@@ -18,7 +17,7 @@ using TypeCode.Wpf.Pages.UnitTestDependencyType;
 
 namespace TypeCode.Wpf.Main.Sidebar;
 
-public class MainSidebarViewModel : Reactive, IAsyncNavigatedTo
+public partial class MainSidebarViewModel : ObservableObject, IAsyncNavigatedTo
 {
     private readonly INavigationService _navigationService;
     private readonly IFactory<IWizardBuilder> _wizardBuilderFactory;
@@ -34,96 +33,81 @@ public class MainSidebarViewModel : Reactive, IAsyncNavigatedTo
         _wizardBuilderFactory = wizardBuilderFactory;
         _settingsWizardRunner = settingsWizardRunner;
 
-        HomeNavigationCommand = new AsyncRelayCommand(NavigateToHomeAsync);
-        SpecflowNavigationCommand = new AsyncRelayCommand(NavigateToSpecflowAsync);
-        UnitTestDependencyTypeNavigationCommand = new AsyncRelayCommand(NavigateToUnitTestDependencyTypeAsync);
-        UnitTestDependencyManuallyNavigationCommand = new AsyncRelayCommand(NavigateToUnitTestDependencyManuallyAsync);
-        ComposerNavigationCommand = new AsyncRelayCommand(NavigateToComposerAsync);
-        MapperNavigationCommand = new AsyncRelayCommand(NavigateToMapperAsync);
-        BuilderNavigationCommand = new AsyncRelayCommand(NavigateToBuilderAsync);
-        AssemblyNavigationCommand = new AsyncRelayCommand(NavigateToAssemblyAsync);
-        DynamicExecuteNavigationCommand = new AsyncRelayCommand(NavigateToDynamicExecuteAsync);
-        OpenSettingsCommand = new AsyncRelayCommand(OpenSettingsAsync);
-
         ActiveItem = ActiveItem.Home;
     }
 
-    public ICommand HomeNavigationCommand { get; }
-    public ICommand SpecflowNavigationCommand { get; }
-    public ICommand UnitTestDependencyTypeNavigationCommand { get; }
-    public ICommand UnitTestDependencyManuallyNavigationCommand { get; }
-    public ICommand ComposerNavigationCommand { get; }
-    public ICommand MapperNavigationCommand { get; }
-    public ICommand BuilderNavigationCommand { get; }
-    public ICommand AssemblyNavigationCommand { get; }
-    public ICommand DynamicExecuteNavigationCommand { get; }
-    public ICommand OpenSettingsCommand { get; }
-
-    public ActiveItem ActiveItem
-    {
-        get => Get<ActiveItem>();
-        set => Set(value);
-    }
+    [ObservableProperty]
+    private ActiveItem _activeItem;
 
     public Task OnNavigatedToAsync(NavigationContext context)
     {
         return NavigateToHomeAsync();
     }
 
+    [RelayCommand]
     private Task NavigateToHomeAsync()
     {
         ActiveItem = ActiveItem.Home;
         return _navigationService.NavigateAsync<HomeViewModel>(new NavigationContext());
     }
 
+    [RelayCommand]
     private Task NavigateToSpecflowAsync()
     {
         ActiveItem = ActiveItem.Specflow;
         return _navigationService.NavigateAsync<SpecflowViewModel>(new NavigationContext());
     }
 
+    [RelayCommand]
     private Task NavigateToUnitTestDependencyTypeAsync()
     {
         ActiveItem = ActiveItem.UnitTestType;
         return _navigationService.NavigateAsync<UnitTestDependencyTypeViewModel>(new NavigationContext());
     }
 
+    [RelayCommand]
     private Task NavigateToUnitTestDependencyManuallyAsync()
     {
         ActiveItem = ActiveItem.UnitTestManually;
         return _navigationService.NavigateAsync<UnitTestDependencyManuallyViewModel>(new NavigationContext());
     }
 
+    [RelayCommand]
     private Task NavigateToComposerAsync()
     {
         ActiveItem = ActiveItem.Composer;
         return _navigationService.NavigateAsync<ComposerViewModel>(new NavigationContext());
     }
 
+    [RelayCommand]
     private Task NavigateToMapperAsync()
     {
         ActiveItem = ActiveItem.Mapper;
         return _navigationService.NavigateAsync<MapperViewModel>(new NavigationContext());
     }
 
+    [RelayCommand]
     private Task NavigateToBuilderAsync()
     {
         ActiveItem = ActiveItem.Builder;
         return _navigationService.NavigateAsync<BuilderViewModel>(new NavigationContext());
     }
 
+    [RelayCommand]
     private Task NavigateToAssemblyAsync()
     {
         ActiveItem = ActiveItem.Assembly;
         return _navigationService.NavigateAsync<AssemblyViewModel>(new NavigationContext());
     }
 
+    [RelayCommand]
     private Task NavigateToDynamicExecuteAsync()
     {
         ActiveItem = ActiveItem.DynamicExecute;
         return _navigationService.NavigateAsync<DynamicExecutionViewModel>(new NavigationContext());
     }
 
+    [RelayCommand]
     private Task OpenSettingsAsync()
     {
         var wizardBuilder = _wizardBuilderFactory.Create();

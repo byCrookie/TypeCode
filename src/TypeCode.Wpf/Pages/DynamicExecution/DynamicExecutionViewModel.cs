@@ -1,16 +1,15 @@
 ﻿using System.Reflection;
-using System.Windows.Input;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using TypeCode.Business.Embedded;
 using TypeCode.Business.Mode.DynamicExecution;
 using TypeCode.Wpf.Components.OutputBox;
-using TypeCode.Wpf.Helper.Commands;
 using TypeCode.Wpf.Helper.Navigation.Contract;
 using TypeCode.Wpf.Helper.Navigation.Service;
-using TypeCode.Wpf.Helper.ViewModel;
 
 namespace TypeCode.Wpf.Pages.DynamicExecution;
 
-public class DynamicExecutionViewModel : Reactive, IAsyncNavigatedTo
+public partial class DynamicExecutionViewModel : ObservableObject, IAsyncNavigatedTo
 {
     private readonly ICompiler _compiler;
     private readonly IRunner _runner;
@@ -28,8 +27,6 @@ public class DynamicExecutionViewModel : Reactive, IAsyncNavigatedTo
         _resourceReader = resourceReader;
 
         OutputBoxViewModel = outputBoxViewModelFactory.Create();
-
-        ExecuteCommand = new AsyncRelayCommand(ExecuteAsync);
     }
 
     public Task OnNavigatedToAsync(NavigationContext context)
@@ -39,6 +36,7 @@ public class DynamicExecutionViewModel : Reactive, IAsyncNavigatedTo
         return Task.CompletedTask;
     }
 
+    [RelayCommand]
     private Task ExecuteAsync()
     {
         var result = _runner.Execute(_compiler.Compile(Input!));
@@ -48,17 +46,9 @@ public class DynamicExecutionViewModel : Reactive, IAsyncNavigatedTo
         return Task.CompletedTask;
     }
 
-    public ICommand ExecuteCommand { get; set; }
+    [ObservableProperty]
+    private string? _input;
 
-    public string? Input
-    {
-        get => Get<string?>();
-        set => Set(value);
-    }
-
-    public OutputBoxViewModel? OutputBoxViewModel
-    {
-        get => Get<OutputBoxViewModel?>();
-        set => Set(value);
-    }
+    [ObservableProperty]
+    private OutputBoxViewModel? _outputBoxViewModel;
 }

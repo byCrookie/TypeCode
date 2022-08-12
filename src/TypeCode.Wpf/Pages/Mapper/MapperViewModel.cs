@@ -1,19 +1,18 @@
-﻿using System.Windows.Input;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using TypeCode.Business.Mode;
 using TypeCode.Business.Mode.Mapper;
 using TypeCode.Business.Mode.Mapper.Style;
 using TypeCode.Business.TypeEvaluation;
 using TypeCode.Wpf.Components.InputBox;
 using TypeCode.Wpf.Components.OutputBox;
-using TypeCode.Wpf.Helper.Commands;
 using TypeCode.Wpf.Helper.Navigation.Contract;
 using TypeCode.Wpf.Helper.Navigation.Service;
-using TypeCode.Wpf.Helper.ViewModel;
 using TypeCode.Wpf.Pages.TypeSelection;
 
 namespace TypeCode.Wpf.Pages.Mapper;
 
-public class MapperViewModel : Reactive, IAsyncNavigatedTo
+public partial class MapperViewModel : ObservableObject, IAsyncNavigatedTo
 {
     private readonly ITypeCodeGenerator<MapperTypeCodeGeneratorParameter> _mapperGenerator;
     private readonly ITypeProvider _typeProvider;
@@ -39,8 +38,6 @@ public class MapperViewModel : Reactive, IAsyncNavigatedTo
 
         InputBoxViewModel = inputBoxViewModelFactory.Create(parameter);
         OutputBoxViewModel = outputBoxViewModelFactory.Create();
-
-        StyleCommand = new AsyncRelayCommand<MappingStyle>(StyleAsync);
     }
 
     public Task OnNavigatedToAsync(NavigationContext context)
@@ -50,6 +47,7 @@ public class MapperViewModel : Reactive, IAsyncNavigatedTo
         return Task.CompletedTask;
     }
 
+    [RelayCommand]
     private Task StyleAsync(MappingStyle style)
     {
         _mappingStyle = style;
@@ -96,41 +94,21 @@ public class MapperViewModel : Reactive, IAsyncNavigatedTo
         }
     }
 
-    public ICommand StyleCommand { get; set; }
+    [ObservableProperty]
+    private InputBoxViewModel? _inputBoxViewModel;
 
-    public InputBoxViewModel? InputBoxViewModel
-    {
-        get => Get<InputBoxViewModel?>();
-        set => Set(value);
-    }
+    [ObservableProperty]
+    private OutputBoxViewModel? _outputBoxViewModel;
 
-    public OutputBoxViewModel? OutputBoxViewModel
-    {
-        get => Get<OutputBoxViewModel?>();
-        set => Set(value);
-    }
+    [ObservableProperty]
+    private bool _newStyle;
 
-    public bool NewStyle
-    {
-        get => Get<bool>();
-        private set => Set(value);
-    }
+    [ObservableProperty]
+    private bool _existingStyle;
 
-    public bool ExistingStyle
-    {
-        get => Get<bool>();
-        private set => Set(value);
-    }
+    [ObservableProperty]
+    private bool _recursiv;
 
-    public bool Recursiv
-    {
-        get => Get<bool>();
-        set => Set(value);
-    }
-
-    public bool SingleDirectionOnly
-    {
-        get => Get<bool>();
-        set => Set(value);
-    }
+    [ObservableProperty]
+    private bool _singleDirectionOnly;
 }

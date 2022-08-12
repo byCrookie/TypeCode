@@ -1,25 +1,12 @@
-﻿using TypeCode.Wpf.Helper.Navigation.Service;
-using TypeCode.Wpf.Helper.Navigation.Wizard.Complex;
-using TypeCode.Wpf.Helper.ViewModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace TypeCode.Wpf.Pages.Common.Configuration.AssemblyGroupWizard;
 
-public class AssemblyGroupWizardViewModel : Reactive, IAsyncInitialNavigated
+public partial class AssemblyGroupWizardViewModel : ObservableObject
 {
-    public Task OnInititalNavigationAsync(NavigationContext context)
-    {
-        return Task.CompletedTask;
-    }
+    [ObservableProperty]
+    private string? _name;
 
-    public string? Name
-    {
-        get => Get<string?>();
-        set => Set(value);
-    }
-
-    public int? Priority
-    {
-        get => Get<int?>();
-        set => Set(value);
-    }
+    [ObservableProperty]
+    private int? _priority;
 }

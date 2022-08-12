@@ -1,4 +1,5 @@
-﻿using TypeCode.Business.Configuration;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using TypeCode.Business.Configuration;
 using TypeCode.Business.TypeEvaluation;
 using TypeCode.Wpf.Application;
 using TypeCode.Wpf.Components.InputBox;
@@ -6,11 +7,10 @@ using TypeCode.Wpf.Helper.Event;
 using TypeCode.Wpf.Helper.Navigation.Contract;
 using TypeCode.Wpf.Helper.Navigation.Modal.Service;
 using TypeCode.Wpf.Helper.Navigation.Service;
-using TypeCode.Wpf.Helper.ViewModel;
 
 namespace TypeCode.Wpf.Pages.Assemblies;
 
-public class AssemblyViewModel : Reactive, IAsyncNavigatedTo, IAsyncEventHandler<LoadEndEvent>
+public partial class AssemblyViewModel : ObservableObject, IAsyncNavigatedTo, IAsyncEventHandler<LoadEndEvent>
 {
     private readonly IModalNavigationService _modalNavigationService;
     private readonly ITypeProvider _typeProvider;
@@ -50,17 +50,11 @@ public class AssemblyViewModel : Reactive, IAsyncNavigatedTo, IAsyncEventHandler
         return Task.CompletedTask;
     }
 
-    public InputBoxViewModel? InputBoxViewModel
-    {
-        get => Get<InputBoxViewModel?>();
-        set => Set(value);
-    }
+    [ObservableProperty]
+    private InputBoxViewModel? _inputBoxViewModel;
 
-    public List<string>? LoadedAssemblies
-    {
-        get => Get<List<string>?>();
-        private set => Set(value);
-    }
+    [ObservableProperty]
+    private List<string>? _loadedAssemblies;
 
     public Task HandleAsync(LoadEndEvent e)
     {

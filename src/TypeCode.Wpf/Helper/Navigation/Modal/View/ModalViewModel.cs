@@ -1,21 +1,18 @@
-﻿using System.Windows.Input;
-using TypeCode.Wpf.Helper.Commands;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using TypeCode.Wpf.Helper.Navigation.Contract;
 using TypeCode.Wpf.Helper.Navigation.Modal.Service;
 using TypeCode.Wpf.Helper.Navigation.Service;
-using TypeCode.Wpf.Helper.ViewModel;
 
 namespace TypeCode.Wpf.Helper.Navigation.Modal.View;
 
-public class ModalViewModel : Reactive, IAsyncNavigatedTo
+public partial class ModalViewModel : ObservableObject, IAsyncNavigatedTo
 {
     private readonly IModalNavigationService _modalNavigationService;
 
     public ModalViewModel(IModalNavigationService modalNavigationService)
     {
         _modalNavigationService = modalNavigationService;
-        
-        OkCommand = new AsyncRelayCommand(OkAsync);
     }
         
     public Task OnNavigatedToAsync(NavigationContext context)
@@ -27,25 +24,18 @@ public class ModalViewModel : Reactive, IAsyncNavigatedTo
         return Task.CompletedTask;
     }
 
+    [RelayCommand]
     private Task OkAsync()
     {
         return _modalNavigationService.CloseModalAsync();
     }
 
-    public ICommand OkCommand { get; set; }
+    [ObservableProperty]
+    private string? _title;
 
-    public string? Title {
-        get => Get<string?>();
-        set => Set(value);
-    }
+    [ObservableProperty]
+    private string? _text;
 
-    public string? Text {
-        get => Get<string?>();
-        private set => Set(value);
-    }
-    
-    public bool ScrollViewerEnabled {
-        get => Get<bool>();
-        private set => Set(value);
-    }
+    [ObservableProperty]
+    private bool _scrollViewerEnabled;
 }
