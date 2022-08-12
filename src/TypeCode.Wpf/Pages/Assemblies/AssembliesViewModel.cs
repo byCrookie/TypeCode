@@ -10,11 +10,12 @@ using TypeCode.Wpf.Helper.Navigation.Service;
 
 namespace TypeCode.Wpf.Pages.Assemblies;
 
-public partial class AssemblyViewModel : ObservableObject, IAsyncNavigatedTo, IAsyncEventHandler<LoadEndEvent>
+public partial class AssemblyViewModel : ObservableObject, IAsyncNavigatedTo, IAsyncNavigatedFrom, IAsyncEventHandler<LoadEndEvent>
 {
     private readonly IModalNavigationService _modalNavigationService;
     private readonly ITypeProvider _typeProvider;
     private readonly IConfigurationProvider _configurationProvider;
+    private readonly IEventAggregator _eventAggregator;
 
     public AssemblyViewModel(
         IModalNavigationService modalNavigationService,
@@ -27,6 +28,7 @@ public partial class AssemblyViewModel : ObservableObject, IAsyncNavigatedTo, IA
         _modalNavigationService = modalNavigationService;
         _typeProvider = typeProvider;
         _configurationProvider = configurationProvider;
+        _eventAggregator = eventAggregator;
 
         LoadedAssemblies = new List<string>();
 
@@ -50,6 +52,12 @@ public partial class AssemblyViewModel : ObservableObject, IAsyncNavigatedTo, IA
         return Task.CompletedTask;
     }
 
+    public Task OnNavigatedFromAsync(NavigationContext context)
+    {
+        _eventAggregator.Unsubscribe(this);
+        return Task.CompletedTask;
+    }
+    
     [ObservableProperty]
     private InputBoxViewModel? _inputBoxViewModel;
 

@@ -2,16 +2,21 @@
 using CommunityToolkit.Mvvm.Input;
 using TypeCode.Wpf.Application;
 using TypeCode.Wpf.Helper.Event;
+using TypeCode.Wpf.Helper.Navigation.Contract;
+using TypeCode.Wpf.Helper.Navigation.Service;
 
 namespace TypeCode.Wpf.Components.InputBox;
 
-public partial class InputBoxViewModel : ObservableObject, IAsyncEventHandler<LoadStartEvent>, IAsyncEventHandler<LoadEndEvent>
+public partial class InputBoxViewModel : ObservableObject, IAsyncEventHandler<LoadStartEvent>, IAsyncEventHandler<LoadEndEvent>, IAsyncNavigatedFrom
 {
+    private readonly IEventAggregator _eventAggregator;
     private readonly InputBoxViewModelParameter _parameter;
     private bool _loaded;
 
     public InputBoxViewModel(IEventAggregator eventAggregator, InputBoxViewModelParameter parameter)
     {
+        _eventAggregator = eventAggregator;
+        
         _loaded = true;
         ActionName = parameter.ActionName;
         ToolTip = parameter.ToolTip;
@@ -19,6 +24,12 @@ public partial class InputBoxViewModel : ObservableObject, IAsyncEventHandler<Lo
 
         eventAggregator.Subscribe<LoadStartEvent>(this);
         eventAggregator.Subscribe<LoadEndEvent>(this);
+    }
+    
+    public Task OnNavigatedFromAsync(NavigationContext context)
+    {
+        _eventAggregator.Unsubscribe(this);
+        return Task.CompletedTask;
     }
 
     [RelayCommand(CanExecute = nameof(CanAction))]

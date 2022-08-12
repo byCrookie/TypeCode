@@ -17,6 +17,7 @@ namespace TypeCode.Wpf.Main;
 public partial class MainViewModel :
     ObservableObject,
     IAsyncNavigatedTo,
+    IAsyncNavigatedFrom,
     IAsyncEventHandler<VersionLoadedEvent>,
     IAsyncEventHandler<LoadEndEvent>
 {
@@ -65,6 +66,12 @@ public partial class MainViewModel :
             navSideBar.OnNavigatedToAsync(_navigationContext);
         }
 
+        return Task.CompletedTask;
+    }
+    
+    public Task OnNavigatedFromAsync(NavigationContext context)
+    {
+        _eventAggregator.Unsubscribe(this);
         return Task.CompletedTask;
     }
 

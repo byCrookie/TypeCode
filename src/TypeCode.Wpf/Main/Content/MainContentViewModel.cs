@@ -6,6 +6,8 @@ using Serilog;
 using TypeCode.Business.Version;
 using TypeCode.Wpf.Application;
 using TypeCode.Wpf.Helper.Event;
+using TypeCode.Wpf.Helper.Navigation.Contract;
+using TypeCode.Wpf.Helper.Navigation.Service;
 
 namespace TypeCode.Wpf.Main.Content;
 
@@ -13,7 +15,8 @@ public partial class MainContentViewModel :
     ObservableObject,
     IAsyncEventHandler<LoadStartEvent>,
     IAsyncEventHandler<LoadEndEvent>,
-    IAsyncEventHandler<BannerOpenEvent>
+    IAsyncEventHandler<BannerOpenEvent>,
+    IAsyncNavigatedFrom
 {
     private readonly IEventAggregator _eventAggregator;
     private readonly IVersionEvaluator _versionEvaluator;
@@ -38,6 +41,12 @@ public partial class MainContentViewModel :
         eventAggregator.Subscribe<LoadEndEvent>(this);
 
         CheckVersionAsync().SafeFireAndForget();
+    }
+    
+    public Task OnNavigatedFromAsync(NavigationContext context)
+    {
+        _eventAggregator.Unsubscribe(this);
+        return Task.CompletedTask;
     }
 
     [RelayCommand]

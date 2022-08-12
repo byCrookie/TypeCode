@@ -7,19 +7,22 @@ using TypeCode.Wpf.Helper.Navigation.Service;
 
 namespace TypeCode.Wpf.Helper.Navigation.Wizard.WizardSimple;
 
-public partial class WizardSimpleViewModel<T> : 
+public partial class WizardSimpleViewModel<T> :
     ObservableObject,
     IAsyncEventHandler<WizardUpdateEvent>,
-    IAsyncNavigatedTo where T : notnull
+    IAsyncNavigatedTo,
+    IAsyncNavigatedFrom where T : notnull
 {
     private readonly IWizardNavigationService _wizardNavigationService;
+    private readonly IEventAggregator _eventAggregator;
     private WizardParameter<T> _parameter;
     private NavigationContext _context;
 
     public WizardSimpleViewModel(IWizardNavigationService wizardNavigationService, IEventAggregator eventAggregator)
     {
         _wizardNavigationService = wizardNavigationService;
-        
+        _eventAggregator = eventAggregator;
+
         eventAggregator.Subscribe<WizardUpdateEvent>(this);
 
         _parameter = new WizardParameter<T>();
@@ -35,6 +38,12 @@ public partial class WizardSimpleViewModel<T> :
         return Task.CompletedTask;
     }
 
+    public Task OnNavigatedFromAsync(NavigationContext context)
+    {
+        _eventAggregator.Unsubscribe(this);
+        return Task.CompletedTask;
+    }
+
     [RelayCommand]
     private Task CancelAsync()
     {
@@ -46,7 +55,7 @@ public partial class WizardSimpleViewModel<T> :
     {
         return _wizardNavigationService.SaveWizardAsync<T>();
     }
-    
+
     private bool CanFinish()
     {
         return _parameter.CanSave(_context.GetParameter<T>("ViewModel"));
