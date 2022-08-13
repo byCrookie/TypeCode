@@ -7,13 +7,14 @@
             <Setter Property="FontFamily" Value="Courier New" />
         </Style>
 
-        <FontFamily x:Key="FontFamilyRoboto">pack://application:,,,/Assets/Fonts/#Roboto</FontFamily>
-        <FontFamily x:Key="FontFamilyOswald">pack://application:,,,/Assets/Fonts/#Oswald</FontFamily>
-
         <Color x:Key="PrimaryColor">#202225</Color>
         <Color x:Key="SecondaryColor">#2F3136</Color>
         <Color x:Key="ShadowColor">#36393F</Color>
         <Color x:Key="AccentColor">DodgerBlue</Color>
+        
+        <Color x:Key="SuccessColor">#4bb543</Color>
+        <Color x:Key="WarningColor">#eed202</Color>
+        <Color x:Key="ErrorColor">#f70031</Color>
 
         <Color x:Key="PrimaryTextColor">WhiteSmoke</Color>
         <Color x:Key="SecondaryTextColor">#2F3136</Color>
@@ -22,6 +23,10 @@
         <SolidColorBrush x:Key="Secondary" Color="{StaticResource SecondaryColor}" />
         <SolidColorBrush x:Key="Shadow" Color="{StaticResource ShadowColor}" />
         <SolidColorBrush x:Key="Accent" Color="{StaticResource AccentColor}" />
+        
+        <SolidColorBrush x:Key="Success" Color="{StaticResource SuccessColor}" />
+        <SolidColorBrush x:Key="Warning" Color="{StaticResource WarningColor}" />
+        <SolidColorBrush x:Key="Error" Color="{StaticResource ErrorColor}" />
 
         <SolidColorBrush x:Key="PrimaryText" Color="{StaticResource PrimaryTextColor}" />
         <SolidColorBrush x:Key="SecondaryText" Color="{StaticResource SecondaryTextColor}" />
