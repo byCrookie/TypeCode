@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.ComponentModel.DataAnnotations;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using TypeCode.Wpf.Application;
 using TypeCode.Wpf.Helper.Event;
@@ -7,7 +8,11 @@ using TypeCode.Wpf.Helper.Navigation.Service;
 
 namespace TypeCode.Wpf.Components.InputBox;
 
-public partial class InputBoxViewModel : ObservableObject, IAsyncEventHandler<LoadStartEvent>, IAsyncEventHandler<LoadEndEvent>, IAsyncNavigatedFrom
+public partial class InputBoxViewModel :
+    ObservableValidator,
+    IAsyncEventHandler<LoadStartEvent>,
+    IAsyncEventHandler<LoadEndEvent>,
+    IAsyncNavigatedFrom
 {
     private readonly IEventAggregator _eventAggregator;
     private readonly InputBoxViewModelParameter _parameter;
@@ -16,7 +21,7 @@ public partial class InputBoxViewModel : ObservableObject, IAsyncEventHandler<Lo
     public InputBoxViewModel(IEventAggregator eventAggregator, InputBoxViewModelParameter parameter)
     {
         _eventAggregator = eventAggregator;
-        
+
         _loaded = true;
         ActionName = parameter.ActionName;
         ToolTip = parameter.ToolTip;
@@ -25,7 +30,7 @@ public partial class InputBoxViewModel : ObservableObject, IAsyncEventHandler<Lo
         eventAggregator.Subscribe<LoadStartEvent>(this);
         eventAggregator.Subscribe<LoadEndEvent>(this);
     }
-    
+
     public Task OnNavigatedFromAsync(NavigationContext context)
     {
         _eventAggregator.Unsubscribe(this);
@@ -35,16 +40,18 @@ public partial class InputBoxViewModel : ObservableObject, IAsyncEventHandler<Lo
     [RelayCommand(CanExecute = nameof(CanAction))]
     private Task ActionAsync()
     {
-        return _parameter.ActionAsync(Regex, Input);
+        return _parameter.ActionAsync(UseRegexSearch, Input);
     }
-    
+
     private bool CanAction()
     {
-        return _loaded && !string.IsNullOrEmpty(Input?.Trim());
+        return _loaded && !HasErrors && !string.IsNullOrEmpty(Input);
     }
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(ActionCommand))]
+    [NotifyDataErrorInfo]
+    [Required]
     private string? _input;
 
     [ObservableProperty]
@@ -54,7 +61,7 @@ public partial class InputBoxViewModel : ObservableObject, IAsyncEventHandler<Lo
     private string? _actionName;
 
     [ObservableProperty]
-    private bool _regex;
+    private bool _useRegexSearch;
 
     public Task HandleAsync(LoadStartEvent e)
     {
@@ -62,7 +69,7 @@ public partial class InputBoxViewModel : ObservableObject, IAsyncEventHandler<Lo
         ActionCommand.NotifyCanExecuteChanged();
         return Task.CompletedTask;
     }
-    
+
     public Task HandleAsync(LoadEndEvent e)
     {
         _loaded = true;

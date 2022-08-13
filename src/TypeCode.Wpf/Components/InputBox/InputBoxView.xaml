@@ -8,6 +8,17 @@
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance inputBox:InputBoxViewModel}">
 
+    <UserControl.Resources>
+        <Style x:Key="ValStyle" TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="true">
+                    <Setter Property="ToolTip"
+                            Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors)/ErrorContent}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -27,16 +38,18 @@
                 <TextBox Grid.Column="0"
                          Margin="4"
                          BorderThickness="0"
-                         Text="{Binding Input, UpdateSourceTrigger=PropertyChanged}"
                          HorizontalAlignment="Stretch"
                          HorizontalContentAlignment="Stretch"
-                         FontFamily="Courier New">
+                         Style="{StaticResource ValStyle}"
+                         Text="{Binding Input, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}">
+
                     <TextBox.InputBindings>
                         <KeyBinding Key="Enter" Command="{Binding ActionCommand}" />
                     </TextBox.InputBindings>
                 </TextBox>
-                <CheckBox Margin="5,0,5,0" Grid.Column="1" ToolTip="Regex" VerticalAlignment="Center"
-                          IsChecked="{Binding Regex}" />
+
+                <CheckBox Margin="5,0,5,0" Grid.Column="1" ToolTip="Search with Regex" VerticalAlignment="Center"
+                          IsChecked="{Binding UseRegexSearch}" />
             </Grid>
         </Border>
 
