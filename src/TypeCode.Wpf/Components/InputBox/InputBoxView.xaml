@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:inputBox="clr-namespace:TypeCode.Wpf.Components.InputBox"
+             xmlns:converters="clr-namespace:TypeCode.Wpf.Helper.Converters"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance inputBox:InputBoxViewModel}"
@@ -11,11 +12,7 @@
 
     <UserControl.Resources>
 
-        <Style x:Key="PopupValidationStyle" TargetType="{x:Type TextBlock}"
-               BasedOn="{StaticResource {x:Type TextBlock}}">
-            <Setter Property="Background" Value="{StaticResource Accent}"></Setter>
-            <Setter Property="Padding" Value="3"></Setter>
-        </Style>
+        <converters:BooleanToVisibilityConverterSelf x:Key="BooleanToVisibilityConverter" True="Visible" False="Collapsed" />
 
         <Style x:Key="ValidationStyle" TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
             <Style.Triggers>
@@ -50,18 +47,13 @@
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
+        
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
 
-        <Popup IsOpen="{Binding ElementName=InputTextBox, Path=(Validation.HasError), Mode=OneWay}"
-               PlacementTarget="{Binding ElementName=TextBoxBorder}" Placement="Top">
-            <Border BorderBrush="{StaticResource Accent}" BorderThickness="1">
-                <TextBlock Style="{StaticResource PopupValidationStyle}"
-                           Text="{Binding ElementName=InputTextBox, Path=(Validation.Errors)/ErrorContent}">
-                </TextBlock>
-            </Border>
-        </Popup>
-
-        <Border x:Name="TextBoxBorder"
-                Style="{StaticResource BorderValidationStyle}"
+        <Border Style="{StaticResource BorderValidationStyle}"
                 VerticalAlignment="Center"
                 Grid.Row="0"
                 Grid.Column="0">
@@ -94,5 +86,13 @@
         <Button Margin="5,0,0,0" Grid.Row="0" Grid.Column="1"
                 Content="{Binding ActionName}"
                 Command="{Binding ActionCommand}" />
+        
+        <TextBlock Grid.Row="1"
+                   Grid.Column="0"
+                   Padding="2"
+                   Foreground="{StaticResource Error}"
+                   Visibility="{Binding ElementName=InputTextBox, Path=(Validation.HasError), Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}"
+                   Text="{Binding ElementName=InputTextBox, Path=(Validation.Errors)/ErrorContent}" />
+
     </Grid>
 </UserControl>
