@@ -9,6 +9,7 @@ using TypeCode.Wpf.Components.InfoLink;
 using TypeCode.Wpf.Helper.Event;
 using TypeCode.Wpf.Helper.Navigation.Contract;
 using TypeCode.Wpf.Helper.Navigation.Service;
+using TypeCode.Wpf.Helper.ViewModels;
 using TypeCode.Wpf.Main.Content;
 using TypeCode.Wpf.Main.Sidebar;
 
@@ -26,7 +27,6 @@ public partial class MainViewModel :
     private readonly IConfigurationLoader _configurationLoader;
     private readonly ITypeProvider _typeProvider;
     private readonly IInfoLinkViewModelFactory _infoLinkViewModelFactory;
-    private readonly NavigationContext _navigationContext;
     private bool _isLoading;
 
     public MainViewModel(
@@ -52,8 +52,6 @@ public partial class MainViewModel :
 
         MainContentViewModel = factory.Create<MainContentViewModel>();
         MainSidebarViewModel = factory.Create<MainSidebarViewModel>();
-
-        _navigationContext = new NavigationContext();
     }
 
     public Task OnNavigatedToAsync(NavigationContext context)
@@ -61,14 +59,9 @@ public partial class MainViewModel :
         InfoLink = _infoLinkViewModelFactory
             .Create(new InfoLinkViewModelParameter("https://github.com/byCrookie/TypeCode/wiki"));
 
-        if (MainSidebarViewModel is IAsyncNavigatedTo navSideBar)
-        {
-            navSideBar.OnNavigatedToAsync(_navigationContext);
-        }
-
         return Task.CompletedTask;
     }
-    
+
     public Task OnNavigatedFromAsync(NavigationContext context)
     {
         _eventAggregator.Unsubscribe(this);
@@ -76,15 +69,18 @@ public partial class MainViewModel :
     }
 
     [ObservableProperty]
+    [ChildViewModel]
     private MainContentViewModel? _mainContentViewModel;
 
     [ObservableProperty]
+    [ChildViewModel]
     private MainSidebarViewModel? _mainSidebarViewModel;
 
     [ObservableProperty]
     private string? _title;
 
     [ObservableProperty]
+    [ChildViewModel]
     private InfoLinkViewModel? _infoLink;
 
     public Task HandleAsync(VersionLoadedEvent e)

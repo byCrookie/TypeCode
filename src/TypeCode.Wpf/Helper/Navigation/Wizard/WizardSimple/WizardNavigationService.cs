@@ -5,6 +5,7 @@ using TypeCode.Business.Format;
 using TypeCode.Wpf.Helper.Event;
 using TypeCode.Wpf.Helper.Navigation.Contract;
 using TypeCode.Wpf.Helper.Navigation.Service;
+using TypeCode.Wpf.Helper.ViewModels;
 using TypeCode.Wpf.Main;
 
 namespace TypeCode.Wpf.Helper.Navigation.Wizard.WizardSimple;
@@ -144,18 +145,11 @@ public class WizardNavigationService : IWizardNavigationService
 
     private Task CallNavigatedFromOnLastViewModelAsync(NavigationContext context)
     {
-        return _lastViewModel is IAsyncNavigatedFrom asyncNavigatedFrom
-            ? asyncNavigatedFrom.OnNavigatedFromAsync(context)
-            : Task.CompletedTask;
+        return NavigationCaller.CallNavigateFromAsync(_lastViewModel, context);
     }
 
     private static Task CallOnNavigatedToOnViewModelAsync<T>(NavigationContext context, T viewModelInstance)
     {
-        if (viewModelInstance is IAsyncNavigatedTo asyncNavigatedTo)
-        {
-            return asyncNavigatedTo.OnNavigatedToAsync(context);
-        }
-
-        return Task.CompletedTask;
+        return NavigationCaller.CallNavigateToAsync(viewModelInstance, context);
     }
 }

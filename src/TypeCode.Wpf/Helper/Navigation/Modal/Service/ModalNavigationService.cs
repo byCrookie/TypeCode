@@ -1,9 +1,9 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using DependencyInjection.Factory;
-using TypeCode.Wpf.Helper.Navigation.Contract;
 using TypeCode.Wpf.Helper.Navigation.Modal.View;
 using TypeCode.Wpf.Helper.Navigation.Service;
+using TypeCode.Wpf.Helper.ViewModels;
 using TypeCode.Wpf.Main;
 
 namespace TypeCode.Wpf.Helper.Navigation.Modal.Service;
@@ -66,11 +66,6 @@ public class ModalNavigationService : IModalNavigationService
 
     private static Task CallOnNavigatedToOnCurrentViewModelAsync<T>(NavigationContext context, T viewModelInstance)
     {
-        if (viewModelInstance is IAsyncNavigatedTo asyncNavigatedTo)
-        {
-            return asyncNavigatedTo.OnNavigatedToAsync(context);
-        }
-            
-        return Task.CompletedTask;
+        return NavigationCaller.CallNavigateToAsync(viewModelInstance, context);
     }
 }

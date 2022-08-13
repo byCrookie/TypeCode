@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Xml.Serialization;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using TypeCode.Business.Mode;
 using TypeCode.Business.Mode.Mapper;
@@ -8,6 +9,7 @@ using TypeCode.Wpf.Components.InputBox;
 using TypeCode.Wpf.Components.OutputBox;
 using TypeCode.Wpf.Helper.Navigation.Contract;
 using TypeCode.Wpf.Helper.Navigation.Service;
+using TypeCode.Wpf.Helper.ViewModels;
 using TypeCode.Wpf.Pages.TypeSelection;
 
 namespace TypeCode.Wpf.Pages.Mapper;
@@ -95,9 +97,11 @@ public partial class MapperViewModel : ObservableObject, IAsyncNavigatedTo
     }
 
     [ObservableProperty]
+    [ChildViewModel]
     private InputBoxViewModel? _inputBoxViewModel;
 
     [ObservableProperty]
+    [ChildViewModel]
     private OutputBoxViewModel? _outputBoxViewModel;
 
     [ObservableProperty]

@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 using DependencyInjection.Factory;
-using TypeCode.Wpf.Helper.Navigation.Contract;
+using TypeCode.Wpf.Helper.ViewModels;
 using TypeCode.Wpf.Main;
 
 namespace TypeCode.Wpf.Helper.Navigation.Service;
@@ -45,24 +45,17 @@ public class NavigationService : INavigationService
         }
 
         await CallOnNavigatedToOnCurrentViewModelAsync(context, viewModelInstance).ConfigureAwait(true);
-            
+
         _lastViewModel = viewModelInstance;
     }
-        
+
     private static Task CallOnNavigatedToOnCurrentViewModelAsync<T>(NavigationContext context, T viewModelInstance)
     {
-        if (viewModelInstance is IAsyncNavigatedTo asyncNavigatedTo)
-        {
-            return asyncNavigatedTo.OnNavigatedToAsync(context);
-        }
-            
-        return Task.CompletedTask;
+        return NavigationCaller.CallNavigateToAsync(viewModelInstance, context);
     }
 
     private Task CallNavigatedFromOnLastViewModelAsync(NavigationContext context)
     {
-        return _lastViewModel is IAsyncNavigatedFrom asyncNavigatedFrom
-            ? asyncNavigatedFrom.OnNavigatedFromAsync(context)
-            : Task.CompletedTask;
+        return NavigationCaller.CallNavigateFromAsync(_lastViewModel, context);
     }
 }

@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using TypeCode.Wpf.Helper.Navigation.Contract;
+using TypeCode.Wpf.Helper.ViewModels;
 
 namespace TypeCode.Wpf.Helper.Navigation.Wizard.Complex;
 
@@ -28,7 +29,7 @@ public partial class WizardViewModel : ObservableObject, IWizardHost
         {
             throw new ArgumentException($"{nameof(wizard.CurrentStepConfiguration)} is not set");
         }
-            
+
         if (!wizard.CurrentStepConfiguration.Initialized && wizard.CurrentStepConfiguration.Instances.ViewModelInstance is IAsyncInitialNavigated asyncInitialNavigated)
         {
             await asyncInitialNavigated.OnInititalNavigationAsync(wizard.NavigationContext).ConfigureAwait(true);
@@ -38,7 +39,7 @@ public partial class WizardViewModel : ObservableObject, IWizardHost
         await wizard.CurrentStepConfiguration.BeforeAction(wizard.NavigationContext).ConfigureAwait(true);
 
         BackCommand = new AsyncRelayCommand(BackAsync, () => wizard.CurrentStepConfiguration != wizard.StepConfigurations.FirstOrDefault()
-                                                              && wizard.CurrentStepConfiguration.AllowBack(wizard.NavigationContext));
+                                                             && wizard.CurrentStepConfiguration.AllowBack(wizard.NavigationContext));
         NextCommand = new AsyncRelayCommand(NextAsync, () => wizard.CurrentStepConfiguration != wizard.StepConfigurations.LastOrDefault()
                                                              && wizard.CurrentStepConfiguration.AllowNext(wizard.NavigationContext));
         CancelCommand = new AsyncRelayCommand(CancelAsync);
@@ -52,11 +53,8 @@ public partial class WizardViewModel : ObservableObject, IWizardHost
         }
 
         WizardPage = wizardPage;
-
-        if (wizard.CurrentStepConfiguration.Instances.ViewModelInstance is IAsyncNavigatedTo asyncNavigatedTo)
-        {
-            await asyncNavigatedTo.OnNavigatedToAsync(wizard.NavigationContext).ConfigureAwait(true);
-        }
+        
+        await NavigationCaller.CallNavigateToAsync(wizard.CurrentStepConfiguration.Instances.ViewModelInstance, wizard.NavigationContext);
 
         _wizard = wizard;
     }
@@ -64,16 +62,13 @@ public partial class WizardViewModel : ObservableObject, IWizardHost
     public async Task NavigateFromAsync(Wizard wizard, NavigationAction navigationAction)
     {
         wizard.NavigationContext.AddOrUpdateParameter(navigationAction);
-        
+
         if (wizard.CurrentStepConfiguration is null)
         {
             throw new ArgumentException($"{nameof(wizard.CurrentStepConfiguration)} is not set");
         }
 
-        if (wizard.CurrentStepConfiguration.Instances.ViewModelInstance is IAsyncNavigatedFrom asyncNavigatedFrom)
-        {
-            await asyncNavigatedFrom.OnNavigatedFromAsync(wizard.NavigationContext).ConfigureAwait(true);
-        }
+        await NavigationCaller.CallNavigateFromAsync(wizard.CurrentStepConfiguration.Instances.ViewModelInstance, wizard.NavigationContext);
 
         await wizard.CurrentStepConfiguration.AfterAction(wizard.NavigationContext).ConfigureAwait(true);
     }
@@ -84,7 +79,7 @@ public partial class WizardViewModel : ObservableObject, IWizardHost
         {
             throw new ArgumentException($"Wizard is not set");
         }
-        
+
         return _wizardNavigator.NextAsync(_wizard);
     }
 
@@ -94,7 +89,7 @@ public partial class WizardViewModel : ObservableObject, IWizardHost
         {
             throw new ArgumentException($"Wizard is not set");
         }
-        
+
         return _wizardNavigator.BackAsync(_wizard);
     }
 
@@ -104,7 +99,7 @@ public partial class WizardViewModel : ObservableObject, IWizardHost
         {
             throw new ArgumentException($"Wizard is not set");
         }
-        
+
         return _wizardNavigator.CancelAsync(_wizard);
     }
 
@@ -114,7 +109,7 @@ public partial class WizardViewModel : ObservableObject, IWizardHost
         {
             throw new ArgumentException("Wizard is not set");
         }
-        
+
         return _wizardNavigator.FinishAsync(_wizard);
     }
 

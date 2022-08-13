@@ -4,6 +4,7 @@ using TypeCode.Business.Mode.Builder;
 using TypeCode.Business.TypeEvaluation;
 using TypeCode.Wpf.Components.InputBox;
 using TypeCode.Wpf.Components.OutputBox;
+using TypeCode.Wpf.Helper.ViewModels;
 using TypeCode.Wpf.Pages.TypeSelection;
 
 namespace TypeCode.Wpf.Pages.Builder;
@@ -70,9 +71,11 @@ public partial class BuilderViewModel : ObservableObject
     }
 
     [ObservableProperty]
+    [ChildViewModel]
     private InputBoxViewModel? _inputBoxViewModel;
 
     [ObservableProperty]
+    [ChildViewModel]
     private OutputBoxViewModel? _outputBoxViewModel;
 
     [ObservableProperty]

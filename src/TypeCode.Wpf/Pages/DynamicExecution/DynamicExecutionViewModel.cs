@@ -6,6 +6,7 @@ using TypeCode.Business.Mode.DynamicExecution;
 using TypeCode.Wpf.Components.OutputBox;
 using TypeCode.Wpf.Helper.Navigation.Contract;
 using TypeCode.Wpf.Helper.Navigation.Service;
+using TypeCode.Wpf.Helper.ViewModels;
 
 namespace TypeCode.Wpf.Pages.DynamicExecution;
 
@@ -50,5 +51,6 @@ public partial class DynamicExecutionViewModel : ObservableObject, IAsyncNavigat
     private string? _input;
 
     [ObservableProperty]
+    [ChildViewModel]
     private OutputBoxViewModel? _outputBoxViewModel;
 }

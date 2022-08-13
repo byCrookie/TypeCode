@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using TypeCode.Wpf.Helper.Event;
 using TypeCode.Wpf.Helper.Navigation.Contract;
 using TypeCode.Wpf.Helper.Navigation.Service;
+using TypeCode.Wpf.Helper.ViewModels;
 
 namespace TypeCode.Wpf.Pages.TypeSelection;
 
@@ -29,6 +30,7 @@ public partial class TypeSelectionViewModel : ObservableObject, IAsyncNavigatedT
     private SelectionMode _selectionMode;
 
     [ObservableProperty]
+    [ChildViewModel]
     private ObservableCollection<TypeItemViewModel>? _types;
 
     public IEnumerable<Type> SelectedTypes

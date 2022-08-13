@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using TypeCode.Wpf.Helper.Navigation.Service;
 using TypeCode.Wpf.Helper.Navigation.Wizard.Complex;
+using TypeCode.Wpf.Helper.ViewModels;
 
 namespace TypeCode.Wpf.Pages.Common.Configuration;
 
@@ -58,6 +59,7 @@ public partial class SetupWizardViewModel : ObservableObject, IAsyncInitialNavig
     private TreeViewItem? _selectedItem;
 
     [ObservableProperty]
+    [ChildViewModel]
     private ConfigurationWizardViewModel? _configurationViewModel;
     
     private void Refresh()

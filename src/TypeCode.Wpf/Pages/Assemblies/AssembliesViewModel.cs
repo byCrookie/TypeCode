@@ -7,6 +7,7 @@ using TypeCode.Wpf.Helper.Event;
 using TypeCode.Wpf.Helper.Navigation.Contract;
 using TypeCode.Wpf.Helper.Navigation.Modal.Service;
 using TypeCode.Wpf.Helper.Navigation.Service;
+using TypeCode.Wpf.Helper.ViewModels;
 
 namespace TypeCode.Wpf.Pages.Assemblies;
 
@@ -59,6 +60,7 @@ public partial class AssemblyViewModel : ObservableObject, IAsyncNavigatedTo, IA
     }
     
     [ObservableProperty]
+    [ChildViewModel]
     private InputBoxViewModel? _inputBoxViewModel;
 
     [ObservableProperty]

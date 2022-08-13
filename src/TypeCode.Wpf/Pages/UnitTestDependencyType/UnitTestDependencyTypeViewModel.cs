@@ -4,6 +4,7 @@ using TypeCode.Business.Mode.UnitTestDependency.Type;
 using TypeCode.Business.TypeEvaluation;
 using TypeCode.Wpf.Components.InputBox;
 using TypeCode.Wpf.Components.OutputBox;
+using TypeCode.Wpf.Helper.ViewModels;
 using TypeCode.Wpf.Pages.TypeSelection;
 
 namespace TypeCode.Wpf.Pages.UnitTestDependencyType;
@@ -69,8 +70,10 @@ public partial class UnitTestDependencyTypeViewModel : ObservableObject
     }
 
     [ObservableProperty]
+    [ChildViewModel]
     private InputBoxViewModel? _inputBoxViewModel;
 
     [ObservableProperty]
+    [ChildViewModel]
     private OutputBoxViewModel? _outputBoxViewModel;
 }

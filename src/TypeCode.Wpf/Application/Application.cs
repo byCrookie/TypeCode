@@ -11,6 +11,7 @@ using TypeCode.Wpf.Helper.Event;
 using TypeCode.Wpf.Helper.Navigation.Modal.Service;
 using TypeCode.Wpf.Helper.Navigation.Service;
 using TypeCode.Wpf.Helper.Thread;
+using TypeCode.Wpf.Helper.ViewModels;
 using TypeCode.Wpf.Main;
 
 namespace TypeCode.Wpf.Application;
@@ -44,7 +45,7 @@ public class Application<TContext> : IApplication<TContext> where TContext : Boo
         _configurationLoader = configurationLoader;
     }
 
-    public Task RunAsync(TContext context, CancellationToken cancellationToken)
+    public async Task RunAsync(TContext context, CancellationToken cancellationToken)
     {
         var mainWindow = _mainViewProvider.MainWindow();
 
@@ -54,14 +55,12 @@ public class Application<TContext> : IApplication<TContext> where TContext : Boo
         SafeFireAndForgetExtensions.SetDefaultExceptionHandling(e => { HandleException(e, mainWindow); });
 
         var mainViewModel = _mainViewModelFactory.Create();
-        mainViewModel.OnNavigatedToAsync(new NavigationContext());
         mainWindow.DataContext = mainViewModel;
+        await NavigationCaller.CallNavigateToAsync(mainViewModel, new NavigationContext());
 
         LoadAssembliesAsync().SafeFireAndForget();
 
         mainWindow.ShowDialog();
-
-        return Task.CompletedTask;
     }
 
     private static void CloseOverlays(MainWindow mainWindow)

@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using TypeCode.Business.Mode;
 using TypeCode.Business.Mode.UnitTestDependency.Manually;
 using TypeCode.Wpf.Components.OutputBox;
+using TypeCode.Wpf.Helper.ViewModels;
 
 namespace TypeCode.Wpf.Pages.UnitTestDependencyManually;
 
@@ -36,5 +37,6 @@ public partial class UnitTestDependencyManuallyViewModel : ObservableObject
     private string? _input;
 
     [ObservableProperty]
+    [ChildViewModel]
     private OutputBoxViewModel? _outputBoxViewModel;
 }
