@@ -8,8 +8,8 @@ namespace TypeCode.Wpf.Helper.Event;
 
 public class EventAggregator : IEventAggregator
 {
-    private static readonly ConcurrentDictionary<Type, ConcurrentDictionary<object, object>> Events = new();
-    private static readonly ConcurrentDictionary<object, ConcurrentDictionary<Type, Type>> Subscribers = new();
+    private static readonly ConcurrentDictionary<Type, ConcurrentDictionary<object, object?>> Events = new();
+    private static readonly ConcurrentDictionary<object, ConcurrentDictionary<Type, object?>> Subscribers = new();
 
     public void Subscribe<TEvent>(object subscriber) where TEvent : notnull
     {
@@ -18,20 +18,20 @@ public class EventAggregator : IEventAggregator
             throw new Exception($"{subscriber.GetType()} does not implement {typeof(IAsyncEventHandler<TEvent>)}");
         }
 
-        var subscribers = Events.GetOrAdd(typeof(TEvent), new ConcurrentDictionary<object, object>());
-        _ = subscribers.GetOrAdd(subscriber, subscriber);
+        var subscribers = Events.GetOrAdd(typeof(TEvent), new ConcurrentDictionary<object, object?>());
+        subscribers.TryAdd(subscriber, null);
         
-        var events = Subscribers.GetOrAdd(subscriber, new ConcurrentDictionary<Type, Type>());
-        _ = events.GetOrAdd(typeof(TEvent), typeof(TEvent));
+        var events = Subscribers.GetOrAdd(subscriber, new ConcurrentDictionary<Type, object?>());
+        events.TryAdd(typeof(TEvent), null);
     }
 
     public void Unsubscribe<TEvent>(object subscriber) where TEvent : notnull
     {
-        var subscribers = Events.GetOrAdd(typeof(TEvent), new ConcurrentDictionary<object, object>());
-        subscribers.TryRemove(new KeyValuePair<object, object>(subscriber, subscriber));
+        var subscribers = Events.GetOrAdd(typeof(TEvent), new ConcurrentDictionary<object, object?>());
+        subscribers.TryRemove(subscriber, out _);
         
-        var events = Subscribers.GetOrAdd(subscriber, new ConcurrentDictionary<Type, Type>());
-        events.TryRemove(new KeyValuePair<Type, Type>(typeof(TEvent), typeof(TEvent)));
+        var events = Subscribers.GetOrAdd(subscriber, new ConcurrentDictionary<Type, object?>());
+        events.TryRemove(typeof(TEvent), out _);
     }
 
     public void Unsubscribe(object subscriber)
@@ -45,7 +45,7 @@ public class EventAggregator : IEventAggregator
 
         foreach (var @event in events)
         {
-            var subscribers = Events.GetOrAdd(@event.Key, new ConcurrentDictionary<object, object>());
+            var subscribers = Events.GetOrAdd(@event.Key, new ConcurrentDictionary<object, object?>());
             subscribers.TryRemove(subscriber, out _);
         }
     }
