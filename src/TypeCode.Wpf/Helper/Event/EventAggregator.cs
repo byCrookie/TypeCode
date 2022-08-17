@@ -1,6 +1,4 @@
-using System.Collections.Concurrent;
 using System.Windows.Threading;
-using Framework.Extensions.List;
 using Serilog;
 using TypeCode.Wpf.Helper.Thread;
 
@@ -8,65 +6,89 @@ namespace TypeCode.Wpf.Helper.Event;
 
 public class EventAggregator : IEventAggregator
 {
-    private static readonly ConcurrentDictionary<Type, ConcurrentDictionary<object, object?>> Events = new();
-    private static readonly ConcurrentDictionary<object, ConcurrentDictionary<Type, object?>> Subscribers = new();
+    private readonly object _lock = new();
+
+    private static readonly IDictionary<Type, HashSet<object>> Events = new Dictionary<Type, HashSet<object>>();
+    private static readonly IDictionary<object, HashSet<Type>> Subscribers = new Dictionary<object, HashSet<Type>>();
 
     public void Subscribe<TEvent>(object subscriber) where TEvent : notnull
     {
-        if (subscriber is not IAsyncEventHandler<TEvent>)
+        lock (_lock)
         {
-            throw new Exception($"{subscriber.GetType()} does not implement {typeof(IAsyncEventHandler<TEvent>)}");
-        }
+            if (!Events.ContainsKey(typeof(TEvent)))
+            {
+                Events.Add(typeof(TEvent), new HashSet<object> { subscriber });
+            }
+            else
+            {
+                Events[typeof(TEvent)].Add(subscriber);
+            }
 
-        var subscribers = Events.GetOrAdd(typeof(TEvent), new ConcurrentDictionary<object, object?>());
-        subscribers.TryAdd(subscriber, null);
-        
-        var events = Subscribers.GetOrAdd(subscriber, new ConcurrentDictionary<Type, object?>());
-        events.TryAdd(typeof(TEvent), null);
+            if (!Subscribers.ContainsKey(subscriber))
+            {
+                Subscribers.Add(subscriber, new HashSet<Type> { typeof(TEvent) });
+            }
+            else
+            {
+                Subscribers[subscriber].Add(typeof(TEvent));
+            }
+        }
     }
 
     public void Unsubscribe<TEvent>(object subscriber) where TEvent : notnull
     {
-        var subscribers = Events.GetOrAdd(typeof(TEvent), new ConcurrentDictionary<object, object?>());
-        subscribers.TryRemove(subscriber, out _);
-        
-        var events = Subscribers.GetOrAdd(subscriber, new ConcurrentDictionary<Type, object?>());
-        events.TryRemove(typeof(TEvent), out _);
+        lock (_lock)
+        {
+            if (Events.ContainsKey(typeof(TEvent)))
+            {
+                Events[typeof(TEvent)].Remove(subscriber);
+            }
+
+            if (Subscribers.ContainsKey(subscriber))
+            {
+                Subscribers[subscriber].Remove(typeof(TEvent));
+            }
+        }
     }
 
     public void Unsubscribe(object subscriber)
     {
-        Subscribers.TryRemove(subscriber, out var events);
-
-        if (events is null)
+        lock (_lock)
         {
-            return;
-        }
+            if (Subscribers.ContainsKey(subscriber))
+            {
+                Subscribers.Remove(subscriber, out var events);
 
-        foreach (var @event in events)
-        {
-            var subscribers = Events.GetOrAdd(@event.Key, new ConcurrentDictionary<object, object?>());
-            subscribers.TryRemove(subscriber, out _);
+                if (events is null)
+                {
+                    return;
+                }
+
+                foreach (var @event in events.Where(@event => Events.ContainsKey(@event)))
+                {
+                    Events[@event].Remove(subscriber);
+                }
+            }
         }
     }
 
     public Task PublishAsync<TEvent>(TEvent e) where TEvent : notnull
     {
         Log.Debug("{Event} was published", typeof(TEvent));
-        
-        if (Events.TryGetValue(typeof(TEvent), out var events))
-        {
-            return events.ForEachAsync(ev =>
-            {
-                if (ev.Key is IAsyncEventHandler<TEvent> asyncEventHandler)
-                {
-                    Log.Debug("Calling {Handler} to handle {Event}", asyncEventHandler.GetType().FullName, typeof(TEvent));
-                    MainThread.BackgroundFireAndForget(() => asyncEventHandler.HandleAsync(e), DispatcherPriority.Send);
-                    return Task.CompletedTask;
-                }
 
-                return Task.CompletedTask;
-            });
+        lock (_lock)
+        {
+            if (Events.ContainsKey(typeof(TEvent)))
+            {
+                foreach (var subscriber in Events[typeof(TEvent)])
+                {
+                    if (subscriber is IAsyncEventHandler<TEvent> subsriberHandler)
+                    {
+                        Log.Debug("Calling {Handler} to handle {Event}", subsriberHandler.GetType().FullName, typeof(TEvent));
+                        MainThread.BackgroundFireAndForget(() => subsriberHandler.HandleAsync(e), DispatcherPriority.Send);
+                    }
+                }
+            }
         }
 
         return Task.CompletedTask;
