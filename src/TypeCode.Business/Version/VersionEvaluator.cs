@@ -9,16 +9,14 @@ public class VersionEvaluator : IVersionEvaluator
     public async Task<VersionResult> EvaluateAsync()
     {
         var currentVersion = await ReadCurrentVersionAsync().ConfigureAwait(false);
-        var latestVersion = await GetVersionAsync().ConfigureAwait(false);
+        var newestVersion = await GetNewestVersionAsync().ConfigureAwait(false);
 
-        if (!string.IsNullOrEmpty(currentVersion.CurrentVersion)
-            && !string.IsNullOrEmpty(latestVersion?.TagName)
-            && !string.Equals(currentVersion.CurrentVersion.Trim(), GetVersionNumerFromTag(latestVersion), StringComparison.CurrentCultureIgnoreCase))
+        if (HasNewerVersion(currentVersion, newestVersion))
         {
             return new VersionResult
             {
                 CurrentVersion = currentVersion.CurrentVersion,
-                NewVersion = latestVersion.TagName
+                NewVersion = newestVersion!.TagName
             };
         }
 
@@ -28,6 +26,19 @@ public class VersionEvaluator : IVersionEvaluator
         };
     }
 
+    private static bool HasNewerVersion(VersionResult currentVersion, VersionResponse? newestVersion)
+    {
+        if (string.IsNullOrEmpty(currentVersion.CurrentVersion) || string.IsNullOrEmpty(newestVersion?.TagName))
+        {
+            return false;
+        }
+
+        var current = int.Parse(string.Join("", currentVersion.CurrentVersion.Trim().Split('.')[..3]));
+        var newest = int.Parse(string.Join("", GetVersionNumberFromTag(newestVersion).Trim().Split('.')[..3]));
+        
+        return current < newest;
+    }
+
     public Task<VersionResult> ReadCurrentVersionAsync()
     {
         var versionInfo = FileVersionInfo.GetVersionInfo($"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\\TypeCode.Wpf.exe");
@@ -35,13 +46,13 @@ public class VersionEvaluator : IVersionEvaluator
         return Task.FromResult(result);
     }
 
-    private static string GetVersionNumerFromTag(VersionResponse latestVersion)
+    private static string GetVersionNumberFromTag(VersionResponse latestVersion)
     {
         var tag = latestVersion.TagName.Trim();
         return tag[1..];
     }
 
-    private static async Task<VersionResponse?> GetVersionAsync()
+    private static async Task<VersionResponse?> GetNewestVersionAsync()
     {
         using (var client = new HttpClient())
         {
