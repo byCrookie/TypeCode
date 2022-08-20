@@ -33,10 +33,22 @@ public class VersionEvaluator : IVersionEvaluator
             return false;
         }
 
-        var current = int.Parse(string.Join("", currentVersion.CurrentVersion.Trim().Split('.')[..3]));
-        var newest = int.Parse(string.Join("", GetVersionNumberFromTag(newestVersion).Trim().Split('.')[..3]));
+        var current = CurrentAsInt(currentVersion);
+        var newest = NewestAsInt(newestVersion);
         
         return current < newest;
+    }
+
+    private static int NewestAsInt(VersionResponse newestVersion)
+    {
+        return int.Parse(string.Join("", GetVersionNumberFromTag(newestVersion).Trim().Split('.')[..3]));
+    }
+
+    private static int CurrentAsInt(VersionResult currentVersion)
+    {
+        return int.Parse(currentVersion.CurrentVersion!.Trim().Split('-').Length > 1 
+            ? string.Join("", currentVersion.CurrentVersion!.Trim().Split('-')[0].Split('.')[..3]) 
+            : string.Join("", currentVersion.CurrentVersion!.Trim().Split('.')[..3]));
     }
 
     public Task<VersionResult> ReadCurrentVersionAsync()
