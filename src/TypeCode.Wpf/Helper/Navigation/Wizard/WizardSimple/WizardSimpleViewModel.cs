@@ -67,7 +67,7 @@ public partial class WizardSimpleViewModel<T> :
     [ObservableProperty]
     private string? _finishText;
 
-    public Task HandleAsync(WizardUpdateEvent e)
+    public Task HandleAsync(WizardUpdateEvent e, CancellationToken? cancellationToken = null)
     {
         FinishCommand.NotifyCanExecuteChanged();
         return Task.CompletedTask;

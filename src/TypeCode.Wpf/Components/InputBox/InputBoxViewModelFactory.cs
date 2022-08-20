@@ -1,18 +1,20 @@
-﻿using TypeCode.Wpf.Helper.Event;
+﻿using DependencyInjection.Factory;
 
 namespace TypeCode.Wpf.Components.InputBox;
 
 public class InputBoxViewModelFactory : IInputBoxViewModelFactory
 {
-    private readonly IEventAggregator _eventAggregator;
+    private readonly IFactory<InputBoxViewModel> _viewModelFactory;
 
-    public InputBoxViewModelFactory(IEventAggregator eventAggregator)
+    public InputBoxViewModelFactory(IFactory<InputBoxViewModel> viewModelFactory)
     {
-        _eventAggregator = eventAggregator;
+        _viewModelFactory = viewModelFactory;
     }
     
     public InputBoxViewModel Create(InputBoxViewModelParameter parameter)
     {
-        return new InputBoxViewModel(_eventAggregator, parameter);
+        var viewModel = _viewModelFactory.Create();
+        viewModel.Initialize(parameter);
+        return viewModel;
     }
 }
