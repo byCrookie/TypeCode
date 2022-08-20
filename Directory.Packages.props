@@ -2,8 +2,8 @@
     <ItemGroup>
         <PackageVersion Include="AsyncAwaitBestPractices.MVVM" Version="6.0.5"/>
         <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.0.0"/>
-        <PackageVersion Include="byCrookie.AppSdk" Version="1.0.18"/>
-        <PackageVersion Include="byCrookie.LibrarySdk" Version="1.0.18"/>
+        <PackageVersion Include="byCrookie.AppSdk" Version="1.0.19"/>
+        <PackageVersion Include="byCrookie.LibrarySdk" Version="1.0.19"/>
         <PackageVersion Include="byCrookie.Framework" Version="1.0.18"/>
         <PackageVersion Include="byCrookie.Framework.Boot" Version="1.0.18"/>
         <PackageVersion Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39"/>
