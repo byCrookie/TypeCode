@@ -15,9 +15,9 @@ public class MainViewProvider : IMainViewProvider
         }
         
         var mainView = new MainWindow();
-        var navigationFrame = mainView.MainContent.FindName("NavigationFrame");
-        var modalFrame = mainView.FindName("ModalFrame");
-        var wizardFrame = mainView.FindName("WizardFrame");
+        var navigationFrame = mainView.MainContent.FindName(FrameNames.NavigationFrame);
+        var modalFrame = mainView.FindName(FrameNames.ModalFrame);
+        var wizardFrame = mainView.FindName(FrameNames.WizardFrame);
 
         if (navigationFrame is null) throw new ApplicationException($"{nameof(MainWindow)} does not implement {nameof(navigationFrame)}");
         if (modalFrame is null) throw new ApplicationException($"{nameof(MainWindow)} does not implement {nameof(modalFrame)}");
