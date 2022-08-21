@@ -6,6 +6,7 @@
              xmlns:specflow="clr-namespace:TypeCode.Wpf.Pages.Specflow"
              xmlns:inputBox="clr-namespace:TypeCode.Wpf.Components.InputBox"
              xmlns:outputBox="clr-namespace:TypeCode.Wpf.Components.OutputBox"
+             xmlns:controls="clr-namespace:TypeCode.Wpf.Controls"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance specflow:SpecflowViewModel}">
 
@@ -13,12 +14,15 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         
-        <inputBox:InputBoxView Grid.Row="0" DataContext="{Binding InputBoxViewModel}"></inputBox:InputBoxView> 
+        <controls:CustomTextBox Text="{Binding Input, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" UseRegex="{Binding UseRegexSearch}" ShowRegex="True" DataContext="{Binding InputBoxViewModel}"/>
+        
+        <inputBox:InputBoxView Grid.Row="1" DataContext="{Binding InputBoxViewModel}"></inputBox:InputBoxView> 
 
-        <StackPanel Margin="0,5,0,5" Grid.Row="1" Orientation="Horizontal">
+        <StackPanel Margin="0,5,0,5" Grid.Row="2" Orientation="Horizontal">
             <CheckBox Content="Include Strings"
                       ToolTip="Nullable strings can't be detected automatically with option required. Decision is yours."
                       Foreground="{StaticResource PrimaryText}"
@@ -38,6 +42,6 @@
             </CheckBox>
         </StackPanel>
 
-        <outputBox:OutputBoxView Margin="0,5,0,0" Grid.Row="2" DataContext="{Binding OutputBoxViewModel}"></outputBox:OutputBoxView>
+        <outputBox:OutputBoxView Margin="0,5,0,0" Grid.Row="3" DataContext="{Binding OutputBoxViewModel}"></outputBox:OutputBoxView>
     </Grid>
 </UserControl>
