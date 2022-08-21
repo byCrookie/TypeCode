@@ -18,8 +18,8 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         
-        <controls:CustomTextBox Text="{Binding Input}"
-                                UseRegex="{Binding UseRegexSearch}"
+        <controls:CustomTextBox Text="{Binding Input, UpdateSourceTrigger=PropertyChanged}"
+                                UseRegex="{Binding UseRegexSearch, UpdateSourceTrigger=PropertyChanged}"
                                 ShowRegex="True"
                                 DataContext="{Binding InputBoxViewModel}"
                                 ToolTip="{Binding ToolTip}"/>
