@@ -6,6 +6,8 @@
     <converters:BooleanToVisibilityConverterSelf x:Key="BooleanToVisibilityConverter" True="Visible" False="Collapsed" />
 
     <Style TargetType="{x:Type controls:CustomTextBox}">
+        <Setter Property="Validation.ErrorTemplate" Value="{x:Null}"></Setter>
+        
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type controls:CustomTextBox}">
@@ -31,13 +33,13 @@
                                     <Setter Property="BorderThickness" Value="1"></Setter>
                                     <Style.Triggers>
                                         <DataTrigger
-                                            Binding="{Binding ElementName=InputTextBox, Path=(Validation.HasError)}"
+                                            Binding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(Validation.HasError)}"
                                             Value="false">
                                             <Setter Property="BorderBrush"
                                                     Value="{StaticResource Accent}" />
                                         </DataTrigger>
                                         <DataTrigger
-                                            Binding="{Binding ElementName=InputTextBox, Path=(Validation.HasError)}"
+                                            Binding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(Validation.HasError)}"
                                             Value="true">
                                             <Setter Property="BorderBrush"
                                                     Value="{StaticResource Error}" />
@@ -59,19 +61,19 @@
                                          HorizontalAlignment="Stretch"
                                          HorizontalContentAlignment="Stretch"
                                          Validation.ErrorTemplate="{x:Null}"
-                                         Text="{TemplateBinding Text}">
+                                         Text="{Binding Text, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
 
                                     <TextBox.Style>
                                         <Style TargetType="{x:Type TextBox}"
                                                BasedOn="{StaticResource {x:Type TextBox}}">
                                             <Style.Triggers>
-                                                <!-- <Trigger Property="Validation.HasError" Value="false"> -->
-                                                <!--     <Setter Property="ToolTip" -->
-                                                <!--             Value="{TemplateBinding ToolTip}" /> -->
-                                                <!-- </Trigger> -->
+                                                <Trigger Property="Validation.HasError" Value="false">
+                                                    <Setter Property="ToolTip"
+                                                            Value="{Binding ToolTip, RelativeSource={RelativeSource TemplatedParent}}" />
+                                                </Trigger>
                                                 <Trigger Property="Validation.HasError" Value="true">
                                                     <Setter Property="ToolTip"
-                                                            Value="{Binding (Validation.Errors)/ErrorContent}" />
+                                                            Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(Validation.Errors)/ErrorContent}" />
                                                 </Trigger>
                                             </Style.Triggers>
                                         </Style>
@@ -90,8 +92,8 @@
                                    Grid.Column="0"
                                    Padding="2"
                                    Foreground="{StaticResource Error}"
-                                   Visibility="{Binding ElementName=InputTextBox, Path=(Validation.HasError), Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                   Text="{Binding ElementName=InputTextBox, Path=(Validation.Errors)/ErrorContent}" />
+                                   Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(Validation.HasError), Converter={StaticResource BooleanToVisibilityConverter}}"
+                                   Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(Validation.Errors)/ErrorContent}" />
 
                         <!-- <Popup -->
                         <!--     Grid.Row="0" -->
