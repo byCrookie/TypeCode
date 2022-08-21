@@ -6,6 +6,7 @@
     <converters:BooleanToVisibilityConverterSelf x:Key="BooleanToVisibilityConverter" True="Visible" False="Collapsed" />
 
     <Style TargetType="{x:Type controls:CustomTextBox}">
+        
         <Setter Property="Validation.ErrorTemplate" Value="{x:Null}"></Setter>
 
         <Setter Property="Template">
@@ -62,23 +63,6 @@
                                          HorizontalContentAlignment="Stretch"
                                          Validation.ErrorTemplate="{x:Null}"
                                          Text="{Binding Path=Text, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
-
-                                    <TextBox.Style>
-                                        <Style TargetType="{x:Type TextBox}"
-                                               BasedOn="{StaticResource {x:Type TextBox}}">
-                                            <Style.Triggers>
-                                                <Trigger Property="Validation.HasError" Value="false">
-                                                    <Setter Property="ToolTip"
-                                                            Value="{Binding ToolTip, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" />
-                                                </Trigger>
-                                                <Trigger Property="Validation.HasError" Value="true">
-                                                    <Setter Property="ToolTip"
-                                                            Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(Validation.Errors)/ErrorContent, UpdateSourceTrigger=PropertyChanged}" />
-                                                </Trigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBox.Style>
-
                                 </TextBox>
 
                                 <CheckBox Margin="5,0,5,0" Grid.Column="1" ToolTip="Search with Regex"
