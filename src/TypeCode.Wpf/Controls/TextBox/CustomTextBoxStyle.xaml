@@ -33,13 +33,13 @@
                                     <Setter Property="BorderThickness" Value="1"></Setter>
                                     <Style.Triggers>
                                         <DataTrigger
-                                            Binding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(Validation.HasError)}"
+                                            Binding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(Validation.HasError), UpdateSourceTrigger=PropertyChanged}"
                                             Value="false">
                                             <Setter Property="BorderBrush"
                                                     Value="{StaticResource Accent}" />
                                         </DataTrigger>
                                         <DataTrigger
-                                            Binding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(Validation.HasError)}"
+                                            Binding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(Validation.HasError), UpdateSourceTrigger=PropertyChanged}"
                                             Value="true">
                                             <Setter Property="BorderBrush"
                                                     Value="{StaticResource Error}" />
@@ -69,11 +69,11 @@
                                             <Style.Triggers>
                                                 <Trigger Property="Validation.HasError" Value="false">
                                                     <Setter Property="ToolTip"
-                                                            Value="{Binding ToolTip, RelativeSource={RelativeSource TemplatedParent}}" />
+                                                            Value="{Binding ToolTip, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" />
                                                 </Trigger>
                                                 <Trigger Property="Validation.HasError" Value="true">
                                                     <Setter Property="ToolTip"
-                                                            Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(Validation.Errors)/ErrorContent}" />
+                                                            Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(Validation.Errors)/ErrorContent, UpdateSourceTrigger=PropertyChanged}" />
                                                 </Trigger>
                                             </Style.Triggers>
                                         </Style>
@@ -84,7 +84,7 @@
                                 <CheckBox Margin="5,0,5,0" Grid.Column="1" ToolTip="Search with Regex"
                                           VerticalAlignment="Center"
                                           IsChecked="{Binding Path=UseRegex, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                          Visibility="{TemplateBinding ShowRegex, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                          Visibility="{Binding Path=ShowRegex, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}" />
                             </Grid>
                         </Border>
 
@@ -92,8 +92,8 @@
                                    Grid.Column="0"
                                    Padding="2"
                                    Foreground="{StaticResource Error}"
-                                   Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(Validation.HasError), Converter={StaticResource BooleanToVisibilityConverter}}"
-                                   Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(Validation.Errors)/ErrorContent}" />
+                                   Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(Validation.HasError), UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                   Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(Validation.Errors)/ErrorContent, UpdateSourceTrigger=PropertyChanged}" />
 
                         <!-- <Popup -->
                         <!--     Grid.Row="0" -->
