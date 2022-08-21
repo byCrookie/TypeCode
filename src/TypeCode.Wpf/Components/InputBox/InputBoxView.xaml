@@ -4,45 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:inputBox="clr-namespace:TypeCode.Wpf.Components.InputBox"
-             xmlns:converters="clr-namespace:TypeCode.Wpf.Helper.Converters"
-             xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:textBox="clr-namespace:TypeCode.Wpf.Controls.TextBox"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
-             d:DataContext="{d:DesignInstance inputBox:InputBoxViewModel}"
-             Validation.ErrorTemplate="{x:Null}">
-
-    <UserControl.Resources>
-
-        <converters:BooleanToVisibilityConverterSelf x:Key="BooleanToVisibilityConverter" True="Visible"
-                                                     False="Collapsed" />
-
-        <Style x:Key="ValidationStyle" TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
-            <Style.Triggers>
-                <Trigger Property="Validation.HasError" Value="false">
-                    <Setter Property="ToolTip"
-                            Value="{Binding ToolTip}" />
-                </Trigger>
-                <Trigger Property="Validation.HasError" Value="true">
-                    <Setter Property="ToolTip"
-                            Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors)/ErrorContent}" />
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-
-        <Style x:Key="BorderValidationStyle" TargetType="{x:Type Border}">
-            <Setter Property="BorderThickness" Value="1"></Setter>
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding ElementName=InputTextBox, Path=(Validation.HasError)}" Value="false">
-                    <Setter Property="BorderBrush"
-                            Value="{StaticResource Accent}" />
-                </DataTrigger>
-                <DataTrigger Binding="{Binding ElementName=InputTextBox, Path=(Validation.HasError)}" Value="true">
-                    <Setter Property="BorderBrush"
-                            Value="{StaticResource Error}" />
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
-    </UserControl.Resources>
+             d:DataContext="{d:DesignInstance inputBox:InputBoxViewModel}">
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -54,86 +19,19 @@
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
-
-        <Border Style="{StaticResource BorderValidationStyle}"
-                VerticalAlignment="Center"
-                Grid.Row="0"
-                Grid.Column="0">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                    <ColumnDefinition Width="Auto"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-
-                <TextBox x:Name="InputTextBox"
-                         Grid.Column="0"
-                         Margin="4"
-                         BorderThickness="0"
-                         HorizontalAlignment="Stretch"
-                         HorizontalContentAlignment="Stretch"
-                         Validation.ErrorTemplate="{x:Null}"
-                         Style="{StaticResource ValidationStyle}"
-                         Text="{Binding Input, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}">
-
-                    <TextBox.InputBindings>
-                        <KeyBinding Key="Enter" Command="{Binding ActionCommand}" />
-                    </TextBox.InputBindings>
-
-                </TextBox>
-
-                <CheckBox Margin="5,0,5,0" Grid.Column="1" ToolTip="Search with Regex" VerticalAlignment="Center"
-                          IsChecked="{Binding UseRegexSearch}" />
-            </Grid>
-        </Border>
+        
+        <textBox:CustomTextBox Text="{Binding Input, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                               UseRegex="{Binding UseRegexSearch, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                               ShowRegex="True"
+                               ToolTip="{Binding ToolTip}">
+            <TextBox.InputBindings>
+                <KeyBinding Key="Enter" Command="{Binding ActionCommand}" />
+            </TextBox.InputBindings>
+        </textBox:CustomTextBox>
 
         <Button Margin="5,0,0,0" Grid.Row="0" Grid.Column="1"
                 Content="{Binding ActionName}"
                 Command="{Binding ActionCommand}" />
-
-        <TextBlock Grid.Row="1"
-                   Grid.Column="0"
-                   Padding="2"
-                   Foreground="{StaticResource Error}"
-                   Visibility="{Binding ElementName=InputTextBox, Path=(Validation.HasError), Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}"
-                   Text="{Binding ElementName=InputTextBox, Path=(Validation.Errors)/ErrorContent}" />
-
-        <Popup
-            Grid.Row="0"
-            Grid.Column="0"
-            StaysOpen="False"
-            Placement="Bottom"
-            PlacementTarget="{Binding ElementName=InputTextBox}"
-            Width="{Binding ActualWidth, ElementName=InputTextBox}"
-            IsOpen="{Binding IsFunctionDropDownOpen}">
-
-            <Grid>
-
-                <ListBox
-                    MaxWidth="{Binding ActualWidth, ElementName=InputTextBox}"
-                    Margin="1"
-                    MaxHeight="100"
-                    ItemsSource="{Binding SuggestionItems}"
-                    SelectedValue="{Binding SelectedSuggestionItem}"
-                    Background="{StaticResource Primary}"
-                    BorderBrush="{StaticResource Accent}">
-
-                    <b:Interaction.Triggers>
-                        <b:EventTrigger EventName="SelectionChanged">
-                            <b:InvokeCommandAction Command="{Binding ApplySuggestionCommand}" />
-                        </b:EventTrigger>
-                    </b:Interaction.Triggers>
-
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding Suggestion}" ToolTip="{Binding Suggestion}" TextTrimming="CharacterEllipsis" />
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-
-                </ListBox>
-
-            </Grid>
-
-        </Popup>
         
     </Grid>
 </UserControl>
