@@ -1,9 +1,8 @@
 ﻿using System.Windows;
-using System.Windows.Controls;
 
-namespace TypeCode.Wpf.Controls;
+namespace TypeCode.Wpf.Controls.TextBox;
 
-public class CustomTextBox : TextBox
+public class CustomTextBox : System.Windows.Controls.TextBox
 {
     public static readonly DependencyProperty UseRegexProperty =
         DependencyProperty.Register(

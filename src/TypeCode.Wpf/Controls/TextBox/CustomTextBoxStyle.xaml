@@ -1,17 +1,17 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:controls="clr-namespace:TypeCode.Wpf.Controls"
-                    xmlns:converters="clr-namespace:TypeCode.Wpf.Helper.Converters">
+                    xmlns:converters="clr-namespace:TypeCode.Wpf.Helper.Converters"
+                    xmlns:textBox="clr-namespace:TypeCode.Wpf.Controls.TextBox">
 
     <converters:BooleanToVisibilityConverterSelf x:Key="BooleanToVisibilityConverter" True="Visible" False="Collapsed" />
 
-    <Style TargetType="{x:Type controls:CustomTextBox}">
+    <Style TargetType="{x:Type textBox:CustomTextBox}">
         
         <Setter Property="Validation.ErrorTemplate" Value="{x:Null}"></Setter>
 
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="{x:Type controls:CustomTextBox}">
+                <ControlTemplate TargetType="{x:Type textBox:CustomTextBox}">
 
                     <Grid>
                         <Grid.ColumnDefinitions>
