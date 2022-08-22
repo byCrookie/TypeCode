@@ -23,7 +23,10 @@
         <textBox:CustomTextBox Text="{Binding Input, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                UseRegex="{Binding UseRegexSearch, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                ShowRegex="True"
-                               ToolTip="{Binding ToolTip}">
+                               ToolTip="{Binding ToolTip}"
+                               LoadAutoCompletionAsync="{Binding LoadAutoCompletionItemsAsync}"
+                               ApplyAutoCompletionAsync="{Binding ApplyAutoCompletionItemAsync}">
+            
             <TextBox.InputBindings>
                 <KeyBinding Key="Enter" Command="{Binding ActionCommand}" />
             </TextBox.InputBindings>
