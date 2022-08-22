@@ -8,7 +8,7 @@ using TypeCode.Wpf.Helper.Navigation.Service;
 namespace TypeCode.Wpf.Helper.Navigation.Wizard.WizardSimple;
 
 public partial class WizardSimpleViewModel<T> :
-    ObservableObject,
+    ObservableValidator,
     IAsyncEventHandler<WizardUpdateEvent>,
     IAsyncNavigatedTo,
     IAsyncNavigatedFrom where T : notnull
@@ -58,7 +58,8 @@ public partial class WizardSimpleViewModel<T> :
 
     private bool CanFinish()
     {
-        return _parameter.CanSave(_context.GetParameter<T>("ViewModel"));
+        var viewModel = _context.GetParameter<T>("ViewModel");
+        return viewModel is not ObservableValidator { HasErrors: true } && _parameter.CanSave(viewModel);
     }
 
     [ObservableProperty]

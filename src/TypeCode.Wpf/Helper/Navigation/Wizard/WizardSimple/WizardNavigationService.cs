@@ -95,6 +95,7 @@ public class WizardNavigationService : IWizardNavigationService
 
         while (_isOpen)
         {
+            await _eventAggregator.PublishAsync(new WizardUpdateEvent()).ConfigureAwait(true);
             await Task.Delay(25).ConfigureAwait(true);
         }
 
