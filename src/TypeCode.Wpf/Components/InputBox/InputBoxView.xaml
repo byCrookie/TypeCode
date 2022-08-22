@@ -26,7 +26,8 @@
                                ShowRegex="True"
                                ToolTip="{Binding ToolTip}"
                                LoadAutoCompletionAsync="{Binding LoadAutoCompletionItemsAsync}"
-                               ApplyAutoCompletionAsync="{Binding ApplyAutoCompletionItemAsync}">
+                               ApplyAutoCompletionAsync="{Binding ApplyAutoCompletionItemAsync}"
+                               ShowAutoCompletion="True">
             
             <TextBox.InputBindings>
                 <KeyBinding Key="Enter" Command="{Binding ActionCommand}" />

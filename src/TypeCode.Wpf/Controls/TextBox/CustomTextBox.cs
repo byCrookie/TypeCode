@@ -37,6 +37,20 @@ public class CustomTextBox : System.Windows.Controls.TextBox
         get => (bool)GetValue(ShowRegexProperty);
         set => SetValue(ShowRegexProperty, value);
     }
+    
+    public static readonly DependencyProperty ShowAutoCompletionProperty =
+        DependencyProperty.Register(
+            name: nameof(ShowAutoCompletion),
+            propertyType: typeof(bool),
+            ownerType: typeof(CustomTextBox),
+            typeMetadata: new FrameworkPropertyMetadata(defaultValue: false)
+        );
+
+    public bool ShowAutoCompletion
+    {
+        get => (bool)GetValue(ShowAutoCompletionProperty);
+        set => SetValue(ShowAutoCompletionProperty, value);
+    }
 
     public static readonly DependencyProperty IsAutoCompletionDropDownOpenProperty =
         DependencyProperty.Register(
@@ -91,7 +105,11 @@ public class CustomTextBox : System.Windows.Controls.TextBox
     private static void PropertyChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
     {
         var customTextBox = (CustomTextBox)dependencyObject;
-        customTextBox.ApplySelectedAutoCompletionItemCommand = new AsyncRelayCommand<SelectionChangedEventArgs>(args => DispatchApplyAutoCompletionAsync(customTextBox, args, (Func<string, Task>)e.NewValue));
+        
+        if (customTextBox.ShowAutoCompletion)
+        {
+            customTextBox.ApplySelectedAutoCompletionItemCommand = new AsyncRelayCommand<SelectionChangedEventArgs>(args => DispatchApplyAutoCompletionAsync(customTextBox, args, (Func<string, Task>)e.NewValue));
+        }
     }
 
     public Func<string, Task> ApplyAutoCompletionAsync
@@ -102,7 +120,7 @@ public class CustomTextBox : System.Windows.Controls.TextBox
 
     private static async Task DispatchApplyAutoCompletionAsync(CustomTextBox customTextBox, SelectionChangedEventArgs? args, Func<string, Task> apply)
     {
-        if (args is null || args.AddedItems.Count <= 0)
+        if (!customTextBox.ShowAutoCompletion || args is null || args.AddedItems.Count <= 0)
         {
             return;
         }
@@ -134,8 +152,12 @@ public class CustomTextBox : System.Windows.Controls.TextBox
     {
         base.OnTextChanged(e);
 
+        if (!ShowAutoCompletion)
+        {
+            return;
+        }
+        
         var text = ((System.Windows.Controls.TextBox)e.OriginalSource).Text;
-
         MainThread.BackgroundFireAndForget(() => DispatchLoadingAsync(text), DispatcherPriority.Background);
     }
 
