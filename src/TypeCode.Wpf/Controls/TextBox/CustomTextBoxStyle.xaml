@@ -60,8 +60,15 @@
                                          Grid.Column="0"
                                          Margin="4"
                                          BorderThickness="0"
-                                         HorizontalAlignment="Stretch"
-                                         HorizontalContentAlignment="Stretch"
+                                         HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                                         HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                         HorizontalScrollBarVisibility="{TemplateBinding HorizontalScrollBarVisibility}"
+                                         VerticalScrollBarVisibility="{TemplateBinding VerticalScrollBarVisibility}"
+                                         AcceptsReturn="{TemplateBinding AcceptsReturn}"
+                                         TextWrapping="{TemplateBinding TextWrapping}"
+                                         AcceptsTab="{TemplateBinding AcceptsTab}"
+                                         MinHeight="{TemplateBinding MinHeight}"
+                                         MaxHeight="{TemplateBinding MaxHeight}"
                                          Validation.ErrorTemplate="{x:Null}"
                                          Text="{Binding Path=Text, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
                                 </TextBox>
