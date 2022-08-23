@@ -2,5 +2,5 @@
 
 public interface ITypeSelectionWizardStarter
 {
-    Task StartAsync(TypeSelectionParameter parameter, Func<IEnumerable<Type>, Task> onSaveAction, Func<IEnumerable<Type>, Task> onCancelAction);
+    Task StartAsync(TypeSelectionParameter parameter, Func<TypeSelectionViewModel, Task> onSaveAction);
 }

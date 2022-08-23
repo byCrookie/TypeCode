@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace TypeCode.Wpf.Helper.Navigation.Wizard.Complex;
+namespace TypeCode.Wpf.Helper.Navigation.Wizard;
 
 public class InstanceResult
 {

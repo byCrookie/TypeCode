@@ -1,6 +1,7 @@
 ﻿namespace TypeCode.Wpf.Helper.Navigation.Wizard;
 
-public class WizardUpdateEvent
+public enum NavigationAction
 {
-    
+    Back,
+    Next
 }

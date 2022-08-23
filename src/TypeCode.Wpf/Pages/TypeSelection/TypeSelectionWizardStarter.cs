@@ -1,29 +1,30 @@
-﻿using TypeCode.Wpf.Helper.Navigation.Service;
-using TypeCode.Wpf.Helper.Navigation.Wizard.WizardSimple;
+﻿using DependencyInjection.Factory;
+using TypeCode.Wpf.Helper.Navigation.Wizard;
 
 namespace TypeCode.Wpf.Pages.TypeSelection;
 
 public class TypeSelectionWizardStarter : ITypeSelectionWizardStarter
 {
-    private readonly IWizardNavigationService _wizardNavigationService;
+    private readonly IFactory<IWizardBuilder> _wizardBuilderFactory;
+    private readonly IWizardRunner _wizardRunner;
 
-    public TypeSelectionWizardStarter(IWizardNavigationService wizardNavigationService)
+    public TypeSelectionWizardStarter(
+        IFactory<IWizardBuilder> wizardBuilderFactory,
+        IWizardRunner wizardRunner
+    )
     {
-        _wizardNavigationService = wizardNavigationService;
+        _wizardBuilderFactory = wizardBuilderFactory;
+        _wizardRunner = wizardRunner;
     }
 
-    public Task StartAsync(TypeSelectionParameter parameter, Func<IEnumerable<Type>, Task> onSaveAction, Func<IEnumerable<Type>, Task> onCancelAction)
+    public Task StartAsync(TypeSelectionParameter parameter, Func<TypeSelectionViewModel, Task> onSaveAction)
     {
-        var navigationContext = new NavigationContext();
-        navigationContext.AddParameter(parameter);
+        var wizard = _wizardBuilderFactory.Create()
+            .Then<TypeSelectionViewModel>((options, _) => options.AllowNext(c => c.GetParameter<TypeSelectionViewModel>().SelectedTypes.Any()))
+            .FinishAsync(c => onSaveAction(c.GetParameter<TypeSelectionViewModel>()), "Select")
+            .NavigationContext(c => c.AddParameter(parameter))
+            .Build();
 
-        return _wizardNavigationService
-            .OpenWizardAsync(new WizardParameter<TypeSelectionViewModel>
-            {
-                FinishButtonText = "Select",
-                CanSave = vm => vm.SelectedTypes.Any(),
-                OnCancelAsync = (vm, _) => onCancelAction(vm.SelectedTypes),
-                OnSaveAsync = (vm, _) => onSaveAction(vm.SelectedTypes)
-            }, navigationContext);
+        return _wizardRunner.RunAsync(wizard);
     }
 }

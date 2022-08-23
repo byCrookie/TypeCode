@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using TypeCode.Wpf.Helper.Navigation.Service;
 
-namespace TypeCode.Wpf.Helper.Navigation.Wizard.Complex;
+namespace TypeCode.Wpf.Helper.Navigation.Wizard;
 
 public class WizardBuilderOptions
 {

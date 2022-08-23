@@ -39,7 +39,6 @@ public partial class ComposerViewModel : ObservableObject
     private async Task GenerateAsync(bool regex, string? input)
     {
         var types = _typeProvider.TryGetByName(input?.Trim(), new TypeEvaluationOptions{ Regex = regex }).ToList();
-        var selectedType = types.FirstOrDefault();
 
         if (types.Count > 1)
         {
@@ -49,17 +48,20 @@ public partial class ComposerViewModel : ObservableObject
                 Types = types
             };
 
-            await _typeSelectionWizardStarter.StartAsync(typeSelectionParameter, selectedTypes =>
+            await _typeSelectionWizardStarter.StartAsync(typeSelectionParameter, async viewModel =>
             {
-                selectedType = selectedTypes.Single();
-                return Task.CompletedTask;
-            }, _ =>
-            {
-                selectedType = null;
-                return Task.CompletedTask;
+                var selectedType = viewModel.SelectedTypes.Single();
+                await GenerateAsync(selectedType).ConfigureAwait(true);
             }).ConfigureAwait(true);
         }
+        else
+        {
+            await GenerateAsync(types.FirstOrDefault()).ConfigureAwait(true);
+        }
+    }
 
+    private async Task GenerateAsync(Type? selectedType)
+    {
         if (selectedType is not null)
         {
             var parameter = new ComposerTypeCodeGeneratorParameter();

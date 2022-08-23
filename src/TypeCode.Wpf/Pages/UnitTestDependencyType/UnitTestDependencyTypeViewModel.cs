@@ -49,17 +49,18 @@ public partial class UnitTestDependencyTypeViewModel : ObservableObject
                 Types = types
             };
 
-            await _typeSelectionWizardStarter.StartAsync(typeSelectionParameter, selectedTypes =>
-            {
-                types = selectedTypes.ToList();
-                return Task.CompletedTask;
-            }, _ =>
-            {
-                types = new List<Type>();
-                return Task.CompletedTask;
-            }).ConfigureAwait(true);
+            await _typeSelectionWizardStarter
+                .StartAsync(typeSelectionParameter, viewModel => GenerateOutputAsync(viewModel.SelectedTypes.ToList()))
+                .ConfigureAwait(true);
         }
+        else
+        {
+            await GenerateOutputAsync(types).ConfigureAwait(true);
+        }
+    }
 
+    private async Task GenerateOutputAsync(List<Type> types)
+    {
         var parameter = new UnitTestDependencyTypeGeneratorParameter
         {
             Types = types

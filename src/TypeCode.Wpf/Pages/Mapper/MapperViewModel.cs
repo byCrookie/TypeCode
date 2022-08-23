@@ -1,5 +1,4 @@
-﻿using System.Xml.Serialization;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using TypeCode.Business.Mode;
 using TypeCode.Business.Mode.Mapper;
@@ -32,7 +31,7 @@ public partial class MapperViewModel : ObservableObject, IAsyncNavigatedTo
         _mapperGenerator = mapperGenerator;
         _typeProvider = typeProvider;
         _typeSelectionWizardStarter = typeSelectionWizardStarter;
-        
+
         var parameter = new InputBoxViewModelParameter("Generate", GenerateAsync)
         {
             ToolTip = "Input two type names seperated by ','."
@@ -71,28 +70,23 @@ public partial class MapperViewModel : ObservableObject, IAsyncNavigatedTo
                 Types = types
             };
 
-            await _typeSelectionWizardStarter.StartAsync(typeSelectionParameter, selectedTypes =>
+            await _typeSelectionWizardStarter.StartAsync(typeSelectionParameter, async viewModel =>
             {
-                types = selectedTypes.ToList();
-                return Task.CompletedTask;
-            }, _ =>
-            {
-                types = new List<Type>();
-                return Task.CompletedTask;
+                var selectedTypes = viewModel.SelectedTypes.ToList();
+
+                var parameter = new MapperTypeCodeGeneratorParameter(
+                    new MappingType(selectedTypes.FirstOrDefault()),
+                    new MappingType(selectedTypes.LastOrDefault())
+                )
+                {
+                    MappingStyle = _mappingStyle,
+                    Recursiv = Recursiv,
+                    SingleDirectionOnly = SingleDirectionOnly
+                };
+
+                var result = await _mapperGenerator.GenerateAsync(parameter).ConfigureAwait(true);
+                OutputBoxViewModel?.SetOutput(result);
             }).ConfigureAwait(true);
-
-            var parameter = new MapperTypeCodeGeneratorParameter(
-                new MappingType(types.FirstOrDefault()),
-                new MappingType(types.LastOrDefault())
-            )
-            {
-                MappingStyle = _mappingStyle,
-                Recursiv = Recursiv,
-                SingleDirectionOnly = SingleDirectionOnly
-            };
-
-            var result = await _mapperGenerator.GenerateAsync(parameter).ConfigureAwait(true);
-            OutputBoxViewModel?.SetOutput(result);
         }
     }
 

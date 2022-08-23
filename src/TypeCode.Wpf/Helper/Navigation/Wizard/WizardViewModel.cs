@@ -1,10 +1,9 @@
 ﻿using System.Windows.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using TypeCode.Wpf.Helper.Navigation.Contract;
 using TypeCode.Wpf.Helper.ViewModels;
 
-namespace TypeCode.Wpf.Helper.Navigation.Wizard.Complex;
+namespace TypeCode.Wpf.Helper.Navigation.Wizard;
 
 public partial class WizardViewModel : ObservableObject, IWizardHost
 {
@@ -29,6 +28,8 @@ public partial class WizardViewModel : ObservableObject, IWizardHost
         {
             throw new ArgumentException($"{nameof(wizard.CurrentStepConfiguration)} is not set");
         }
+        
+        wizard.NavigationContext.AddOrUpdateParameter(wizard.CurrentStepConfiguration.Instances.ViewModelInstance);
 
         if (!wizard.CurrentStepConfiguration.Initialized && wizard.CurrentStepConfiguration.Instances.ViewModelInstance is IAsyncInitialNavigated asyncInitialNavigated)
         {
@@ -40,11 +41,17 @@ public partial class WizardViewModel : ObservableObject, IWizardHost
 
         BackCommand = new AsyncRelayCommand(BackAsync, () => wizard.CurrentStepConfiguration != wizard.StepConfigurations.FirstOrDefault()
                                                              && wizard.CurrentStepConfiguration.AllowBack(wizard.NavigationContext));
+        IsBackButtonVisible = wizard.CurrentStepConfiguration != wizard.StepConfigurations.FirstOrDefault();
+        
         NextCommand = new AsyncRelayCommand(NextAsync, () => wizard.CurrentStepConfiguration != wizard.StepConfigurations.LastOrDefault()
                                                              && wizard.CurrentStepConfiguration.AllowNext(wizard.NavigationContext));
+        IsNextButtonVisible = wizard.CurrentStepConfiguration != wizard.StepConfigurations.LastOrDefault();
+        
         CancelCommand = new AsyncRelayCommand(CancelAsync);
+        
         FinishCommand = new AsyncRelayCommand(FinishAsync, () => wizard.CurrentStepConfiguration == wizard.StepConfigurations.LastOrDefault()
                                                                  && wizard.CurrentStepConfiguration.AllowNext(wizard.NavigationContext));
+        IsFinishButtonVisible = wizard.CurrentStepConfiguration == wizard.StepConfigurations.LastOrDefault();
         FinishText = wizard.FinishText;
 
         if (wizard.CurrentStepConfiguration.Instances.ViewInstance is not UserControl wizardPage)
@@ -54,7 +61,7 @@ public partial class WizardViewModel : ObservableObject, IWizardHost
 
         WizardPage = wizardPage;
         
-        await NavigationCaller.CallNavigateToAsync(wizard.CurrentStepConfiguration.Instances.ViewModelInstance, wizard.NavigationContext);
+        await NavigationCaller.CallNavigateToAsync(wizard.CurrentStepConfiguration.Instances.ViewModelInstance, wizard.NavigationContext).ConfigureAwait(true);
 
         _wizard = wizard;
     }
@@ -68,7 +75,7 @@ public partial class WizardViewModel : ObservableObject, IWizardHost
             throw new ArgumentException($"{nameof(wizard.CurrentStepConfiguration)} is not set");
         }
 
-        await NavigationCaller.CallNavigateFromAsync(wizard.CurrentStepConfiguration.Instances.ViewModelInstance, wizard.NavigationContext);
+        await NavigationCaller.CallNavigateFromAsync(wizard.CurrentStepConfiguration.Instances.ViewModelInstance, wizard.NavigationContext).ConfigureAwait(true);
 
         await wizard.CurrentStepConfiguration.AfterAction(wizard.NavigationContext).ConfigureAwait(true);
     }
@@ -129,5 +136,24 @@ public partial class WizardViewModel : ObservableObject, IWizardHost
     private AsyncRelayCommand? _finishCommand;
 
     [ObservableProperty]
+    private bool _isBackButtonVisible;
+
+    [ObservableProperty]
+    private bool _isNextButtonVisible;
+
+    [ObservableProperty]
+    private bool _isFinishButtonVisible;
+
+    [ObservableProperty]
     private string? _finishText;
+
+    [RelayCommand]
+    private Task SourceUpdatedAsync()
+    {
+        BackCommand?.NotifyCanExecuteChanged();
+        NextCommand?.NotifyCanExecuteChanged();
+        CancelCommand?.NotifyCanExecuteChanged();
+        FinishCommand?.NotifyCanExecuteChanged();
+        return Task.CompletedTask;
+    }
 }

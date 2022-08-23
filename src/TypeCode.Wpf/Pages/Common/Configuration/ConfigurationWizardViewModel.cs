@@ -4,7 +4,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using TypeCode.Business.Configuration.Location;
 using TypeCode.Wpf.Helper.Navigation.Service;
-using TypeCode.Wpf.Helper.Navigation.Wizard.Complex;
+using TypeCode.Wpf.Helper.Navigation.Wizard;
 
 namespace TypeCode.Wpf.Pages.Common.Configuration;
 

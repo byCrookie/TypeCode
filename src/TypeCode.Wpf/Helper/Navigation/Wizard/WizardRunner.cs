@@ -1,7 +1,7 @@
 using System.Windows;
 using TypeCode.Wpf.Helper.Navigation.Service;
 
-namespace TypeCode.Wpf.Helper.Navigation.Wizard.Complex;
+namespace TypeCode.Wpf.Helper.Navigation.Wizard;
 
 public class WizardRunner : IWizardRunner
 {

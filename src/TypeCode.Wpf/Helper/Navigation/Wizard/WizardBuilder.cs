@@ -4,7 +4,7 @@ using TypeCode.Wpf.Helper.Navigation.Service;
 using TypeCode.Wpf.Helper.Views;
 using TypeCode.Wpf.Main;
 
-namespace TypeCode.Wpf.Helper.Navigation.Wizard.Complex;
+namespace TypeCode.Wpf.Helper.Navigation.Wizard;
 
 public class WizardBuilder : IWizardAfterInitialBuilder
 {
@@ -63,7 +63,13 @@ public class WizardBuilder : IWizardAfterInitialBuilder
         _wizard.CompletedEvent = typeof(TEvent);
         return this;
     }
-
+    
+    public IWizardAfterInitialBuilder NavigationContext(Action<NavigationContext> modify)
+    {
+        modify(_wizard.NavigationContext);
+        return this;
+    }
+    
     private InstanceResult CreateInstances<T>() where T : notnull
     {
         var viewModelType = typeof(T);
@@ -85,7 +91,7 @@ public class WizardBuilder : IWizardAfterInitialBuilder
 
         return new InstanceResult(viewType, viewInstance, viewModelType, viewModelInstance);
     }
-
+    
     public Wizard Build()
     {
         _wizard.CurrentStepConfiguration = _wizard.StepConfigurations.First();

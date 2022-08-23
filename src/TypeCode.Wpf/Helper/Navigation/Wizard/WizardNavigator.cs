@@ -1,7 +1,7 @@
 using System.Windows;
 using TypeCode.Wpf.Helper.Event;
 
-namespace TypeCode.Wpf.Helper.Navigation.Wizard.Complex;
+namespace TypeCode.Wpf.Helper.Navigation.Wizard;
 
 public class WizardNavigator : IWizardNavigator
 {
