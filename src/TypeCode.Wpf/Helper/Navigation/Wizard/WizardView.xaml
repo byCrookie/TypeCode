@@ -5,7 +5,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:converters="clr-namespace:TypeCode.Wpf.Helper.Converters"
              xmlns:wizard="clr-namespace:TypeCode.Wpf.Helper.Navigation.Wizard"
-             xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
              Background="{StaticResource Secondary}" d:DataContext="{d:DesignInstance wizard:WizardViewModel}">
@@ -28,13 +27,7 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <ContentControl Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Content="{Binding WizardPage}">
-                <b:Interaction.Triggers>
-                    <b:EventTrigger EventName="ManipulationCompleted">
-                        <b:InvokeCommandAction Command="{Binding Path=SourceUpdatedCommand}" />
-                    </b:EventTrigger>
-                </b:Interaction.Triggers>
-            </ContentControl>
+            <ContentControl Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Content="{Binding WizardPage}" />
 
             <StackPanel Margin="0,5,5,5" Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
                 <Button
