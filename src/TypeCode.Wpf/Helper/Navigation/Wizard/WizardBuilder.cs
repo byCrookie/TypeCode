@@ -12,12 +12,12 @@ public class WizardBuilder : IWizardAfterInitialBuilder
     
     private readonly Wizard _wizard;
 
-    public WizardBuilder(IFactory factory, IMainViewProvider mainViewProvider, NavigationContext navigationContext)
+    public WizardBuilder(IFactory factory, IMainViewProvider mainViewProvider)
     {
         _factory = factory;
 
         _wizard = new Wizard(new WizardBuilderOptions(
-                navigationContext,
+                new NavigationContext(),
                 mainViewProvider.MainWindow().WizardFrame,
                 mainViewProvider.MainWindow().Main,
                 mainViewProvider.MainWindow().WizardOverlay),

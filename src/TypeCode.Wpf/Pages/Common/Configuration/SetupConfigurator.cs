@@ -17,7 +17,7 @@ internal class SetupConfigurator : ISetupConfigurator
 {
     private readonly IGenericXmlSerializer _genericXmlSerializer;
     private readonly IConfigurationMapper _configurationMapper;
-    private readonly IFactory<WizardBuilder> _wizardBuilderFactory;
+    private readonly IFactory<IWizardBuilder> _wizardBuilderFactory;
     private readonly IWizardRunner _wizardRunner;
     private readonly IConfigurationLocationProvider _configurationLocationProvider;
     private TypeCodeConfiguration _configuration;
@@ -47,7 +47,7 @@ internal class SetupConfigurator : ISetupConfigurator
     public SetupConfigurator(
         IGenericXmlSerializer genericXmlSerializer,
         IConfigurationMapper configurationMapper,
-        IFactory<WizardBuilder> wizardBuilderFactory,
+        IFactory<IWizardBuilder> wizardBuilderFactory,
         IWizardRunner wizardRunner,
         IConfigurationLocationProvider configurationLocationProvider
     )
