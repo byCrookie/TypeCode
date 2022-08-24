@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:outputBox="clr-namespace:TypeCode.Wpf.Components.OutputBox"
              xmlns:dynamicExecution="clr-namespace:TypeCode.Wpf.Pages.DynamicExecution"
+             xmlns:textBox="clr-namespace:TypeCode.Wpf.Controls.TextBox"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance dynamicExecution:DynamicExecutionViewModel}">
@@ -24,27 +25,26 @@
                 <ColumnDefinition Width="*"></ColumnDefinition>
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
             </Grid.ColumnDefinitions>
+            
+            <textBox:CustomTextBox Grid.Column="0"
+                                   Text="{Binding Input, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                   ShowRegex="False"
+                                   ToolTip="Input c# code you want to execute"
+                                   ShowAutoCompletion="False"
+                                   HorizontalAlignment="Stretch"
+                                   HorizontalContentAlignment="Stretch"
+                                   HorizontalScrollBarVisibility="Auto"
+                                   VerticalScrollBarVisibility="Auto"
+                                   AcceptsReturn="True"
+                                   TextWrapping="NoWrap"
+                                   AcceptsTab="True"
+                                   MinHeight="200"
+                                   MaxHeight="400">
 
-            <Border Grid.Column="0" BorderBrush="{StaticResource Accent}"
-                    BorderThickness="1"
-                    VerticalAlignment="Center">
-                <TextBox
-                    Margin="4"
-                    BorderThickness="0"
-                    Text="{Binding Input, UpdateSourceTrigger=PropertyChanged}"
-                    HorizontalAlignment="Stretch"
-                    HorizontalContentAlignment="Stretch"
-                    HorizontalScrollBarVisibility="Auto"
-                    VerticalScrollBarVisibility="Auto"
-                    AcceptsReturn="True"
-                    TextWrapping="NoWrap"
-                    AcceptsTab="True"
-                    MinHeight="200"
-                    MaxHeight="400"
-                    FontFamily="Courier New"
-                    ToolTip="Input c# code you want to execute">
-                </TextBox>
-            </Border>
+                <TextBox.InputBindings>
+                    <KeyBinding Key="Enter" Command="{Binding ExecuteCommand}" />
+                </TextBox.InputBindings>
+            </textBox:CustomTextBox>
 
             <Button Margin="5,0,0,0" VerticalAlignment="Top" Grid.Column="1" Command="{Binding ExecuteCommand}" Content="Execute" />
         </Grid>

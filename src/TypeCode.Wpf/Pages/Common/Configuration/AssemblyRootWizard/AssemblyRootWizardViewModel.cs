@@ -1,10 +1,11 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.ComponentModel.DataAnnotations;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Win32;
 
 namespace TypeCode.Wpf.Pages.Common.Configuration.AssemblyRootWizard;
 
-public partial class AssemblyRootWizardViewModel : ObservableObject
+public partial class AssemblyRootWizardViewModel : ObservableValidator
 {
     [RelayCommand]
     private Task SelectAsync()
@@ -28,8 +29,13 @@ public partial class AssemblyRootWizardViewModel : ObservableObject
     }
 
     [ObservableProperty]
+    [NotifyDataErrorInfo]
+    [Required]
+    [DataType(DataType.Url)]
     private string? _path;
 
     [ObservableProperty]
+    [NotifyDataErrorInfo]
+    [Required]
     private int? _priority;
 }

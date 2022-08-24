@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.ComponentModel.DataAnnotations;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using TypeCode.Business.Mode;
 using TypeCode.Business.Mode.UnitTestDependency.Manually;
@@ -7,7 +8,7 @@ using TypeCode.Wpf.Helper.ViewModels;
 
 namespace TypeCode.Wpf.Pages.UnitTestDependencyManually;
 
-public partial class UnitTestDependencyManuallyViewModel : ObservableObject
+public partial class UnitTestDependencyManuallyViewModel : ObservableValidator
 {
     private readonly ITypeCodeGenerator<UnitTestDependencyManuallyGeneratorParameter> _unitTestDependencyManuallyGenerator;
 
@@ -21,7 +22,7 @@ public partial class UnitTestDependencyManuallyViewModel : ObservableObject
         OutputBoxViewModel = outputBoxViewModelFactory.Create();
     }
 
-    [RelayCommand]
+    [RelayCommand(CanExecute = nameof(CanGenerate))]
     private async Task GenerateAsync()
     {
         var parameter = new UnitTestDependencyManuallyGeneratorParameter
@@ -32,8 +33,16 @@ public partial class UnitTestDependencyManuallyViewModel : ObservableObject
         var result = await _unitTestDependencyManuallyGenerator.GenerateAsync(parameter).ConfigureAwait(true);
         OutputBoxViewModel?.SetOutput(result);
     }
+    
+    private bool CanGenerate()
+    {
+        return !HasErrors && !string.IsNullOrEmpty(Input);
+    }
 
     [ObservableProperty]
+    [NotifyDataErrorInfo]
+    [NotifyCanExecuteChangedFor(nameof(GenerateCommand))]
+    [Required]
     private string? _input;
 
     [ObservableProperty]

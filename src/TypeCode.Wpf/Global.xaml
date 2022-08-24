@@ -1,0 +1,285 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Style TargetType="{x:Type Window}">
+        <Setter Property="FontFamily" Value="Courier New" />
+    </Style>
+
+    <Color x:Key="PrimaryColor">#202225</Color>
+    <Color x:Key="SecondaryColor">#2F3136</Color>
+    <Color x:Key="ShadowColor">#36393F</Color>
+    <Color x:Key="AccentColor">DodgerBlue</Color>
+
+    <Color x:Key="SuccessColor">#4bb543</Color>
+    <Color x:Key="WarningColor">#eed202</Color>
+    <Color x:Key="ErrorColor">#f70031</Color>
+
+    <Color x:Key="PrimaryTextColor">WhiteSmoke</Color>
+    <Color x:Key="SecondaryTextColor">#2F3136</Color>
+
+    <SolidColorBrush x:Key="Primary" Color="{StaticResource PrimaryColor}" />
+    <SolidColorBrush x:Key="Secondary" Color="{StaticResource SecondaryColor}" />
+    <SolidColorBrush x:Key="Shadow" Color="{StaticResource ShadowColor}" />
+    <SolidColorBrush x:Key="Accent" Color="{StaticResource AccentColor}" />
+
+    <SolidColorBrush x:Key="Success" Color="{StaticResource SuccessColor}" />
+    <SolidColorBrush x:Key="Warning" Color="{StaticResource WarningColor}" />
+    <SolidColorBrush x:Key="Error" Color="{StaticResource ErrorColor}" />
+
+    <SolidColorBrush x:Key="PrimaryText" Color="{StaticResource PrimaryTextColor}" />
+    <SolidColorBrush x:Key="SecondaryText" Color="{StaticResource SecondaryTextColor}" />
+
+    <Style TargetType="{x:Type Control}" BasedOn="{StaticResource {x:Type Control}}">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{StaticResource PrimaryText}" />
+        <Setter Property="FontWeight" Value="SemiBold"></Setter>
+        <Setter Property="FontFamily" Value="Courier New" />
+    </Style>
+
+    <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{StaticResource PrimaryText}" />
+        <Setter Property="FontWeight" Value="SemiBold"></Setter>
+        <Setter Property="FontFamily" Value="Courier New" />
+    </Style>
+
+    <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{StaticResource PrimaryText}" />
+        <Setter Property="CaretBrush" Value="{StaticResource PrimaryText}" />
+        <Setter Property="FontWeight" Value="SemiBold"></Setter>
+        <Setter Property="FontFamily" Value="Courier New" />
+    </Style>
+
+    <Style TargetType="{x:Type ListView}" BasedOn="{StaticResource {x:Type ListView}}">
+        <Setter Property="FontWeight" Value="SemiBold"></Setter>
+    </Style>
+
+    <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
+        <Setter Property="Background" Value="{StaticResource Accent}" />
+        <Setter Property="Foreground" Value="{StaticResource PrimaryText}" />
+        <Setter Property="BorderThickness" Value="0"></Setter>
+        <Setter Property="Padding" Value="5"></Setter>
+        <Setter Property="MinWidth" Value="80"></Setter>
+        <Setter Property="FontFamily" Value="Courier New" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Background="{TemplateBinding Background}"
+                            Padding="{TemplateBinding Padding}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Opacity" Value="0.7" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" Value="0.5" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="IconButton" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
+        <Setter Property="MinWidth" Value="30"></Setter>
+        <Setter Property="Width" Value="30"></Setter>
+        <Setter Property="Background" Value="Transparent" />
+
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" Value="0.5" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="{x:Type Label}" BasedOn="{StaticResource {x:Type Label}}">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{StaticResource PrimaryText}" />
+        <Setter Property="FontWeight" Value="SemiBold"></Setter>
+        <Setter Property="FontFamily" Value="Courier New" />
+    </Style>
+
+    <Style TargetType="{x:Type GroupBox}" BasedOn="{StaticResource {x:Type GroupBox}}">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{StaticResource PrimaryText}" />
+        <Setter Property="BorderThickness" Value="0.5"></Setter>
+        <Setter Property="FontFamily" Value="Courier New" />
+    </Style>
+
+    <Style TargetType="{x:Type RadioButton}" BasedOn="{StaticResource {x:Type RadioButton}}">
+        <Setter Property="Background" Value="{StaticResource PrimaryText}" />
+        <Setter Property="Foreground" Value="{StaticResource PrimaryText}" />
+        <Setter Property="BorderBrush" Value="{StaticResource Accent}" />
+        <Setter Property="FontFamily" Value="Courier New" />
+    </Style>
+
+    <Style TargetType="{x:Type CheckBox}" BasedOn="{StaticResource {x:Type CheckBox}}">
+        <Setter Property="Background" Value="{StaticResource PrimaryText}" />
+        <Setter Property="Foreground" Value="{StaticResource PrimaryText}" />
+        <Setter Property="BorderBrush" Value="{StaticResource Accent}" />
+        <Setter Property="FontFamily" Value="Courier New" />
+    </Style>
+
+    <Style TargetType="{x:Type ProgressBar}" BasedOn="{StaticResource {x:Type ProgressBar}}">
+        <Setter Property="Background" Value="{StaticResource Secondary}" />
+        <Setter Property="Foreground" Value="{StaticResource Accent}" />
+        <Setter Property="BorderThickness" Value="0"></Setter>
+        <Setter Property="FontFamily" Value="Courier New" />
+    </Style>
+
+    <Style TargetType="{x:Type ToolTip}" BasedOn="{StaticResource {x:Type ToolTip}}">
+        <Setter Property="Background" Value="{StaticResource Shadow}" />
+        <Setter Property="Foreground" Value="{StaticResource PrimaryText}" />
+        <Setter Property="FontFamily" Value="Courier New" />
+    </Style>
+
+    <!-- Info Icon -->
+    <Geometry x:Key="InfoIcon">
+        M13,9H11V7H13M13,17H11V11H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z
+    </Geometry>
+    <!-- -->
+
+    <!-- Copy Icon -->
+    <Geometry x:Key="CopyGeometry">F1 M512,512z M0,0z M502.6,70.63L441.35,9.38C435.4,3.371,427.2,0,418.7,0L255.1,0C219.75,0,191.1,28.66,191.1,64L191.1195,320C192,355.4,220.7,384,256,384L448,384C483.2,384,512,355.2,512,320L512,93.25C512,84.77,508.6,76.63,502.6,70.63z M464,320C464,328.836,456.836,336,448,336L255.1,336C246.262,336,239.1,328.836,239.1,320L239.1,64.13C239.1,55.294,246.264,48.13,255.1,48.13L383.1,48.13 384,96C384,113.67,398.33,128,416,128L463.1,128 463.1,320z M272,448C272,456.836,264.836,464,256,464L63.1,464C54.262,464,47.1,456.836,47.1,448L47.98,192.1C47.98,183.264,55.144,176.1,63.98,176.1L160,176.1 160,128 63.99,128C28.64,128,-0.00999999999999801,156.65,-0.00999999999999801,192L-0.000199999999998011,448C0.002,483.3,28.66,512,64,512L256,512C291.2,512,320,483.2,320,448L320,416 272.9,416 272,448z</Geometry>
+    <DrawingGroup x:Key="CopyDrawingGroup" ClipGeometry="M0,0 V512 H512 V0 H0 Z">
+        <DrawingGroup.Transform>
+            <TranslateTransform X="0.0099999997764825821" Y="0" />
+        </DrawingGroup.Transform>
+        <GeometryDrawing Brush="{StaticResource Accent}" Geometry="{StaticResource CopyGeometry}" />
+    </DrawingGroup>
+    <DrawingImage x:Key="CopyDrawingImage" Drawing="{StaticResource CopyDrawingGroup}" />
+    <!-- End Copy Icon -->
+
+    <!-- Reload Icon -->
+    <Geometry x:Key="ReloadGeometry1">F1 M120,120z M0,0z M60,95.5C40.425,95.5 24.5,79.574 24.5,60 24.5,40.425 40.425,24.5 60,24.5 73.62,24.5 85.467,32.214 91.418,43.5L114.045,43.5C106.984,20.347 85.462,3.5 60,3.5 28.796,3.5 3.5,28.796 3.5,60 3.5,91.203 28.796,116.5 60,116.5 76.264,116.5 90.911,109.618 101.221,98.62L85.889,84.255C79.406,91.168,70.201,95.5,60,95.5z</Geometry>
+    <Geometry x:Key="ReloadGeometry2">F1 M120,120z M0,0z M120,21.832L120,21.832 119.992,68.842 74.827,55.811z</Geometry>
+    <DrawingGroup x:Key="ReloadDrawingGroup" ClipGeometry="M0,0 V120 H120 V0 H0 Z">
+        <DrawingGroup Opacity="1">
+            <GeometryDrawing Brush="{StaticResource Accent}" Geometry="{StaticResource ReloadGeometry1}" />
+        </DrawingGroup>
+        <GeometryDrawing Brush="{StaticResource Accent}" Geometry="{StaticResource ReloadGeometry2}" />
+    </DrawingGroup>
+    <DrawingImage x:Key="ReloadDrawingImage" Drawing="{StaticResource ReloadDrawingGroup}" />
+    <!-- End Reload Icon -->
+
+    <!-- Scrollbar -->
+    <Style x:Key="ScrollThumbs" TargetType="{x:Type Thumb}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Grid x:Name="Grid">
+                        <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="Auto"
+                                   Height="Auto" Fill="Transparent" />
+                        <Border x:Name="Rectangle1" CornerRadius="5" HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch" Width="Auto" Height="Auto"
+                                Background="{TemplateBinding Background}" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="Tag" Value="Horizontal">
+                            <Setter TargetName="Rectangle1" Property="Width" Value="Auto" />
+                            <Setter TargetName="Rectangle1" Property="Height" Value="8" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--SCROLLBARS-->
+    <Style x:Key="{x:Type ScrollBar}" TargetType="{x:Type ScrollBar}">
+        <Setter Property="Stylus.IsFlicksEnabled" Value="False" />
+        <Setter Property="Foreground" Value="{StaticResource Accent}" />
+        <Setter Property="Background" Value="DarkGray" />
+        <Setter Property="Width" Value="8" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ScrollBar}">
+                    <Grid x:Name="GridRoot" Width="8" Background="{x:Null}">
+                        <Track x:Name="PART_Track" Grid.Row="0" IsDirectionReversed="true" Focusable="False">
+                            <Track.Thumb>
+                                <Thumb x:Name="Thumb" Background="{TemplateBinding Foreground}"
+                                       Style="{DynamicResource ScrollThumbs}" />
+                            </Track.Thumb>
+                            <Track.IncreaseRepeatButton>
+                                <RepeatButton x:Name="PageUp" Command="ScrollBar.PageDownCommand" Opacity="0"
+                                              Focusable="False" />
+                            </Track.IncreaseRepeatButton>
+                            <Track.DecreaseRepeatButton>
+                                <RepeatButton x:Name="PageDown" Command="ScrollBar.PageUpCommand" Opacity="0"
+                                              Focusable="False" />
+                            </Track.DecreaseRepeatButton>
+                        </Track>
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger SourceName="Thumb" Property="IsMouseOver" Value="true">
+                            <Setter Value="{DynamicResource ButtonSelectBrush}"
+                                    TargetName="Thumb" Property="Background" />
+                        </Trigger>
+                        <Trigger SourceName="Thumb" Property="IsDragging" Value="true">
+                            <Setter Value="{DynamicResource DarkBrush}" TargetName="Thumb"
+                                    Property="Background" />
+                        </Trigger>
+
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter TargetName="Thumb" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                        <Trigger Property="Orientation" Value="Horizontal">
+                            <Setter TargetName="GridRoot" Property="LayoutTransform">
+                                <Setter.Value>
+                                    <RotateTransform Angle="-90" />
+                                </Setter.Value>
+                            </Setter>
+                            <Setter TargetName="PART_Track" Property="LayoutTransform">
+                                <Setter.Value>
+                                    <RotateTransform Angle="-90" />
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="Width" Value="Auto" />
+                            <Setter Property="Height" Value="8" />
+                            <Setter TargetName="Thumb" Property="Tag" Value="Horizontal" />
+                            <Setter TargetName="PageDown" Property="Command" Value="ScrollBar.PageLeftCommand" />
+                            <Setter TargetName="PageUp" Property="Command" Value="ScrollBar.PageRightCommand" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="{x:Type ScrollViewer}" TargetType="{x:Type ScrollViewer}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ScrollViewer}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <ScrollContentPresenter Grid.Column="0" />
+                        <ScrollBar x:Name="PART_VerticalScrollBar" Grid.Row="0" Grid.Column="1"
+                                   Value="{TemplateBinding VerticalOffset}"
+                                   Maximum="{TemplateBinding ScrollableHeight}"
+                                   ViewportSize="{TemplateBinding ViewportHeight}"
+                                   Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}" />
+                        <ScrollBar x:Name="PART_HorizontalScrollBar" Orientation="Horizontal" Grid.Row="1"
+                                   Grid.Column="0" Value="{TemplateBinding HorizontalOffset}"
+                                   Maximum="{TemplateBinding ScrollableWidth}"
+                                   ViewportSize="{TemplateBinding ViewportWidth}"
+                                   Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!-- End Scrollbar -->
+
+</ResourceDictionary>

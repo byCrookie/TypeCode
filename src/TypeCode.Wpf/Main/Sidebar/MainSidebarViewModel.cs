@@ -3,7 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using DependencyInjection.Factory;
 using TypeCode.Wpf.Helper.Navigation.Contract;
 using TypeCode.Wpf.Helper.Navigation.Service;
-using TypeCode.Wpf.Helper.Navigation.Wizard.Complex;
+using TypeCode.Wpf.Helper.Navigation.Wizard;
 using TypeCode.Wpf.Pages.Assemblies;
 using TypeCode.Wpf.Pages.Builder;
 using TypeCode.Wpf.Pages.Common.Configuration;

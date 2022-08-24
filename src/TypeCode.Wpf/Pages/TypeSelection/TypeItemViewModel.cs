@@ -1,7 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using TypeCode.Wpf.Helper.Event;
-using TypeCode.Wpf.Helper.Navigation.Wizard;
 
 namespace TypeCode.Wpf.Pages.TypeSelection;
 
@@ -19,7 +18,7 @@ public class TypeItemViewModel : ListBoxItem
 
     protected override void OnSelected(RoutedEventArgs e)
     {
-        _eventAggregator.PublishAsync(new WizardUpdateEvent());
+        // _eventAggregator.PublishAsync(new WizardUpdateEvent());
         base.OnSelected(e);
     }
 

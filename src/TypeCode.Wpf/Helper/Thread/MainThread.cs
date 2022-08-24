@@ -8,4 +8,9 @@ public static class MainThread
     {
         System.Windows.Application.Current.Dispatcher.Invoke(action, priority);
     }
+    
+    public static void BackgroundFireAndForget(Func<Task> action, DispatcherPriority priority)
+    {
+        System.Windows.Application.Current.Dispatcher.Invoke(action, priority);
+    }
 }

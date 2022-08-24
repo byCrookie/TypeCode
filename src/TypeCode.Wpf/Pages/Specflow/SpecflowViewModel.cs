@@ -51,17 +51,18 @@ public partial class SpecflowViewModel : ObservableObject
                 Types = types
             };
 
-            await _typeSelectionWizardStarter.StartAsync(typeSelectionParameter, selectedTypes =>
-            {
-                types = selectedTypes.ToList();
-                return Task.CompletedTask;
-            }, _ =>
-            {
-                types = new List<Type>();
-                return Task.CompletedTask;
-            }).ConfigureAwait(true);
+            await _typeSelectionWizardStarter
+                .StartAsync(typeSelectionParameter, viewModel => GenerateAsync(viewModel.SelectedTypes.ToList()))
+                .ConfigureAwait(true);
         }
+        else
+        {
+            await GenerateAsync(types).ConfigureAwait(true);
+        }
+    }
 
+    private async Task GenerateAsync(List<Type> types)
+    {
         var parameter = new SpecflowTypeCodeGeneratorParameter
         {
             Types = types,

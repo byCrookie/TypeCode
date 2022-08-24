@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:unitTestDependencyManually="clr-namespace:TypeCode.Wpf.Pages.UnitTestDependencyManually"
              xmlns:outputBox="clr-namespace:TypeCode.Wpf.Components.OutputBox"
+             xmlns:textBox="clr-namespace:TypeCode.Wpf.Controls.TextBox"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance unitTestDependencyManually:UnitTestDependencyManuallyViewModel}">
@@ -25,28 +26,28 @@
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
             </Grid.ColumnDefinitions>
 
-            <Border Grid.Column="0" BorderBrush="{StaticResource Accent}"
-                    BorderThickness="1"
-                    VerticalAlignment="Center">
-                <TextBox
-                    Margin="4"
-                    BorderThickness="0"
-                    Text="{Binding Input, UpdateSourceTrigger=PropertyChanged}"
-                    HorizontalAlignment="Stretch"
-                    HorizontalContentAlignment="Stretch"
-                    HorizontalScrollBarVisibility="Auto"
-                    VerticalScrollBarVisibility="Auto"
-                    AcceptsReturn="True"
-                    TextWrapping="NoWrap"
-                    AcceptsTab="True"
-                    MinHeight="50"
-                    MaxHeight="200"
-                    FontFamily="Courier New"
-                    ToolTip="Input constructor from access modifier to end of constructor dependencies including ')'">
-                </TextBox>
-            </Border>
+            <textBox:CustomTextBox Grid.Column="0"
+                                   Text="{Binding Input, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                   ShowRegex="False"
+                                   ToolTip="Input constructor from access modifier to end of constructor dependencies including ')'"
+                                   ShowAutoCompletion="False"
+                                   HorizontalAlignment="Stretch"
+                                   HorizontalContentAlignment="Stretch"
+                                   HorizontalScrollBarVisibility="Auto"
+                                   VerticalScrollBarVisibility="Auto"
+                                   AcceptsReturn="True"
+                                   TextWrapping="NoWrap"
+                                   AcceptsTab="True"
+                                   MinHeight="50"
+                                   MaxHeight="200">
 
-            <Button Margin="5,0,0,0" VerticalAlignment="Top" Grid.Column="1" Command="{Binding GenerateCommand}" Content="Generate" />
+                <TextBox.InputBindings>
+                    <KeyBinding Key="Enter" Command="{Binding GenerateCommand}" />
+                </TextBox.InputBindings>
+            </textBox:CustomTextBox>
+
+            <Button Margin="5,0,0,0" VerticalAlignment="Top" Grid.Column="1" Command="{Binding GenerateCommand}"
+                    Content="Generate" />
         </Grid>
 
         <outputBox:OutputBoxView Margin="0,5,0,0" Grid.Row="1" DataContext="{Binding OutputBoxViewModel}" />

@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:assemblyRootWizard="clr-namespace:TypeCode.Wpf.Pages.Common.Configuration.AssemblyRootWizard"
+             xmlns:textBox="clr-namespace:TypeCode.Wpf.Controls.TextBox"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance assemblyRootWizard:AssemblyRootWizardViewModel}">
@@ -34,22 +35,28 @@
                 <RowDefinition Height="5"></RowDefinition>
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
-            <TextBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
-                     BorderThickness="1"
-                     Padding="2" Text="{Binding Path, Mode=OneWay}"
-                     HorizontalAlignment="Stretch"
-                     HorizontalContentAlignment="Stretch"
-                     AcceptsReturn="False" />
+            <textBox:CustomTextBox
+                Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Path, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                ShowRegex="False"
+                ShowAutoCompletion="False"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Stretch"
+                AcceptsReturn="False"
+                AcceptsTab="False">
+            </textBox:CustomTextBox>
             <Button Grid.Row="0" Grid.Column="3"
                     BorderThickness="0" Command="{Binding SelectCommand}"
                     Content="Select" />
             <Label Grid.Row="2" Grid.Column="0" Content="Priority" />
-            <TextBox Grid.Row="2" Grid.Column="1"
-                     BorderThickness="1"
-                     Padding="2" Text="{Binding Priority}"
-                     HorizontalAlignment="Stretch"
-                     HorizontalContentAlignment="Stretch"
-                     AcceptsReturn="False" />
+            <textBox:CustomTextBox
+                Grid.Row="2" Grid.Column="1" Text="{Binding Priority, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                ShowRegex="False"
+                ShowAutoCompletion="False"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Stretch"
+                AcceptsReturn="False"
+                AcceptsTab="False">
+            </textBox:CustomTextBox>
         </Grid>
     </Grid>
 </UserControl>

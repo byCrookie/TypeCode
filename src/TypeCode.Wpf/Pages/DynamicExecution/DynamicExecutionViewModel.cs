@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Reflection;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using TypeCode.Business.Embedded;
@@ -10,7 +11,7 @@ using TypeCode.Wpf.Helper.ViewModels;
 
 namespace TypeCode.Wpf.Pages.DynamicExecution;
 
-public partial class DynamicExecutionViewModel : ObservableObject, IAsyncNavigatedTo
+public partial class DynamicExecutionViewModel : ObservableValidator, IAsyncNavigatedTo
 {
     private readonly ICompiler _compiler;
     private readonly IRunner _runner;
@@ -37,7 +38,7 @@ public partial class DynamicExecutionViewModel : ObservableObject, IAsyncNavigat
         return Task.CompletedTask;
     }
 
-    [RelayCommand]
+    [RelayCommand(CanExecute = nameof(CanExecute))]
     private Task ExecuteAsync()
     {
         var result = _runner.Execute(_compiler.Compile(Input!));
@@ -46,8 +47,16 @@ public partial class DynamicExecutionViewModel : ObservableObject, IAsyncNavigat
 
         return Task.CompletedTask;
     }
+    
+    private bool CanExecute()
+    {
+        return !HasErrors && !string.IsNullOrEmpty(Input);
+    }
 
     [ObservableProperty]
+    [NotifyDataErrorInfo]
+    [NotifyCanExecuteChangedFor(nameof(ExecuteCommand))]
+    [Required]
     private string? _input;
 
     [ObservableProperty]
