@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Reflection;
+using System.Windows.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using TypeCode.Business.Embedded;
@@ -7,6 +8,7 @@ using TypeCode.Business.Mode.DynamicExecution;
 using TypeCode.Wpf.Components.OutputBox;
 using TypeCode.Wpf.Helper.Navigation.Contract;
 using TypeCode.Wpf.Helper.Navigation.Service;
+using TypeCode.Wpf.Helper.Thread;
 using TypeCode.Wpf.Helper.ViewModels;
 
 namespace TypeCode.Wpf.Pages.DynamicExecution;
@@ -34,17 +36,17 @@ public partial class DynamicExecutionViewModel : ObservableValidator, IAsyncNavi
     public Task OnNavigatedToAsync(NavigationContext context)
     {
         Input = _resourceReader.ReadResource(Assembly.GetExecutingAssembly(), "Pages.DynamicExecution.DynamicExecutionTemplate.txt");
-
         return Task.CompletedTask;
     }
 
     [RelayCommand(CanExecute = nameof(CanExecute))]
     private Task ExecuteAsync()
     {
-        var result = _runner.Execute(_compiler.Compile(Input!));
-
-        OutputBoxViewModel?.SetOutput(result);
-
+        MainThread.BackgroundFireAndForget(() =>
+        {
+            var result = _runner.Execute(_compiler.Compile(Input!));
+            OutputBoxViewModel?.SetOutput(result);
+        }, DispatcherPriority.Normal);
         return Task.CompletedTask;
     }
     
