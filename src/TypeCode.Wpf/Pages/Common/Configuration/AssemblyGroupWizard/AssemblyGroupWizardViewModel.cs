@@ -1,9 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using CommunityToolkit.Mvvm.ComponentModel;
+using TypeCode.Wpf.Helper.ViewModels;
 
 namespace TypeCode.Wpf.Pages.Common.Configuration.AssemblyGroupWizard;
 
-public partial class AssemblyGroupWizardViewModel : ObservableValidator
+public partial class AssemblyGroupWizardViewModel : ViewModelBase
 {
     [ObservableProperty]
     [NotifyDataErrorInfo]

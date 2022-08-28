@@ -2,10 +2,11 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Win32;
+using TypeCode.Wpf.Helper.ViewModels;
 
 namespace TypeCode.Wpf.Pages.Common.Configuration.AssemblyRootWizard;
 
-public partial class AssemblyRootWizardViewModel : ObservableValidator
+public partial class AssemblyRootWizardViewModel : ViewModelBase
 {
     [RelayCommand]
     private Task SelectAsync()

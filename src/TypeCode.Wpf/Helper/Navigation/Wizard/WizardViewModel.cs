@@ -6,7 +6,7 @@ using TypeCode.Wpf.Helper.ViewModels;
 
 namespace TypeCode.Wpf.Helper.Navigation.Wizard;
 
-public partial class WizardViewModel : ObservableValidator, IWizardHost
+public partial class WizardViewModel : ViewModelBase, IWizardHost
 {
     private readonly IWizardNavigator _wizardNavigator;
     private Wizard? _wizard;
@@ -72,6 +72,13 @@ public partial class WizardViewModel : ObservableValidator, IWizardHost
         await NavigationCaller.CallNavigateToAsync(wizard.CurrentStepConfiguration.Instances.ViewModelInstance, wizard.NavigationContext).ConfigureAwait(true);
 
         _wizard = wizard;
+
+        if (wizard.CurrentStepConfiguration.Instances.ViewModelInstance is ViewModelBase observableValidator)
+        {
+            observableValidator.ValidateAllProperties();
+        }
+        
+        ValidateAllProperties();
     }
 
     public async Task NavigateFromAsync(Wizard wizard, NavigationAction navigationAction)

@@ -5,10 +5,11 @@ using CommunityToolkit.Mvvm.Input;
 using TypeCode.Business.Configuration.Location;
 using TypeCode.Wpf.Helper.Navigation.Service;
 using TypeCode.Wpf.Helper.Navigation.Wizard;
+using TypeCode.Wpf.Helper.ViewModels;
 
 namespace TypeCode.Wpf.Pages.Common.Configuration;
 
-public partial class ConfigurationWizardViewModel : ObservableObject, IAsyncInitialNavigated
+public partial class ConfigurationWizardViewModel : ViewModelBase, IAsyncInitialNavigated
 {
     private readonly IConfigurationLocationProvider _configurationLocationProvider;
 

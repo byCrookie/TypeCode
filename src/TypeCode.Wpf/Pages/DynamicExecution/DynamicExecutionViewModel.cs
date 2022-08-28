@@ -13,7 +13,7 @@ using TypeCode.Wpf.Helper.ViewModels;
 
 namespace TypeCode.Wpf.Pages.DynamicExecution;
 
-public partial class DynamicExecutionViewModel : ObservableValidator, IAsyncNavigatedTo
+public partial class DynamicExecutionViewModel : ViewModelBase, IAsyncNavigatedTo
 {
     private readonly ICompiler _compiler;
     private readonly IRunner _runner;

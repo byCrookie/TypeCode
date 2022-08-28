@@ -9,7 +9,7 @@ using TypeCode.Wpf.Pages.TypeSelection;
 
 namespace TypeCode.Wpf.Pages.Composer;
 
-public partial class ComposerViewModel : ObservableObject
+public partial class ComposerViewModel : ViewModelBase
 {
     private readonly ITypeCodeGenerator<ComposerTypeCodeGeneratorParameter> _composerTypeGenerator;
     private readonly ITypeProvider _typeProvider;

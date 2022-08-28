@@ -9,7 +9,7 @@ using TypeCode.Wpf.Pages.TypeSelection;
 
 namespace TypeCode.Wpf.Pages.Builder;
 
-public partial class BuilderViewModel : ObservableObject
+public partial class BuilderViewModel : ViewModelBase
 {
     private readonly ITypeCodeGenerator<BuilderTypeCodeGeneratorParameter> _builderGenerator;
     private readonly ITypeProvider _typeProvider;

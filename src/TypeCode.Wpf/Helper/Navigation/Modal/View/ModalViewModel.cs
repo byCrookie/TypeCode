@@ -3,10 +3,11 @@ using CommunityToolkit.Mvvm.Input;
 using TypeCode.Wpf.Helper.Navigation.Contract;
 using TypeCode.Wpf.Helper.Navigation.Modal.Service;
 using TypeCode.Wpf.Helper.Navigation.Service;
+using TypeCode.Wpf.Helper.ViewModels;
 
 namespace TypeCode.Wpf.Helper.Navigation.Modal.View;
 
-public partial class ModalViewModel : ObservableObject, IAsyncNavigatedTo
+public partial class ModalViewModel : ViewModelBase, IAsyncNavigatedTo
 {
     private readonly IModalNavigationService _modalNavigationService;
 

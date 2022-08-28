@@ -8,11 +8,12 @@ using TypeCode.Wpf.Application;
 using TypeCode.Wpf.Helper.Event;
 using TypeCode.Wpf.Helper.Navigation.Contract;
 using TypeCode.Wpf.Helper.Navigation.Service;
+using TypeCode.Wpf.Helper.ViewModels;
 
 namespace TypeCode.Wpf.Components.InputBox;
 
 public partial class InputBoxViewModel :
-    ObservableValidator,
+    ViewModelBase,
     IAsyncEventHandler<LoadStartEvent>,
     IAsyncEventHandler<LoadEndEvent>,
     IAsyncNavigatedFrom

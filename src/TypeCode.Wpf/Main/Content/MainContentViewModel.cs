@@ -8,11 +8,12 @@ using TypeCode.Wpf.Application;
 using TypeCode.Wpf.Helper.Event;
 using TypeCode.Wpf.Helper.Navigation.Contract;
 using TypeCode.Wpf.Helper.Navigation.Service;
+using TypeCode.Wpf.Helper.ViewModels;
 
 namespace TypeCode.Wpf.Main.Content;
 
 public partial class MainContentViewModel :
-    ObservableObject,
+    ViewModelBase,
     IAsyncEventHandler<LoadStartEvent>,
     IAsyncEventHandler<LoadEndEvent>,
     IAsyncEventHandler<BannerOpenEvent>,

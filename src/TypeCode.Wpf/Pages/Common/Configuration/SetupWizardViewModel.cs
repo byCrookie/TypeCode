@@ -7,7 +7,7 @@ using TypeCode.Wpf.Helper.ViewModels;
 
 namespace TypeCode.Wpf.Pages.Common.Configuration;
 
-public partial class SetupWizardViewModel : ObservableObject, IAsyncInitialNavigated
+public partial class SetupWizardViewModel : ViewModelBase, IAsyncInitialNavigated
 {
     private readonly ISetupConfigurator _setupConfigurator;
     private readonly IConfigurationViewModelFactory _configurationViewModelFactory;

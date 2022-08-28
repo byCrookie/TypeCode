@@ -9,7 +9,7 @@ using TypeCode.Wpf.Pages.TypeSelection;
 
 namespace TypeCode.Wpf.Pages.Specflow;
 
-public partial class SpecflowViewModel : ObservableObject
+public partial class SpecflowViewModel : ViewModelBase
 {
     private readonly ITypeCodeGenerator<SpecflowTypeCodeGeneratorParameter> _specflowGenerator;
     private readonly ITypeProvider _typeProvider;

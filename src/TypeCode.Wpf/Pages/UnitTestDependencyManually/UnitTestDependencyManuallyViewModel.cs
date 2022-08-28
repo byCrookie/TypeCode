@@ -8,7 +8,7 @@ using TypeCode.Wpf.Helper.ViewModels;
 
 namespace TypeCode.Wpf.Pages.UnitTestDependencyManually;
 
-public partial class UnitTestDependencyManuallyViewModel : ObservableValidator
+public partial class UnitTestDependencyManuallyViewModel : ViewModelBase
 {
     private readonly ITypeCodeGenerator<UnitTestDependencyManuallyGeneratorParameter> _unitTestDependencyManuallyGenerator;
 

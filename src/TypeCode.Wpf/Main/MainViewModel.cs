@@ -16,7 +16,7 @@ using TypeCode.Wpf.Main.Sidebar;
 namespace TypeCode.Wpf.Main;
 
 public partial class MainViewModel :
-    ObservableObject,
+    ViewModelBase,
     IAsyncNavigatedTo,
     IAsyncNavigatedFrom,
     IAsyncEventHandler<VersionLoadedEvent>,

@@ -2,10 +2,11 @@
 using TypeCode.Business.Version;
 using TypeCode.Wpf.Helper.Navigation.Contract;
 using TypeCode.Wpf.Helper.Navigation.Service;
+using TypeCode.Wpf.Helper.ViewModels;
 
 namespace TypeCode.Wpf.Pages.Home;
 
-public partial class HomeViewModel : ObservableObject, IAsyncNavigatedTo
+public partial class HomeViewModel : ViewModelBase, IAsyncNavigatedTo
 {
     private readonly IVersionEvaluator _versionEvaluator;
 

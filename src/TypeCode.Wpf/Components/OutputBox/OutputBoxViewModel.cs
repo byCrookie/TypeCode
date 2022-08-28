@@ -2,10 +2,11 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using TypeCode.Business.Format;
+using TypeCode.Wpf.Helper.ViewModels;
 
 namespace TypeCode.Wpf.Components.OutputBox;
 
-public partial class OutputBoxViewModel : ObservableObject
+public partial class OutputBoxViewModel : ViewModelBase
 {
     [RelayCommand(CanExecute = nameof(CanCopyToClipboard))]
     private Task CopyToClipboardAsync()

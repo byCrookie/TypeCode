@@ -9,7 +9,7 @@ using TypeCode.Wpf.Pages.TypeSelection;
 
 namespace TypeCode.Wpf.Pages.UnitTestDependencyType;
 
-public partial class UnitTestDependencyTypeViewModel : ObservableObject
+public partial class UnitTestDependencyTypeViewModel : ViewModelBase
 {
     private readonly ITypeCodeGenerator<UnitTestDependencyTypeGeneratorParameter> _unitTestDependencyTypeGenerator;
     private readonly ITypeProvider _typeProvider;

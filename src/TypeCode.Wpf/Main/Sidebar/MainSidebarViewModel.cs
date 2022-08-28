@@ -4,6 +4,7 @@ using DependencyInjection.Factory;
 using TypeCode.Wpf.Helper.Navigation.Contract;
 using TypeCode.Wpf.Helper.Navigation.Service;
 using TypeCode.Wpf.Helper.Navigation.Wizard;
+using TypeCode.Wpf.Helper.ViewModels;
 using TypeCode.Wpf.Pages.Assemblies;
 using TypeCode.Wpf.Pages.Builder;
 using TypeCode.Wpf.Pages.Common.Configuration;
@@ -17,7 +18,7 @@ using TypeCode.Wpf.Pages.UnitTestDependencyType;
 
 namespace TypeCode.Wpf.Main.Sidebar;
 
-public partial class MainSidebarViewModel : ObservableObject, IAsyncNavigatedTo
+public partial class MainSidebarViewModel : ViewModelBase, IAsyncNavigatedTo
 {
     private readonly INavigationService _navigationService;
     private readonly IFactory<IWizardBuilder> _wizardBuilderFactory;

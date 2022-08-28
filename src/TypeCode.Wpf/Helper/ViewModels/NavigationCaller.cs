@@ -38,6 +38,11 @@ public static class NavigationCaller
                 }
             }
         }
+        
+        if (viewModel is ViewModelBase viewModelBase)
+        {
+            viewModelBase.ValidateAllProperties();
+        }
     }
     
     public static async Task CallNavigateFromAsync(object? viewModel, NavigationContext navigationContext)
