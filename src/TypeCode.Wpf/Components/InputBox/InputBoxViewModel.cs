@@ -76,9 +76,15 @@ public partial class InputBoxViewModel :
     {
         var types = UseRegexSearch
             ? _typeProvider.TryGetByName(value, new TypeEvaluationOptions { Regex = true })
-            : _typeProvider.TryGetTypesByCondition(type => type.Name.Contains(value));
+            : _typeProvider.TryGetTypesByCondition(type => type.Name.ToLowerInvariant().Contains(value.ToLowerInvariant()));
 
-        return Task.FromResult(types.Select(type => type.Name).Distinct());
+        var ordered = types
+            .Select(type => type.Name)
+            .OrderBy(name => name.Length)
+            .ThenBy(name => name)
+            .Distinct();
+
+        return Task.FromResult(ordered);
     }
 
     [ObservableProperty]
