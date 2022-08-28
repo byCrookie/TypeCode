@@ -8,8 +8,8 @@ public class WizardStepParameter
     {
         BeforeAction = _ => Task.CompletedTask;
         AfterAction = _ => Task.CompletedTask;
-        AllowBack = _ => false;
-        AllowNext = _ => false;
+        AllowBack = _ => true;
+        AllowNext = _ => true;
     }
         
     public Func<NavigationContext, Task> BeforeAction { get; set; }

@@ -1,6 +1,4 @@
 ﻿using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Input;
 using AsyncAwaitBestPractices;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -8,7 +6,7 @@ using TypeCode.Wpf.Helper.ViewModels;
 
 namespace TypeCode.Wpf.Helper.Navigation.Wizard;
 
-public partial class WizardViewModel : ObservableObject, IWizardHost
+public partial class WizardViewModel : ObservableValidator, IWizardHost
 {
     private readonly IWizardNavigator _wizardNavigator;
     private Wizard? _wizard;
@@ -34,7 +32,7 @@ public partial class WizardViewModel : ObservableObject, IWizardHost
         {
             throw new ArgumentException($"{nameof(wizard.CurrentStepConfiguration)} is not set");
         }
-        
+
         wizard.NavigationContext.AddOrUpdateParameter(wizard.CurrentStepConfiguration.Instances.ViewModelInstance);
 
         if (!wizard.CurrentStepConfiguration.Initialized && wizard.CurrentStepConfiguration.Instances.ViewModelInstance is IAsyncInitialNavigated asyncInitialNavigated)
@@ -48,15 +46,17 @@ public partial class WizardViewModel : ObservableObject, IWizardHost
         BackCommand = new AsyncRelayCommand(BackAsync, () => wizard.CurrentStepConfiguration != wizard.StepConfigurations.FirstOrDefault()
                                                              && wizard.CurrentStepConfiguration.AllowBack(wizard.NavigationContext));
         IsBackButtonVisible = wizard.CurrentStepConfiguration != wizard.StepConfigurations.FirstOrDefault();
-        
+
         NextCommand = new AsyncRelayCommand(NextAsync, () => wizard.CurrentStepConfiguration != wizard.StepConfigurations.LastOrDefault()
-                                                             && wizard.CurrentStepConfiguration.AllowNext(wizard.NavigationContext));
+                                                             && wizard.CurrentStepConfiguration.AllowNext(wizard.NavigationContext)
+                                                             && !ErrorEvaluator.HasErrors(wizard.CurrentStepConfiguration.Instances.ViewModelInstance));
         IsNextButtonVisible = wizard.CurrentStepConfiguration != wizard.StepConfigurations.LastOrDefault();
-        
+
         CancelCommand = new AsyncRelayCommand(CancelAsync);
-        
+
         FinishCommand = new AsyncRelayCommand(FinishAsync, () => wizard.CurrentStepConfiguration == wizard.StepConfigurations.LastOrDefault()
-                                                                 && wizard.CurrentStepConfiguration.AllowNext(wizard.NavigationContext));
+                                                                 && wizard.CurrentStepConfiguration.AllowNext(wizard.NavigationContext)
+                                                                 && !ErrorEvaluator.HasErrors(wizard.CurrentStepConfiguration.Instances.ViewModelInstance));
         IsFinishButtonVisible = wizard.CurrentStepConfiguration == wizard.StepConfigurations.LastOrDefault();
         FinishText = wizard.FinishText;
 
@@ -64,11 +64,11 @@ public partial class WizardViewModel : ObservableObject, IWizardHost
         {
             throw new ArgumentException($"{wizard.CurrentStepConfiguration.Instances.ViewInstance.GetType().FullName} is not a {nameof(UserControl)}");
         }
-        
+
         UpdateWizardAsync().SafeFireAndForget();
 
         WizardPage = wizardPage;
-        
+
         await NavigationCaller.CallNavigateToAsync(wizard.CurrentStepConfiguration.Instances.ViewModelInstance, wizard.NavigationContext).ConfigureAwait(true);
 
         _wizard = wizard;
@@ -77,7 +77,7 @@ public partial class WizardViewModel : ObservableObject, IWizardHost
     public async Task NavigateFromAsync(Wizard wizard, NavigationAction navigationAction)
     {
         _cancellationTokenSource.TryReset();
-        
+
         wizard.NavigationContext.AddOrUpdateParameter(navigationAction);
 
         if (wizard.CurrentStepConfiguration is null)
@@ -89,7 +89,7 @@ public partial class WizardViewModel : ObservableObject, IWizardHost
 
         await wizard.CurrentStepConfiguration.AfterAction(wizard.NavigationContext).ConfigureAwait(true);
     }
-    
+
     private async Task UpdateWizardAsync()
     {
         while (!_cancellationTokenSource.IsCancellationRequested)
@@ -125,7 +125,7 @@ public partial class WizardViewModel : ObservableObject, IWizardHost
     private Task CancelAsync()
     {
         _cancellationTokenSource.Cancel();
-        
+
         if (_wizard is null)
         {
             throw new ArgumentException("Wizard is not set");
@@ -137,7 +137,7 @@ public partial class WizardViewModel : ObservableObject, IWizardHost
     private Task FinishAsync()
     {
         _cancellationTokenSource.Cancel();
-        
+
         if (_wizard is null)
         {
             throw new ArgumentException("Wizard is not set");

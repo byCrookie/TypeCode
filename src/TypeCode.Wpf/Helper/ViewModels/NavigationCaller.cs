@@ -14,7 +14,7 @@ public static class NavigationCaller
             case null:
                 return;
             case IAsyncNavigatedTo asyncNavigatedTo:
-                await asyncNavigatedTo.OnNavigatedToAsync(navigationContext);
+                await asyncNavigatedTo.OnNavigatedToAsync(navigationContext).ConfigureAwait(true);
                 break;
         }
 
@@ -29,12 +29,12 @@ public static class NavigationCaller
                 {
                     foreach (var value in values)
                     {
-                        await CallNavigateToAsync(value, navigationContext);
+                        await CallNavigateToAsync(value, navigationContext).ConfigureAwait(true);
                     }
                 }
                 else
                 {
-                    await CallNavigateToAsync(fieldValue, navigationContext);
+                    await CallNavigateToAsync(fieldValue, navigationContext).ConfigureAwait(true);
                 }
             }
         }
@@ -47,7 +47,7 @@ public static class NavigationCaller
             case null:
                 return;
             case IAsyncNavigatedFrom asyncNavigatedFrom:
-                await asyncNavigatedFrom.OnNavigatedFromAsync(navigationContext);
+                await asyncNavigatedFrom.OnNavigatedFromAsync(navigationContext).ConfigureAwait(true);
                 break;
         }
 
@@ -61,12 +61,12 @@ public static class NavigationCaller
                 {
                     foreach (var value in values)
                     {
-                        await CallNavigateFromAsync(value, navigationContext);
+                        await CallNavigateFromAsync(value, navigationContext).ConfigureAwait(true);
                     }
                 }
                 else
                 {
-                    await CallNavigateFromAsync(fieldValue, navigationContext);
+                    await CallNavigateFromAsync(fieldValue, navigationContext).ConfigureAwait(true);
                 }
             }
         }
