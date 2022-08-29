@@ -85,7 +85,7 @@ public class EventAggregator : IEventAggregator
                     if (subscriber is IAsyncEventHandler<TEvent> subsriberHandler)
                     {
                         Log.Debug("Calling {Handler} to handle {Event}", subsriberHandler.GetType().FullName, typeof(TEvent));
-                        MainThread.BackgroundFireAndForget(() => subsriberHandler.HandleAsync(e), DispatcherPriority.Send);
+                        MainThread.BackgroundFireAndForgetSync(() => subsriberHandler.HandleAsync(e), DispatcherPriority.Send);
                     }
                 }
             }

@@ -83,7 +83,7 @@ public partial class InputBoxViewModel :
             .OrderBy(name => name.Length)
             .ThenBy(name => name)
             .Distinct();
-
+        
         return Task.FromResult(ordered);
     }
 

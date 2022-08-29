@@ -42,7 +42,7 @@ public partial class DynamicExecutionViewModel : ViewModelBase, IAsyncNavigatedT
     [RelayCommand(CanExecute = nameof(CanExecute))]
     private Task ExecuteAsync()
     {
-        MainThread.BackgroundFireAndForget(() =>
+        MainThread.BackgroundFireAndForgetAsync(() =>
         {
             var result = _runner.Execute(_compiler.Compile(Input!));
             OutputBoxViewModel?.SetOutput(result);

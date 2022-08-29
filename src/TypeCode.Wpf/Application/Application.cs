@@ -80,7 +80,7 @@ public class Application<TContext> : IApplication<TContext> where TContext : Boo
     {
         Log.Error(exception, "{0}", exception.Message);
 
-        MainThread.BackgroundFireAndForget(() =>
+        MainThread.BackgroundFireAndForgetSync(() =>
         {
             CloseOverlays(mainWindow);
 

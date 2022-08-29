@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
+using AsyncAwaitBestPractices;
 using CommunityToolkit.Mvvm.Input;
 using TypeCode.Wpf.Helper.Thread;
 
@@ -10,6 +11,8 @@ namespace TypeCode.Wpf.Controls.TextBox;
 
 public class CustomTextBox : System.Windows.Controls.TextBox
 {
+    private string? _lastValue;
+
     public static readonly DependencyProperty UseRegexProperty =
         DependencyProperty.Register(
             name: nameof(UseRegex),
@@ -37,7 +40,7 @@ public class CustomTextBox : System.Windows.Controls.TextBox
         get => (bool)GetValue(ShowRegexProperty);
         set => SetValue(ShowRegexProperty, value);
     }
-    
+
     public static readonly DependencyProperty ShowAutoCompletionProperty =
         DependencyProperty.Register(
             name: nameof(ShowAutoCompletion),
@@ -65,6 +68,20 @@ public class CustomTextBox : System.Windows.Controls.TextBox
         get => (bool)GetValue(IsAutoCompletionDropDownOpenProperty);
         private set => SetValue(IsAutoCompletionDropDownOpenProperty, value);
     }
+    
+    public static readonly DependencyProperty IsAutoCompletionLoadingProperty =
+        DependencyProperty.Register(
+            name: nameof(IsAutoCompletionLoading),
+            propertyType: typeof(bool),
+            ownerType: typeof(CustomTextBox),
+            typeMetadata: new FrameworkPropertyMetadata(false)
+        );
+
+    public bool IsAutoCompletionLoading
+    {
+        get => (bool)GetValue(IsAutoCompletionLoadingProperty);
+        private set => SetValue(IsAutoCompletionLoadingProperty, value);
+    }
 
     public static readonly DependencyProperty LoadAutoCompletionAsyncProperty =
         DependencyProperty.Register(
@@ -85,7 +102,7 @@ public class CustomTextBox : System.Windows.Controls.TextBox
             name: nameof(AutoCompletionItems),
             propertyType: typeof(ObservableCollection<string>),
             ownerType: typeof(CustomTextBox),
-            typeMetadata: new FrameworkPropertyMetadata(new ObservableCollection<string>())
+            typeMetadata: new FrameworkPropertyMetadata(new ObservableCollection<string>(new List<string>{"Loading..."}))
         );
 
     public ObservableCollection<string> AutoCompletionItems
@@ -105,7 +122,7 @@ public class CustomTextBox : System.Windows.Controls.TextBox
     private static void PropertyChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
     {
         var customTextBox = (CustomTextBox)dependencyObject;
-        
+
         if (customTextBox.ShowAutoCompletion)
         {
             customTextBox.ApplySelectedAutoCompletionItemCommand = new AsyncRelayCommand<SelectionChangedEventArgs>(args => DispatchApplyAutoCompletionAsync(customTextBox, args, (Func<string, Task>)e.NewValue));
@@ -124,7 +141,7 @@ public class CustomTextBox : System.Windows.Controls.TextBox
         {
             return;
         }
-        
+
         var item = args.AddedItems[0];
 
         if (item is string itemString)
@@ -156,20 +173,37 @@ public class CustomTextBox : System.Windows.Controls.TextBox
         {
             return;
         }
-        
+
         var text = ((System.Windows.Controls.TextBox)e.OriginalSource).Text;
-        MainThread.BackgroundFireAndForget(() => DispatchLoadingAsync(text), DispatcherPriority.Background);
+
+        LoadAndSetAutoCompletionAsync(text).SafeFireAndForget();
+
+        _lastValue = text;
     }
 
-    private async Task DispatchLoadingAsync(string? text)
+    private async Task LoadAndSetAutoCompletionAsync(string? text)
     {
         if (!string.IsNullOrEmpty(text))
         {
-            AutoCompletionItems.Clear();
+            IsAutoCompletionLoading = true;
+            IsAutoCompletionDropDownOpen = !string.IsNullOrEmpty(text) && AutoCompletionItems.Any();
 
-            foreach (var item in await LoadAutoCompletionAsync(text).ConfigureAwait(true))
+            var items = await LoadAutoCompletionAsync(text).ConfigureAwait(true);
+
+            if (_lastValue == text || _lastValue is null)
             {
-                AutoCompletionItems.Add(item);
+                MainThread.BackgroundFireAndForgetAsync(() =>
+                {
+                    AutoCompletionItems.Clear();
+
+                    foreach (var item in items)
+                    {
+                        AutoCompletionItems.Add(item);
+                    }
+                    
+                    IsAutoCompletionLoading = false;
+                    
+                }, DispatcherPriority.Normal);
             }
         }
 

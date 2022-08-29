@@ -5,6 +5,8 @@
                     xmlns:b="http://schemas.microsoft.com/xaml/behaviors">
 
     <converters:BooleanToVisibilityConverterSelf x:Key="BooleanToVisibilityConverter" True="Visible" False="Collapsed" />
+    <converters:BooleanToVisibilityConverterSelf x:Key="InvertedBooleanToVisibilityConverter" True="Collapsed"
+                                                 False="Visible" />
 
     <Style TargetType="{x:Type textBox:CustomTextBox}">
 
@@ -97,14 +99,20 @@
                             IsOpen="{TemplateBinding IsAutoCompletionDropDownOpen}">
 
                             <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                </Grid.RowDefinitions>
 
                                 <ListBox
+                                    Grid.Row="0"
                                     MaxWidth="{Binding ActualWidth, ElementName=InputTextBox}"
                                     Margin="1"
                                     MaxHeight="100"
-                                    ItemsSource="{TemplateBinding AutoCompletionItems}"
+                                    BorderThickness="1"
                                     Background="{StaticResource Primary}"
-                                    BorderBrush="{StaticResource Accent}">
+                                    BorderBrush="{StaticResource Accent}"
+                                    ItemsSource="{TemplateBinding AutoCompletionItems}">
 
                                     <b:Interaction.Triggers>
                                         <b:EventTrigger EventName="SelectionChanged">
@@ -121,10 +129,24 @@
                                         </DataTemplate>
                                     </ListBox.ItemTemplate>
 
+                                    <ListBox.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <VirtualizingStackPanel IsVirtualizing="True"
+                                                                    VirtualizationMode="Recycling">
+                                            </VirtualizingStackPanel>
+                                        </ItemsPanelTemplate>
+                                    </ListBox.ItemsPanel>
+
                                 </ListBox>
 
-                            </Grid>
+                                <ProgressBar Grid.Row="1"
+                                             IsIndeterminate="True"
+                                             Height="3"
+                                             IsEnabled="{Binding IsAutoCompletionLoading, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                             Visibility="{Binding IsAutoCompletionLoading, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                </ProgressBar>
 
+                            </Grid>
                         </Popup>
 
                     </Grid>
