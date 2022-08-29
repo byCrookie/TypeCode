@@ -3,11 +3,13 @@ using System.ComponentModel.DataAnnotations;
 using System.Windows.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Framework.Time;
 using TypeCode.Business.TypeEvaluation;
 using TypeCode.Wpf.Application;
 using TypeCode.Wpf.Helper.Event;
 using TypeCode.Wpf.Helper.Navigation.Contract;
 using TypeCode.Wpf.Helper.Navigation.Service;
+using TypeCode.Wpf.Helper.Thread;
 using TypeCode.Wpf.Helper.ViewModels;
 
 namespace TypeCode.Wpf.Components.InputBox;
@@ -21,16 +23,22 @@ public partial class InputBoxViewModel :
     private readonly IEventAggregator _eventAggregator;
     private InputBoxViewModelParameter? _parameter;
     private bool _loaded;
-    
+
     private readonly ITypeProvider _typeProvider;
+    private readonly IDateTimeProvider _dateTimeProvider;
+    private readonly IMinDelay _minDelay;
 
     public InputBoxViewModel(
         IEventAggregator eventAggregator,
-        ITypeProvider typeProvider
+        ITypeProvider typeProvider,
+        IDateTimeProvider dateTimeProvider,
+        IMinDelay minDelay
     )
     {
         _eventAggregator = eventAggregator;
         _typeProvider = typeProvider;
+        _dateTimeProvider = dateTimeProvider;
+        _minDelay = minDelay;
 
         _loaded = true;
 
@@ -50,7 +58,7 @@ public partial class InputBoxViewModel :
         _eventAggregator.Unsubscribe(this);
         return Task.CompletedTask;
     }
-    
+
     public Func<string, Task> ApplyAutoCompletionItemAsync => ApplySuggestionAsync;
 
     private Task ApplySuggestionAsync(string item)
@@ -72,8 +80,10 @@ public partial class InputBoxViewModel :
 
     public Func<string, Task<IEnumerable<string>>> LoadAutoCompletionItemsAsync => LoadAutoCompletionAsync;
 
-    private Task<IEnumerable<string>> LoadAutoCompletionAsync(string value)
+    private async Task<IEnumerable<string>> LoadAutoCompletionAsync(string value)
     {
+        var start = _dateTimeProvider.Now();
+        
         var types = UseRegexSearch
             ? _typeProvider.TryGetByName(value, new TypeEvaluationOptions { Regex = true })
             : _typeProvider.TryGetTypesByCondition(type => type.Name.ToLowerInvariant().Contains(value.ToLowerInvariant()));
@@ -83,8 +93,10 @@ public partial class InputBoxViewModel :
             .OrderBy(name => name.Length)
             .ThenBy(name => name)
             .Distinct();
-        
-        return Task.FromResult(ordered);
+
+        await _minDelay.DelayAsync(start, TimeSpan.FromSeconds(0.25)).ConfigureAwait(true);
+
+        return ordered;
     }
 
     [ObservableProperty]

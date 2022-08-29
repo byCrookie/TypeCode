@@ -56,7 +56,7 @@ public class Application<TContext> : IApplication<TContext> where TContext : Boo
 
         var mainViewModel = _mainViewModelFactory.Create();
         mainWindow.DataContext = mainViewModel;
-        await NavigationCaller.CallNavigateToAsync(mainViewModel, new NavigationContext());
+        await NavigationCaller.CallNavigateToAsync(mainViewModel, new NavigationContext()).ConfigureAwait(true);
 
         LoadAssembliesAsync().SafeFireAndForget();
 
