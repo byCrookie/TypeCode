@@ -11,6 +11,11 @@ namespace TypeCode.Wpf.Controls.TextBox;
 
 public class CustomTextBox : System.Windows.Controls.TextBox
 {
+    public CustomTextBox()
+    {
+        LostFocus += (_, _) => IsAutoCompletionDropDownOpen = false;
+    }
+    
     private string? _lastValue;
 
     public static readonly DependencyProperty UseRegexProperty =
@@ -176,9 +181,9 @@ public class CustomTextBox : System.Windows.Controls.TextBox
 
         var text = ((System.Windows.Controls.TextBox)e.OriginalSource).Text;
 
-        LoadAndSetAutoCompletionAsync(text).SafeFireAndForget();
-
         _lastValue = text;
+        
+        LoadAndSetAutoCompletionAsync(text).SafeFireAndForget();
     }
 
     private async Task LoadAndSetAutoCompletionAsync(string? text)
@@ -190,7 +195,7 @@ public class CustomTextBox : System.Windows.Controls.TextBox
 
             var items = await LoadAutoCompletionAsync(text).ConfigureAwait(true);
 
-            if (_lastValue == text || _lastValue is null)
+            if (_lastValue == text)
             {
                 MainThread.BackgroundFireAndForgetAsync(() =>
                 {
@@ -202,11 +207,11 @@ public class CustomTextBox : System.Windows.Controls.TextBox
                     }
                     
                     IsAutoCompletionLoading = false;
-                    
+
                 }, DispatcherPriority.Normal);
             }
         }
-
+        
         IsAutoCompletionDropDownOpen = !string.IsNullOrEmpty(text) && AutoCompletionItems.Any();
     }
 }
