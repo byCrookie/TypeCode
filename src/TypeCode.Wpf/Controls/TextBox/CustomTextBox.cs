@@ -2,10 +2,8 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Threading;
 using AsyncAwaitBestPractices;
 using CommunityToolkit.Mvvm.Input;
-using TypeCode.Wpf.Helper.Thread;
 
 namespace TypeCode.Wpf.Controls.TextBox;
 
@@ -15,7 +13,7 @@ public class CustomTextBox : System.Windows.Controls.TextBox
     {
         LostFocus += (_, _) => IsAutoCompletionDropDownOpen = false;
     }
-    
+
     private string? _lastValue;
 
     public static readonly DependencyProperty UseRegexProperty =
@@ -73,7 +71,7 @@ public class CustomTextBox : System.Windows.Controls.TextBox
         get => (bool)GetValue(IsAutoCompletionDropDownOpenProperty);
         private set => SetValue(IsAutoCompletionDropDownOpenProperty, value);
     }
-    
+
     public static readonly DependencyProperty IsAutoCompletionLoadingProperty =
         DependencyProperty.Register(
             name: nameof(IsAutoCompletionLoading),
@@ -93,7 +91,8 @@ public class CustomTextBox : System.Windows.Controls.TextBox
             name: nameof(LoadAutoCompletionAsync),
             propertyType: typeof(Func<string, Task<IEnumerable<string>>>),
             ownerType: typeof(CustomTextBox),
-            typeMetadata: new FrameworkPropertyMetadata(new Func<string, Task<IEnumerable<string>>>(_ => Task.FromResult(Enumerable.Empty<string>())))
+            typeMetadata: new FrameworkPropertyMetadata(
+                new Func<string, Task<IEnumerable<string>>>(_ => Task.FromResult(Enumerable.Empty<string>())))
         );
 
     public Func<string, Task<IEnumerable<string>>> LoadAutoCompletionAsync
@@ -107,7 +106,8 @@ public class CustomTextBox : System.Windows.Controls.TextBox
             name: nameof(AutoCompletionItems),
             propertyType: typeof(ObservableCollection<string>),
             ownerType: typeof(CustomTextBox),
-            typeMetadata: new FrameworkPropertyMetadata(new ObservableCollection<string>(new List<string>{"Loading..."}))
+            typeMetadata: new FrameworkPropertyMetadata(new ObservableCollection<string>(new List<string>
+                { "Loading..." }))
         );
 
     public ObservableCollection<string> AutoCompletionItems
@@ -121,7 +121,8 @@ public class CustomTextBox : System.Windows.Controls.TextBox
             name: nameof(ApplyAutoCompletionAsync),
             propertyType: typeof(Func<string, Task>),
             ownerType: typeof(CustomTextBox),
-            typeMetadata: new FrameworkPropertyMetadata(new Func<string, Task>(_ => Task.CompletedTask), PropertyChangedCallback)
+            typeMetadata: new FrameworkPropertyMetadata(new Func<string, Task>(_ => Task.CompletedTask),
+                PropertyChangedCallback)
         );
 
     private static void PropertyChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
@@ -130,7 +131,8 @@ public class CustomTextBox : System.Windows.Controls.TextBox
 
         if (customTextBox.ShowAutoCompletion)
         {
-            customTextBox.ApplySelectedAutoCompletionItemCommand = new AsyncRelayCommand<SelectionChangedEventArgs>(args => DispatchApplyAutoCompletionAsync(customTextBox, args, (Func<string, Task>)e.NewValue));
+            customTextBox.ApplySelectedAutoCompletionItemCommand = new AsyncRelayCommand<SelectionChangedEventArgs>(
+                args => DispatchApplyAutoCompletionAsync(customTextBox, args, (Func<string, Task>)e.NewValue));
         }
     }
 
@@ -140,7 +142,8 @@ public class CustomTextBox : System.Windows.Controls.TextBox
         set => SetValue(ApplyAutoCompletionAsyncProperty, value);
     }
 
-    private static async Task DispatchApplyAutoCompletionAsync(CustomTextBox customTextBox, SelectionChangedEventArgs? args, Func<string, Task> apply)
+    private static async Task DispatchApplyAutoCompletionAsync(CustomTextBox customTextBox,
+        SelectionChangedEventArgs? args, Func<string, Task> apply)
     {
         if (!customTextBox.ShowAutoCompletion || args is null || args.AddedItems.Count <= 0)
         {
@@ -181,9 +184,15 @@ public class CustomTextBox : System.Windows.Controls.TextBox
 
         var text = ((System.Windows.Controls.TextBox)e.OriginalSource).Text;
 
+        if (_lastValue == text)
+        {
+            IsAutoCompletionDropDownOpen = EvaluateIsAutoCompletionDropDownOpen(text);
+            return;
+        }
+
         _lastValue = text;
-        
-        LoadAndSetAutoCompletionAsync(text).SafeFireAndForget();
+
+        LoadAndSetAutoCompletionAsync(text).SafeFireAndForget(continueOnCapturedContext: false);
     }
 
     private async Task LoadAndSetAutoCompletionAsync(string? text)
@@ -191,27 +200,36 @@ public class CustomTextBox : System.Windows.Controls.TextBox
         if (!string.IsNullOrEmpty(text))
         {
             IsAutoCompletionLoading = true;
-            IsAutoCompletionDropDownOpen = !string.IsNullOrEmpty(text) && AutoCompletionItems.Any();
+            IsAutoCompletionDropDownOpen = EvaluateIsAutoCompletionDropDownOpen(text);
 
             var items = await LoadAutoCompletionAsync(text).ConfigureAwait(true);
 
             if (_lastValue == text)
             {
-                MainThread.BackgroundFireAndForgetAsync(() =>
+                var itemsList = items.ToList();
+
+                if (AutoCompletionItems.Any())
                 {
                     AutoCompletionItems.Clear();
+                }
 
-                    foreach (var item in items)
+                if (itemsList.Any())
+                {
+                    foreach (var item in itemsList)
                     {
                         AutoCompletionItems.Add(item);
                     }
-                    
-                    IsAutoCompletionLoading = false;
+                }
 
-                }, DispatcherPriority.Normal);
+                IsAutoCompletionLoading = false;
             }
         }
-        
-        IsAutoCompletionDropDownOpen = !string.IsNullOrEmpty(text) && AutoCompletionItems.Any();
+
+        IsAutoCompletionDropDownOpen = EvaluateIsAutoCompletionDropDownOpen(text);
+    }
+    
+    private bool EvaluateIsAutoCompletionDropDownOpen(string? text)
+    {
+        return !string.IsNullOrEmpty(text) && AutoCompletionItems.Any() && !string.IsNullOrEmpty(Text);
     }
 }

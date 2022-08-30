@@ -83,10 +83,8 @@ public partial class InputBoxViewModel :
     private async Task<IEnumerable<string>> LoadAutoCompletionAsync(string value)
     {
         var start = _dateTimeProvider.Now();
-        
-        var types = UseRegexSearch
-            ? _typeProvider.TryGetByName(value, new TypeEvaluationOptions { Regex = true })
-            : _typeProvider.TryGetTypesByCondition(type => type.Name.ToLowerInvariant().Contains(value.ToLowerInvariant()));
+
+        var types = _typeProvider.TryGetByName(value, new TypeEvaluationOptions { Regex = true, IgnoreCase = true });
 
         var ordered = types
             .Select(type => type.Name)

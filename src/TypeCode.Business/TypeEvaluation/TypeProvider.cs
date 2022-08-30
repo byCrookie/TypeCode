@@ -75,17 +75,22 @@ public class TypeProvider : ITypeProvider
 
     public IEnumerable<Type> TryGetByName(string? name, TypeEvaluationOptions? options = null)
     {
-        if (!string.IsNullOrEmpty(name))
+        if (string.IsNullOrEmpty(name))
         {
-            if (options?.Regex ?? false)
-            {
-                return GetTypes(dictionary => GetTypesFromDicByNameUsingRegex(new Regex(name, RegexOptions.Compiled), dictionary));
-            }
-
-            return GetTypes(dictionary => GetTypesFromDicByName(name, dictionary));
+            return Enumerable.Empty<Type>();
         }
 
-        return Enumerable.Empty<Type>();
+        if (options?.Regex ?? false)
+        {
+            return options.IgnoreCase
+                ? GetTypes(dictionary =>
+                    GetTypesFromDicByNameUsingRegex(
+                        new Regex(name, RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant), dictionary))
+                : GetTypes(dictionary =>
+                    GetTypesFromDicByNameUsingRegex(new Regex(name, RegexOptions.Compiled | RegexOptions.CultureInvariant), dictionary));
+        }
+
+        return GetTypes(dictionary => GetTypesFromDicByName(name, dictionary));
     }
 
     public IEnumerable<Type> TryGetByNames(IReadOnlyList<string> names, TypeEvaluationOptions? options = null)
@@ -95,6 +100,7 @@ public class TypeProvider : ITypeProvider
         {
             types.AddRange(TryGetByName(name, options));
         }
+
         return types;
     }
 
@@ -122,7 +128,8 @@ public class TypeProvider : ITypeProvider
         return types;
     }
 
-    private static List<Type> GetTypesFromDicByCondition(Func<Type, bool> condition, IDictionary<string, List<Type>> dictionary)
+    private static List<Type> GetTypesFromDicByCondition(Func<Type, bool> condition,
+        IDictionary<string, List<Type>> dictionary)
     {
         var typesLists = dictionary.Values;
         return typesLists.SelectMany(types => types.Where(condition)).ToList();
