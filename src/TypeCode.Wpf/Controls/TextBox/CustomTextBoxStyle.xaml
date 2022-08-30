@@ -2,7 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:converters="clr-namespace:TypeCode.Wpf.Helper.Converters"
                     xmlns:textBox="clr-namespace:TypeCode.Wpf.Controls.TextBox"
-                    xmlns:b="http://schemas.microsoft.com/xaml/behaviors">
+                    xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+                    xmlns:behaviours="clr-namespace:TypeCode.Wpf.Helper.Behaviours">
 
     <converters:BooleanToVisibilityConverterSelf x:Key="BooleanToVisibilityConverter" True="Visible" False="Collapsed" />
     <converters:BooleanToVisibilityConverterSelf x:Key="InvertedBooleanToVisibilityConverter" True="Collapsed"
@@ -112,7 +113,8 @@
                                     BorderThickness="1"
                                     Background="{StaticResource Primary}"
                                     BorderBrush="{StaticResource Accent}"
-                                    ItemsSource="{TemplateBinding AutoCompletionItems}">
+                                    ItemsSource="{TemplateBinding AutoCompletionItems}"
+                                    behaviours:SourceChangedScrollTopBehaviour.ScrollToTop="True">
 
                                     <b:Interaction.Triggers>
                                         <b:EventTrigger EventName="SelectionChanged">
