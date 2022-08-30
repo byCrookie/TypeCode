@@ -1,0 +1,85 @@
+﻿<UserControl x:Class="TypeCode.Wpf.Pages.EncodingConversion.EncodingConversionView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:outputBox="clr-namespace:TypeCode.Wpf.Components.OutputBox"
+             xmlns:textBox="clr-namespace:TypeCode.Wpf.Controls.TextBox"
+             xmlns:encodingConversion="clr-namespace:TypeCode.Wpf.Pages.EncodingConversion"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="300"
+             d:DataContext="{d:DesignInstance encodingConversion:EncodingConversionViewModel}">
+
+    <UserControl.InputBindings>
+        <KeyBinding Key="Enter" Command="{Binding ConvertCommand}" />
+    </UserControl.InputBindings>
+
+    <Grid Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <textBox:CustomTextBox Grid.Column="0"
+                                   Text="{Binding Input, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                   ShowRegex="False"
+                                   ToolTip="Input text"
+                                   ShowAutoCompletion="False"
+                                   HorizontalAlignment="Stretch"
+                                   HorizontalContentAlignment="Stretch"
+                                   HorizontalScrollBarVisibility="Auto"
+                                   VerticalScrollBarVisibility="Auto"
+                                   AcceptsReturn="True"
+                                   TextWrapping="NoWrap"
+                                   AcceptsTab="True"
+                                   MinHeight="200"
+                                   MaxHeight="400">
+
+                <TextBox.InputBindings>
+                    <KeyBinding Key="Enter" Command="{Binding ConvertCommand}" />
+                </TextBox.InputBindings>
+            </textBox:CustomTextBox>
+
+            <ComboBox Grid.Column="0"
+                      Grid.Row="1"
+                      ItemsSource="{Binding EncodingsFrom, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                      SelectedValuePath="Key"
+                      DisplayMemberPath="Value"
+                      ToolTip="Encoding Source"
+                      HorizontalAlignment="Left"
+                      Width="300"
+                      MaxWidth="300"
+                      SelectedValue="{Binding EncodingFrom, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+            </ComboBox>
+            
+            <ComboBox Grid.Column="0"
+                      Grid.Row="2"
+                      ItemsSource="{Binding EncodingsTo, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                      SelectedValuePath="Key"
+                      DisplayMemberPath="Value"
+                      ToolTip="Encoding Destination"
+                      HorizontalAlignment="Left"
+                      Width="300"
+                      MaxWidth="300"
+                      SelectedValue="{Binding EncodingTo, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+            </ComboBox>
+
+            <Button Margin="5,0,0,0" VerticalAlignment="Top" Grid.Row="0" Grid.Column="1" Command="{Binding ConvertCommand}"
+                    Content="Convert" />
+        </Grid>
+
+        <outputBox:OutputBoxView Margin="0,5,0,0" Grid.Row="1" DataContext="{Binding OutputBoxViewModel}" />
+    </Grid>
+</UserControl>

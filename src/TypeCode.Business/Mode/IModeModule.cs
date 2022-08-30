@@ -2,6 +2,7 @@
 using TypeCode.Business.Mode.Builder;
 using TypeCode.Business.Mode.Composer;
 using TypeCode.Business.Mode.DynamicExecution;
+using TypeCode.Business.Mode.EncodingConversion;
 using TypeCode.Business.Mode.Mapper;
 using TypeCode.Business.Mode.Mapper.Style;
 using TypeCode.Business.Mode.Specflow;
@@ -17,6 +18,7 @@ namespace TypeCode.Business.Mode;
 [Transient(typeof(ITypeCodeGenerator<UnitTestDependencyTypeGeneratorParameter>), typeof(UnitTestDependencyTypeTypeCodeGenerator))]
 [Transient(typeof(ITypeCodeGenerator<ComposerTypeCodeGeneratorParameter>), typeof(ComposerTypeCodeGenerator))]
 [Transient(typeof(ITypeCodeGenerator<MapperTypeCodeGeneratorParameter>), typeof(MapperTypeCodeGenerator))]
+[Transient(typeof(ITypeCodeGenerator<EncodingTypeCodeGeneratorParameter>), typeof(EncodingTypeCodeGenerator))]
 [Transient(typeof(IExistingMapperStyleStrategy), typeof(ExistingMapperStyleStrategy))]
 [Transient(typeof(INewMapperStyleStrategy), typeof(NewMapperStyleStrategy))]
 [Transient(typeof(IMapperStyleComposer), typeof(MapperStyleComposer))]
