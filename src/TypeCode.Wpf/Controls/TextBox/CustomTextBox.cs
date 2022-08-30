@@ -206,7 +206,7 @@ public class CustomTextBox : System.Windows.Controls.TextBox
 
             if (_lastValue == text)
             {
-                var itemsList = items.ToList();
+                var itemsList = items.Take(100).ToList();
 
                 if (AutoCompletionItems.Any())
                 {
