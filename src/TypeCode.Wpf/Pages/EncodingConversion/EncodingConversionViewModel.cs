@@ -90,8 +90,8 @@ public partial class EncodingConversionViewModel : ViewModelBase, IAsyncNavigate
     {
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
         return Encoding.GetEncodings()
-            .OrderBy(info => info.CodePage)
-            .Select(info => info.GetEncoding())
-            .ToDictionary(encoding => encoding, encoding => $"{encoding.EncodingName} {encoding.CodePage}");
+            .OrderBy(info => info.Name)
+            .Select(info => new {Info = info, Encoding = info.GetEncoding()})
+            .ToDictionary(encoding => encoding.Encoding, encoding => $"{encoding.Info.Name} {encoding.Encoding.EncodingName} {encoding.Info.DisplayName} {encoding.Info.CodePage}");
     }
 }

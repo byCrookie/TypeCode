@@ -6,6 +6,7 @@
              xmlns:outputBox="clr-namespace:TypeCode.Wpf.Components.OutputBox"
              xmlns:textBox="clr-namespace:TypeCode.Wpf.Controls.TextBox"
              xmlns:encodingConversion="clr-namespace:TypeCode.Wpf.Pages.EncodingConversion"
+             xmlns:system="clr-namespace:System;assembly=System.Runtime"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance encodingConversion:EncodingConversionViewModel}">
@@ -56,24 +57,34 @@
                       Grid.Row="1"
                       ItemsSource="{Binding EncodingsFrom, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                       SelectedValuePath="Key"
-                      DisplayMemberPath="Value"
                       ToolTip="Encoding Source"
                       HorizontalAlignment="Left"
                       Width="300"
                       MaxWidth="300"
-                      SelectedValue="{Binding EncodingFrom, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                      SelectedValue="{Binding EncodingFrom, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                      Margin="0 5 0 0">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Background="Transparent" Text="{Binding Value}"/> 
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
             </ComboBox>
             
             <ComboBox Grid.Column="0"
                       Grid.Row="2"
                       ItemsSource="{Binding EncodingsTo, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                       SelectedValuePath="Key"
-                      DisplayMemberPath="Value"
                       ToolTip="Encoding Destination"
                       HorizontalAlignment="Left"
                       Width="300"
                       MaxWidth="300"
-                      SelectedValue="{Binding EncodingTo, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                      SelectedValue="{Binding EncodingTo, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                      Margin="0 5 0 0">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Background="Transparent" Text="{Binding Value}"/> 
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
             </ComboBox>
 
             <Button Margin="5,0,0,0" VerticalAlignment="Top" Grid.Row="0" Grid.Column="1" Command="{Binding ConvertCommand}"
