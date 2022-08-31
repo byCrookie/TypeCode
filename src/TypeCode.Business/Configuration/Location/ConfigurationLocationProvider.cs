@@ -37,6 +37,7 @@ public class ConfigurationLocationProvider : IConfigurationLocationProvider
         var configTemplate = _resourceReader.ReadResource(Assembly.GetExecutingAssembly(), $"Configuration.Location.{ConfigurationProdFileName}");
 #endif
 
+        Directory.CreateDirectory(Path.GetDirectoryName(appDataLocation) ?? throw new ArgumentException($"{appDataLocation} is not valid location"));
         await File.WriteAllTextAsync(appDataLocation, configTemplate).ConfigureAwait(false);
         return appDataLocation;
     }
