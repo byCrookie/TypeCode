@@ -69,6 +69,6 @@
         <Exec Command="rd /s /q ..\TypeCode.Wpf.Setup\bin\publish\$(Configuration)" />
         <Exec Command="dotnet publish ..\TypeCode.Wpf\TypeCode.Wpf.csproj -c $(Configuration) -o bin\publish\$(Configuration)" />
 
-        <HeatDirectory OutputFile="Binaries.wxs" DirectoryRefId="APPLICATIONFOLDER" ComponentGroupName="Binaries" SuppressCom="true" Directory="..\TypeCode.Wpf.Setup\bin\publish\$(Configuration)" SuppressFragments="true" SuppressRegistry="true" SuppressRootDirectory="true" AutoGenerateGuids="false" GenerateGuidsNow="true" ToolPath="$(WixToolPath)" PreprocessorVariable="var.BasePath" Transforms="BinariesFilter.xslt" />
+        <HeatDirectory OutputFile="Binaries.wxs" DirectoryRefId="APPLICATIONFOLDER" ComponentGroupName="Binaries" SuppressCom="true" Directory="..\TypeCode.Wpf.Setup\bin\publish\$(Configuration)" SuppressFragments="true" SuppressRegistry="true" SuppressRootDirectory="true" AutoGenerateGuids="false" GenerateGuidsNow="true" ToolPath="$(WixToolPath)" PreprocessorVariable="var.BasePath" />
     </Target>
 </Project>
