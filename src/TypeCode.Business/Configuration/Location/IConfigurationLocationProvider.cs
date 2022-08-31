@@ -2,5 +2,5 @@
 
 public interface IConfigurationLocationProvider
 {
-    string GetLocation();
+    Task<string> GetOrCreateAsync();
 }

@@ -24,11 +24,7 @@
         <Feature Id="ProductFeature" Title="TypeCode.Wpf" Level="1" Absent='disallow'>
             <ComponentGroupRef Id="Binaries"/>
         </Feature>
-
-        <Feature Id="Configuration" Title="TypeCode.Wpf Configuration.cfg.xml" Level="1">
-            <ComponentRef Id="ConfigurationFile"/>
-        </Feature>
-
+        
         <Feature Id="MenuShortcut" Title="TypeCode.Wpf Menu Shortcut" Level="1">
             <ComponentRef Id="ApplicationShortcut"/>
         </Feature>
@@ -51,22 +47,10 @@
                 <Directory Id="ApplicationProgramsFolder" Name="TypeCode"/>
             </Directory>
             <Directory Id="DesktopFolder" Name="Desktop"/>
-            <Directory Id="AppDataFolder">
-                <Directory Id="APPDATAFOLDERTYPECODE" Name="TypeCode"/>
-            </Directory>
         </Directory>
     </Fragment>
 
     <Fragment>
-        <DirectoryRef Id="APPDATAFOLDERTYPECODE">
-            <Component Id="ConfigurationFile" NeverOverwrite="yes" Guid="d3549b60-baba-4831-81fe-99e40f838f20">
-                <File Id="Configuration.cfg.xml" Source="$(var.BasePath)\Configuration.cfg.xml"/>
-                <RemoveFolder Id="RemoveAppDataFolder" Directory="APPDATAFOLDERTYPECODE"
-                              On="uninstall"/>
-                <RegistryValue Root="HKCU" Key="Software\TypeCode.Wpf" Name="installed" Type="integer" Value="1"
-                               KeyPath="yes"/>
-            </Component>
-        </DirectoryRef>
         <DirectoryRef Id="ApplicationProgramsFolder">
             <Component Id="ApplicationShortcut" Guid="9bd13330-6540-406f-a3a8-d7f7c69ae7f9">
                 <Shortcut Id="ApplicationStartMenuShortcut" Name="TypeCode" Description="TypeCode"

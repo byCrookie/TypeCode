@@ -30,7 +30,7 @@ public class ConfigurationLoader : IConfigurationLoader
     {
         Log.Debug("Evaluating .dll files");
 
-        var xmlConfiguration = ReadXmlConfiguration();
+        var xmlConfiguration = await ReadXmlConfigurationAsync().ConfigureAwait(false);
         var configuration = _configurationMapper.MapToConfiguration(xmlConfiguration);
 
         await Parallel.ForEachAsync(configuration.AssemblyRoot, async
@@ -132,10 +132,10 @@ public class ConfigurationLoader : IConfigurationLoader
         return Task.CompletedTask;
     }
 
-    private XmlTypeCodeConfiguration ReadXmlConfiguration()
+    private async Task<XmlTypeCodeConfiguration> ReadXmlConfigurationAsync()
     {
-        var cfg = _configurationLocationProvider.GetLocation();
-        var xml = File.ReadAllText(cfg);
+        var cfg = await _configurationLocationProvider.GetOrCreateAsync().ConfigureAwait(false);
+        var xml = await File.ReadAllTextAsync(cfg).ConfigureAwait(false);
         return _genericXmlSerializer.Deserialize<XmlTypeCodeConfiguration>(xml) ?? throw new Exception($"{cfg} can not be parsed");
     }
 }

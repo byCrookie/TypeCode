@@ -613,15 +613,15 @@ internal class SetupConfigurator : ISetupConfigurator
 
     private async Task<XmlTypeCodeConfiguration> ReadXmlConfigurationAsync()
     {
-        var cfg = _configurationLocationProvider.GetLocation();
+        var cfg = await _configurationLocationProvider.GetOrCreateAsync().ConfigureAwait(false);
         var xml = await File.ReadAllTextAsync(cfg).ConfigureAwait(true);
         return _genericXmlSerializer.Deserialize<XmlTypeCodeConfiguration>(xml) ?? throw new Exception($"{cfg} can not be parsed");
     }
 
-    private Task WriteXmlConfigurationAsync(XmlTypeCodeConfiguration xmlConfiguration)
+    private async Task WriteXmlConfigurationAsync(XmlTypeCodeConfiguration xmlConfiguration)
     {
-        var cfg = _configurationLocationProvider.GetLocation();
+        var cfg = await _configurationLocationProvider.GetOrCreateAsync().ConfigureAwait(false);
         var serialized = _genericXmlSerializer.Serialize(xmlConfiguration);
-        return File.WriteAllTextAsync(cfg, serialized);
+        await File.WriteAllTextAsync(cfg, serialized).ConfigureAwait(false);
     }
 }

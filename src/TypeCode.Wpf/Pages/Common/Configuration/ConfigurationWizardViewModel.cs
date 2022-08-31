@@ -33,7 +33,7 @@ public partial class ConfigurationWizardViewModel : ViewModelBase, IAsyncInitial
     [RelayCommand]
     private async Task SaveAsync()
     {
-        var cfg = _configurationLocationProvider.GetLocation();
+        var cfg = await _configurationLocationProvider.GetOrCreateAsync().ConfigureAwait(false);
         await File.WriteAllTextAsync(cfg, FormatXml(Configuration)).ConfigureAwait(true);
         await ReloadAsync().ConfigureAwait(true);
     }
@@ -41,7 +41,7 @@ public partial class ConfigurationWizardViewModel : ViewModelBase, IAsyncInitial
     [RelayCommand]
     private async Task ReloadAsync()
     {
-        var cfg = _configurationLocationProvider.GetLocation();
+        var cfg = await _configurationLocationProvider.GetOrCreateAsync().ConfigureAwait(false);
         var xml = await File.ReadAllTextAsync(cfg).ConfigureAwait(true);
         Configuration = FormatXml(xml);
     }
