@@ -12,7 +12,7 @@ public static class LoggerConfigurationProvider
         return new LoggerConfiguration()
             .Enrich.WithExceptionDetails()
             .MinimumLevel.Debug()
-            .WriteTo.Debug()
+            .WriteTo.Debug(LogEventLevel.Debug)
             .WriteTo.Console(LogEventLevel.Information)
             .WriteTo.File(LogFilePaths.File, rollOnFileSizeLimit: true, shared: true);
     }
@@ -23,7 +23,7 @@ public static class LoggerConfigurationProvider
             .Configuration
             .Enrich.WithExceptionDetails()
             .MinimumLevel.Debug()
-            .WriteTo.Debug()
+            .WriteTo.Debug(LogEventLevel.Debug)
             .WriteTo.Console(LogEventLevel.Information)
             .WriteTo.File(LogFilePaths.File, rollOnFileSizeLimit: true, shared: true);
     }
