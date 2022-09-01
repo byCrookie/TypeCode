@@ -48,7 +48,7 @@ internal class SpecflowTypeCodeStrategy : ISpecflowTypeCodeStrategy
         return mode is not null && mode == $"{Number()}" && !IsPlanned();
     }
 
-    public async Task<string?> GenerateAsync()
+    public async Task<string?> GenerateAsync(CancellationToken? ct = null)
     {
         var workflow = _workflowBuilder
             .WriteLine(_ => $@"{Cuts.Point()} Input types seperated by ,")
@@ -58,7 +58,7 @@ internal class SpecflowTypeCodeStrategy : ISpecflowTypeCodeStrategy
                 .ReadLine(context => context.Input)
                 .ThenAsync<IExitOrContinueStep<SpecflowContext>>()
             )
-            .Then(context => context.Types, context => _typeProvider.TryGetByNames(context.Input?.Split(',').Select(split => split.Trim()).ToList() ?? new List<string>()))
+            .Then(context => context.Types, context => _typeProvider.TryGetByNames(context.Input?.Split(',').Select(split => split.Trim()).ToList() ?? new List<string>(), ct: ct))
             .ThenAsync(context => context.Tables, context => _specflowGenerator.GenerateAsync(new SpecflowTypeCodeGeneratorParameter
             {
                 Types = context.Types.ToList()

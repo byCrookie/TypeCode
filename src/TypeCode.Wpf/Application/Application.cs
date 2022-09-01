@@ -45,7 +45,7 @@ public class Application<TContext> : IApplication<TContext> where TContext : Boo
         _configurationLoader = configurationLoader;
     }
 
-    public async Task RunAsync(TContext context, CancellationToken cancellationToken)
+    public async Task RunAsync(TContext context, CancellationToken ct)
     {
         var mainWindow = _mainViewProvider.MainWindow();
 

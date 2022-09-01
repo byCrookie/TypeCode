@@ -1,6 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using System.ComponentModel.DataAnnotations;
-using System.Windows.Controls;
+﻿using System.ComponentModel.DataAnnotations;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Framework.Time;
@@ -59,9 +57,9 @@ public partial class InputBoxViewModel :
         return Task.CompletedTask;
     }
 
-    public Func<string, Task> ApplyAutoCompletionItemAsync => ApplySuggestionAsync;
+    public Func<string, Task> ApplyAutoCompletionItemAsync => ApplyAutoCompletionAsync;
 
-    private Task ApplySuggestionAsync(string item)
+    private Task ApplyAutoCompletionAsync(string item)
     {
         Input = item;
         return Task.CompletedTask;
@@ -78,13 +76,13 @@ public partial class InputBoxViewModel :
         return _loaded && !HasErrors && !string.IsNullOrEmpty(Input);
     }
 
-    public Func<string, Task<IEnumerable<string>>> LoadAutoCompletionItemsAsync => LoadAutoCompletionAsync;
+    public Func<string, CancellationToken, Task<IEnumerable<string>>> LoadAutoCompletionItemsAsync => LoadAutoCompletionAsync;
 
-    private async Task<IEnumerable<string>> LoadAutoCompletionAsync(string value)
+    private async Task<IEnumerable<string>> LoadAutoCompletionAsync(string value, CancellationToken ct)
     {
         var start = _dateTimeProvider.Now();
 
-        var types = _typeProvider.TryGetByName(value, new TypeEvaluationOptions { Regex = true, IgnoreCase = true });
+        var types = _typeProvider.TryGetByName(value, new TypeEvaluationOptions { Regex = true, IgnoreCase = true }, ct);
 
         var ordered = types
             .Select(type => type.Name)
@@ -112,20 +110,14 @@ public partial class InputBoxViewModel :
     [ObservableProperty]
     private bool _useRegexSearch;
 
-    [ObservableProperty]
-    private ObservableCollection<string> _suggestionItems = new();
-
-    [ObservableProperty]
-    private ObservableCollection<MenuItem> _contextMenu = new();
-
-    public Task HandleAsync(LoadStartEvent e, CancellationToken? cancellationToken = null)
+    public Task HandleAsync(LoadStartEvent e, CancellationToken? ct = null)
     {
         _loaded = false;
         ActionCommand.NotifyCanExecuteChanged();
         return Task.CompletedTask;
     }
 
-    public Task HandleAsync(LoadEndEvent e, CancellationToken? cancellationToken = null)
+    public Task HandleAsync(LoadEndEvent e, CancellationToken? ct = null)
     {
         _loaded = true;
         ActionCommand.NotifyCanExecuteChanged();

@@ -83,13 +83,13 @@ public partial class MainViewModel :
     [ChildViewModel]
     private InfoLinkViewModel? _infoLink;
 
-    public Task HandleAsync(VersionLoadedEvent e, CancellationToken? cancellationToken = null)
+    public Task HandleAsync(VersionLoadedEvent e, CancellationToken? ct = null)
     {
         Title = $"TypeCode {e.CurrentVersion}";
         return Task.CompletedTask;
     }
 
-    public Task HandleAsync(LoadEndEvent e, CancellationToken? cancellationToken = null)
+    public Task HandleAsync(LoadEndEvent e, CancellationToken? ct = null)
     {
         _isLoading = false;
         InvalidateAndReloadCommand.NotifyCanExecuteChanged();

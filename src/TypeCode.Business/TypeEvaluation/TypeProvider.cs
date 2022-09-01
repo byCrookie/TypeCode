@@ -68,12 +68,12 @@ public class TypeProvider : ITypeProvider
         _configuration = configuration;
     }
 
-    public bool HasByName(string? name, TypeEvaluationOptions? options = null)
+    public bool HasByName(string? name, TypeEvaluationOptions? options = null, CancellationToken? ct = null)
     {
-        return TryGetByName(name, options).Any();
+        return TryGetByName(name, options, ct).Any();
     }
 
-    public IEnumerable<Type> TryGetByName(string? name, TypeEvaluationOptions? options = null)
+    public IEnumerable<Type> TryGetByName(string? name, TypeEvaluationOptions? options = null, CancellationToken? ct = null)
     {
         if (string.IsNullOrEmpty(name))
         {
@@ -85,28 +85,28 @@ public class TypeProvider : ITypeProvider
             return options.IgnoreCase
                 ? GetTypes(dictionary =>
                     GetTypesFromDicByNameUsingRegex(
-                        new Regex(name, RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant), dictionary))
+                        new Regex(name, RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant), dictionary), ct ?? CancellationToken.None)
                 : GetTypes(dictionary =>
-                    GetTypesFromDicByNameUsingRegex(new Regex(name, RegexOptions.Compiled | RegexOptions.CultureInvariant), dictionary));
+                    GetTypesFromDicByNameUsingRegex(new Regex(name, RegexOptions.Compiled | RegexOptions.CultureInvariant), dictionary), ct ?? CancellationToken.None);
         }
 
-        return GetTypes(dictionary => GetTypesFromDicByName(name, dictionary));
+        return GetTypes(dictionary => GetTypesFromDicByName(name, dictionary), ct ?? CancellationToken.None);
     }
 
-    public IEnumerable<Type> TryGetByNames(IReadOnlyList<string> names, TypeEvaluationOptions? options = null)
+    public IEnumerable<Type> TryGetByNames(IReadOnlyList<string> names, TypeEvaluationOptions? options = null, CancellationToken? ct = null)
     {
         var types = new List<Type>();
         foreach (var name in names)
         {
-            types.AddRange(TryGetByName(name, options));
+            types.AddRange(TryGetByName(name, options, ct));
         }
 
         return types;
     }
 
-    public IEnumerable<Type> TryGetTypesByCondition(Func<Type, bool> condition)
+    public IEnumerable<Type> TryGetTypesByCondition(Func<Type, bool> condition, CancellationToken? ct = null)
     {
-        return GetTypes(dictionary => GetTypesFromDicByCondition(condition, dictionary));
+        return GetTypes(dictionary => GetTypesFromDicByCondition(condition, dictionary), ct ?? CancellationToken.None);
     }
 
     private static List<Type> GetTypesFromDicByName(string name, IDictionary<string, List<Type>> dictionary)
@@ -135,7 +135,7 @@ public class TypeProvider : ITypeProvider
         return typesLists.SelectMany(types => types.Where(condition)).ToList();
     }
 
-    private static IEnumerable<Type> GetTypes(Func<IDictionary<string, List<Type>>, List<Type>> evaluate)
+    private static IEnumerable<Type> GetTypes(Func<IDictionary<string, List<Type>>, List<Type>> evaluate, CancellationToken ct)
     {
         if (_configuration is null)
         {
@@ -148,10 +148,20 @@ public class TypeProvider : ITypeProvider
             {
                 foreach (var selector in group.AssemblyPathSelector)
                 {
+                    if (ct.IsCancellationRequested)
+                    {
+                        return Enumerable.Empty<Type>();
+                    }
+                    
                     var types = evaluate(selector.TypesByNameDictionary);
                     if (types.Any())
                     {
                         return types;
+                    }
+                    
+                    if (ct.IsCancellationRequested)
+                    {
+                        return Enumerable.Empty<Type>();
                     }
 
                     types = evaluate(selector.TypesByFullNameDictionary);
@@ -163,12 +173,22 @@ public class TypeProvider : ITypeProvider
 
                 foreach (var path in group.AssemblyPath)
                 {
+                    if (ct.IsCancellationRequested)
+                    {
+                        return Enumerable.Empty<Type>();
+                    }
+                    
                     var types = evaluate(path.TypesByNameDictionary);
                     if (types.Any())
                     {
                         return types;
                     }
 
+                    if (ct.IsCancellationRequested)
+                    {
+                        return Enumerable.Empty<Type>();
+                    }
+                    
                     types = evaluate(path.TypesByFullNameDictionary);
                     if (types.Any())
                     {

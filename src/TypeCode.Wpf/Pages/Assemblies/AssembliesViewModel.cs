@@ -66,7 +66,7 @@ public partial class AssemblyViewModel : ViewModelBase, IAsyncNavigatedTo, IAsyn
     [ObservableProperty]
     private List<string>? _loadedAssemblies;
 
-    public Task HandleAsync(LoadEndEvent e, CancellationToken? cancellationToken = null)
+    public Task HandleAsync(LoadEndEvent e, CancellationToken? ct = null)
     {
         LoadAssemblies();
         return Task.CompletedTask;

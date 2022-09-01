@@ -75,14 +75,14 @@ public partial class MainContentViewModel :
     [ObservableProperty]
     private string? _bannerMessage;
 
-    public Task HandleAsync(LoadStartEvent e, CancellationToken? cancellationToken = null)
+    public Task HandleAsync(LoadStartEvent e, CancellationToken? ct = null)
     {
         IsLoading = true;
         LoadingStarted = _dateTimeProvider.Now();
         return Task.CompletedTask;
     }
 
-    public Task HandleAsync(LoadEndEvent e, CancellationToken? cancellationToken = null)
+    public Task HandleAsync(LoadEndEvent e, CancellationToken? ct = null)
     {
         var diff = _dateTimeProvider.Now() - LoadingStarted;
 
@@ -103,7 +103,7 @@ public partial class MainContentViewModel :
         return Task.CompletedTask;
     }
 
-    public Task HandleAsync(BannerOpenEvent e, CancellationToken? cancellationToken = null)
+    public Task HandleAsync(BannerOpenEvent e, CancellationToken? ct = null)
     {
         IsBannerLink = e.IsLink;
         BannerLink = e.Link;

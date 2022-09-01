@@ -2,5 +2,5 @@
 
 public interface IMinDelay
 {
-    Task DelayAsync(DateTime start, TimeSpan minDelay);
+    Task DelayAsync(DateTime start, TimeSpan minDelay, CancellationToken? ct = null);
 }

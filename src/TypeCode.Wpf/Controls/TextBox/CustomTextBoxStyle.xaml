@@ -144,6 +144,7 @@
                                 <ProgressBar Grid.Row="1"
                                              IsIndeterminate="True"
                                              Height="3"
+                                             Padding="-1 0 -1 0"
                                              IsEnabled="{Binding IsAutoCompletionLoading, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}"
                                              Visibility="{Binding IsAutoCompletionLoading, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}">
                                 </ProgressBar>
