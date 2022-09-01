@@ -11,7 +11,11 @@ public static class LoggerConfigurationProvider
     {
         return new LoggerConfiguration()
             .Enrich.WithExceptionDetails()
+#if DEBUG
             .MinimumLevel.Debug()
+#else
+            .MinimumLevel.Error()   
+#endif
             .WriteTo.Debug(LogEventLevel.Debug)
             .WriteTo.Console(LogEventLevel.Information)
             .WriteTo.File(LogFilePaths.File, rollOnFileSizeLimit: true, shared: true);
@@ -22,7 +26,11 @@ public static class LoggerConfigurationProvider
         return loggerBootStepOptions
             .Configuration
             .Enrich.WithExceptionDetails()
+#if DEBUG
             .MinimumLevel.Debug()
+#else
+            .MinimumLevel.Error()   
+#endif
             .WriteTo.Debug(LogEventLevel.Debug)
             .WriteTo.Console(LogEventLevel.Information)
             .WriteTo.File(LogFilePaths.File, rollOnFileSizeLimit: true, shared: true);
