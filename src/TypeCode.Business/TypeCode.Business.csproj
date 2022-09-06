@@ -23,8 +23,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <EmbeddedResource Include="Configuration\Location\Configuration.Development.cfg.xml" />
-      <EmbeddedResource Include="Configuration\Location\Configuration.Production.cfg.xml" />
+      <EmbeddedResource Include="Bootstrapping\Data\Configuration.Development.cfg.xml" />
+      <EmbeddedResource Include="Bootstrapping\Data\Configuration.Production.cfg.xml" />
     </ItemGroup>
 
 </Project>

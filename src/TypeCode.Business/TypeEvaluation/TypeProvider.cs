@@ -15,9 +15,9 @@ public class TypeProvider : ITypeProvider
     {
         Log.Debug("Initialize Types");
 
-        if (File.Exists(LogFilePaths.IndexedTypes))
+        if (File.Exists(LogFileNames.IndexedTypes))
         {
-            File.Delete(LogFilePaths.IndexedTypes);
+            File.Delete(LogFileNames.IndexedTypes);
         }
 
         foreach (var root in configuration.AssemblyRoot.OrderBy(root => root.Priority).ToList())
@@ -204,6 +204,6 @@ public class TypeProvider : ITypeProvider
 
     private static Task WriteKeysToFileAsync(IEnumerable<string> keys)
     {
-        return File.AppendAllLinesAsync(LogFilePaths.IndexedTypes, keys);
+        return File.AppendAllLinesAsync(LogFileNames.IndexedTypes, keys);
     }
 }

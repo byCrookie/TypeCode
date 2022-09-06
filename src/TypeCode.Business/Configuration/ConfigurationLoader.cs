@@ -1,7 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 using Serilog;
+using TypeCode.Business.Bootstrapping.Data;
 using TypeCode.Business.Configuration.Assemblies;
-using TypeCode.Business.Configuration.Location;
 using TypeCode.Business.Format;
 
 namespace TypeCode.Business.Configuration;
@@ -11,19 +11,19 @@ public class ConfigurationLoader : IConfigurationLoader
     private readonly IConfigurationMapper _configurationMapper;
     private readonly IGenericXmlSerializer _genericXmlSerializer;
     private readonly IAssemblyLoader _assemblyLoader;
-    private readonly IConfigurationLocationProvider _configurationLocationProvider;
+    private readonly IUserDataLocationProvider _userDataLocationProvider;
 
     public ConfigurationLoader(
         IConfigurationMapper configurationMapper,
         IGenericXmlSerializer genericXmlSerializer,
         IAssemblyLoader assemblyLoader,
-        IConfigurationLocationProvider configurationLocationProvider
+        IUserDataLocationProvider userDataLocationProvider
     )
     {
         _configurationMapper = configurationMapper;
         _genericXmlSerializer = genericXmlSerializer;
         _assemblyLoader = assemblyLoader;
-        _configurationLocationProvider = configurationLocationProvider;
+        _userDataLocationProvider = userDataLocationProvider;
     }
 
     public async Task<TypeCodeConfiguration> LoadAsync()
@@ -134,7 +134,7 @@ public class ConfigurationLoader : IConfigurationLoader
 
     private async Task<XmlTypeCodeConfiguration> ReadXmlConfigurationAsync()
     {
-        var cfg = await _configurationLocationProvider.GetOrCreateAsync().ConfigureAwait(false);
+        var cfg = _userDataLocationProvider.GetConfigurationPath();
         var xml = await File.ReadAllTextAsync(cfg).ConfigureAwait(false);
         return _genericXmlSerializer.Deserialize<XmlTypeCodeConfiguration>(xml) ?? throw new Exception($"{cfg} can not be parsed");
     }
