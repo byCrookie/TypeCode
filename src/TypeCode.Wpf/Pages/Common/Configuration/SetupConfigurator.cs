@@ -77,12 +77,12 @@ internal class SetupConfigurator : ISetupConfigurator
                 return Task.CompletedTask;
             }
 
-            var newItem = CreateAssemblyRootItem(model.Path, model.Priority.Value);
+            var newItem = CreateAssemblyRootItem(model.Path, int.Parse(model.Priority));
             parentItem.Items.Add(newItem);
             var newAssemblyRoot = new AssemblyRoot
             {
                 Path = model.Path ?? throw new Exception(),
-                Priority = model.Priority ?? throw new Exception()
+                Priority = int.Parse(model.Priority ?? throw new Exception())
             };
             _configuration.AssemblyRoot.Add(newAssemblyRoot);
             _setupRootMappings.Add(newItem, new SetupTreeViewItemMapping<AssemblyRoot>(newItem, parentItem, newAssemblyRoot));
@@ -312,10 +312,10 @@ internal class SetupConfigurator : ISetupConfigurator
                         return Task.CompletedTask;
                     }
 
-                    var newItem = ReplaceItemInView(mapping.ParentItem, mapping.Item, () => CreateAssemblyRootItem(model.Path, model.Priority.Value));
+                    var newItem = ReplaceItemInView(mapping.ParentItem, mapping.Item, () => CreateAssemblyRootItem(model.Path, int.Parse(model.Priority)));
 
                     mapping.Type.Path = model.Path;
-                    mapping.Type.Priority = model.Priority.Value;
+                    mapping.Type.Priority = int.Parse(model.Priority);
 
                     _setupRootMappings.Add(newItem, new SetupTreeViewItemMapping<AssemblyRoot>(newItem, mapping.ParentItem, mapping.Type));
                     return Task.CompletedTask;
@@ -323,7 +323,7 @@ internal class SetupConfigurator : ISetupConfigurator
                 model =>
                 {
                     model.Path = mapping.Type.Path;
-                    model.Priority = mapping.Type.Priority;
+                    model.Priority = mapping.Type.Priority.ToString();
                     return Task.CompletedTask;
                 }, "Update").ConfigureAwait(true);
         }
