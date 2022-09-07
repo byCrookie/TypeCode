@@ -1,5 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 using Serilog;
+using TypeCode.Business.Bootstrapping.Data;
 using TypeCode.Business.Configuration;
 using TypeCode.Business.Format;
 using TypeCode.Business.Logging;
@@ -8,16 +9,23 @@ namespace TypeCode.Business.TypeEvaluation;
 
 public class TypeProvider : ITypeProvider
 {
+    private readonly IUserDataLocationProvider _userDataLocationProvider;
+
     private static TypeCodeConfiguration? _configuration;
     private static readonly List<string> LoadedKeys = new();
+
+    public TypeProvider(IUserDataLocationProvider userDataLocationProvider)
+    {
+        _userDataLocationProvider = userDataLocationProvider;
+    }
 
     public async Task InitalizeAsync(TypeCodeConfiguration configuration)
     {
         Log.Debug("Initialize Types");
 
-        if (File.Exists(LogFileNames.IndexedTypes))
+        if (File.Exists(Path.Combine(_userDataLocationProvider.GetLogsPath(), LogFileNames.IndexedTypes)))
         {
-            File.Delete(LogFileNames.IndexedTypes);
+            File.Delete(Path.Combine(_userDataLocationProvider.GetLogsPath(), LogFileNames.IndexedTypes));
         }
 
         foreach (var root in configuration.AssemblyRoot.OrderBy(root => root.Priority).ToList())
@@ -152,13 +160,13 @@ public class TypeProvider : ITypeProvider
                     {
                         return Enumerable.Empty<Type>();
                     }
-                    
+
                     var types = evaluate(selector.TypesByNameDictionary);
                     if (types.Any())
                     {
                         return types;
                     }
-                    
+
                     if (ct.IsCancellationRequested)
                     {
                         return Enumerable.Empty<Type>();
@@ -177,7 +185,7 @@ public class TypeProvider : ITypeProvider
                     {
                         return Enumerable.Empty<Type>();
                     }
-                    
+
                     var types = evaluate(path.TypesByNameDictionary);
                     if (types.Any())
                     {
@@ -188,7 +196,7 @@ public class TypeProvider : ITypeProvider
                     {
                         return Enumerable.Empty<Type>();
                     }
-                    
+
                     types = evaluate(path.TypesByFullNameDictionary);
                     if (types.Any())
                     {
@@ -202,8 +210,8 @@ public class TypeProvider : ITypeProvider
         return Enumerable.Empty<Type>();
     }
 
-    private static Task WriteKeysToFileAsync(IEnumerable<string> keys)
+    private Task WriteKeysToFileAsync(IEnumerable<string> keys)
     {
-        return File.AppendAllLinesAsync(LogFileNames.IndexedTypes, keys);
+        return File.AppendAllLinesAsync(Path.Combine(_userDataLocationProvider.GetLogsPath(), LogFileNames.IndexedTypes), keys);
     }
 }
