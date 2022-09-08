@@ -2,7 +2,7 @@
 
 public interface IUserDataLocationInitializer
 {
-    void InitializeConfigurationPath(string location);
+    void InitializeConfigurationFilePath(string location);
     void InitializeLogsPath(string location);
     void InitializeCachePath(string location);
 }

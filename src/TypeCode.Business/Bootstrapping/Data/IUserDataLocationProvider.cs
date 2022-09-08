@@ -2,7 +2,7 @@
 
 public interface IUserDataLocationProvider
 {
-    string GetConfigurationPath();
+    string GetConfigurationFilePath();
     string GetLogsPath();
     string GetCachePath();
 }

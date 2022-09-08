@@ -2,18 +2,18 @@
 
 public class UserDataLocationProvider : IUserDataLocationProvider, IUserDataLocationInitializer
 {
-    private static string? _configurationPath;
+    private static string? _configurationFilePath;
     private static string? _logsPath;
     private static string? _cachePath;
 
-    public string GetConfigurationPath()
+    public string GetConfigurationFilePath()
     {
-        if (_configurationPath is null)
+        if (_configurationFilePath is null)
         {
             throw new Exception($"{nameof(UserDataLocationProvider)} not initialized");
         }
 
-        return _configurationPath;
+        return _configurationFilePath;
     }
 
     public string GetLogsPath()
@@ -36,9 +36,9 @@ public class UserDataLocationProvider : IUserDataLocationProvider, IUserDataLoca
         return _cachePath;
     }
 
-    public void InitializeConfigurationPath(string location)
+    public void InitializeConfigurationFilePath(string location)
     {
-        _configurationPath = location;
+        _configurationFilePath = location;
     }
 
     public void InitializeLogsPath(string location)

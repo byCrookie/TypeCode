@@ -20,6 +20,21 @@ public class UserDataInitializeBootStep<TContext> : IUserDataInitializeBootStep<
     private readonly IResourceReader _resourceReader;
     private readonly IUserDataLocationInitializer _userDataLocationInitializer;
 
+    private const string SubLocationLogsName = "logs";
+    private const string SubLocationCacheName = "cache";
+
+    private readonly List<string> _priorityDataBaseLocations = new()
+    {
+        $@"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\",
+        $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\TypeCode\"
+    };
+
+    private readonly List<string> _subLocations = new()
+    {
+        SubLocationLogsName,
+        SubLocationCacheName
+    };
+
     public UserDataInitializeBootStep(
         IResourceReader resourceReader,
         IUserDataLocationProvider userDataLocationInitializer
@@ -31,49 +46,28 @@ public class UserDataInitializeBootStep<TContext> : IUserDataInitializeBootStep<
 
     public async Task ExecuteAsync(TContext context)
     {
-        var exeLocationBasePath = $@"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\";
-        var exeLogsLocation = $"{exeLocationBasePath}logs";
-        var exeCacheLocation = $"{exeLocationBasePath}cache";
-        var exeConfigurationLocation = $"{exeLocationBasePath}{ConfigurationFileName}";
+        var basePath = GetBasePathByPriority();
+        Directory.CreateDirectory(basePath);
 
-        LogFileNames.AllNames.Select(name => Path.Combine(exeLogsLocation, name)).ForEach(path =>
+        foreach (var subLocation in _subLocations.Select(location => Path.Combine(basePath, location)))
         {
-            if (File.Exists(path))
-            {
-                File.Delete(path);
-            }
-        });
-
-        if (File.Exists(exeConfigurationLocation))
-        {
-            Directory.CreateDirectory(exeLogsLocation);
-            Directory.CreateDirectory(exeCacheLocation);
-            _userDataLocationInitializer.InitializeCachePath(exeCacheLocation);
-            _userDataLocationInitializer.InitializeLogsPath(exeLogsLocation);
-            _userDataLocationInitializer.InitializeConfigurationPath(exeConfigurationLocation);
-            return;
+            Directory.CreateDirectory(subLocation);
         }
 
-        var appDataLocationBasePath = $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\TypeCode\";
-        var appDataLogsLocation = $@"{appDataLocationBasePath}logs";
-        var appDataCacheLocation = $@"{appDataLocationBasePath}cache";
-        var appDataConfigurationLocation = $@"{appDataLocationBasePath}{ConfigurationFileName}";
-
-        LogFileNames.AllNames.Select(name => Path.Combine(appDataLogsLocation, name)).ForEach(path =>
+        foreach (var logfile in LogFileNames.AllNames.Select(name => Path.Combine(basePath, SubLocationLogsName, name)))
         {
-            if (File.Exists(path))
+            if (File.Exists(logfile))
             {
-                File.Delete(path);
+                File.Delete(logfile);
             }
-        });
+        }
 
-        if (File.Exists(appDataConfigurationLocation))
+        _userDataLocationInitializer.InitializeCachePath(Path.Combine(basePath, SubLocationCacheName));
+        _userDataLocationInitializer.InitializeLogsPath(Path.Combine(basePath, SubLocationLogsName));
+        _userDataLocationInitializer.InitializeConfigurationFilePath(Path.Combine(basePath, ConfigurationFileName));
+
+        if (File.Exists(Path.Combine(basePath, ConfigurationFileName)))
         {
-            Directory.CreateDirectory(appDataLogsLocation);
-            Directory.CreateDirectory(appDataCacheLocation);
-            _userDataLocationInitializer.InitializeCachePath(appDataCacheLocation);
-            _userDataLocationInitializer.InitializeLogsPath(appDataLogsLocation);
-            _userDataLocationInitializer.InitializeConfigurationPath(appDataConfigurationLocation);
             return;
         }
 
@@ -83,15 +77,14 @@ public class UserDataInitializeBootStep<TContext> : IUserDataInitializeBootStep<
         var configTemplate = _resourceReader.ReadResource(Assembly.GetExecutingAssembly(), $"Bootstrapping.Data.{ConfigurationProdFileName}");
 #endif
 
-        Directory.CreateDirectory(appDataCacheLocation);
-        _userDataLocationInitializer.InitializeLogsPath(appDataCacheLocation);
+        await File.WriteAllTextAsync(Path.Combine(basePath, ConfigurationFileName), configTemplate).ConfigureAwait(false);
+    }
 
-        Directory.CreateDirectory(appDataLogsLocation);
-        _userDataLocationInitializer.InitializeLogsPath(appDataLogsLocation);
-
-        Directory.CreateDirectory(Path.GetDirectoryName(appDataConfigurationLocation) ?? throw new ArgumentException($"{appDataConfigurationLocation} is not valid location"));
-        await File.WriteAllTextAsync(appDataConfigurationLocation, configTemplate).ConfigureAwait(false);
-        _userDataLocationInitializer.InitializeConfigurationPath(appDataConfigurationLocation);
+    private string GetBasePathByPriority()
+    {
+        var baseLocation = _priorityDataBaseLocations
+            .FirstOrDefault(baseLocation => File.Exists(Path.Combine(baseLocation, ConfigurationFileName)));
+        return baseLocation ?? _priorityDataBaseLocations.First();
     }
 
     public Task<bool> ShouldExecuteAsync(TContext context)

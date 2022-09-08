@@ -134,7 +134,7 @@ public class ConfigurationLoader : IConfigurationLoader
 
     private async Task<XmlTypeCodeConfiguration> ReadXmlConfigurationAsync()
     {
-        var cfg = _userDataLocationProvider.GetConfigurationPath();
+        var cfg = _userDataLocationProvider.GetConfigurationFilePath();
         var xml = await File.ReadAllTextAsync(cfg).ConfigureAwait(false);
         return _genericXmlSerializer.Deserialize<XmlTypeCodeConfiguration>(xml) ?? throw new Exception($"{cfg} can not be parsed");
     }
