@@ -4,4 +4,5 @@ public interface IUserDataLocationProvider
 {
     string GetConfigurationPath();
     string GetLogsPath();
+    string GetCachePath();
 }

@@ -33,8 +33,9 @@ public class UserDataInitializeBootStep<TContext> : IUserDataInitializeBootStep<
     {
         var exeLocationBasePath = $@"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\";
         var exeLogsLocation = $"{exeLocationBasePath}logs";
+        var exeCacheLocation = $"{exeLocationBasePath}cache";
         var exeConfigurationLocation = $"{exeLocationBasePath}{ConfigurationFileName}";
-        
+
         LogFileNames.AllNames.Select(name => Path.Combine(exeLogsLocation, name)).ForEach(path =>
         {
             if (File.Exists(path))
@@ -46,6 +47,8 @@ public class UserDataInitializeBootStep<TContext> : IUserDataInitializeBootStep<
         if (File.Exists(exeConfigurationLocation))
         {
             Directory.CreateDirectory(exeLogsLocation);
+            Directory.CreateDirectory(exeCacheLocation);
+            _userDataLocationInitializer.InitializeCachePath(exeCacheLocation);
             _userDataLocationInitializer.InitializeLogsPath(exeLogsLocation);
             _userDataLocationInitializer.InitializeConfigurationPath(exeConfigurationLocation);
             return;
@@ -53,8 +56,9 @@ public class UserDataInitializeBootStep<TContext> : IUserDataInitializeBootStep<
 
         var appDataLocationBasePath = $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\TypeCode\";
         var appDataLogsLocation = $@"{appDataLocationBasePath}logs";
+        var appDataCacheLocation = $@"{appDataLocationBasePath}cache";
         var appDataConfigurationLocation = $@"{appDataLocationBasePath}{ConfigurationFileName}";
-        
+
         LogFileNames.AllNames.Select(name => Path.Combine(appDataLogsLocation, name)).ForEach(path =>
         {
             if (File.Exists(path))
@@ -66,6 +70,8 @@ public class UserDataInitializeBootStep<TContext> : IUserDataInitializeBootStep<
         if (File.Exists(appDataConfigurationLocation))
         {
             Directory.CreateDirectory(appDataLogsLocation);
+            Directory.CreateDirectory(appDataCacheLocation);
+            _userDataLocationInitializer.InitializeCachePath(appDataCacheLocation);
             _userDataLocationInitializer.InitializeLogsPath(appDataLogsLocation);
             _userDataLocationInitializer.InitializeConfigurationPath(appDataConfigurationLocation);
             return;
@@ -76,6 +82,9 @@ public class UserDataInitializeBootStep<TContext> : IUserDataInitializeBootStep<
 #else
         var configTemplate = _resourceReader.ReadResource(Assembly.GetExecutingAssembly(), $"Bootstrapping.Data.{ConfigurationProdFileName}");
 #endif
+
+        Directory.CreateDirectory(appDataCacheLocation);
+        _userDataLocationInitializer.InitializeLogsPath(appDataCacheLocation);
 
         Directory.CreateDirectory(appDataLogsLocation);
         _userDataLocationInitializer.InitializeLogsPath(appDataLogsLocation);

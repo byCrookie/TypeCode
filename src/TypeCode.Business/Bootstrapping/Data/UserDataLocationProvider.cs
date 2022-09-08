@@ -4,6 +4,7 @@ public class UserDataLocationProvider : IUserDataLocationProvider, IUserDataLoca
 {
     private static string? _configurationPath;
     private static string? _logsPath;
+    private static string? _cachePath;
 
     public string GetConfigurationPath()
     {
@@ -24,6 +25,16 @@ public class UserDataLocationProvider : IUserDataLocationProvider, IUserDataLoca
 
         return _logsPath;
     }
+    
+    public string GetCachePath()
+    {
+        if (_cachePath is null)
+        {
+            throw new Exception($"{nameof(UserDataLocationProvider)} not initialized");
+        }
+
+        return _cachePath;
+    }
 
     public void InitializeConfigurationPath(string location)
     {
@@ -33,5 +44,10 @@ public class UserDataLocationProvider : IUserDataLocationProvider, IUserDataLoca
     public void InitializeLogsPath(string location)
     {
         _logsPath = location;
+    }
+    
+    public void InitializeCachePath(string location)
+    {
+        _cachePath = location;
     }
 }

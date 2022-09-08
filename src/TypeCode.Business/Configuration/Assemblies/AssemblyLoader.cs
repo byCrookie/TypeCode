@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 using Serilog;
+using TypeCode.Business.Bootstrapping.Data;
 using TypeCode.Business.TypeEvaluation;
 
 namespace TypeCode.Business.Configuration.Assemblies;
@@ -10,20 +11,19 @@ namespace TypeCode.Business.Configuration.Assemblies;
 public class AssemblyLoader : IAssemblyLoader
 {
     private readonly IAssemblyDependencyLoader _assemblyDependencyLoader;
+    private readonly IUserDataLocationProvider _userDataLocationProvider;
     private readonly ConcurrentDictionary<string, AssemblyDirectory> _assemblyDirectories = new();
     private readonly ConcurrentBag<string> _usedCacheDirectories = new();
-    private const string CacheDirectory = "cache";
     private const string CacheDirectoryPattern = "TypeCode_";
 
-    public AssemblyLoader(IAssemblyDependencyLoader assemblyDependencyLoader)
+    public AssemblyLoader(IAssemblyDependencyLoader assemblyDependencyLoader, IUserDataLocationProvider userDataLocationProvider)
     {
         _assemblyDependencyLoader = assemblyDependencyLoader;
+        _userDataLocationProvider = userDataLocationProvider;
     }
 
     public async Task LoadAsync(TypeCodeConfiguration configuration)
     {
-        Directory.CreateDirectory(CacheDirectory);
-
         var assemblyRootCompounds = configuration.AssemblyRoot
             .SelectMany(root => root.AssemblyGroup
                 .SelectMany(group => group.AssemblyPath
@@ -77,7 +77,7 @@ public class AssemblyLoader : IAssemblyLoader
                     assemblyCompound.Types = LoadTypes(assemblyCompound);
                     assemblyCompound.LastFileWriteTime = File.GetLastWriteTime(assemblyCompound.File);
                 }).ConfigureAwait(false);
-                
+
                 _assemblyDirectories.TryAdd(assemblyRootCompound.AssemblyDirectory.AbsolutPath, assemblyRootCompound.AssemblyDirectory);
             }
         }).ConfigureAwait(false);
@@ -114,9 +114,9 @@ public class AssemblyLoader : IAssemblyLoader
 
     private void ClearUnusedCaches()
     {
-        if (Directory.Exists(CacheDirectory))
+        if (Directory.Exists(_userDataLocationProvider.GetCachePath()))
         {
-            var caches = Directory.GetDirectories(CacheDirectory, $"{CacheDirectoryPattern}*");
+            var caches = Directory.GetDirectories(_userDataLocationProvider.GetCachePath(), $"{CacheDirectoryPattern}*");
             foreach (var cache in caches)
             {
                 if (!_usedCacheDirectories.Contains(cache) && Directory.Exists(cache))
@@ -136,7 +136,7 @@ public class AssemblyLoader : IAssemblyLoader
             var fileName = Path.GetFileNameWithoutExtension(path);
             var directoryName = Path.GetDirectoryName(path) ?? string.Empty;
 
-            var cacheDirectoryPath = Path.Combine(CacheDirectory, $"{CacheDirectoryPattern}{GetHashString(directoryName)}");
+            var cacheDirectoryPath = Path.Combine(_userDataLocationProvider.GetCachePath(), $"{CacheDirectoryPattern}{GetHashString(directoryName)}");
             Directory.CreateDirectory(cacheDirectoryPath);
 
             var cachedAssembly = Path.Combine(cacheDirectoryPath, $"{fileName}.dll");
@@ -162,14 +162,14 @@ public class AssemblyLoader : IAssemblyLoader
         {
             var fileName = Path.GetFileName(path);
             var directoryName = Path.GetDirectoryName(path) ?? string.Empty;
-            var cacheDirectoryPath = Path.Combine(CacheDirectory, $"{CacheDirectoryPattern}{GetHashString(directoryName)}");
+            var cacheDirectoryPath = Path.Combine(_userDataLocationProvider.GetCachePath(), $"{CacheDirectoryPattern}{GetHashString(directoryName)}");
             var cachedAssembly = Path.Combine(cacheDirectoryPath, fileName);
 
             if (assemblyRootCompound.AssemblyRoot.IncludeAssemblyPattern.Any(pattern => pattern.IsMatch(fileName)))
             {
                 return await _assemblyDependencyLoader.LoadWithDependenciesAsync(assemblyRootCompound, Path.GetFullPath(cachedAssembly)).ConfigureAwait(false);
             }
-            
+
             return null;
         }
         catch (Exception exception)
