@@ -5,6 +5,7 @@ using Framework.Boot.Start;
 using Serilog;
 using Serilog.Events;
 using TypeCode.Business.Bootstrapping;
+using TypeCode.Business.Bootstrapping.Configuration;
 using TypeCode.Business.Logging;
 
 namespace TypeCode.Console.Interactive.Boot;

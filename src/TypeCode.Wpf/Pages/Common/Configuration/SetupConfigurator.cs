@@ -2,8 +2,8 @@
 using System.Text.RegularExpressions;
 using System.Windows.Controls;
 using DependencyInjection.Factory;
+using TypeCode.Business.Bootstrapping.Data;
 using TypeCode.Business.Configuration;
-using TypeCode.Business.Configuration.Location;
 using TypeCode.Wpf.Helper.Navigation.Wizard;
 using TypeCode.Wpf.Pages.Common.Configuration.AssemblyGroupWizard;
 using TypeCode.Wpf.Pages.Common.Configuration.AssemblyPathSelectorWizard;
@@ -19,7 +19,7 @@ internal class SetupConfigurator : ISetupConfigurator
     private readonly IConfigurationMapper _configurationMapper;
     private readonly IFactory<IWizardBuilder> _wizardBuilderFactory;
     private readonly IWizardRunner _wizardRunner;
-    private readonly IConfigurationLocationProvider _configurationLocationProvider;
+    private readonly IUserDataLocationProvider _userDataLocationProvider;
     private TypeCodeConfiguration _configuration;
 
     private readonly IDictionary<TreeViewItem, SetupTreeViewItemMapping<AssemblyRoot>> _setupRootMappings
@@ -49,14 +49,14 @@ internal class SetupConfigurator : ISetupConfigurator
         IConfigurationMapper configurationMapper,
         IFactory<IWizardBuilder> wizardBuilderFactory,
         IWizardRunner wizardRunner,
-        IConfigurationLocationProvider configurationLocationProvider
+        IUserDataLocationProvider userDataLocationProvider
     )
     {
         _genericXmlSerializer = genericXmlSerializer;
         _configurationMapper = configurationMapper;
         _wizardBuilderFactory = wizardBuilderFactory;
         _wizardRunner = wizardRunner;
-        _configurationLocationProvider = configurationLocationProvider;
+        _userDataLocationProvider = userDataLocationProvider;
 
         _configuration = new TypeCodeConfiguration();
     }
@@ -613,15 +613,15 @@ internal class SetupConfigurator : ISetupConfigurator
 
     private async Task<XmlTypeCodeConfiguration> ReadXmlConfigurationAsync()
     {
-        var cfg = await _configurationLocationProvider.GetOrCreateAsync().ConfigureAwait(false);
+        var cfg = _userDataLocationProvider.GetConfigurationPath();
         var xml = await File.ReadAllTextAsync(cfg).ConfigureAwait(true);
         return _genericXmlSerializer.Deserialize<XmlTypeCodeConfiguration>(xml) ?? throw new Exception($"{cfg} can not be parsed");
     }
 
-    private async Task WriteXmlConfigurationAsync(XmlTypeCodeConfiguration xmlConfiguration)
+    private Task WriteXmlConfigurationAsync(XmlTypeCodeConfiguration xmlConfiguration)
     {
-        var cfg = await _configurationLocationProvider.GetOrCreateAsync().ConfigureAwait(false);
+        var cfg = _userDataLocationProvider.GetConfigurationPath();
         var serialized = _genericXmlSerializer.Serialize(xmlConfiguration);
-        await File.WriteAllTextAsync(cfg, serialized).ConfigureAwait(false);
+        return File.WriteAllTextAsync(cfg, serialized);
     }
 }

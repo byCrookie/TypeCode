@@ -3,7 +3,7 @@ using TypeCode.Business.Configuration;
 using TypeCode.Business.TypeEvaluation;
 using Workflow;
 
-namespace TypeCode.Business.Bootstrapping;
+namespace TypeCode.Business.Bootstrapping.Configuration;
 
 public class ConfigurationLoadBootStep<TContext> : IConfigurationLoadBootStep<TContext>
     where TContext : WorkflowBaseContext, IBootContext

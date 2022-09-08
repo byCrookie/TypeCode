@@ -1,20 +1,20 @@
-﻿using TypeCode.Business.Configuration.Location;
+﻿using TypeCode.Business.Bootstrapping.Data;
 using TypeCode.Wpf.Helper.Navigation.Service;
 
 namespace TypeCode.Wpf.Pages.Common.Configuration;
 
 public class ConfigurationViewModelFactory : IConfigurationViewModelFactory
 {
-    private readonly IConfigurationLocationProvider _configurationLocationProvider;
+    private readonly IUserDataLocationProvider _userDataLocationProvider;
 
-    public ConfigurationViewModelFactory(IConfigurationLocationProvider configurationLocationProvider)
+    public ConfigurationViewModelFactory(IUserDataLocationProvider userDataLocationProvider)
     {
-        _configurationLocationProvider = configurationLocationProvider;
+        _userDataLocationProvider = userDataLocationProvider;
     }
     
     public async Task<ConfigurationWizardViewModel> CreateAsync()
     {
-        var viewModel = new ConfigurationWizardViewModel(_configurationLocationProvider);
+        var viewModel = new ConfigurationWizardViewModel(_userDataLocationProvider);
         await viewModel.OnInititalNavigationAsync(new NavigationContext()).ConfigureAwait(true);
         return viewModel;
     }
