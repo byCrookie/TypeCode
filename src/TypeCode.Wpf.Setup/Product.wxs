@@ -2,10 +2,28 @@
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
     <?define TypeCode_TargetDir=$(var.TypeCode.Wpf.TargetDir)?>
 
-    <Product Id="*" Name="TypeCode" Language="1033" Version="1.0.0.0" Manufacturer="byCrookie"
+    <Product Id="*"
+             Name="TypeCode"
+             Language="1033"
+             Version="1.0.0.0"
+             Manufacturer="byCrookie"
              UpgradeCode="9f57777b-619a-41c8-afec-d7f7412d4047">
 
         <Package InstallerVersion="200" Compressed="yes" InstallScope="perUser"/>
+
+        <MajorUpgrade AllowDowngrades="yes"/>
+
+        <Property Id="PREVIOUSVERSIONSINSTALLED" Secure="yes"/>
+        <Upgrade Id="9f57777b-619a-41c8-afec-d7f7412d4047">
+            <UpgradeVersion
+                    Minimum="1.0.0.0" Maximum="1.0.0.0"
+                    Property="PREVIOUSVERSIONSINSTALLED"
+                    IncludeMinimum="yes" IncludeMaximum="yes"/>
+        </Upgrade>
+
+        <!--        <InstallExecuteSequence>-->
+        <!--            <RemoveExistingProducts Before="InstallInitialize" />-->
+        <!--        </InstallExecuteSequence>-->
 
         <Icon Id="icon.ico" SourceFile="$(var.SolutionDir)\src\TypeCode.Wpf\Assets\Icons\icon.ico"/>
         <Property Id="ARPPRODUCTICON" Value="icon.ico"/>
@@ -18,13 +36,12 @@
         <WixVariable Id="WixUIBannerBmp" Value="Assets\Banner.bmp"/>
         <WixVariable Id="WixUIDialogBmp" Value="Assets\Dialog.bmp"/>
 
-        <MajorUpgrade AllowDowngrades="yes"/>
         <MediaTemplate EmbedCab="yes"/>
 
         <Feature Id="ProductFeature" Title="TypeCode.Wpf" Level="1" Absent='disallow'>
             <ComponentGroupRef Id="Binaries"/>
         </Feature>
-        
+
         <Feature Id="MenuShortcut" Title="TypeCode.Wpf Menu Shortcut" Level="1">
             <ComponentRef Id="ApplicationShortcut"/>
         </Feature>

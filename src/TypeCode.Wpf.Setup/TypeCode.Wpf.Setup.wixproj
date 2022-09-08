@@ -6,6 +6,12 @@
         <WixTargetsPath>$(WixToolPath)\wix.targets</WixTargetsPath>
         <DefineConstants>BasePath=..\TypeCode.Wpf.Setup\bin\publish\$(Configuration)</DefineConstants>
     </PropertyGroup>
+    
+<!--    <Target Name="Constants" AfterTargets="BeforeBuild">-->
+<!--        <CreateProperty Value="BasePath=..\TypeCode.Wpf.Setup\bin\publish\$(Configuration);ProductId=$([System.Guid]::NewGuid());ProductVersion=$(PackageVersion)">-->
+<!--            <Output TaskParameter="Value" PropertyName="DefineConstants"/>-->
+<!--        </CreateProperty>-->
+<!--    </Target>-->
 
     <PropertyGroup>
         <Configuration Condition=" '$(Configuration)' == '' ">Release</Configuration>
@@ -25,6 +31,10 @@
         <OutputPath>bin\$(Configuration)\</OutputPath>
         <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
     </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="byCrookie.LibrarySdk" />
+    </ItemGroup>
 
     <ItemGroup>
         <Compile Include="Product.wxs" />
