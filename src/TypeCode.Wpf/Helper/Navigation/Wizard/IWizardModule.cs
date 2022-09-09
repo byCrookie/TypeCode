@@ -8,7 +8,7 @@ namespace TypeCode.Wpf.Helper.Navigation.Wizard;
 [Transient(typeof(IWizardBuilder), typeof(WizardBuilder))]
 [Transient(typeof(IWizardParameterBuilder), typeof(WizardParameterBuilder))]
 [Transient(typeof(IWizardNavigator), typeof(WizardNavigator))]
-[Transient(typeof(IWizardRunner), typeof(WizardRunner))]
+[Singleton(typeof(IWizardRunner), typeof(WizardRunner))]
 public interface IWizardModule
 {
 }
