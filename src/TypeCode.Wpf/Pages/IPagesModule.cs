@@ -5,6 +5,7 @@ using TypeCode.Wpf.Pages.Common;
 using TypeCode.Wpf.Pages.Composer;
 using TypeCode.Wpf.Pages.DynamicExecution;
 using TypeCode.Wpf.Pages.Guid;
+using TypeCode.Wpf.Pages.EncodingConversion;
 using TypeCode.Wpf.Pages.Home;
 using TypeCode.Wpf.Pages.Mapper;
 using TypeCode.Wpf.Pages.Specflow;
@@ -27,6 +28,7 @@ namespace TypeCode.Wpf.Pages;
 [Import(typeof(IHomeModule))]
 [Import(typeof(IDynamicExecutionModule))]
 [Import(typeof(IGuidModule))]
+[Import(typeof(IEncodingConversionModule))]
 public interface IPagesModule
 {
 }

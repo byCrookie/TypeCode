@@ -10,6 +10,7 @@ using TypeCode.Wpf.Pages.Builder;
 using TypeCode.Wpf.Pages.Common.Configuration;
 using TypeCode.Wpf.Pages.Composer;
 using TypeCode.Wpf.Pages.DynamicExecution;
+using TypeCode.Wpf.Pages.EncodingConversion;
 using TypeCode.Wpf.Pages.Guid;
 using TypeCode.Wpf.Pages.Home;
 using TypeCode.Wpf.Pages.Mapper;
@@ -57,7 +58,7 @@ public partial class MainSidebarViewModel : ViewModelBase, IAsyncNavigatedTo
     private Task NavigateToSpecflowAsync()
     {
         ActiveItem = ActiveItem.Specflow;
-        return _navigationService.NavigateAsync<GuidViewModel>(new NavigationContext());
+        return _navigationService.NavigateAsync<SpecflowViewModel>(new NavigationContext());
     }
 
     [RelayCommand]
@@ -114,6 +115,13 @@ public partial class MainSidebarViewModel : ViewModelBase, IAsyncNavigatedTo
     {
         ActiveItem = ActiveItem.Guid;
         return _navigationService.NavigateAsync<GuidViewModel>(new NavigationContext());
+    }
+    
+    [RelayCommand]
+    private Task NavigateToEncodingConversionAsync()
+    {
+        ActiveItem = ActiveItem.EncodingConversion;
+        return _navigationService.NavigateAsync<EncodingConversionViewModel>(new NavigationContext());
     }
 
     [RelayCommand]

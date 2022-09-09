@@ -37,6 +37,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -107,8 +108,16 @@
                 Command="{Binding NavigateToGuidCommand}"
                 Content="Guid" />
         </StackPanel>
+        
+        <StackPanel Grid.Row="9"
+                    Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.EncodingConversion}}">
+            <Button
+                Style="{StaticResource TabButtonStyle}"
+                Command="{Binding NavigateToEncodingConversionCommand}"
+                Content="Encoding Conversion" />
+        </StackPanel>
 
-        <StackPanel Grid.Row="10"
+        <StackPanel Grid.Row="11"
                     Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.Assembly}}">
             <Button
                 Style="{StaticResource TabButtonStyle}"
@@ -116,7 +125,7 @@
                 Content="Assemblies" />
         </StackPanel>
 
-        <Button Grid.Row="11"
+        <Button Grid.Row="12"
                 Style="{StaticResource TabButtonStyle}"
                 Command="{Binding OpenSettingsCommand}"
                 Content="Settings" />
