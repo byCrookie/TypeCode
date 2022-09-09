@@ -87,7 +87,7 @@ internal class SetupConfigurator : ISetupConfigurator
             _configuration.AssemblyRoot.Add(newAssemblyRoot);
             _setupRootMappings.Add(newItem, new SetupTreeViewItemMapping<AssemblyRoot>(newItem, parentItem, newAssemblyRoot));
             return Task.CompletedTask;
-        });
+        }, title: "Add Root");
     }
 
     public bool CanAddRoot(TreeViewItem? parentItem)
@@ -115,7 +115,7 @@ internal class SetupConfigurator : ISetupConfigurator
             parentRoot.Type.AssemblyGroup.Add(newAssemblyGroup);
             _setupGroupMappings.Add(newItem, new SetupTreeViewItemMapping<AssemblyGroup>(newItem, parentItem, newAssemblyGroup));
             return Task.CompletedTask;
-        });
+        }, title: "Add Group");
     }
 
     public bool CanAddGroup(TreeViewItem? parentItem)
@@ -143,7 +143,7 @@ internal class SetupConfigurator : ISetupConfigurator
             parentGroup.Type.AssemblyPath.Add(newAssemblyPath);
             _setupPathMappings.Add(newItem, new SetupTreeViewItemMapping<AssemblyPath>(newItem, parentItem, newAssemblyPath));
             return Task.CompletedTask;
-        });
+        }, title: "Add Path");
     }
 
     public bool CanAddPath(TreeViewItem? parentItem)
@@ -167,7 +167,7 @@ internal class SetupConfigurator : ISetupConfigurator
             parentRoot.Type.IncludeAssemblyPattern.Add(pattern);
             _setupIncludePatternMappings.Add(newItem, new SetupTreeViewItemMapping<Regex>(newItem, parentItem, pattern));
             return Task.CompletedTask;
-        });
+        }, title: "Add Include Pattern");
     }
 
     public bool CanAddIncludePattern(TreeViewItem? parentItem)
@@ -195,7 +195,7 @@ internal class SetupConfigurator : ISetupConfigurator
             parentGroup.Type.AssemblyPathSelector.Add(newAssemblyPathSelector);
             _setupPathSelectorMappings.Add(newItem, new SetupTreeViewItemMapping<AssemblyPathSelector>(newItem, parentItem, newAssemblyPathSelector));
             return Task.CompletedTask;
-        });
+        }, title: "Add Selector");
     }
 
     public bool CanAddSelector(TreeViewItem? parentItem)
@@ -325,7 +325,7 @@ internal class SetupConfigurator : ISetupConfigurator
                     model.Path = mapping.Type.Path;
                     model.Priority = mapping.Type.Priority.ToString();
                     return Task.CompletedTask;
-                }, "Update").ConfigureAwait(true);
+                }, "Update", title: "Update Root").ConfigureAwait(true);
         }
     }
 
@@ -357,7 +357,7 @@ internal class SetupConfigurator : ISetupConfigurator
                     model.Name = mapping.Type.Name;
                     model.Priority = mapping.Type.Priority;
                     return Task.CompletedTask;
-                }, "Update").ConfigureAwait(true);
+                }, "Update", title: "Update Group").ConfigureAwait(true);
         }
     }
 
@@ -389,7 +389,7 @@ internal class SetupConfigurator : ISetupConfigurator
                     model.Path = mapping.Type.Path;
                     model.Priority = mapping.Type.Priority;
                     return Task.CompletedTask;
-                }, "Update").ConfigureAwait(true);
+                }, "Update", title: "Update Path").ConfigureAwait(true);
         }
     }
 
@@ -421,7 +421,7 @@ internal class SetupConfigurator : ISetupConfigurator
                     model.Selector = mapping.Type.Selector;
                     model.Priority = mapping.Type.Priority;
                     return Task.CompletedTask;
-                }, "Update").ConfigureAwait(true);
+                }, "Update", title: "Update Path Selector").ConfigureAwait(true);
         }
     }
 
@@ -448,7 +448,7 @@ internal class SetupConfigurator : ISetupConfigurator
                 {
                     model.Pattern = $"{mapping.Type}";
                     return Task.CompletedTask;
-                }, "Update").ConfigureAwait(true);
+                }, "Update", title: "Update Include Assembly Pattern").ConfigureAwait(true);
         }
     }
 
@@ -601,10 +601,10 @@ internal class SetupConfigurator : ISetupConfigurator
         };
     }
 
-    private Task OpenWizardAsync<T>(Func<T, Task>? completed = null, Func<T, Task>? initialize = null, string? finishButtonText = null) where T : notnull
+    private Task OpenWizardAsync<T>(Func<T, Task>? completed = null, Func<T, Task>? initialize = null, string? finishButtonText = null, string? title = null) where T : notnull
     {
         var wizard = _wizardBuilderFactory.Create()
-            .Then<T>((options, _) => options.Before(c => initialize is not null ? initialize(c.GetParameter<T>()) : Task.CompletedTask))
+            .Then<T>((options, _) => options.Title(title).Before(c => initialize is not null ? initialize(c.GetParameter<T>()) : Task.CompletedTask))
             .FinishAsync(c => completed is not null ? completed(c.GetParameter<T>()) : Task.CompletedTask, finishButtonText ?? "Add")
             .Build();
 
