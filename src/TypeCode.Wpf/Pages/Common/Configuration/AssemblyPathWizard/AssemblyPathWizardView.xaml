@@ -13,21 +13,24 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="5"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
             <ColumnDefinition Width="5"></ColumnDefinition>
             <ColumnDefinition Width="Auto"></ColumnDefinition>
         </Grid.ColumnDefinitions>
+
         <Grid.RowDefinitions>
-            <RowDefinition></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="5"></RowDefinition>
-            <RowDefinition></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="5"></RowDefinition>
-            <RowDefinition></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
+        <Label Grid.Row="0" Grid.Column="0" Content="Path" />
         <textBox:CustomTextBox
-            Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+            Grid.Row="0" Grid.Column="2"
             Text="{Binding Path, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
             ShowRegex="False"
             ShowAutoCompletion="False"
@@ -36,13 +39,13 @@
             AcceptsReturn="False"
             AcceptsTab="False">
         </textBox:CustomTextBox>
-        <Button Grid.Row="0" Grid.Column="3"
+        <Button Grid.Row="0" Grid.Column="4"
                 BorderThickness="0" Command="{Binding SelectCommand}"
                 Content="Select" />
 
         <Label Grid.Row="2" Grid.Column="0" Content="Priority" />
         <textBox:CustomTextBox
-            Grid.Row="2" Grid.Column="1"
+            Grid.Row="2" Grid.Column="2"
             Text="{Binding Priority, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
             ShowRegex="False"
             ShowAutoCompletion="False"
@@ -53,7 +56,8 @@
         </textBox:CustomTextBox>
 
         <Label Grid.Row="4" Grid.Column="0" Content="Ignore" />
-        <CheckBox Grid.Row="4" Grid.Column="1"
+        <CheckBox Grid.Row="4" Grid.Column="2"
+                  VerticalAlignment="Center"
                   Content="Ignore"
                   ToolTip="Exclude from being loaded at startup."
                   Foreground="{StaticResource PrimaryText}"
