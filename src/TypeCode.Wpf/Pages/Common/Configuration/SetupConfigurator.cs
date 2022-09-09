@@ -302,7 +302,6 @@ internal class SetupConfigurator : ISetupConfigurator
         if (_setupRootMappings.ContainsKey(selectedItem))
         {
             var mapping = _setupRootMappings[selectedItem];
-            _setupRootMappings.Remove(selectedItem);
 
             await OpenWizardAsync<AssemblyRootWizardViewModel>(
                 model =>
@@ -311,6 +310,8 @@ internal class SetupConfigurator : ISetupConfigurator
                     {
                         return Task.CompletedTask;
                     }
+                    
+                    _setupRootMappings.Remove(selectedItem);
 
                     var newItem = ReplaceItemInView(mapping.ParentItem, mapping.Item, () => CreateAssemblyRootItem(model.Path, int.Parse(model.Priority), model.Ignore));
 
@@ -334,7 +335,6 @@ internal class SetupConfigurator : ISetupConfigurator
         if (_setupGroupMappings.ContainsKey(selectedItem))
         {
             var mapping = _setupGroupMappings[selectedItem];
-            _setupGroupMappings.Remove(selectedItem);
 
             await OpenWizardAsync<AssemblyGroupWizardViewModel>(
                 model =>
@@ -343,6 +343,8 @@ internal class SetupConfigurator : ISetupConfigurator
                     {
                         return Task.CompletedTask;
                     }
+                    
+                    _setupGroupMappings.Remove(selectedItem);
 
                     var newItem = ReplaceItemInView(mapping.ParentItem, mapping.Item, () => CreateAssemblyGroupItem(model.Name, model.Priority.Value, model.Ignore));
 
@@ -366,7 +368,6 @@ internal class SetupConfigurator : ISetupConfigurator
         if (_setupPathMappings.ContainsKey(selectedItem))
         {
             var mapping = _setupPathMappings[selectedItem];
-            _setupPathMappings.Remove(selectedItem);
 
             await OpenWizardAsync<AssemblyPathWizardViewModel>(
                 model =>
@@ -375,7 +376,9 @@ internal class SetupConfigurator : ISetupConfigurator
                     {
                         return Task.CompletedTask;
                     }
-
+                    
+                    _setupPathMappings.Remove(selectedItem);
+                    
                     var newItem = ReplaceItemInView(mapping.ParentItem, mapping.Item, () => CreateAssemblyPathItem(model.Priority.Value, model.Path, model.Ignore));
 
                     mapping.Type.Path = model.Path;
@@ -398,7 +401,6 @@ internal class SetupConfigurator : ISetupConfigurator
         if (_setupPathSelectorMappings.ContainsKey(selectedItem))
         {
             var mapping = _setupPathSelectorMappings[selectedItem];
-            _setupPathSelectorMappings.Remove(selectedItem);
 
             await OpenWizardAsync<AssemblyPathSelectorWizardViewModel>(
                 model =>
@@ -407,7 +409,9 @@ internal class SetupConfigurator : ISetupConfigurator
                     {
                         return Task.CompletedTask;
                     }
-
+                    
+                    _setupPathSelectorMappings.Remove(selectedItem);
+                    
                     var newItem = ReplaceItemInView(mapping.ParentItem, mapping.Item, () => CreateAssemblyPathSelectorItem(model.Priority.Value, model.Selector, model.Ignore));
 
                     mapping.Type.Selector = model.Selector;
@@ -430,7 +434,6 @@ internal class SetupConfigurator : ISetupConfigurator
         if (_setupIncludePatternMappings.ContainsKey(selectedItem))
         {
             var mapping = _setupIncludePatternMappings[selectedItem];
-            _setupIncludePatternMappings.Remove(selectedItem);
 
             await OpenWizardAsync<IncludeAssemblyPatternWizardViewModel>(
                 model =>
@@ -439,7 +442,8 @@ internal class SetupConfigurator : ISetupConfigurator
                     {
                         return Task.CompletedTask;
                     }
-
+                    
+                    _setupIncludePatternMappings.Remove(selectedItem);
                     var newItem = ReplaceItemInView(mapping.ParentItem, mapping.Item, () => CreateIncludeAssemblyPatternItem(model.Pattern));
                     _setupIncludePatternMappings.Add(newItem, new SetupTreeViewItemMapping<Regex>(newItem, mapping.ParentItem, new Regex(model.Pattern ?? string.Empty, RegexOptions.Compiled)));
                     return Task.CompletedTask;
