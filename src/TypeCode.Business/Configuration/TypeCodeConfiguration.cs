@@ -17,6 +17,7 @@ public class AssemblyGroup
     public List<AssemblyPath> AssemblyPath { get; set; }
     public string Name { get; set; }
     public int Priority { get; set; }
+    public bool Ignore { get; set; }
     public List<PriorityString> PriorityAssemblyList { get; set; }
 }
     
@@ -33,6 +34,7 @@ public class AssemblyRoot
     public List<Regex> IncludeAssemblyPattern { get; set; }
     public List<AssemblyGroup> AssemblyGroup { get; set; }
     public string Path { get; set; }
+    public bool Ignore { get; set; }
 }
     
 public class TypeCodeConfiguration
@@ -58,6 +60,7 @@ public class AssemblyPath : IAssemblyHolder, IDictionaryHolder
         
     public string Path { get; set; }
     public int Priority { get; set; }
+    public bool Ignore { get; set; }
     public List<AssemblyDirectory> AssemblyDirectories { get; set; }
     public IDictionary<string, List<Type>> TypesByNameDictionary { get; set; }
     public IDictionary<string, List<Type>> TypesByFullNameDictionary { get; set; }
@@ -77,6 +80,7 @@ public class AssemblyPathSelector : IAssemblyHolder, IDictionaryHolder
     public string Path { get; set; }
     public int Priority { get; set; }
     public string Selector { get; set; }
+    public bool Ignore { get; set; }
     public List<AssemblyDirectory> AssemblyDirectories { get; set; }
     public IDictionary<string, List<Type>> TypesByNameDictionary { get; set; }
     public IDictionary<string, List<Type>> TypesByFullNameDictionary { get; set; }

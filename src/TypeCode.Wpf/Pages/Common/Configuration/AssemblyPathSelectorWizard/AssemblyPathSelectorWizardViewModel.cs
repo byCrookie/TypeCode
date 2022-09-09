@@ -17,4 +17,7 @@ public partial class AssemblyPathSelectorWizardViewModel : ViewModelBase
     [Required]
     [CustomValidation(typeof(CustomIntValidation), nameof(CustomIntValidation.ValidateInt))]
     private int? _priority;
+    
+    [ObservableProperty]
+    private bool _ignore;
 }

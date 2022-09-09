@@ -11,30 +11,19 @@
     d:DataContext="{d:DesignInstance includeAssemblyPatternWizard:IncludeAssemblyPatternWizardViewModel}">
 
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
 
-        <Label Grid.Row="0">Include Assembly Pattern</Label>
+        <Label Content="Pattern (Regex-Pattern)" />
 
-        <Grid Grid.Row="1">
-            
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"></ColumnDefinition>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            
-            <Label Content="Pattern (Regex-Pattern)" />
-
-            <textBox:CustomTextBox
-                Grid.Column="1" Text="{Binding Pattern, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                ShowRegex="False"
-                ShowAutoCompletion="False"
-                AcceptsReturn="False"
-                AcceptsTab="False">
-            </textBox:CustomTextBox>
-        </Grid>
-
+        <textBox:CustomTextBox
+            Grid.Column="1" Text="{Binding Pattern, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+            ShowRegex="False"
+            ShowAutoCompletion="False"
+            AcceptsReturn="False"
+            AcceptsTab="False">
+        </textBox:CustomTextBox>
     </Grid>
 </UserControl>

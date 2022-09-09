@@ -15,15 +15,8 @@
             <ColumnDefinition Width="*"></ColumnDefinition>
             <ColumnDefinition Width="5"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="5" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
 
-        <Label Grid.Column="1" Grid.Row="0">Assembly Path</Label>
-
-        <Grid Grid.Column="1" Grid.Row="2">
+        <Grid Grid.Column="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
@@ -31,6 +24,8 @@
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition Height="5"></RowDefinition>
                 <RowDefinition></RowDefinition>
                 <RowDefinition Height="5"></RowDefinition>
                 <RowDefinition></RowDefinition>
@@ -59,6 +54,17 @@
                 AcceptsReturn="False"
                 AcceptsTab="False">
             </textBox:CustomTextBox>
+            <Label Grid.Row="4" Grid.Column="0" Content="Ignore" />
+            <CheckBox Grid.Row="4" Grid.Column="1"
+                      VerticalAlignment="Center"
+                      VerticalContentAlignment="Center"
+                      HorizontalContentAlignment="Center"
+                      HorizontalAlignment="Left"
+                      Content="Ignore"
+                      ToolTip="Exclude from being loaded at startup."
+                      Foreground="{StaticResource PrimaryText}"
+                      IsChecked="{Binding Ignore}">
+            </CheckBox>
         </Grid>
     </Grid>
 </UserControl>

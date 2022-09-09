@@ -41,4 +41,7 @@ public partial class AssemblyRootWizardViewModel : ViewModelBase
     [Required]
     [CustomValidation(typeof(CustomIntValidation), nameof(CustomIntValidation.ValidateInt))]
     private string? _priority;
+    
+    [ObservableProperty]
+    private bool _ignore;
 }

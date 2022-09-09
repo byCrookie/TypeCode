@@ -18,9 +18,7 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Label Grid.Row="0">Assembly Group</Label>
-
-        <Grid Grid.Row="2">
+        <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="100"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
@@ -39,7 +37,7 @@
             </textBox:CustomTextBox>
         </Grid>
 
-        <Grid Grid.Row="4">
+        <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="100"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
@@ -56,6 +54,24 @@
                 AcceptsReturn="False"
                 AcceptsTab="False">
             </textBox:CustomTextBox>
+        </Grid>
+
+        <Grid Grid.Row="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <Label Content="Ignore" />
+            <CheckBox VerticalAlignment="Center"
+                      VerticalContentAlignment="Center"
+                      HorizontalContentAlignment="Center"
+                      HorizontalAlignment="Left"
+                      Grid.Column="1" Content="Ignore"
+                      ToolTip="Exclude from being loaded at startup."
+                      Foreground="{StaticResource PrimaryText}"
+                      IsChecked="{Binding Ignore}">
+            </CheckBox>
         </Grid>
 
     </Grid>

@@ -25,6 +25,7 @@ public class ConfigurationMapper : IConfigurationMapper
             {
                 Priority = root.Priority,
                 Path = root.Path,
+                Ignore = root.Ignore,
                 AssemblyGroup = MapToConfiguration(root.AssemblyGroup).ToList(),
                 IncludeAssemblyPattern = root.IncludeAssemblyPattern
                     .Select(pattern => new Regex(pattern, RegexOptions.CultureInvariant | RegexOptions.IgnoreCase | RegexOptions.Compiled))
@@ -46,6 +47,7 @@ public class ConfigurationMapper : IConfigurationMapper
             {
                 Name = xmlConfigurationAssemblyGroup.Name,
                 Priority = xmlConfigurationAssemblyGroup.Priority,
+                Ignore = xmlConfigurationAssemblyGroup.Ignore,
                 AssemblyPath = MapToConfiguration(xmlConfigurationAssemblyGroup.AssemblyPath).ToList(),
                 AssemblyPathSelector = MapToConfiguration(xmlConfigurationAssemblyGroup.AssemblyPathSelector).ToList()
             });
@@ -66,7 +68,8 @@ public class ConfigurationMapper : IConfigurationMapper
             {
                 Path = xmlAssemblyPathSelector.Text,
                 Priority = xmlAssemblyPathSelector.Priority,
-                Selector = xmlAssemblyPathSelector.Selector
+                Selector = xmlAssemblyPathSelector.Selector,
+                Ignore = xmlAssemblyPathSelector.Ignore
             });
     }
 
@@ -80,10 +83,11 @@ public class ConfigurationMapper : IConfigurationMapper
         }).Select(xmlAssemblyPath => new AssemblyPath
         {
             Path = xmlAssemblyPath.Text,
-            Priority = xmlAssemblyPath.Priority
+            Priority = xmlAssemblyPath.Priority,
+            Ignore = xmlAssemblyPath.Ignore
         });
     }
-    
+
     public XmlTypeCodeConfiguration MapToXml(TypeCodeConfiguration configuration)
     {
         return new XmlTypeCodeConfiguration
@@ -105,6 +109,7 @@ public class ConfigurationMapper : IConfigurationMapper
             {
                 Priority = root.Priority,
                 Path = root.Path,
+                Ignore = root.Ignore,
                 AssemblyGroup = MapToXml(root.AssemblyGroup).ToList(),
                 IncludeAssemblyPattern = root.IncludeAssemblyPattern.Select(regex => regex.ToString()).ToList()
             });
@@ -124,6 +129,7 @@ public class ConfigurationMapper : IConfigurationMapper
             {
                 Name = xmlConfigurationAssemblyGroup.Name,
                 Priority = xmlConfigurationAssemblyGroup.Priority,
+                Ignore = xmlConfigurationAssemblyGroup.Ignore,
                 AssemblyPath = MapToXml(xmlConfigurationAssemblyGroup.AssemblyPath).ToList(),
                 AssemblyPathSelector = MapToXml(xmlConfigurationAssemblyGroup.AssemblyPathSelector).ToList()
             });
@@ -144,7 +150,8 @@ public class ConfigurationMapper : IConfigurationMapper
             {
                 Text = xmlAssemblyPathSelector.Path,
                 Priority = xmlAssemblyPathSelector.Priority,
-                Selector = xmlAssemblyPathSelector.Selector
+                Selector = xmlAssemblyPathSelector.Selector,
+                Ignore = xmlAssemblyPathSelector.Ignore
             });
     }
 
@@ -158,7 +165,8 @@ public class ConfigurationMapper : IConfigurationMapper
         }).Select(xmlAssemblyPath => new XmlAssemblyPath
         {
             Text = xmlAssemblyPath.Path,
-            Priority = xmlAssemblyPath.Priority
+            Priority = xmlAssemblyPath.Priority,
+            Ignore = xmlAssemblyPath.Ignore
         });
     }
 }

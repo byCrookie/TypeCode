@@ -77,7 +77,7 @@ internal class SetupConfigurator : ISetupConfigurator
                 return Task.CompletedTask;
             }
 
-            var newItem = CreateAssemblyRootItem(model.Path, int.Parse(model.Priority));
+            var newItem = CreateAssemblyRootItem(model.Path, int.Parse(model.Priority), model.Ignore);
             parentItem.Items.Add(newItem);
             var newAssemblyRoot = new AssemblyRoot
             {
@@ -105,7 +105,7 @@ internal class SetupConfigurator : ISetupConfigurator
                 return Task.CompletedTask;
             }
 
-            var newItem = CreateAssemblyGroupItem(model.Name, model.Priority.Value);
+            var newItem = CreateAssemblyGroupItem(model.Name, model.Priority.Value, model.Ignore);
             parentItem.Items.Add(newItem);
             var newAssemblyGroup = new AssemblyGroup
             {
@@ -133,7 +133,7 @@ internal class SetupConfigurator : ISetupConfigurator
                 return Task.CompletedTask;
             }
 
-            var newItem = CreateAssemblyPathItem(model.Priority.Value, model.Path);
+            var newItem = CreateAssemblyPathItem(model.Priority.Value, model.Path, model.Ignore);
             parentItem.Items.Add(newItem);
             var newAssemblyPath = new AssemblyPath
             {
@@ -185,7 +185,7 @@ internal class SetupConfigurator : ISetupConfigurator
                 return Task.CompletedTask;
             }
 
-            var newItem = CreateAssemblyPathSelectorItem(model.Priority.Value, model.Selector);
+            var newItem = CreateAssemblyPathSelectorItem(model.Priority.Value, model.Selector, model.Ignore);
             parentItem.Items.Add(newItem);
             var newAssemblyPathSelector = new AssemblyPathSelector
             {
@@ -312,7 +312,7 @@ internal class SetupConfigurator : ISetupConfigurator
                         return Task.CompletedTask;
                     }
 
-                    var newItem = ReplaceItemInView(mapping.ParentItem, mapping.Item, () => CreateAssemblyRootItem(model.Path, int.Parse(model.Priority)));
+                    var newItem = ReplaceItemInView(mapping.ParentItem, mapping.Item, () => CreateAssemblyRootItem(model.Path, int.Parse(model.Priority), model.Ignore));
 
                     mapping.Type.Path = model.Path;
                     mapping.Type.Priority = int.Parse(model.Priority);
@@ -344,7 +344,7 @@ internal class SetupConfigurator : ISetupConfigurator
                         return Task.CompletedTask;
                     }
 
-                    var newItem = ReplaceItemInView(mapping.ParentItem, mapping.Item, () => CreateAssemblyGroupItem(model.Name, model.Priority.Value));
+                    var newItem = ReplaceItemInView(mapping.ParentItem, mapping.Item, () => CreateAssemblyGroupItem(model.Name, model.Priority.Value, model.Ignore));
 
                     mapping.Type.Name = model.Name;
                     mapping.Type.Priority = model.Priority.Value;
@@ -376,7 +376,7 @@ internal class SetupConfigurator : ISetupConfigurator
                         return Task.CompletedTask;
                     }
 
-                    var newItem = ReplaceItemInView(mapping.ParentItem, mapping.Item, () => CreateAssemblyPathItem(model.Priority.Value, model.Path));
+                    var newItem = ReplaceItemInView(mapping.ParentItem, mapping.Item, () => CreateAssemblyPathItem(model.Priority.Value, model.Path, model.Ignore));
 
                     mapping.Type.Path = model.Path;
                     mapping.Type.Priority = model.Priority.Value;
@@ -408,7 +408,7 @@ internal class SetupConfigurator : ISetupConfigurator
                         return Task.CompletedTask;
                     }
 
-                    var newItem = ReplaceItemInView(mapping.ParentItem, mapping.Item, () => CreateAssemblyPathSelectorItem(model.Priority.Value, model.Selector));
+                    var newItem = ReplaceItemInView(mapping.ParentItem, mapping.Item, () => CreateAssemblyPathSelectorItem(model.Priority.Value, model.Selector, model.Ignore));
 
                     mapping.Type.Selector = model.Selector;
                     mapping.Type.Priority = model.Priority.Value;
@@ -497,7 +497,7 @@ internal class SetupConfigurator : ISetupConfigurator
     {
         foreach (var assemblyRoot in typeCodeConfiguration.AssemblyRoot)
         {
-            var assemblyRootItem = CreateAssemblyRootItem(assemblyRoot.Path, assemblyRoot.Priority);
+            var assemblyRootItem = CreateAssemblyRootItem(assemblyRoot.Path, assemblyRoot.Priority, assemblyRoot.Ignore);
             BuildIncludeAssemblyPatterns(assemblyRoot, assemblyRootItem);
             BuildAssemblyGroups(assemblyRoot, assemblyRootItem);
             typeCodeConfigurationItem.Items.Add(assemblyRootItem);
@@ -509,7 +509,7 @@ internal class SetupConfigurator : ISetupConfigurator
     {
         foreach (var assemblyGroup in assemblyRoot.AssemblyGroup)
         {
-            var assemblyGroupItem = CreateAssemblyGroupItem(assemblyGroup.Name, assemblyGroup.Priority);
+            var assemblyGroupItem = CreateAssemblyGroupItem(assemblyGroup.Name, assemblyGroup.Priority, assemblyGroup.Ignore);
             BuildAssemblyPaths(assemblyGroup, assemblyGroupItem);
             BuildAssemblyPathSelectors(assemblyGroup, assemblyGroupItem);
             assemblyRootItem.Items.Add(assemblyGroupItem);
@@ -531,7 +531,7 @@ internal class SetupConfigurator : ISetupConfigurator
     {
         foreach (var assemblyPath in assemblyGroup.AssemblyPath)
         {
-            var assemblyPathItem = CreateAssemblyPathItem(assemblyPath.Priority, assemblyPath.Path);
+            var assemblyPathItem = CreateAssemblyPathItem(assemblyPath.Priority, assemblyPath.Path, assemblyPath.Ignore);
             assemblyGroupItem.Items.Add(assemblyPathItem);
             _setupPathMappings.Add(assemblyPathItem, new SetupTreeViewItemMapping<AssemblyPath>(assemblyPathItem, assemblyGroupItem, assemblyPath));
         }
@@ -541,17 +541,17 @@ internal class SetupConfigurator : ISetupConfigurator
     {
         foreach (var assemblyPathSelector in assemblyGroup.AssemblyPathSelector)
         {
-            var assemblyPathSelectorItem = CreateAssemblyPathSelectorItem(assemblyPathSelector.Priority, assemblyPathSelector.Selector);
+            var assemblyPathSelectorItem = CreateAssemblyPathSelectorItem(assemblyPathSelector.Priority, assemblyPathSelector.Selector, assemblyPathSelector.Ignore);
             assemblyGroupItem.Items.Add(assemblyPathSelectorItem);
             _setupPathSelectorMappings.Add(assemblyPathSelectorItem, new SetupTreeViewItemMapping<AssemblyPathSelector>(assemblyPathSelectorItem, assemblyGroupItem, assemblyPathSelector));
         }
     }
 
-    private static TreeViewItem CreateAssemblyRootItem(string path, int priority)
+    private static TreeViewItem CreateAssemblyRootItem(string path, int priority, bool ignore)
     {
         return new TreeViewItem
         {
-            Header = $"{AssemblyRootName} Path={path} Priority={priority}",
+            Header = $"{AssemblyRootName} Path={path} Priority={priority} Ignore={ignore}",
             IsExpanded = true
         };
     }
@@ -565,11 +565,11 @@ internal class SetupConfigurator : ISetupConfigurator
         };
     }
 
-    private static TreeViewItem CreateAssemblyGroupItem(string name, int priority)
+    private static TreeViewItem CreateAssemblyGroupItem(string name, int priority, bool ignore)
     {
         return new TreeViewItem
         {
-            Header = $"{AssemblyGroupName} Name={name} Priority={priority}",
+            Header = $"{AssemblyGroupName} Name={name} Priority={priority} Ignore={ignore}",
             IsExpanded = true
         };
     }
@@ -583,20 +583,20 @@ internal class SetupConfigurator : ISetupConfigurator
         };
     }
 
-    private static TreeViewItem CreateAssemblyPathItem(int priority, string path)
+    private static TreeViewItem CreateAssemblyPathItem(int priority, string path, bool ignore)
     {
         return new TreeViewItem
         {
-            Header = $"{AssemblyPathName} Priority={priority} Value={path}",
+            Header = $"{AssemblyPathName} Priority={priority} Value={path} Ignore={ignore}",
             IsExpanded = true
         };
     }
 
-    private static TreeViewItem CreateAssemblyPathSelectorItem(int priority, string selector)
+    private static TreeViewItem CreateAssemblyPathSelectorItem(int priority, string selector, bool ignore)
     {
         return new TreeViewItem
         {
-            Header = $"{AssemblyPathSelectorName} Priority={priority} Value={selector}",
+            Header = $"{AssemblyPathSelectorName} Priority={priority} Value={selector} Ignore={ignore}",
             IsExpanded = true
         };
     }
