@@ -29,13 +29,6 @@
     <SolidColorBrush x:Key="PrimaryText" Color="{StaticResource PrimaryTextColor}" />
     <SolidColorBrush x:Key="SecondaryText" Color="{StaticResource SecondaryTextColor}" />
 
-    <Style TargetType="{x:Type Control}" BasedOn="{StaticResource {x:Type Control}}">
-        <Setter Property="Background" Value="Transparent" />
-        <Setter Property="Foreground" Value="{StaticResource PrimaryText}" />
-        <Setter Property="FontWeight" Value="SemiBold"></Setter>
-        <Setter Property="FontFamily" Value="Courier New" />
-    </Style>
-
     <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Foreground" Value="{StaticResource PrimaryText}" />
