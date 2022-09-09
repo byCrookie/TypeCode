@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Windows.Threading;
@@ -31,11 +31,13 @@ public partial class EncodingConversionViewModel : ViewModelBase, IAsyncNavigate
     public Task OnNavigatedToAsync(NavigationContext context)
     {
         var encodings = GetEncodings();
-        EncodingsFrom = encodings;
-        EncodingsTo = encodings;
+        EncodingsFrom = new ObservableCollection<EncodingViewModel>(encodings);
+        EncodingsTo = new ObservableCollection<EncodingViewModel>(encodings);
 
-        EncodingFrom = Encoding.UTF8;
-        EncodingTo = Encoding.ASCII;
+        var encodingFrom = encodings.Single(encoding => encoding.Encoding.Equals(Encoding.UTF8));
+        EncodingFrom = encodingFrom;
+        var encodingTo = encodings.Single(encoding => encoding.Encoding.Equals(Encoding.ASCII));
+        EncodingTo = encodingTo;
         return Task.CompletedTask;
     }
 
@@ -44,7 +46,7 @@ public partial class EncodingConversionViewModel : ViewModelBase, IAsyncNavigate
     {
         MainThread.BackgroundFireAndForgetAsync(async () =>
         {
-            var result = await _composerTypeGenerator.GenerateAsync(new EncodingTypeCodeGeneratorParameter(Input!, EncodingFrom!, EncodingTo!)).ConfigureAwait(true);
+            var result = await _composerTypeGenerator.GenerateAsync(new EncodingTypeCodeGeneratorParameter(Input!, EncodingFrom!.Encoding, EncodingTo!.Encoding)).ConfigureAwait(true);
             OutputBoxViewModel?.SetOutput(result);
         }, DispatcherPriority.Normal);
         return Task.CompletedTask;
@@ -68,30 +70,31 @@ public partial class EncodingConversionViewModel : ViewModelBase, IAsyncNavigate
     [NotifyDataErrorInfo]
     [NotifyCanExecuteChangedFor(nameof(ConvertCommand))]
     [Required]
-    private Encoding? _encodingFrom;
+    private EncodingViewModel? _encodingFrom;
 
     [ObservableProperty]
     [NotifyDataErrorInfo]
     [NotifyCanExecuteChangedFor(nameof(ConvertCommand))]
     [Required]
-    private Encoding? _encodingTo;
+    private EncodingViewModel? _encodingTo;
 
     [ObservableProperty]
-    private IDictionary<Encoding, string>? _encodingsFrom;
+    private ObservableCollection<EncodingViewModel>? _encodingsFrom;
 
     [ObservableProperty]
-    private IDictionary<Encoding, string>? _encodingsTo;
+    private ObservableCollection<EncodingViewModel>? _encodingsTo;
 
     [ObservableProperty]
     [ChildViewModel]
     private OutputBoxViewModel? _outputBoxViewModel;
 
-    private static IDictionary<Encoding, string> GetEncodings()
+    private static List<EncodingViewModel> GetEncodings()
     {
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
         return Encoding.GetEncodings()
             .OrderBy(info => info.Name)
-            .Select(info => new {Info = info, Encoding = info.GetEncoding()})
-            .ToDictionary(encoding => encoding.Encoding, encoding => $"{encoding.Info.Name} {encoding.Encoding.EncodingName} {encoding.Info.DisplayName} {encoding.Info.CodePage}");
+            .Select(info => new { Info = info, Encoding = info.GetEncoding() })
+            .Select(encoding => new EncodingViewModel(encoding.Encoding, encoding.Info))
+            .ToList();
     }
 }
