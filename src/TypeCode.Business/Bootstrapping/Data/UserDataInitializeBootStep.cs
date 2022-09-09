@@ -84,7 +84,7 @@ public class UserDataInitializeBootStep<TContext> : IUserDataInitializeBootStep<
     {
         var baseLocation = _priorityDataBaseLocations
             .FirstOrDefault(baseLocation => File.Exists(Path.Combine(baseLocation, ConfigurationFileName)));
-        return baseLocation ?? _priorityDataBaseLocations.First();
+        return baseLocation ?? _priorityDataBaseLocations.Last();
     }
 
     public Task<bool> ShouldExecuteAsync(TContext context)
