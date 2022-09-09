@@ -82,7 +82,8 @@ internal class SetupConfigurator : ISetupConfigurator
             var newAssemblyRoot = new AssemblyRoot
             {
                 Path = model.Path ?? throw new Exception(),
-                Priority = int.Parse(model.Priority ?? throw new Exception())
+                Priority = int.Parse(model.Priority ?? throw new Exception()),
+                Ignore = model.Ignore
             };
             _configuration.AssemblyRoot.Add(newAssemblyRoot);
             _setupRootMappings.Add(newItem, new SetupTreeViewItemMapping<AssemblyRoot>(newItem, parentItem, newAssemblyRoot));
@@ -110,7 +111,8 @@ internal class SetupConfigurator : ISetupConfigurator
             var newAssemblyGroup = new AssemblyGroup
             {
                 Name = model.Name ?? throw new Exception(),
-                Priority = model.Priority ?? throw new Exception()
+                Priority = model.Priority ?? throw new Exception(),
+                Ignore = model.Ignore
             };
             parentRoot.Type.AssemblyGroup.Add(newAssemblyGroup);
             _setupGroupMappings.Add(newItem, new SetupTreeViewItemMapping<AssemblyGroup>(newItem, parentItem, newAssemblyGroup));
@@ -138,7 +140,8 @@ internal class SetupConfigurator : ISetupConfigurator
             var newAssemblyPath = new AssemblyPath
             {
                 Path = model.Path ?? throw new Exception(),
-                Priority = model.Priority ?? throw new Exception()
+                Priority = model.Priority ?? throw new Exception(),
+                Ignore = model.Ignore
             };
             parentGroup.Type.AssemblyPath.Add(newAssemblyPath);
             _setupPathMappings.Add(newItem, new SetupTreeViewItemMapping<AssemblyPath>(newItem, parentItem, newAssemblyPath));
@@ -190,7 +193,8 @@ internal class SetupConfigurator : ISetupConfigurator
             var newAssemblyPathSelector = new AssemblyPathSelector
             {
                 Selector = model.Selector ?? throw new Exception(),
-                Priority = model.Priority ?? throw new Exception()
+                Priority = model.Priority ?? throw new Exception(),
+                Ignore = model.Ignore
             };
             parentGroup.Type.AssemblyPathSelector.Add(newAssemblyPathSelector);
             _setupPathSelectorMappings.Add(newItem, new SetupTreeViewItemMapping<AssemblyPathSelector>(newItem, parentItem, newAssemblyPathSelector));
@@ -317,6 +321,7 @@ internal class SetupConfigurator : ISetupConfigurator
 
                     mapping.Type.Path = model.Path;
                     mapping.Type.Priority = int.Parse(model.Priority);
+                    mapping.Type.Ignore = model.Ignore;
 
                     _setupRootMappings.Add(newItem, new SetupTreeViewItemMapping<AssemblyRoot>(newItem, mapping.ParentItem, mapping.Type));
                     return Task.CompletedTask;
@@ -350,6 +355,7 @@ internal class SetupConfigurator : ISetupConfigurator
 
                     mapping.Type.Name = model.Name;
                     mapping.Type.Priority = model.Priority.Value;
+                    mapping.Type.Ignore = model.Ignore;
 
                     _setupGroupMappings.Add(newItem, new SetupTreeViewItemMapping<AssemblyGroup>(newItem, mapping.ParentItem, mapping.Type));
                     return Task.CompletedTask;
@@ -383,6 +389,7 @@ internal class SetupConfigurator : ISetupConfigurator
 
                     mapping.Type.Path = model.Path;
                     mapping.Type.Priority = model.Priority.Value;
+                    mapping.Type.Ignore = model.Ignore;
 
                     _setupPathMappings.Add(newItem, new SetupTreeViewItemMapping<AssemblyPath>(newItem, mapping.ParentItem, mapping.Type));
                     return Task.CompletedTask;
@@ -416,6 +423,7 @@ internal class SetupConfigurator : ISetupConfigurator
 
                     mapping.Type.Selector = model.Selector;
                     mapping.Type.Priority = model.Priority.Value;
+                    mapping.Type.Ignore = model.Ignore;
 
                     _setupPathSelectorMappings.Add(newItem, new SetupTreeViewItemMapping<AssemblyPathSelector>(newItem, mapping.ParentItem, mapping.Type));
                     return Task.CompletedTask;
