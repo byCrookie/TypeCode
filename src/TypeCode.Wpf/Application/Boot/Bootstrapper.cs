@@ -2,6 +2,7 @@
 using Framework.Boot.Configuration;
 using Framework.Boot.Logger;
 using Framework.Boot.Start;
+using TypeCode.Business.Bootstrapping.Data;
 using TypeCode.Business.Logging;
 using TypeCode.Wpf.Application.Boot.SetupWpfApplication;
 
@@ -15,8 +16,9 @@ public static class Bootstrapper
         var bootScope = BootConfiguration.Configure<BootContext>(serviceProvider);
 
         var bootFlow = bootScope.WorkflowBuilder
+            .ThenAsync<IUserDataInitializeBootStep<BootContext>>()
             .ThenAsync<ILoggerBootStep<BootContext, LoggerBootStepOptions>, LoggerBootStepOptions>(
-                options => LoggerConfigurationProvider.Create(options)
+                options => LoggerConfigurationProvider.Create(options, serviceProvider.GetService<IUserDataLocationProvider>())
             )
             .ThenAsync<ISetupWpfApplicationStep<BootContext>>()
             .ThenAsync<IStartBootStep<BootContext>>()

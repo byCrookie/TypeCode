@@ -19,27 +19,20 @@ public partial class App
         {
             var options = new LoggerBootStepOptions();
             options.Configuration.WriteTo.Console(LogEventLevel.Debug);
-            
-            LogFilePaths.AllPaths.ForEach(path =>
-            {
-                if (File.Exists(path))
-                {
-                    File.Delete(path);
-                }
-            });
-        
+
             Log.Logger = LoggerConfigurationProvider.Create(options).CreateLogger();
-            
+
             Current.DispatcherUnhandledException += HandleDispatcherUnhandledException;
 
             AsyncContext.Run(Bootstrapper.BootAsync);
-            
+
             base.OnStartup(e);
         }
         catch (Exception exception)
         {
             Console.WriteLine(exception);
-            File.AppendAllText(LogFilePaths.FileFatal, $"{exception.Message} - {exception.InnerException?.Message} | {exception.StackTrace}");
+            Directory.CreateDirectory(Path.GetDirectoryName(LogFileNames.FileFatal) ?? throw new ArgumentException($"{LogFileNames.FileFatal} is not valid location"));
+            File.AppendAllText(LogFileNames.FileFatal, $"{exception.Message} - {exception.InnerException?.Message} | {exception.StackTrace}");
             throw;
         }
     }

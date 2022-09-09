@@ -7,6 +7,6 @@ internal interface ITypeCodeStrategy
 	bool IsPlanned();
 	bool IsBeta();
 	bool IsResponsibleFor(string? mode);
-	Task<string?> GenerateAsync();
+	Task<string?> GenerateAsync(CancellationToken? ct = null);
 	bool IsExit();
 }

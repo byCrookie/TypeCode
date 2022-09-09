@@ -30,14 +30,14 @@ internal class TypeCode<TContext> : ITypeCode<TContext> where TContext : BootCon
         _configurationProvider = configurationProvider;
     }
 
-    public async Task RunAsync(TContext context, CancellationToken cancellationToken)
+    public async Task RunAsync(TContext context, CancellationToken ct)
     {
         ITypeCodeStrategy? mode = null;
 
         var tasks = new List<Task>
         {
-            Task.Run(InitializeTypesAsync, cancellationToken),
-            Task.Run(async () => mode = await EvaluateModeAsync().ConfigureAwait(false), cancellationToken)
+            Task.Run(InitializeTypesAsync, ct),
+            Task.Run(async () => mode = await EvaluateModeAsync().ConfigureAwait(false), ct)
         };
 
         await Task.WhenAll(tasks).ConfigureAwait(false);

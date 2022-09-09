@@ -11,6 +11,7 @@ using TypeCode.Wpf.Pages.Common.Configuration;
 using TypeCode.Wpf.Pages.Composer;
 using TypeCode.Wpf.Pages.DynamicExecution;
 using TypeCode.Wpf.Pages.EncodingConversion;
+using TypeCode.Wpf.Pages.Guid;
 using TypeCode.Wpf.Pages.Home;
 using TypeCode.Wpf.Pages.Mapper;
 using TypeCode.Wpf.Pages.Specflow;
@@ -110,6 +111,13 @@ public partial class MainSidebarViewModel : ViewModelBase, IAsyncNavigatedTo
     }
     
     [RelayCommand]
+    private Task NavigateToGuidAsync()
+    {
+        ActiveItem = ActiveItem.Guid;
+        return _navigationService.NavigateAsync<GuidViewModel>(new NavigationContext());
+    }
+    
+    [RelayCommand]
     private Task NavigateToEncodingConversionAsync()
     {
         ActiveItem = ActiveItem.EncodingConversion;
@@ -122,7 +130,7 @@ public partial class MainSidebarViewModel : ViewModelBase, IAsyncNavigatedTo
         var wizardBuilder = _wizardBuilderFactory.Create();
 
         var wizard = wizardBuilder
-            .Then<SetupWizardViewModel>((options, _) => options.AllowNext(_ => true))
+            .Then<SetupWizardViewModel>((options, _) => options.AllowNext(_ => true).Title("Configuration"))
             .FinishAsync(context => context.GetParameter<SetupConfigurator>().ExportAsync(), "Save")
             .Build();
 

@@ -20,7 +20,9 @@ public class TypeSelectionWizardStarter : ITypeSelectionWizardStarter
     public Task StartAsync(TypeSelectionParameter parameter, Func<TypeSelectionViewModel, Task> onSaveAction)
     {
         var wizard = _wizardBuilderFactory.Create()
-            .Then<TypeSelectionViewModel>((options, _) => options.AllowNext(c => c.GetParameter<TypeSelectionViewModel>().SelectedTypes.Any()))
+            .Then<TypeSelectionViewModel>((options, _) => options
+                .Title(parameter.AllowMultiSelection ? "Select Types" : "Select Type")
+                .AllowNext(c => c.GetParameter<TypeSelectionViewModel>().SelectedTypes.Any()))
             .FinishAsync(c => onSaveAction(c.GetParameter<TypeSelectionViewModel>()), "Select")
             .NavigationContext(c => c.AddParameter(parameter))
             .Build();

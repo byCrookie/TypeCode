@@ -50,18 +50,18 @@ internal class ComposerTypeCodeStrategy : IComposerTypeCodeStrategy
         return mode is not null && mode == $"{Number()}" && !IsPlanned();
     }
 
-    public async Task<string?> GenerateAsync()
+    public async Task<string?> GenerateAsync(CancellationToken? ct = null)
     {
         var workflow = _workflowBuilder
             .WriteLine(_ => $@"{Cuts.Point()} Input strategy interface")
             .ReadLine(c => c.Input)
-            .While(c => !_typeProvider.HasByName(c.Input?.Trim()), whileFlow => whileFlow
+            .While(c => !_typeProvider.HasByName(c.Input?.Trim(), ct: ct), whileFlow => whileFlow
                 .WriteLine(_ => $@"{Cuts.Point()} Interface not found")
                 .WriteLine(_ => $@"{Cuts.Point()} Please input strategy interface")
                 .ReadLine(c => c.Input)
                 .ThenAsync<IExitOrContinueStep<ComposerContext>>()
             )
-            .Then(c => c.SelectedTypes, c => _typeProvider.TryGetByName(c.Input?.Trim()).ToList())
+            .Then(c => c.SelectedTypes, c => _typeProvider.TryGetByName(c.Input?.Trim(), ct: ct).ToList())
             .ThenAsync<IMultipleTypeSelectionStep<ComposerContext>>()
             .Stop(c => !c.SelectedType?.IsInterface ?? false, _ => System.Console.WriteLine($@"{Cuts.Point()} Type has to be an interface"))
             .ThenAsync(c => c.ComposerCode, c => _composerGenerator.GenerateAsync(new ComposerTypeCodeGeneratorParameter
@@ -69,7 +69,7 @@ internal class ComposerTypeCodeStrategy : IComposerTypeCodeStrategy
                 ComposerTypes = new List<ComposerType>
                 {
                     new(c.SelectedType ?? throw new InvalidOperationException(), c.SelectedType is not null ? _typeProvider
-                        .TryGetTypesByCondition(typ => typ.GetInterface(c.SelectedType.Name) != null)
+                        .TryGetTypesByCondition(typ => typ.GetInterface(c.SelectedType.Name) != null, ct: ct)
                         .ToList() : new List<Type>())
                 }
             }))

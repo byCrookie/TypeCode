@@ -24,7 +24,7 @@
             Grid.Row="1"
             BorderThickness="0"
             Padding="2" 
-            Text="{Binding Configuration, UpdateSourceTrigger=PropertyChanged}"
+            Text="{Binding Configuration, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             HorizontalAlignment="Stretch"
             HorizontalContentAlignment="Stretch"
             HorizontalScrollBarVisibility="Auto"

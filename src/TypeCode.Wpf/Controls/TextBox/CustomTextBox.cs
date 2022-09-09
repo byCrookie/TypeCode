@@ -9,12 +9,13 @@ namespace TypeCode.Wpf.Controls.TextBox;
 
 public class CustomTextBox : System.Windows.Controls.TextBox
 {
+    private readonly List<CancellationTokenSource> _cancellationTokenSources;
+
     public CustomTextBox()
     {
+        _cancellationTokenSources = new List<CancellationTokenSource>();
         LostFocus += (_, _) => IsAutoCompletionDropDownOpen = false;
     }
-
-    private string? _lastValue;
 
     public static readonly DependencyProperty UseRegexProperty =
         DependencyProperty.Register(
@@ -89,15 +90,15 @@ public class CustomTextBox : System.Windows.Controls.TextBox
     public static readonly DependencyProperty LoadAutoCompletionAsyncProperty =
         DependencyProperty.Register(
             name: nameof(LoadAutoCompletionAsync),
-            propertyType: typeof(Func<string, Task<IEnumerable<string>>>),
+            propertyType: typeof(Func<string, CancellationToken, Task<IEnumerable<string>>>),
             ownerType: typeof(CustomTextBox),
             typeMetadata: new FrameworkPropertyMetadata(
-                new Func<string, Task<IEnumerable<string>>>(_ => Task.FromResult(Enumerable.Empty<string>())))
+                new Func<string, CancellationToken, Task<IEnumerable<string>>>((_, _) => Task.FromResult(Enumerable.Empty<string>())))
         );
 
-    public Func<string, Task<IEnumerable<string>>> LoadAutoCompletionAsync
+    public Func<string, CancellationToken, Task<IEnumerable<string>>> LoadAutoCompletionAsync
     {
-        get => (Func<string, Task<IEnumerable<string>>>)GetValue(LoadAutoCompletionAsyncProperty);
+        get => (Func<string, CancellationToken, Task<IEnumerable<string>>>)GetValue(LoadAutoCompletionAsyncProperty);
         set => SetValue(LoadAutoCompletionAsyncProperty, value);
     }
 
@@ -156,6 +157,10 @@ public class CustomTextBox : System.Windows.Controls.TextBox
         {
             await apply(itemString).ConfigureAwait(true);
             customTextBox.IsAutoCompletionDropDownOpen = false;
+            customTextBox.IsAutoCompletionLoading = false;
+            customTextBox.AutoCompletionItems.Clear();
+            customTextBox._cancellationTokenSources.ForEach(source => source.Cancel());
+            customTextBox._cancellationTokenSources.Clear();
         }
     }
 
@@ -184,50 +189,46 @@ public class CustomTextBox : System.Windows.Controls.TextBox
 
         var text = ((System.Windows.Controls.TextBox)e.OriginalSource).Text;
 
-        if (_lastValue == text)
+        _cancellationTokenSources.ForEach(cts => cts.Cancel());
+        _cancellationTokenSources.Clear();
+
+        if (string.IsNullOrEmpty(text))
         {
             IsAutoCompletionDropDownOpen = EvaluateIsAutoCompletionDropDownOpen(text);
             return;
         }
 
-        _lastValue = text;
+        var cts = new CancellationTokenSource();
+        _cancellationTokenSources.Add(cts);
 
-        LoadAndSetAutoCompletionAsync(text).SafeFireAndForget(continueOnCapturedContext: false);
+        LoadAndSetAutoCompletionAsync(text, cts).SafeFireAndForget(continueOnCapturedContext: false);
     }
 
-    private async Task LoadAndSetAutoCompletionAsync(string? text)
+    private async Task LoadAndSetAutoCompletionAsync(string text, CancellationTokenSource cancellationTokenSource)
     {
-        if (!string.IsNullOrEmpty(text))
+        if (cancellationTokenSource.IsCancellationRequested)
         {
-            IsAutoCompletionLoading = true;
             IsAutoCompletionDropDownOpen = EvaluateIsAutoCompletionDropDownOpen(text);
-
-            var items = await LoadAutoCompletionAsync(text).ConfigureAwait(true);
-
-            if (_lastValue == text)
-            {
-                var itemsList = items.Take(100).ToList();
-
-                if (AutoCompletionItems.Any())
-                {
-                    AutoCompletionItems.Clear();
-                }
-
-                if (itemsList.Any())
-                {
-                    foreach (var item in itemsList)
-                    {
-                        AutoCompletionItems.Add(item);
-                    }
-                }
-
-                IsAutoCompletionLoading = false;
-            }
+            return;
         }
 
+        IsAutoCompletionLoading = true;
+        IsAutoCompletionDropDownOpen = EvaluateIsAutoCompletionDropDownOpen(text);
+
+        var items = await LoadAutoCompletionAsync(text, cancellationTokenSource.Token).ConfigureAwait(true);
+
+        if (cancellationTokenSource.IsCancellationRequested)
+        {
+            IsAutoCompletionDropDownOpen = EvaluateIsAutoCompletionDropDownOpen(text);
+            return;
+        }
+
+        AutoCompletionItems = new ObservableCollection<string>(items.Take(100));
+
+        IsAutoCompletionLoading = false;
         IsAutoCompletionDropDownOpen = EvaluateIsAutoCompletionDropDownOpen(text);
     }
-    
+
     private bool EvaluateIsAutoCompletionDropDownOpen(string? text)
     {
         return !string.IsNullOrEmpty(text) && AutoCompletionItems.Any() && !string.IsNullOrEmpty(Text);

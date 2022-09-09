@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Win32;
+using TypeCode.Wpf.Helper.Validation;
 using TypeCode.Wpf.Helper.ViewModels;
 
 namespace TypeCode.Wpf.Pages.Common.Configuration.AssemblyRootWizard;
@@ -38,5 +39,9 @@ public partial class AssemblyRootWizardViewModel : ViewModelBase
     [ObservableProperty]
     [NotifyDataErrorInfo]
     [Required]
-    private int? _priority;
+    [CustomValidation(typeof(CustomIntValidation), nameof(CustomIntValidation.ValidateInt))]
+    private string? _priority;
+    
+    [ObservableProperty]
+    private bool _ignore;
 }

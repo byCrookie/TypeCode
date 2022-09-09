@@ -19,6 +19,9 @@ public class XmlAssemblyPathSelector
 
     [XmlText]
     public string Text { get; set; }
+    
+    [XmlAttribute(AttributeName = "Ignore")]
+    public bool Ignore { get; set; }
 }
 
 [XmlRoot(ElementName = "AssemblyPath")]
@@ -34,6 +37,9 @@ public class XmlAssemblyPath
 
     [XmlText]
     public string Text { get; set; }
+    
+    [XmlAttribute(AttributeName = "Ignore")]
+    public bool Ignore { get; set; }
 }
 
 [XmlRoot(ElementName = "AssemblyGroup")]
@@ -57,6 +63,9 @@ public class XmlAssemblyGroup
 
     [XmlAttribute(AttributeName = "Priority")]
     public int Priority { get; set; }
+    
+    [XmlAttribute(AttributeName = "Ignore")]
+    public bool Ignore { get; set; }
 }
 
 [XmlRoot(ElementName = "AssemblyRoot")]
@@ -80,6 +89,9 @@ public class XmlAssemblyRoot
 
     [XmlAttribute(AttributeName = "Path")]
     public string Path { get; set; }
+    
+    [XmlAttribute(AttributeName = "Ignore")]
+    public bool Ignore { get; set; }
 }
 
 [XmlRoot(ElementName = "TypeCodeConfiguration")]

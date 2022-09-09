@@ -1,7 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 using Serilog;
+using TypeCode.Business.Bootstrapping.Data;
 using TypeCode.Business.Configuration.Assemblies;
-using TypeCode.Business.Configuration.Location;
 using TypeCode.Business.Format;
 
 namespace TypeCode.Business.Configuration;
@@ -11,26 +11,26 @@ public class ConfigurationLoader : IConfigurationLoader
     private readonly IConfigurationMapper _configurationMapper;
     private readonly IGenericXmlSerializer _genericXmlSerializer;
     private readonly IAssemblyLoader _assemblyLoader;
-    private readonly IConfigurationLocationProvider _configurationLocationProvider;
+    private readonly IUserDataLocationProvider _userDataLocationProvider;
 
     public ConfigurationLoader(
         IConfigurationMapper configurationMapper,
         IGenericXmlSerializer genericXmlSerializer,
         IAssemblyLoader assemblyLoader,
-        IConfigurationLocationProvider configurationLocationProvider
+        IUserDataLocationProvider userDataLocationProvider
     )
     {
         _configurationMapper = configurationMapper;
         _genericXmlSerializer = genericXmlSerializer;
         _assemblyLoader = assemblyLoader;
-        _configurationLocationProvider = configurationLocationProvider;
+        _userDataLocationProvider = userDataLocationProvider;
     }
 
     public async Task<TypeCodeConfiguration> LoadAsync()
     {
         Log.Debug("Evaluating .dll files");
 
-        var xmlConfiguration = ReadXmlConfiguration();
+        var xmlConfiguration = await ReadXmlConfigurationAsync().ConfigureAwait(false);
         var configuration = _configurationMapper.MapToConfiguration(xmlConfiguration);
 
         await Parallel.ForEachAsync(configuration.AssemblyRoot, async
@@ -52,30 +52,30 @@ public class ConfigurationLoader : IConfigurationLoader
         {
             foreach (var group in root.AssemblyGroup.OrderBy(r => r.Priority))
             {
-                var messages = new List<PriorityString>();
+                var assemblyPriorityStrings = new List<AssemblyPriorityString>();
 
                 group.AssemblyPathSelector.ForEach(selector =>
                 {
                     selector.AssemblyDirectories
-                        .ForEach(directory => messages
-                            .Add(new PriorityString($"{root.Priority}.{group.Priority}.{selector.Priority}",
-                                $@"{Cuts.Point()} {directory.AbsolutPath}")));
+                        .ForEach(directory => assemblyPriorityStrings
+                            .Add(new AssemblyPriorityString($"{root.Priority}.{group.Priority}.{selector.Priority}",
+                                directory.AbsolutPath, selector.Ignore || group.Ignore || root.Ignore)));
                 });
 
                 group.AssemblyPath.ForEach(path =>
                 {
                     path.AssemblyDirectories
-                        .ForEach(directory => messages
-                            .Add(new PriorityString($"{root.Priority}.{group.Priority}.{path.Priority}",
-                                $@"{directory.AbsolutPath}")));
+                        .ForEach(directory => assemblyPriorityStrings
+                            .Add(new AssemblyPriorityString($"{root.Priority}.{group.Priority}.{path.Priority}",
+                                directory.AbsolutPath, path.Ignore || group.Ignore || root.Ignore)));
                 });
 
-                foreach (var message in messages.OrderBy(message => message.Priority))
+                foreach (var assemblyPriorityString in assemblyPriorityStrings.OrderBy(priorityString => priorityString.Priority))
                 {
-                    Log.Information("{0}", message.Message);
+                    Log.Information("{0}", $"{assemblyPriorityString}");
                 }
 
-                group.PriorityAssemblyList = messages;
+                group.PriorityAssemblyList = assemblyPriorityStrings;
             }
         }
     }
@@ -132,10 +132,10 @@ public class ConfigurationLoader : IConfigurationLoader
         return Task.CompletedTask;
     }
 
-    private XmlTypeCodeConfiguration ReadXmlConfiguration()
+    private async Task<XmlTypeCodeConfiguration> ReadXmlConfigurationAsync()
     {
-        var cfg = _configurationLocationProvider.GetLocation();
-        var xml = File.ReadAllText(cfg);
+        var cfg = _userDataLocationProvider.GetConfigurationFilePath();
+        var xml = await File.ReadAllTextAsync(cfg).ConfigureAwait(false);
         return _genericXmlSerializer.Deserialize<XmlTypeCodeConfiguration>(xml) ?? throw new Exception($"{cfg} can not be parsed");
     }
 }

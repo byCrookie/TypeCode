@@ -27,7 +27,7 @@ internal class ExitTypeCodeStrategy : IExitTypeCodeStrategy
         return mode is not null && mode == $"{Number()}" && !IsPlanned();
     }
 
-    public Task<string?> GenerateAsync()
+    public Task<string?> GenerateAsync(CancellationToken? ct = null)
     {
         return Task.FromResult<string?>(null);
     }

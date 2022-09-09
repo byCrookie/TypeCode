@@ -11,13 +11,13 @@ public class MinDelay : IMinDelay
         _dateTimeProvider = dateTimeProvider;
     }
     
-    public async Task DelayAsync(DateTime start, TimeSpan minDelay)
+    public async Task DelayAsync(DateTime start, TimeSpan minDelay, CancellationToken? ct = null)
     {
         var diff = _dateTimeProvider.Now() - start;
 
         if (diff < minDelay)
         {
-            await Task.Delay(minDelay - diff).ConfigureAwait(true);
+            await Task.Delay(minDelay - diff, ct ?? CancellationToken.None).ConfigureAwait(true);
         }
     }
 }

@@ -31,7 +31,7 @@ public partial class AssemblyViewModel : ViewModelBase, IAsyncNavigatedTo, IAsyn
         _configurationProvider = configurationProvider;
         _eventAggregator = eventAggregator;
 
-        LoadedAssemblies = new List<string>();
+        LoadedAssemblies = new List<AssemblyItemViewModel>();
 
         eventAggregator.Subscribe<LoadEndEvent>(this);
 
@@ -58,15 +58,15 @@ public partial class AssemblyViewModel : ViewModelBase, IAsyncNavigatedTo, IAsyn
         _eventAggregator.Unsubscribe(this);
         return Task.CompletedTask;
     }
-    
+
     [ObservableProperty]
     [ChildViewModel]
     private InputBoxViewModel? _inputBoxViewModel;
 
     [ObservableProperty]
-    private List<string>? _loadedAssemblies;
+    private List<AssemblyItemViewModel>? _loadedAssemblies;
 
-    public Task HandleAsync(LoadEndEvent e, CancellationToken? cancellationToken = null)
+    public Task HandleAsync(LoadEndEvent e, CancellationToken? ct = null)
     {
         LoadAssemblies();
         return Task.CompletedTask;
@@ -80,12 +80,12 @@ public partial class AssemblyViewModel : ViewModelBase, IAsyncNavigatedTo, IAsyn
             .SelectMany(r => r.AssemblyGroup)
             .SelectMany(r => r.PriorityAssemblyList)
             .OrderBy(r => r.Priority)
-            .Select(r => $"{r.Priority} {r.Message}")
+            .Select(r => new AssemblyItemViewModel(r.Priority, r.Assembly, r.Ignore))
             .ToList();
 
         if (!LoadedAssemblies.Any())
         {
-            LoadedAssemblies.Add("No assemblies have been loaded");
+            LoadedAssemblies.Add(new AssemblyItemViewModel(string.Empty, "No assemblies have been loaded", false));
         }
     }
 

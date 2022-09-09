@@ -20,21 +20,68 @@
 
         <ScrollViewer Grid.Row="2"
                       VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-            <VirtualizingStackPanel IsVirtualizing="True" VirtualizationMode="Recycling">
-                <ItemsControl ItemsSource="{Binding LoadedAssemblies}"
-                              Background="{StaticResource Primary}"
-                              BorderThickness="0">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding}"
-                                       Padding="0,5,0,0"
-                                       Background="{StaticResource Secondary}"
-                                       Foreground="{StaticResource PrimaryText}"
-                                       Height="30" />
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </VirtualizingStackPanel>
+            <DataGrid ItemsSource="{Binding LoadedAssemblies}"
+                      Background="{StaticResource Primary}"
+                      Foreground="{StaticResource PrimaryText}"
+                      BorderThickness="0"
+                      AutoGenerateColumns="False"
+                      IsReadOnly="True"
+                      HeadersVisibility="Column"
+                      Width="800"
+                      HorizontalAlignment="Left">
+                <DataGrid.Resources>
+                    <Style TargetType="{x:Type DataGridRow}">
+                        <Setter Property="Background" Value="{StaticResource Primary}" />
+                        <Setter Property="Foreground" Value="{StaticResource PrimaryText}" />
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="{StaticResource Primary}" />
+                                <Setter Property="Foreground" Value="{StaticResource PrimaryText}" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                    <Style TargetType="{x:Type DataGridColumnHeader}">
+                        <Setter Property="Background" Value="{StaticResource Primary}" />
+                        <Setter Property="Foreground" Value="{StaticResource PrimaryText}" />
+                        <Setter Property="Padding" Value="5" />
+                        <Setter Property="Margin" Value="0, 1, 1, 1" />
+                        <Setter Property="BorderThickness" Value="1" />
+                        <Setter Property="BorderBrush" Value="{StaticResource Accent}" />
+                    </Style>
+                </DataGrid.Resources>
+                <DataGrid.CellStyle>
+                    <Style TargetType="DataGridCell">
+                        <Setter Property="Padding" Value="5" />
+                        <Setter Property="BorderBrush" Value="{StaticResource Accent}" />
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type DataGridCell}">
+                                    <Border Padding="{TemplateBinding Padding}"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="{TemplateBinding BorderThickness}"
+                                            Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                                        <ContentPresenter
+                                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="{StaticResource Primary}" />
+                                <Setter Property="Foreground" Value="{StaticResource PrimaryText}" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.CellStyle>
+                <DataGrid.Columns>
+                    <DataGridTextColumn CanUserSort="False" Header="Priority" Binding="{Binding Priority}"></DataGridTextColumn>
+                    <DataGridTextColumn Width="*" CanUserSort="False" Header="Assembly Path"
+                                        Binding="{Binding Assembly}">
+                    </DataGridTextColumn>
+                    <DataGridCheckBoxColumn CanUserSort="False" Header="Ignore" Binding="{Binding Ignore}"></DataGridCheckBoxColumn>
+                </DataGrid.Columns>
+            </DataGrid>
         </ScrollViewer>
     </Grid>
 </UserControl>

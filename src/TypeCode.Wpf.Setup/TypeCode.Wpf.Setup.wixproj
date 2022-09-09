@@ -6,6 +6,12 @@
         <WixTargetsPath>$(WixToolPath)\wix.targets</WixTargetsPath>
         <DefineConstants>BasePath=..\TypeCode.Wpf.Setup\bin\publish\$(Configuration)</DefineConstants>
     </PropertyGroup>
+    
+<!--    <Target Name="Constants" AfterTargets="BeforeBuild">-->
+<!--        <CreateProperty Value="BasePath=..\TypeCode.Wpf.Setup\bin\publish\$(Configuration);ProductId=$([System.Guid]::NewGuid());ProductVersion=$(PackageVersion)">-->
+<!--            <Output TaskParameter="Value" PropertyName="DefineConstants"/>-->
+<!--        </CreateProperty>-->
+<!--    </Target>-->
 
     <PropertyGroup>
         <Configuration Condition=" '$(Configuration)' == '' ">Release</Configuration>
@@ -27,11 +33,12 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="byCrookie.LibrarySdk" />
+    </ItemGroup>
+
+    <ItemGroup>
         <Compile Include="Product.wxs" />
         <Compile Include="Binaries.wxs" />
-        <Content Include="BinariesFilter.xslt">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Content>
         <Content Include="DownloadAndExtractWix.ps1" />
         <Content Include="Assets\Banner.bmp" />
         <Content Include="Assets\Banner.xcf" />
@@ -72,6 +79,6 @@
         <Exec Command="rd /s /q ..\TypeCode.Wpf.Setup\bin\publish\$(Configuration)" />
         <Exec Command="dotnet publish ..\TypeCode.Wpf\TypeCode.Wpf.csproj -c $(Configuration) -o bin\publish\$(Configuration)" />
 
-        <HeatDirectory OutputFile="Binaries.wxs" DirectoryRefId="APPLICATIONFOLDER" ComponentGroupName="Binaries" SuppressCom="true" Directory="..\TypeCode.Wpf.Setup\bin\publish\$(Configuration)" SuppressFragments="true" SuppressRegistry="true" SuppressRootDirectory="true" AutoGenerateGuids="false" GenerateGuidsNow="true" ToolPath="$(WixToolPath)" PreprocessorVariable="var.BasePath" Transforms="BinariesFilter.xslt" />
+        <HeatDirectory OutputFile="Binaries.wxs" DirectoryRefId="APPLICATIONFOLDER" ComponentGroupName="Binaries" SuppressCom="true" Directory="..\TypeCode.Wpf.Setup\bin\publish\$(Configuration)" SuppressFragments="true" SuppressRegistry="true" SuppressRootDirectory="true" AutoGenerateGuids="false" GenerateGuidsNow="true" ToolPath="$(WixToolPath)" PreprocessorVariable="var.BasePath" />
     </Target>
 </Project>

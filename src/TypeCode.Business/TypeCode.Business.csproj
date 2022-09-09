@@ -22,4 +22,9 @@
         </AssemblyAttribute>
     </ItemGroup>
 
+    <ItemGroup>
+      <EmbeddedResource Include="Bootstrapping\Data\Configuration.Development.cfg.xml" />
+      <EmbeddedResource Include="Bootstrapping\Data\Configuration.Production.cfg.xml" />
+    </ItemGroup>
+
 </Project>

@@ -6,10 +6,12 @@ namespace TypeCode.Wpf.Helper.Navigation.Wizard;
 public class WizardNavigator : IWizardNavigator
 {
     private readonly IEventAggregator _eventAggregator;
+    private readonly IWizardRunner _wizardRunner;
 
-    public WizardNavigator(IEventAggregator eventAggregator)
+    public WizardNavigator(IEventAggregator eventAggregator, IWizardRunner wizardRunner)
     {
         _eventAggregator = eventAggregator;
+        _wizardRunner = wizardRunner;
     }
 
     public async Task NextAsync(Wizard wizard)
@@ -44,7 +46,10 @@ public class WizardNavigator : IWizardNavigator
         wizard.Content.Opacity = 1;
         wizard.Content.IsEnabled = true;
         wizard.WizardOverlay.Visibility = Visibility.Collapsed;
-        return Task.CompletedTask;
+
+        return wizard.NavigationContext.ContainsParameter(WizardConstants.LastWizard)
+            ? _wizardRunner.RunAsync(wizard.NavigationContext.GetParameter<Wizard>(WizardConstants.LastWizard))
+            : Task.CompletedTask;
     }
 
     public async Task FinishAsync(Wizard wizard)
@@ -59,5 +64,11 @@ public class WizardNavigator : IWizardNavigator
         wizard.Content.Opacity = 1;
         wizard.Content.IsEnabled = true;
         wizard.WizardOverlay.Visibility = Visibility.Collapsed;
+
+        if (wizard.NavigationContext.ContainsParameter(WizardConstants.LastWizard))
+        {
+            var returnWizard = wizard.NavigationContext.GetParameter<Wizard>(WizardConstants.LastWizard);
+            await _wizardRunner.RunAsync(returnWizard).ConfigureAwait(true);
+        }
     }
 }

@@ -2,8 +2,8 @@
 using System.Text.RegularExpressions;
 using System.Windows.Controls;
 using DependencyInjection.Factory;
+using TypeCode.Business.Bootstrapping.Data;
 using TypeCode.Business.Configuration;
-using TypeCode.Business.Configuration.Location;
 using TypeCode.Wpf.Helper.Navigation.Wizard;
 using TypeCode.Wpf.Pages.Common.Configuration.AssemblyGroupWizard;
 using TypeCode.Wpf.Pages.Common.Configuration.AssemblyPathSelectorWizard;
@@ -19,7 +19,7 @@ internal class SetupConfigurator : ISetupConfigurator
     private readonly IConfigurationMapper _configurationMapper;
     private readonly IFactory<IWizardBuilder> _wizardBuilderFactory;
     private readonly IWizardRunner _wizardRunner;
-    private readonly IConfigurationLocationProvider _configurationLocationProvider;
+    private readonly IUserDataLocationProvider _userDataLocationProvider;
     private TypeCodeConfiguration _configuration;
 
     private readonly IDictionary<TreeViewItem, SetupTreeViewItemMapping<AssemblyRoot>> _setupRootMappings
@@ -49,14 +49,14 @@ internal class SetupConfigurator : ISetupConfigurator
         IConfigurationMapper configurationMapper,
         IFactory<IWizardBuilder> wizardBuilderFactory,
         IWizardRunner wizardRunner,
-        IConfigurationLocationProvider configurationLocationProvider
+        IUserDataLocationProvider userDataLocationProvider
     )
     {
         _genericXmlSerializer = genericXmlSerializer;
         _configurationMapper = configurationMapper;
         _wizardBuilderFactory = wizardBuilderFactory;
         _wizardRunner = wizardRunner;
-        _configurationLocationProvider = configurationLocationProvider;
+        _userDataLocationProvider = userDataLocationProvider;
 
         _configuration = new TypeCodeConfiguration();
     }
@@ -77,17 +77,18 @@ internal class SetupConfigurator : ISetupConfigurator
                 return Task.CompletedTask;
             }
 
-            var newItem = CreateAssemblyRootItem(model.Path, model.Priority.Value);
+            var newItem = CreateAssemblyRootItem(model.Path, int.Parse(model.Priority), model.Ignore);
             parentItem.Items.Add(newItem);
             var newAssemblyRoot = new AssemblyRoot
             {
                 Path = model.Path ?? throw new Exception(),
-                Priority = model.Priority ?? throw new Exception()
+                Priority = int.Parse(model.Priority ?? throw new Exception()),
+                Ignore = model.Ignore
             };
             _configuration.AssemblyRoot.Add(newAssemblyRoot);
             _setupRootMappings.Add(newItem, new SetupTreeViewItemMapping<AssemblyRoot>(newItem, parentItem, newAssemblyRoot));
             return Task.CompletedTask;
-        });
+        }, title: "Add Root");
     }
 
     public bool CanAddRoot(TreeViewItem? parentItem)
@@ -105,17 +106,18 @@ internal class SetupConfigurator : ISetupConfigurator
                 return Task.CompletedTask;
             }
 
-            var newItem = CreateAssemblyGroupItem(model.Name, model.Priority.Value);
+            var newItem = CreateAssemblyGroupItem(model.Name, model.Priority.Value, model.Ignore);
             parentItem.Items.Add(newItem);
             var newAssemblyGroup = new AssemblyGroup
             {
                 Name = model.Name ?? throw new Exception(),
-                Priority = model.Priority ?? throw new Exception()
+                Priority = model.Priority ?? throw new Exception(),
+                Ignore = model.Ignore
             };
             parentRoot.Type.AssemblyGroup.Add(newAssemblyGroup);
             _setupGroupMappings.Add(newItem, new SetupTreeViewItemMapping<AssemblyGroup>(newItem, parentItem, newAssemblyGroup));
             return Task.CompletedTask;
-        });
+        }, title: "Add Group");
     }
 
     public bool CanAddGroup(TreeViewItem? parentItem)
@@ -133,17 +135,18 @@ internal class SetupConfigurator : ISetupConfigurator
                 return Task.CompletedTask;
             }
 
-            var newItem = CreateAssemblyPathItem(model.Priority.Value, model.Path);
+            var newItem = CreateAssemblyPathItem(model.Priority.Value, model.Path, model.Ignore);
             parentItem.Items.Add(newItem);
             var newAssemblyPath = new AssemblyPath
             {
                 Path = model.Path ?? throw new Exception(),
-                Priority = model.Priority ?? throw new Exception()
+                Priority = model.Priority ?? throw new Exception(),
+                Ignore = model.Ignore
             };
             parentGroup.Type.AssemblyPath.Add(newAssemblyPath);
             _setupPathMappings.Add(newItem, new SetupTreeViewItemMapping<AssemblyPath>(newItem, parentItem, newAssemblyPath));
             return Task.CompletedTask;
-        });
+        }, title: "Add Path");
     }
 
     public bool CanAddPath(TreeViewItem? parentItem)
@@ -167,7 +170,7 @@ internal class SetupConfigurator : ISetupConfigurator
             parentRoot.Type.IncludeAssemblyPattern.Add(pattern);
             _setupIncludePatternMappings.Add(newItem, new SetupTreeViewItemMapping<Regex>(newItem, parentItem, pattern));
             return Task.CompletedTask;
-        });
+        }, title: "Add Include Pattern");
     }
 
     public bool CanAddIncludePattern(TreeViewItem? parentItem)
@@ -185,17 +188,18 @@ internal class SetupConfigurator : ISetupConfigurator
                 return Task.CompletedTask;
             }
 
-            var newItem = CreateAssemblyPathSelectorItem(model.Priority.Value, model.Selector);
+            var newItem = CreateAssemblyPathSelectorItem(model.Priority.Value, model.Selector, model.Ignore);
             parentItem.Items.Add(newItem);
             var newAssemblyPathSelector = new AssemblyPathSelector
             {
                 Selector = model.Selector ?? throw new Exception(),
-                Priority = model.Priority ?? throw new Exception()
+                Priority = model.Priority ?? throw new Exception(),
+                Ignore = model.Ignore
             };
             parentGroup.Type.AssemblyPathSelector.Add(newAssemblyPathSelector);
             _setupPathSelectorMappings.Add(newItem, new SetupTreeViewItemMapping<AssemblyPathSelector>(newItem, parentItem, newAssemblyPathSelector));
             return Task.CompletedTask;
-        });
+        }, title: "Add Selector");
     }
 
     public bool CanAddSelector(TreeViewItem? parentItem)
@@ -302,7 +306,6 @@ internal class SetupConfigurator : ISetupConfigurator
         if (_setupRootMappings.ContainsKey(selectedItem))
         {
             var mapping = _setupRootMappings[selectedItem];
-            _setupRootMappings.Remove(selectedItem);
 
             await OpenWizardAsync<AssemblyRootWizardViewModel>(
                 model =>
@@ -311,11 +314,14 @@ internal class SetupConfigurator : ISetupConfigurator
                     {
                         return Task.CompletedTask;
                     }
+                    
+                    _setupRootMappings.Remove(selectedItem);
 
-                    var newItem = ReplaceItemInView(mapping.ParentItem, mapping.Item, () => CreateAssemblyRootItem(model.Path, model.Priority.Value));
+                    var newItem = ReplaceItemInView(mapping.ParentItem, mapping.Item, () => CreateAssemblyRootItem(model.Path, int.Parse(model.Priority), model.Ignore));
 
                     mapping.Type.Path = model.Path;
-                    mapping.Type.Priority = model.Priority.Value;
+                    mapping.Type.Priority = int.Parse(model.Priority);
+                    mapping.Type.Ignore = model.Ignore;
 
                     _setupRootMappings.Add(newItem, new SetupTreeViewItemMapping<AssemblyRoot>(newItem, mapping.ParentItem, mapping.Type));
                     return Task.CompletedTask;
@@ -323,9 +329,10 @@ internal class SetupConfigurator : ISetupConfigurator
                 model =>
                 {
                     model.Path = mapping.Type.Path;
-                    model.Priority = mapping.Type.Priority;
+                    model.Priority = mapping.Type.Priority.ToString();
+                    model.Ignore = mapping.Type.Ignore;
                     return Task.CompletedTask;
-                }, "Update").ConfigureAwait(true);
+                }, "Update", title: "Update Root").ConfigureAwait(true);
         }
     }
 
@@ -334,7 +341,6 @@ internal class SetupConfigurator : ISetupConfigurator
         if (_setupGroupMappings.ContainsKey(selectedItem))
         {
             var mapping = _setupGroupMappings[selectedItem];
-            _setupGroupMappings.Remove(selectedItem);
 
             await OpenWizardAsync<AssemblyGroupWizardViewModel>(
                 model =>
@@ -343,11 +349,14 @@ internal class SetupConfigurator : ISetupConfigurator
                     {
                         return Task.CompletedTask;
                     }
+                    
+                    _setupGroupMappings.Remove(selectedItem);
 
-                    var newItem = ReplaceItemInView(mapping.ParentItem, mapping.Item, () => CreateAssemblyGroupItem(model.Name, model.Priority.Value));
+                    var newItem = ReplaceItemInView(mapping.ParentItem, mapping.Item, () => CreateAssemblyGroupItem(model.Name, model.Priority.Value, model.Ignore));
 
                     mapping.Type.Name = model.Name;
                     mapping.Type.Priority = model.Priority.Value;
+                    mapping.Type.Ignore = model.Ignore;
 
                     _setupGroupMappings.Add(newItem, new SetupTreeViewItemMapping<AssemblyGroup>(newItem, mapping.ParentItem, mapping.Type));
                     return Task.CompletedTask;
@@ -356,8 +365,9 @@ internal class SetupConfigurator : ISetupConfigurator
                 {
                     model.Name = mapping.Type.Name;
                     model.Priority = mapping.Type.Priority;
+                    model.Ignore = mapping.Type.Ignore;
                     return Task.CompletedTask;
-                }, "Update").ConfigureAwait(true);
+                }, "Update", title: "Update Group").ConfigureAwait(true);
         }
     }
 
@@ -366,7 +376,6 @@ internal class SetupConfigurator : ISetupConfigurator
         if (_setupPathMappings.ContainsKey(selectedItem))
         {
             var mapping = _setupPathMappings[selectedItem];
-            _setupPathMappings.Remove(selectedItem);
 
             await OpenWizardAsync<AssemblyPathWizardViewModel>(
                 model =>
@@ -375,11 +384,14 @@ internal class SetupConfigurator : ISetupConfigurator
                     {
                         return Task.CompletedTask;
                     }
-
-                    var newItem = ReplaceItemInView(mapping.ParentItem, mapping.Item, () => CreateAssemblyPathItem(model.Priority.Value, model.Path));
+                    
+                    _setupPathMappings.Remove(selectedItem);
+                    
+                    var newItem = ReplaceItemInView(mapping.ParentItem, mapping.Item, () => CreateAssemblyPathItem(model.Priority.Value, model.Path, model.Ignore));
 
                     mapping.Type.Path = model.Path;
                     mapping.Type.Priority = model.Priority.Value;
+                    mapping.Type.Ignore = model.Ignore;
 
                     _setupPathMappings.Add(newItem, new SetupTreeViewItemMapping<AssemblyPath>(newItem, mapping.ParentItem, mapping.Type));
                     return Task.CompletedTask;
@@ -388,8 +400,9 @@ internal class SetupConfigurator : ISetupConfigurator
                 {
                     model.Path = mapping.Type.Path;
                     model.Priority = mapping.Type.Priority;
+                    model.Ignore = mapping.Type.Ignore;
                     return Task.CompletedTask;
-                }, "Update").ConfigureAwait(true);
+                }, "Update", title: "Update Path").ConfigureAwait(true);
         }
     }
 
@@ -398,7 +411,6 @@ internal class SetupConfigurator : ISetupConfigurator
         if (_setupPathSelectorMappings.ContainsKey(selectedItem))
         {
             var mapping = _setupPathSelectorMappings[selectedItem];
-            _setupPathSelectorMappings.Remove(selectedItem);
 
             await OpenWizardAsync<AssemblyPathSelectorWizardViewModel>(
                 model =>
@@ -407,11 +419,14 @@ internal class SetupConfigurator : ISetupConfigurator
                     {
                         return Task.CompletedTask;
                     }
-
-                    var newItem = ReplaceItemInView(mapping.ParentItem, mapping.Item, () => CreateAssemblyPathSelectorItem(model.Priority.Value, model.Selector));
+                    
+                    _setupPathSelectorMappings.Remove(selectedItem);
+                    
+                    var newItem = ReplaceItemInView(mapping.ParentItem, mapping.Item, () => CreateAssemblyPathSelectorItem(model.Priority.Value, model.Selector, model.Ignore));
 
                     mapping.Type.Selector = model.Selector;
                     mapping.Type.Priority = model.Priority.Value;
+                    mapping.Type.Ignore = model.Ignore;
 
                     _setupPathSelectorMappings.Add(newItem, new SetupTreeViewItemMapping<AssemblyPathSelector>(newItem, mapping.ParentItem, mapping.Type));
                     return Task.CompletedTask;
@@ -420,8 +435,9 @@ internal class SetupConfigurator : ISetupConfigurator
                 {
                     model.Selector = mapping.Type.Selector;
                     model.Priority = mapping.Type.Priority;
+                    model.Ignore = mapping.Type.Ignore;
                     return Task.CompletedTask;
-                }, "Update").ConfigureAwait(true);
+                }, "Update", title: "Update Path Selector").ConfigureAwait(true);
         }
     }
 
@@ -430,7 +446,6 @@ internal class SetupConfigurator : ISetupConfigurator
         if (_setupIncludePatternMappings.ContainsKey(selectedItem))
         {
             var mapping = _setupIncludePatternMappings[selectedItem];
-            _setupIncludePatternMappings.Remove(selectedItem);
 
             await OpenWizardAsync<IncludeAssemblyPatternWizardViewModel>(
                 model =>
@@ -439,7 +454,8 @@ internal class SetupConfigurator : ISetupConfigurator
                     {
                         return Task.CompletedTask;
                     }
-
+                    
+                    _setupIncludePatternMappings.Remove(selectedItem);
                     var newItem = ReplaceItemInView(mapping.ParentItem, mapping.Item, () => CreateIncludeAssemblyPatternItem(model.Pattern));
                     _setupIncludePatternMappings.Add(newItem, new SetupTreeViewItemMapping<Regex>(newItem, mapping.ParentItem, new Regex(model.Pattern ?? string.Empty, RegexOptions.Compiled)));
                     return Task.CompletedTask;
@@ -448,7 +464,7 @@ internal class SetupConfigurator : ISetupConfigurator
                 {
                     model.Pattern = $"{mapping.Type}";
                     return Task.CompletedTask;
-                }, "Update").ConfigureAwait(true);
+                }, "Update", title: "Update Include Assembly Pattern").ConfigureAwait(true);
         }
     }
 
@@ -497,7 +513,7 @@ internal class SetupConfigurator : ISetupConfigurator
     {
         foreach (var assemblyRoot in typeCodeConfiguration.AssemblyRoot)
         {
-            var assemblyRootItem = CreateAssemblyRootItem(assemblyRoot.Path, assemblyRoot.Priority);
+            var assemblyRootItem = CreateAssemblyRootItem(assemblyRoot.Path, assemblyRoot.Priority, assemblyRoot.Ignore);
             BuildIncludeAssemblyPatterns(assemblyRoot, assemblyRootItem);
             BuildAssemblyGroups(assemblyRoot, assemblyRootItem);
             typeCodeConfigurationItem.Items.Add(assemblyRootItem);
@@ -509,7 +525,7 @@ internal class SetupConfigurator : ISetupConfigurator
     {
         foreach (var assemblyGroup in assemblyRoot.AssemblyGroup)
         {
-            var assemblyGroupItem = CreateAssemblyGroupItem(assemblyGroup.Name, assemblyGroup.Priority);
+            var assemblyGroupItem = CreateAssemblyGroupItem(assemblyGroup.Name, assemblyGroup.Priority, assemblyGroup.Ignore);
             BuildAssemblyPaths(assemblyGroup, assemblyGroupItem);
             BuildAssemblyPathSelectors(assemblyGroup, assemblyGroupItem);
             assemblyRootItem.Items.Add(assemblyGroupItem);
@@ -531,7 +547,7 @@ internal class SetupConfigurator : ISetupConfigurator
     {
         foreach (var assemblyPath in assemblyGroup.AssemblyPath)
         {
-            var assemblyPathItem = CreateAssemblyPathItem(assemblyPath.Priority, assemblyPath.Path);
+            var assemblyPathItem = CreateAssemblyPathItem(assemblyPath.Priority, assemblyPath.Path, assemblyPath.Ignore);
             assemblyGroupItem.Items.Add(assemblyPathItem);
             _setupPathMappings.Add(assemblyPathItem, new SetupTreeViewItemMapping<AssemblyPath>(assemblyPathItem, assemblyGroupItem, assemblyPath));
         }
@@ -541,17 +557,17 @@ internal class SetupConfigurator : ISetupConfigurator
     {
         foreach (var assemblyPathSelector in assemblyGroup.AssemblyPathSelector)
         {
-            var assemblyPathSelectorItem = CreateAssemblyPathSelectorItem(assemblyPathSelector.Priority, assemblyPathSelector.Selector);
+            var assemblyPathSelectorItem = CreateAssemblyPathSelectorItem(assemblyPathSelector.Priority, assemblyPathSelector.Selector, assemblyPathSelector.Ignore);
             assemblyGroupItem.Items.Add(assemblyPathSelectorItem);
             _setupPathSelectorMappings.Add(assemblyPathSelectorItem, new SetupTreeViewItemMapping<AssemblyPathSelector>(assemblyPathSelectorItem, assemblyGroupItem, assemblyPathSelector));
         }
     }
 
-    private static TreeViewItem CreateAssemblyRootItem(string path, int priority)
+    private static TreeViewItem CreateAssemblyRootItem(string path, int priority, bool ignore)
     {
         return new TreeViewItem
         {
-            Header = $"{AssemblyRootName} Path={path} Priority={priority}",
+            Header = $"{AssemblyRootName} Path={path} Priority={priority} Ignore={ignore}",
             IsExpanded = true
         };
     }
@@ -565,11 +581,11 @@ internal class SetupConfigurator : ISetupConfigurator
         };
     }
 
-    private static TreeViewItem CreateAssemblyGroupItem(string name, int priority)
+    private static TreeViewItem CreateAssemblyGroupItem(string name, int priority, bool ignore)
     {
         return new TreeViewItem
         {
-            Header = $"{AssemblyGroupName} Name={name} Priority={priority}",
+            Header = $"{AssemblyGroupName} Name={name} Priority={priority} Ignore={ignore}",
             IsExpanded = true
         };
     }
@@ -583,28 +599,28 @@ internal class SetupConfigurator : ISetupConfigurator
         };
     }
 
-    private static TreeViewItem CreateAssemblyPathItem(int priority, string path)
+    private static TreeViewItem CreateAssemblyPathItem(int priority, string path, bool ignore)
     {
         return new TreeViewItem
         {
-            Header = $"{AssemblyPathName} Priority={priority} Value={path}",
+            Header = $"{AssemblyPathName} Priority={priority} Value={path} Ignore={ignore}",
             IsExpanded = true
         };
     }
 
-    private static TreeViewItem CreateAssemblyPathSelectorItem(int priority, string selector)
+    private static TreeViewItem CreateAssemblyPathSelectorItem(int priority, string selector, bool ignore)
     {
         return new TreeViewItem
         {
-            Header = $"{AssemblyPathSelectorName} Priority={priority} Value={selector}",
+            Header = $"{AssemblyPathSelectorName} Priority={priority} Value={selector} Ignore={ignore}",
             IsExpanded = true
         };
     }
 
-    private Task OpenWizardAsync<T>(Func<T, Task>? completed = null, Func<T, Task>? initialize = null, string? finishButtonText = null) where T : notnull
+    private Task OpenWizardAsync<T>(Func<T, Task>? completed = null, Func<T, Task>? initialize = null, string? finishButtonText = null, string? title = null) where T : notnull
     {
         var wizard = _wizardBuilderFactory.Create()
-            .Then<T>((options, _) => options.Before(c => initialize is not null ? initialize(c.GetParameter<T>()) : Task.CompletedTask))
+            .Then<T>((options, _) => options.Title(title).Before(c => initialize is not null ? initialize(c.GetParameter<T>()) : Task.CompletedTask))
             .FinishAsync(c => completed is not null ? completed(c.GetParameter<T>()) : Task.CompletedTask, finishButtonText ?? "Add")
             .Build();
 
@@ -613,14 +629,14 @@ internal class SetupConfigurator : ISetupConfigurator
 
     private async Task<XmlTypeCodeConfiguration> ReadXmlConfigurationAsync()
     {
-        var cfg = _configurationLocationProvider.GetLocation();
+        var cfg = _userDataLocationProvider.GetConfigurationFilePath();
         var xml = await File.ReadAllTextAsync(cfg).ConfigureAwait(true);
         return _genericXmlSerializer.Deserialize<XmlTypeCodeConfiguration>(xml) ?? throw new Exception($"{cfg} can not be parsed");
     }
 
     private Task WriteXmlConfigurationAsync(XmlTypeCodeConfiguration xmlConfiguration)
     {
-        var cfg = _configurationLocationProvider.GetLocation();
+        var cfg = _userDataLocationProvider.GetConfigurationFilePath();
         var serialized = _genericXmlSerializer.Serialize(xmlConfiguration);
         return File.WriteAllTextAsync(cfg, serialized);
     }

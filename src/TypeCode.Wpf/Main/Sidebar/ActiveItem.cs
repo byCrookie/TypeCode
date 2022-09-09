@@ -12,5 +12,6 @@ public enum ActiveItem
     Assembly,
     Home,
     DynamicExecute,
+    Guid,
     EncodingConversion
 }

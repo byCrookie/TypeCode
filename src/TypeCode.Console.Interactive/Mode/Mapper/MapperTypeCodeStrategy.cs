@@ -50,17 +50,17 @@ internal class MapperTypeCodeStrategy : IMapperTypeCodeStrategy
         return mode is not null && mode == $"{Number()}" && !IsPlanned();
     }
 
-    public async Task<string?> GenerateAsync()
+    public async Task<string?> GenerateAsync(CancellationToken? ct = null)
     {
         var workflow = _workflowBuilder
             .WriteLine(_ => $@"{Cuts.Point()} Seperate two types by ,")
             .ReadLine(c => c.Input)
             .If(c => !string.IsNullOrEmpty(c.Input), c => c.TypeNames, c => c.Input?.Split(',').Select(split => split.Trim()).ToList())
-            .Then(c => c.FirstTypeNames, c => _typeProvider.TryGetByName(c.TypeNames.First()))
+            .Then(c => c.FirstTypeNames, c => _typeProvider.TryGetByName(c.TypeNames.First(), ct: ct))
             .Then(c => c.SelectedTypes, c => c.FirstTypeNames)
             .ThenAsync<IMultipleTypeSelectionStep<MappingContext>>()
             .Then(c => c.SelectedFirstType, c => new MappingType(c.SelectedType))
-            .Then(c => c.SecondTypeNames, c => _typeProvider.TryGetByName(c.TypeNames.Last()))
+            .Then(c => c.SecondTypeNames, c => _typeProvider.TryGetByName(c.TypeNames.Last(), ct: ct))
             .Then(c => c.SelectedTypes, c => c.SecondTypeNames)
             .ThenAsync<IMultipleTypeSelectionStep<MappingContext>>()
             .Then(c => c.SelectedSecondType, c => new MappingType(c.SelectedType))

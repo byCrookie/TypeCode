@@ -35,6 +35,12 @@ public class WizardParameterBuilder : IWizardParameterBuilder
         return this;
     }
 
+    public WizardParameterBuilder Title(string? title)
+    {
+        _parameter.StepTitle = title;
+        return this;
+    }
+
     public WizardStepParameter Build()
     {
         return _parameter;

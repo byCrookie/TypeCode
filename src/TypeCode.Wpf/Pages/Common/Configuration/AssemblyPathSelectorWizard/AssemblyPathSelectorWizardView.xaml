@@ -11,53 +11,53 @@
     d:DataContext="{d:DesignInstance assemblyPathSelectorWizard:AssemblyPathSelectorWizardViewModel}">
 
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="5"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="5" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="5" />
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="5"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="5"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Label Grid.Row="0">Assembly Path Selector</Label>
-        
-        <Grid Grid.Row="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="200"></ColumnDefinition>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            
-            <Label Content="Selector (Regex-Pattern)" />
-            <textBox:CustomTextBox
-                Grid.Column="1"
-                Text="{Binding Selector, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                ShowRegex="False"
-                ShowAutoCompletion="False"
-                HorizontalAlignment="Stretch"
-                HorizontalContentAlignment="Stretch"
-                AcceptsReturn="False"
-                AcceptsTab="False">
-            </textBox:CustomTextBox>
-        </Grid>
-        
-        <Grid Grid.Row="4">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="200"></ColumnDefinition>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            
-            <Label Content="Priority" />
-            <textBox:CustomTextBox
-                Grid.Column="1"
-                Text="{Binding Priority, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                ShowRegex="False"
-                ShowAutoCompletion="False"
-                HorizontalAlignment="Stretch"
-                HorizontalContentAlignment="Stretch"
-                AcceptsReturn="False"
-                AcceptsTab="False">
-            </textBox:CustomTextBox>
-        </Grid>
+        <Label Grid.Row="0" Grid.Column="0" Content="Selector (Regex-Pattern)" />
+        <textBox:CustomTextBox
+            Grid.Row="0"
+            Grid.Column="2"
+            Text="{Binding Selector, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+            ShowRegex="False"
+            ShowAutoCompletion="False"
+            HorizontalAlignment="Stretch"
+            HorizontalContentAlignment="Stretch"
+            AcceptsReturn="False"
+            AcceptsTab="False">
+        </textBox:CustomTextBox>
 
+        <Label Grid.Row="2" Grid.Column="0" Content="Priority" />
+        <textBox:CustomTextBox
+            Grid.Row="2" Grid.Column="2"
+            Text="{Binding Priority, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+            ShowRegex="False"
+            ShowAutoCompletion="False"
+            HorizontalAlignment="Stretch"
+            HorizontalContentAlignment="Stretch"
+            AcceptsReturn="False"
+            AcceptsTab="False">
+        </textBox:CustomTextBox>
+
+
+        <Label Grid.Row="4" Grid.Column="0" Content="Ignore" />
+        <CheckBox Grid.Row="4" Grid.Column="2" Content="Ignore"
+                  VerticalAlignment="Center"
+                  ToolTip="Exclude from being loaded at startup."
+                  Foreground="{StaticResource PrimaryText}"
+                  IsChecked="{Binding Ignore}">
+        </CheckBox>
     </Grid>
 </UserControl>

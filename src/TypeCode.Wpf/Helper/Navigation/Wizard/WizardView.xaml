@@ -12,6 +12,9 @@
     <UserControl.Resources>
         <converters:BooleanToVisibilityConverterSelf x:Key="BooleanToVisibilityConverter" True="Visible"
                                                      False="Collapsed" />
+        <converters:StringCompareToForegroundConverter x:Key="StringCompareToForegroundConverter"
+                                                       Match="{StaticResource Accent}" NotMatch="{StaticResource PrimaryText}">
+        </converters:StringCompareToForegroundConverter>
 
         <Style x:Key="WizardButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}" />
     </UserControl.Resources>
@@ -23,13 +26,59 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <ContentControl Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Content="{Binding WizardPage}" />
+            <ScrollViewer Grid.Row="0" Grid.ColumnSpan="2"
+                          VerticalScrollBarVisibility="Auto"
+                          HorizontalScrollBarVisibility="Auto">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <ItemsControl Name="StepperTitleControl"
+                                  ItemsSource="{Binding StepTitles}"
+                                  Visibility="{Binding ShowStepTitles, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Margin="10"
+                                            VerticalAlignment="Center"
+                                            HorizontalAlignment="Center"
+                                            Orientation="Horizontal" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="━━" Margin="10 0 10 0" FontWeight="Bold" FontSize="18" />
+                                    <TextBlock Name="StepTitleLabel" Text="{Binding}" FontWeight="Bold" FontSize="18">
+                                        <TextBlock.Foreground>
+                                            <MultiBinding
+                                                Converter="{StaticResource StringCompareToForegroundConverter}">
+                                                <MultiBinding.Bindings>
+                                                    <Binding ElementName="StepTitleLabel" Path="Text"></Binding>
+                                                    <Binding ElementName="StepperTitleControl"
+                                                             Path="DataContext.CurrentStepTitle">
+                                                    </Binding>
+                                                </MultiBinding.Bindings>
+                                            </MultiBinding>
+                                        </TextBlock.Foreground>
+                                    </TextBlock>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
 
-            <StackPanel Margin="0,5,5,5" Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
+                    <TextBlock VerticalAlignment="Center"
+                               HorizontalAlignment="Center"
+                               Text="━━"
+                               Margin="0 0 10 0" FontWeight="Bold" FontSize="18">
+                    </TextBlock>
+                </StackPanel>
+            </ScrollViewer>
+
+            <ContentControl Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="5" Content="{Binding WizardPage}" />
+
+            <StackPanel Margin="0,5,5,5" Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
                 <Button
                     Margin="5,0,0,0"
                     Content="Back"
