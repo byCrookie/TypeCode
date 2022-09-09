@@ -114,7 +114,7 @@ public partial class MainSidebarViewModel : ViewModelBase, IAsyncNavigatedTo
         var wizardBuilder = _wizardBuilderFactory.Create();
 
         var wizard = wizardBuilder
-            .Then<SetupWizardViewModel>((options, _) => options.AllowNext(_ => true))
+            .Then<SetupWizardViewModel>((options, _) => options.AllowNext(_ => true).Title("Configuration"))
             .FinishAsync(context => context.GetParameter<SetupConfigurator>().ExportAsync(), "Save")
             .Build();
 

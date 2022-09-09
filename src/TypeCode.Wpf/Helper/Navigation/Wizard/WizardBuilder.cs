@@ -37,7 +37,8 @@ public class WizardBuilder : IWizardAfterInitialBuilder
             parameter.BeforeAction,
             parameter.AllowBack,
             parameter.AllowNext,
-            CreateInstances<TViewModel>()
+            CreateInstances<TViewModel>(),
+            parameter.StepTitle
         );
 
         if (_wizard.StepConfigurations.LastOrDefault() is not null)

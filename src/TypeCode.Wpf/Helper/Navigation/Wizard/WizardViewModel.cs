@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.Collections.ObjectModel;
+using System.Windows.Controls;
 using AsyncAwaitBestPractices;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -26,6 +27,16 @@ public partial class WizardViewModel : ViewModelBase, IWizardHost
 
     public async Task NavigateToAsync(Wizard wizard, NavigationAction navigationAction)
     {
+        StepTitles = wizard.StepConfigurations.Select(step => step.StepTitle).ToList();
+        ShowStepTitles = StepTitles.Any(title => title is not null);
+
+        if (ShowStepTitles && wizard.StepConfigurations.Any(step => step.StepTitle is null))
+        {
+            throw new Exception("Not all steps have titles. None or all are allowed.");
+        }
+        
+        CurrentStepTitle = wizard.CurrentStepConfiguration?.StepTitle;
+            
         wizard.NavigationContext.AddOrUpdateParameter(navigationAction);
 
         if (wizard.CurrentStepConfiguration is null)
@@ -116,6 +127,7 @@ public partial class WizardViewModel : ViewModelBase, IWizardHost
             throw new ArgumentException("Wizard is not set");
         }
 
+        CurrentStepTitle = _wizard.CurrentStepConfiguration?.StepTitle;
         return _wizardNavigator.NextAsync(_wizard);
     }
 
@@ -126,6 +138,7 @@ public partial class WizardViewModel : ViewModelBase, IWizardHost
             throw new ArgumentException("Wizard is not set");
         }
 
+        CurrentStepTitle = _wizard.CurrentStepConfiguration?.StepTitle;
         return _wizardNavigator.BackAsync(_wizard);
     }
 
@@ -179,4 +192,13 @@ public partial class WizardViewModel : ViewModelBase, IWizardHost
 
     [ObservableProperty]
     private string? _finishText;
+    
+    [ObservableProperty]
+    private IEnumerable<string?>? _stepTitles;
+
+    [ObservableProperty]
+    private string? _currentStepTitle;
+    
+    [ObservableProperty]
+    private bool _showStepTitles;
 }

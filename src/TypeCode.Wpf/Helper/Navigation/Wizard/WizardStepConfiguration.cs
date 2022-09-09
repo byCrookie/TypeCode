@@ -9,7 +9,8 @@ public class WizardStepConfiguration
         Func<NavigationContext, Task> beforeAction,
         Func<NavigationContext, bool> allowBack,
         Func<NavigationContext, bool> allowNext,
-        InstanceResult instances
+        InstanceResult instances,
+        string? stepTitle
     )
     {
         AfterAction = afterAction;
@@ -17,6 +18,7 @@ public class WizardStepConfiguration
         AllowBack = allowBack;
         AllowNext = allowNext;
         Instances = instances;
+        StepTitle = stepTitle;
     }
 
     public Func<NavigationContext, Task> BeforeAction { get; }
@@ -28,4 +30,5 @@ public class WizardStepConfiguration
     public WizardStepConfiguration? LastStep { get; set; }
     public WizardStepConfiguration? NextStep { get; set; }
     public bool Initialized { get; set; }
+    public string? StepTitle { get; }
 }
