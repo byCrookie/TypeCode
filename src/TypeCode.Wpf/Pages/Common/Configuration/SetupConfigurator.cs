@@ -330,6 +330,7 @@ internal class SetupConfigurator : ISetupConfigurator
                 {
                     model.Path = mapping.Type.Path;
                     model.Priority = mapping.Type.Priority.ToString();
+                    model.Ignore = mapping.Type.Ignore;
                     return Task.CompletedTask;
                 }, "Update", title: "Update Root").ConfigureAwait(true);
         }
@@ -364,6 +365,7 @@ internal class SetupConfigurator : ISetupConfigurator
                 {
                     model.Name = mapping.Type.Name;
                     model.Priority = mapping.Type.Priority;
+                    model.Ignore = mapping.Type.Ignore;
                     return Task.CompletedTask;
                 }, "Update", title: "Update Group").ConfigureAwait(true);
         }
@@ -398,6 +400,7 @@ internal class SetupConfigurator : ISetupConfigurator
                 {
                     model.Path = mapping.Type.Path;
                     model.Priority = mapping.Type.Priority;
+                    model.Ignore = mapping.Type.Ignore;
                     return Task.CompletedTask;
                 }, "Update", title: "Update Path").ConfigureAwait(true);
         }
@@ -432,6 +435,7 @@ internal class SetupConfigurator : ISetupConfigurator
                 {
                     model.Selector = mapping.Type.Selector;
                     model.Priority = mapping.Type.Priority;
+                    model.Ignore = mapping.Type.Ignore;
                     return Task.CompletedTask;
                 }, "Update", title: "Update Path Selector").ConfigureAwait(true);
         }
