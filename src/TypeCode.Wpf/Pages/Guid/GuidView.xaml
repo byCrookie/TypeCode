@@ -1,0 +1,67 @@
+﻿<UserControl x:Class="TypeCode.Wpf.Pages.Guid.GuidView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:outputBox="clr-namespace:TypeCode.Wpf.Components.OutputBox"
+             xmlns:guid="clr-namespace:TypeCode.Wpf.Pages.Guid"
+             xmlns:format="clr-namespace:TypeCode.Business.Mode.Guid;assembly=TypeCode.Business"
+             xmlns:converters="clr-namespace:TypeCode.Wpf.Helper.Converters"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance guid:GuidViewModel}">
+
+    <UserControl.Resources>
+        <converters:EnumToDescriptionConverter x:Key="EnumToDescriptionConverter" />
+    </UserControl.Resources>
+
+    <Grid Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Margin="0,0,0,5" Grid.Row="1">
+            <RadioButton GroupName="Format" IsChecked="True"
+                         Content="{Binding ConverterParameter={x:Static format:GuidFormat.D}, Converter={StaticResource EnumToDescriptionConverter}}"
+                         Command="{Binding GuidFormatCommand}"
+                         CommandParameter="{x:Static format:GuidFormat.D}">
+            </RadioButton>
+            <RadioButton GroupName="Format"
+                         Content="{Binding ConverterParameter={x:Static format:GuidFormat.N}, Converter={StaticResource EnumToDescriptionConverter}}"
+                         Command="{Binding GuidFormatCommand}"
+                         CommandParameter="{x:Static format:GuidFormat.N}">
+            </RadioButton>
+            <RadioButton GroupName="Format"
+                         Content="{Binding ConverterParameter={x:Static format:GuidFormat.B}, Converter={StaticResource EnumToDescriptionConverter}}"
+                         Command="{Binding GuidFormatCommand}"
+                         CommandParameter="{x:Static format:GuidFormat.B}">
+            </RadioButton>
+            <RadioButton GroupName="Format"
+                         Content="{Binding ConverterParameter={x:Static format:GuidFormat.P}, Converter={StaticResource EnumToDescriptionConverter}}"
+                         Command="{Binding GuidFormatCommand}"
+                         CommandParameter="{x:Static format:GuidFormat.P}">
+            </RadioButton>
+            <RadioButton GroupName="Format"
+                         Content="{Binding ConverterParameter={x:Static format:GuidFormat.X}, Converter={StaticResource EnumToDescriptionConverter}}"
+                         Command="{Binding GuidFormatCommand}"
+                         CommandParameter="{x:Static format:GuidFormat.X}">
+            </RadioButton>
+        </StackPanel>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal">
+            <Button
+                BorderThickness="0" Command="{Binding GenerateSingleCommand}"
+                Content="Generate 1"
+                ToolTip="Generates a single guid and copies it to clipboard." />
+            <Button
+                Margin="5,0,0,0"
+                BorderThickness="0" Command="{Binding GenerateMultipleCommand}"
+                Content="Generate 100"
+                ToolTip="Generates 100 guids." />
+        </StackPanel>
+
+        <outputBox:OutputBoxView Margin="0,5,0,0" Grid.Row="3" DataContext="{Binding OutputBoxViewModel}"></outputBox:OutputBoxView>
+    </Grid>
+</UserControl>

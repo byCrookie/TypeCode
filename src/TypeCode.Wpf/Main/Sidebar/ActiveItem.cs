@@ -11,5 +11,6 @@ public enum ActiveItem
     Builder,
     Assembly,
     Home,
-    DynamicExecute
+    DynamicExecute,
+    Guid
 }

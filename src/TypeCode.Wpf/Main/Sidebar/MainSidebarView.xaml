@@ -36,6 +36,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -98,8 +99,16 @@
                 Command="{Binding NavigateToDynamicExecuteCommand}"
                 Content="Dynamic Execution" />
         </StackPanel>
+        
+        <StackPanel Grid.Row="8"
+                    Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.Guid}}">
+            <Button
+                Style="{StaticResource TabButtonStyle}"
+                Command="{Binding NavigateToGuidCommand}"
+                Content="Guid" />
+        </StackPanel>
 
-        <StackPanel Grid.Row="9"
+        <StackPanel Grid.Row="10"
                     Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.Assembly}}">
             <Button
                 Style="{StaticResource TabButtonStyle}"
@@ -107,7 +116,7 @@
                 Content="Assemblies" />
         </StackPanel>
 
-        <Button Grid.Row="10"
+        <Button Grid.Row="11"
                 Style="{StaticResource TabButtonStyle}"
                 Command="{Binding OpenSettingsCommand}"
                 Content="Settings" />
