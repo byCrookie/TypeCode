@@ -9,7 +9,7 @@ public class AssemblyGroup
     {
         AssemblyPathSelector = new List<AssemblyPathSelector>();
         AssemblyPath = new List<AssemblyPath>();
-        PriorityAssemblyList = new List<PriorityString>();
+        PriorityAssemblyList = new List<AssemblyPriorityString>();
         Name = string.Empty;
     }
         
@@ -18,7 +18,7 @@ public class AssemblyGroup
     public string Name { get; set; }
     public int Priority { get; set; }
     public bool Ignore { get; set; }
-    public List<PriorityString> PriorityAssemblyList { get; set; }
+    public List<AssemblyPriorityString> PriorityAssemblyList { get; set; }
 }
     
 public class AssemblyRoot

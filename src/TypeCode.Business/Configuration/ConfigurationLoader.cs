@@ -52,30 +52,30 @@ public class ConfigurationLoader : IConfigurationLoader
         {
             foreach (var group in root.AssemblyGroup.OrderBy(r => r.Priority))
             {
-                var messages = new List<PriorityString>();
+                var assemblyPriorityStrings = new List<AssemblyPriorityString>();
 
                 group.AssemblyPathSelector.ForEach(selector =>
                 {
                     selector.AssemblyDirectories
-                        .ForEach(directory => messages
-                            .Add(new PriorityString($"{root.Priority}.{group.Priority}.{selector.Priority}",
-                                $@"{Cuts.Point()} {directory.AbsolutPath}")));
+                        .ForEach(directory => assemblyPriorityStrings
+                            .Add(new AssemblyPriorityString($"{root.Priority}.{group.Priority}.{selector.Priority}",
+                                directory.AbsolutPath, selector.Ignore || group.Ignore || root.Ignore)));
                 });
 
                 group.AssemblyPath.ForEach(path =>
                 {
                     path.AssemblyDirectories
-                        .ForEach(directory => messages
-                            .Add(new PriorityString($"{root.Priority}.{group.Priority}.{path.Priority}",
-                                $@"{directory.AbsolutPath}")));
+                        .ForEach(directory => assemblyPriorityStrings
+                            .Add(new AssemblyPriorityString($"{root.Priority}.{group.Priority}.{path.Priority}",
+                                directory.AbsolutPath, path.Ignore || group.Ignore || root.Ignore)));
                 });
 
-                foreach (var message in messages.OrderBy(message => message.Priority))
+                foreach (var assemblyPriorityString in assemblyPriorityStrings.OrderBy(priorityString => priorityString.Priority))
                 {
-                    Log.Information("{0}", message.Message);
+                    Log.Information("{0}", $"{assemblyPriorityString}");
                 }
 
-                group.PriorityAssemblyList = messages;
+                group.PriorityAssemblyList = assemblyPriorityStrings;
             }
         }
     }
