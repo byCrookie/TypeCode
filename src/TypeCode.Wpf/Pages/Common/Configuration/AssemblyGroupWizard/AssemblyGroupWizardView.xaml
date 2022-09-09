@@ -16,6 +16,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="5" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0">
@@ -58,16 +59,12 @@
 
         <Grid Grid.Row="4">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="200"></ColumnDefinition>
+                <ColumnDefinition Width="100"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
 
             <Label Content="Ignore" />
-            <CheckBox VerticalAlignment="Center"
-                      VerticalContentAlignment="Center"
-                      HorizontalContentAlignment="Center"
-                      HorizontalAlignment="Left"
-                      Grid.Column="1" Content="Ignore"
+            <CheckBox Grid.Column="1" Content="Ignore"
                       ToolTip="Exclude from being loaded at startup."
                       Foreground="{StaticResource PrimaryText}"
                       IsChecked="{Binding Ignore}">

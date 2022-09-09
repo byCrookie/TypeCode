@@ -53,15 +53,8 @@ public partial class ConfigurationWizardViewModel : ViewModelBase, IAsyncInitial
             return xml;
         }
 
-        try
-        {
-            var doc = XDocument.Parse(xml);
-            return doc.ToString();
-        }
-        catch (Exception)
-        {
-            return xml;
-        }
+        var doc = XDocument.Parse(xml);
+        return doc.ToString();
     }
 
     [ObservableProperty]

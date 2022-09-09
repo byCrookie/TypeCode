@@ -29,6 +29,7 @@
                 <RowDefinition></RowDefinition>
                 <RowDefinition Height="5"></RowDefinition>
                 <RowDefinition></RowDefinition>
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <textBox:CustomTextBox
                 Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
@@ -56,10 +57,6 @@
             </textBox:CustomTextBox>
             <Label Grid.Row="4" Grid.Column="0" Content="Ignore" />
             <CheckBox Grid.Row="4" Grid.Column="1"
-                      VerticalAlignment="Center"
-                      VerticalContentAlignment="Center"
-                      HorizontalContentAlignment="Center"
-                      HorizontalAlignment="Left"
                       Content="Ignore"
                       ToolTip="Exclude root from being loaded at statup."
                       Foreground="{StaticResource PrimaryText}"

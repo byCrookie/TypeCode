@@ -16,10 +16,17 @@
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
-        <Label Content="Pattern (Regex-Pattern)" />
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Label Grid.Row="0" Content="Pattern (Regex-Pattern)" />
 
         <textBox:CustomTextBox
-            Grid.Column="1" Text="{Binding Pattern, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+            Grid.Row="0"
+            Grid.Column="1"
+            Text="{Binding Pattern, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
             ShowRegex="False"
             ShowAutoCompletion="False"
             AcceptsReturn="False"
