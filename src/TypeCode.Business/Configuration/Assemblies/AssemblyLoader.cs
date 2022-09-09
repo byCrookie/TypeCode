@@ -25,10 +25,11 @@ public class AssemblyLoader : IAssemblyLoader
     public async Task LoadAsync(TypeCodeConfiguration configuration)
     {
         var assemblyRootCompounds = configuration.AssemblyRoot
-            .SelectMany(root => root.AssemblyGroup
-                .SelectMany(group => group.AssemblyPath
+            .Where(root => !root.Ignore)
+            .SelectMany(root => root.AssemblyGroup.Where(group => !group.Ignore)
+                .SelectMany(group => group.AssemblyPath.Where(path => !path.Ignore)
                     .SelectMany(path => path.AssemblyDirectories.Select(directory => new AssemblyRootCompound(root, directory)))
-                    .Concat(group.AssemblyPathSelector
+                    .Concat(group.AssemblyPathSelector.Where(selector => !selector.Ignore)
                         .SelectMany(selector => selector.AssemblyDirectories.Select(directory => new AssemblyRootCompound(root, directory))))))
             .ToList();
 
