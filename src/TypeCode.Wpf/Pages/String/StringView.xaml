@@ -22,5 +22,6 @@
         </Grid.RowDefinitions>
 
         <navigationCard:NavigationCardView Grid.Row="0" DataContext="{Binding StringLengthViewModel}" />
+        <navigationCard:NavigationCardView Margin="5,0,0,0" Grid.Row="0" Grid.Column="1" DataContext="{Binding StringEscapeViewModel}" />
     </Grid>
 </UserControl>

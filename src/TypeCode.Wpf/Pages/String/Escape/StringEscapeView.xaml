@@ -1,0 +1,117 @@
+﻿<UserControl x:Class="TypeCode.Wpf.Pages.String.Escape.StringEscapeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:outputBox="clr-namespace:TypeCode.Wpf.Components.OutputBox"
+             xmlns:textBox="clr-namespace:TypeCode.Wpf.Controls.TextBox"
+             xmlns:escape="clr-namespace:TypeCode.Wpf.Pages.String.Escape"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="300"
+             d:DataContext="{d:DesignInstance escape:StringEscapeViewModel}">
+
+    <UserControl.InputBindings>
+        <KeyBinding Key="Enter" Command="{Binding StringEscapeCommand}" />
+    </UserControl.InputBindings>
+
+    <Grid Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <textBox:CustomTextBox Grid.Column="0" Grid.Row="0"
+                                   Text="{Binding Input, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                   ShowRegex="False"
+                                   ToolTip="Input any text"
+                                   ShowAutoCompletion="False"
+                                   HorizontalAlignment="Stretch"
+                                   HorizontalContentAlignment="Stretch"
+                                   HorizontalScrollBarVisibility="Auto"
+                                   VerticalScrollBarVisibility="Auto"
+                                   AcceptsReturn="True"
+                                   TextWrapping="NoWrap"
+                                   AcceptsTab="True"
+                                   MinHeight="200"
+                                   MaxHeight="400">
+
+                <TextBox.InputBindings>
+                    <KeyBinding Key="Enter" Command="{Binding StringEscapeCommand}" />
+                </TextBox.InputBindings>
+            </textBox:CustomTextBox>
+
+            <textBox:CustomTextBox Margin="0,5,0,0" Grid.Column="0" Grid.Row="1"
+                                   Text="{Binding ToEscape, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                   ShowRegex="False"
+                                   ToolTip="Input character to escape"
+                                   ShowAutoCompletion="False"
+                                   HorizontalAlignment="Stretch"
+                                   HorizontalContentAlignment="Stretch"
+                                   HorizontalScrollBarVisibility="Auto"
+                                   VerticalScrollBarVisibility="Auto"
+                                   TextWrapping="NoWrap">
+                <TextBox.InputBindings>
+                    <KeyBinding Key="Enter" Command="{Binding AddEscapeCommand}" />
+                </TextBox.InputBindings>
+            </textBox:CustomTextBox>
+
+            <textBox:CustomTextBox Margin="0,5,0,0" Grid.Column="0" Grid.Row="2"
+                                   Text="{Binding EscapeWith, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                   ShowRegex="False"
+                                   ToolTip="Input character to escape with."
+                                   ShowAutoCompletion="False"
+                                   HorizontalAlignment="Stretch"
+                                   HorizontalContentAlignment="Stretch"
+                                   HorizontalScrollBarVisibility="Auto"
+                                   VerticalScrollBarVisibility="Auto"
+                                   TextWrapping="NoWrap">
+                <TextBox.InputBindings>
+                    <KeyBinding Key="Enter" Command="{Binding AddEscapeCommand}" />
+                </TextBox.InputBindings>
+            </textBox:CustomTextBox>
+
+            <ItemsControl Grid.Row="3" Grid.Column="0" ItemsSource="{Binding EscapeItems}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel></StackPanel>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel VerticalAlignment="Center" Orientation="Horizontal" Margin="5">
+                            <TextBlock VerticalAlignment="Center" Text="{Binding}"></TextBlock>
+                            <Button Margin="5,0,0,0"
+                                    Content="Remove"
+                                    Command="{Binding Path=DataContext.RemoveEscapeCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                    CommandParameter="{Binding}">
+                            </Button>
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <Button Margin="5,5,0,0" VerticalAlignment="Top" Grid.Column="1" Grid.Row="1"
+                    Command="{Binding AddEscapeCommand}"
+                    Content="Add Escape" />
+
+            <Button Margin="5,0,0,0" VerticalAlignment="Top" Grid.Column="1" Grid.Row="0"
+                    Command="{Binding StringEscapeCommand}"
+                    Content="Escape" />
+        </Grid>
+
+        <outputBox:OutputBoxView Margin="0,5,0,0" Grid.Row="1" DataContext="{Binding OutputBoxViewModel}" />
+    </Grid>
+</UserControl>
