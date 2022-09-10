@@ -13,7 +13,8 @@
         <converters:BooleanToVisibilityConverterSelf x:Key="BooleanToVisibilityConverter" True="Visible"
                                                      False="Collapsed" />
         <converters:StringCompareToForegroundConverter x:Key="StringCompareToForegroundConverter"
-                                                       Match="{StaticResource Accent}" NotMatch="{StaticResource PrimaryText}">
+                                                       Match="{StaticResource Accent}"
+                                                       NotMatch="{StaticResource PrimaryText}">
         </converters:StringCompareToForegroundConverter>
 
         <Style x:Key="WizardButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}" />
@@ -76,7 +77,9 @@
                 </StackPanel>
             </ScrollViewer>
 
-            <ContentControl Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="5" Content="{Binding WizardPage}" />
+            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="5">
+                <ContentControl Content="{Binding WizardPage}" />
+            </ScrollViewer>
 
             <StackPanel Margin="0,5,5,5" Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
                 <Button

@@ -45,13 +45,13 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            
+
             <Button Grid.Row="0" Grid.Column="0" WindowChrome.IsHitTestVisibleInChrome="True"
                     Margin="5,0,0,0" FontWeight="ExtraBold" FontSize="18"
                     Background="Transparent" Command="{Binding NavigateToHomeCommand}">
                 TypeCode
             </Button>
-            
+
             <StackPanel Grid.Row="0" Grid.Column="2" Orientation="Horizontal"
                         WindowChrome.IsHitTestVisibleInChrome="True">
 
@@ -91,9 +91,10 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-                <sidebar:MainSidebarView x:Name="MainSidebar" DataContext="{Binding MainSidebarViewModel}"
-                                         Grid.Column="0"
-                                         Grid.Row="0" />
+                <ScrollViewer Grid.Column="0"
+                              Grid.Row="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                    <sidebar:MainSidebarView x:Name="MainSidebar" DataContext="{Binding MainSidebarViewModel}" />
+                </ScrollViewer>
 
                 <content:MainContentView x:Name="MainContent" DataContext="{Binding MainContentViewModel}"
                                          Grid.Column="1"
