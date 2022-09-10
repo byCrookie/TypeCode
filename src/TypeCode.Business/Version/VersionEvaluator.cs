@@ -6,6 +6,13 @@ namespace TypeCode.Business.Version;
 
 public class VersionEvaluator : IVersionEvaluator
 {
+    private readonly ISemanticVersionComparer _semanticVersionComparer;
+
+    public VersionEvaluator(ISemanticVersionComparer semanticVersionComparer)
+    {
+        _semanticVersionComparer = semanticVersionComparer;
+    }
+
     public async Task<VersionResult> EvaluateAsync()
     {
         var currentVersion = await ReadCurrentVersionAsync().ConfigureAwait(false);
@@ -26,29 +33,29 @@ public class VersionEvaluator : IVersionEvaluator
         };
     }
 
-    private static bool HasNewerVersion(VersionResult currentVersion, VersionResponse? newestVersion)
+    private bool HasNewerVersion(VersionResult currentVersion, VersionResponse? newestVersion)
     {
         if (string.IsNullOrEmpty(currentVersion.CurrentVersion) || string.IsNullOrEmpty(newestVersion?.TagName))
         {
             return false;
         }
 
-        var current = CurrentAsInt(currentVersion);
-        var newest = NewestAsInt(newestVersion);
-        
-        return current < newest;
+        var current = Current(currentVersion);
+        var newest = Newest(newestVersion);
+
+        return _semanticVersionComparer.IsNewer(current, newest);
     }
 
-    private static int NewestAsInt(VersionResponse newestVersion)
+    private static string Newest(VersionResponse newestVersion)
     {
-        return int.Parse(string.Join("", GetVersionNumberFromTag(newestVersion).Trim().Split('.')[..3]));
+        return GetVersionNumberFromTag(newestVersion).Trim();
     }
 
-    private static int CurrentAsInt(VersionResult currentVersion)
+    private static string Current(VersionResult currentVersion)
     {
-        return int.Parse(currentVersion.CurrentVersion!.Trim().Split('-').Length > 1 
-            ? string.Join("", currentVersion.CurrentVersion!.Trim().Split('-')[0].Split('.')[..3]) 
-            : string.Join("", currentVersion.CurrentVersion!.Trim().Split('.')[..3]));
+        return currentVersion.CurrentVersion!.Trim().Split('-').Length > 1
+            ? currentVersion.CurrentVersion!.Trim().Split('-')[0]
+            : currentVersion.CurrentVersion!.Trim();
     }
 
     public Task<VersionResult> ReadCurrentVersionAsync()
