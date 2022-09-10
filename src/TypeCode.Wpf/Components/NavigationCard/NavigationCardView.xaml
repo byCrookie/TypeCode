@@ -8,7 +8,7 @@
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance navigationCard:NavigationCardViewModel}">
 
-    <Border BorderBrush="{StaticResource Accent}" BorderThickness="1">
+    <Border BorderBrush="{StaticResource Accent}" BorderThickness="1" Background="{StaticResource Secondary}">
         <Button Background="Transparent" Command="{Binding NavigateCommand}">
             <StackPanel>
                 <TextBlock Text="{Binding Title}" FontSize="18" FontWeight="Bold"></TextBlock>

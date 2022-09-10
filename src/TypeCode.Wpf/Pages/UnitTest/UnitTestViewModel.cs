@@ -25,13 +25,13 @@ public partial class UnitTestViewModel : ViewModelBase, IAsyncNavigatedTo
 
     public Task OnNavigatedToAsync(NavigationContext context)
     {
-        _typeCardViewModel = _navigationCardViewModelFactory.Create(new NavigationCardViewModelParameter(
+        TypeCardViewModel = _navigationCardViewModelFactory.Create(new NavigationCardViewModelParameter(
             "Type",
             "Search for a type in your loaded assemblies and let TypeCode generate your unit-test code."
             , NavigateToTypeCommand)
         );
 
-        _manuallyCardViewModel = _navigationCardViewModelFactory.Create(new NavigationCardViewModelParameter(
+        ManuallyCardViewModel = _navigationCardViewModelFactory.Create(new NavigationCardViewModelParameter(
             "Manually",
             "Paste the code of your constructor directly, let TypeCode parse it and generate your unit-test code."
             , NavigateToManuallyCommand)

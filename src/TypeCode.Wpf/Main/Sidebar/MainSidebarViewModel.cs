@@ -9,6 +9,7 @@ using TypeCode.Wpf.Pages.Assemblies;
 using TypeCode.Wpf.Pages.Builder;
 using TypeCode.Wpf.Pages.Composer;
 using TypeCode.Wpf.Pages.Configuration.Simple;
+using TypeCode.Wpf.Pages.DynamicExecution;
 using TypeCode.Wpf.Pages.Encoding;
 using TypeCode.Wpf.Pages.Guid;
 using TypeCode.Wpf.Pages.Home;
@@ -92,7 +93,7 @@ public partial class MainSidebarViewModel : ViewModelBase, IAsyncNavigatedTo
     private Task NavigateToDynamicExecuteAsync()
     {
         ActiveItem = ActiveItem.DynamicExecute;
-        return _navigationService.NavigateAsync<StringViewModel>(new NavigationContext());
+        return _navigationService.NavigateAsync<DynamicExecutionViewModel>(new NavigationContext());
     }
 
     [RelayCommand]
