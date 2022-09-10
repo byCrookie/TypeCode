@@ -4,8 +4,8 @@ using TypeCode.Wpf.Components.NavigationCard;
 using TypeCode.Wpf.Helper.Navigation.Contract;
 using TypeCode.Wpf.Helper.Navigation.Service;
 using TypeCode.Wpf.Helper.ViewModels;
-using TypeCode.Wpf.Pages.String.Escape;
 using TypeCode.Wpf.Pages.String.Length;
+using TypeCode.Wpf.Pages.String.Replace;
 
 namespace TypeCode.Wpf.Pages.String;
 
@@ -31,9 +31,9 @@ public partial class StringViewModel : ViewModelBase, IAsyncNavigatedTo
             , NavigateToStringLengthCommand)
         );
 
-        StringEscapeViewModel = _navigationCardViewModelFactory.Create(new NavigationCardViewModelParameter(
-            "String Escape",
-            "Escape text using custom escaping instructions."
+        StringReplaceViewModel = _navigationCardViewModelFactory.Create(new NavigationCardViewModelParameter(
+            "String Replace",
+            "Replace text using custom replacing instructions."
             , NavigateToStringEscapeCommand)
         );
 
@@ -46,7 +46,7 @@ public partial class StringViewModel : ViewModelBase, IAsyncNavigatedTo
 
     [ObservableProperty]
     [ChildViewModel]
-    private NavigationCardViewModel? _stringEscapeViewModel;
+    private NavigationCardViewModel? _stringReplaceViewModel;
 
     [RelayCommand]
     private Task NavigateToStringLengthAsync()
@@ -57,6 +57,6 @@ public partial class StringViewModel : ViewModelBase, IAsyncNavigatedTo
     [RelayCommand]
     private Task NavigateToStringEscapeAsync()
     {
-        return _navigationService.NavigateAsync<StringEscapeViewModel>(new NavigationContext());
+        return _navigationService.NavigateAsync<StringReplaceViewModel>(new NavigationContext());
     }
 }
