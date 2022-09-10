@@ -3,6 +3,11 @@
                     xmlns:checkBox="clr-namespace:TypeCode.Wpf.Controls.CheckBox">
 
     <Style TargetType="{x:Type checkBox:CustomCheckBox}">
+        
+        <Setter Property="Background" Value="{StaticResource PrimaryText}" />
+        <Setter Property="Foreground" Value="{StaticResource PrimaryText}" />
+        <Setter Property="BorderBrush" Value="{StaticResource Accent}" />
+        <Setter Property="FontFamily" Value="Courier New" />
 
         <Setter Property="Template">
             <Setter.Value>

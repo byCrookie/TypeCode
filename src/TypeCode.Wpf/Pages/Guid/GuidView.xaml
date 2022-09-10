@@ -26,28 +26,23 @@
             <RadioButton GroupName="Format" IsChecked="True"
                          Content="{Binding ConverterParameter={x:Static format:GuidFormat.D}, Converter={StaticResource EnumToDescriptionConverter}}"
                          Command="{Binding GuidFormatCommand}"
-                         CommandParameter="{x:Static format:GuidFormat.D}">
-            </RadioButton>
+                         CommandParameter="{x:Static format:GuidFormat.D}" />
             <RadioButton GroupName="Format"
                          Content="{Binding ConverterParameter={x:Static format:GuidFormat.N}, Converter={StaticResource EnumToDescriptionConverter}}"
                          Command="{Binding GuidFormatCommand}"
-                         CommandParameter="{x:Static format:GuidFormat.N}">
-            </RadioButton>
+                         CommandParameter="{x:Static format:GuidFormat.N}" />
             <RadioButton GroupName="Format"
                          Content="{Binding ConverterParameter={x:Static format:GuidFormat.B}, Converter={StaticResource EnumToDescriptionConverter}}"
                          Command="{Binding GuidFormatCommand}"
-                         CommandParameter="{x:Static format:GuidFormat.B}">
-            </RadioButton>
+                         CommandParameter="{x:Static format:GuidFormat.B}" />
             <RadioButton GroupName="Format"
                          Content="{Binding ConverterParameter={x:Static format:GuidFormat.P}, Converter={StaticResource EnumToDescriptionConverter}}"
                          Command="{Binding GuidFormatCommand}"
-                         CommandParameter="{x:Static format:GuidFormat.P}">
-            </RadioButton>
+                         CommandParameter="{x:Static format:GuidFormat.P}" />
             <RadioButton GroupName="Format"
                          Content="{Binding ConverterParameter={x:Static format:GuidFormat.X}, Converter={StaticResource EnumToDescriptionConverter}}"
                          Command="{Binding GuidFormatCommand}"
-                         CommandParameter="{x:Static format:GuidFormat.X}">
-            </RadioButton>
+                         CommandParameter="{x:Static format:GuidFormat.X}" />
         </StackPanel>
 
         <StackPanel Grid.Row="2" Orientation="Horizontal">

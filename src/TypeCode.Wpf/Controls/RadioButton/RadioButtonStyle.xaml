@@ -1,0 +1,37 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:radioButton="clr-namespace:TypeCode.Wpf.Controls.RadioButton">
+
+    <Style TargetType="{x:Type radioButton:CustomRadioButton}" BasedOn="{StaticResource {x:Type RadioButton}}">
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type radioButton:CustomRadioButton}">
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <RadioButton
+                            Style="{StaticResource {x:Type RadioButton}}"
+                            IsChecked="{Binding Path=IsChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType={x:Type radioButton:CustomRadioButton}}}"
+                            GroupName="{Binding Path=GroupName, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType={x:Type radioButton:CustomRadioButton}}}"
+                            Command="{Binding Path=Command, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType={x:Type radioButton:CustomRadioButton}}}"
+                            CommandParameter="{Binding Path=CommandParameter, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType={x:Type radioButton:CustomRadioButton}}}"
+                            ToolTip="{Binding Path=ToolTip, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType={x:Type radioButton:CustomRadioButton}}}">
+                        </RadioButton>
+
+                        <TextBlock Margin="5,0,0,0" VerticalAlignment="Center" Grid.Column="1"
+                                   Text="{Binding Path=Content, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType={x:Type radioButton:CustomRadioButton}}}">
+                        </TextBlock>
+
+                    </Grid>
+
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+    </Style>
+</ResourceDictionary>

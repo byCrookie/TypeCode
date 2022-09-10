@@ -1,6 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="RadioButton/RadioButtonStyle.xaml"></ResourceDictionary>
         <ResourceDictionary Source="CheckBox/CheckBoxStyle.xaml"></ResourceDictionary>
         <ResourceDictionary Source="ComboBox/ComboBoxStyle.xaml"></ResourceDictionary>
         <ResourceDictionary Source="TextBox/CustomTextBoxStyle.xaml"></ResourceDictionary>
