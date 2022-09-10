@@ -35,7 +35,7 @@ public partial class MainSidebarViewModel : ViewModelBase, IAsyncNavigatedTo
         _wizardBuilderFactory = wizardBuilderFactory;
         _settingsWizardRunner = settingsWizardRunner;
 
-        ActiveItem = ActiveItem.Home;
+        ActiveItem = ActiveItem.None;
     }
 
     [ObservableProperty]
@@ -43,13 +43,6 @@ public partial class MainSidebarViewModel : ViewModelBase, IAsyncNavigatedTo
 
     public Task OnNavigatedToAsync(NavigationContext context)
     {
-        return NavigateToHomeAsync();
-    }
-
-    [RelayCommand]
-    private Task NavigateToHomeAsync()
-    {
-        ActiveItem = ActiveItem.Home;
         return _navigationService.NavigateAsync<HomeViewModel>(new NavigationContext());
     }
 
@@ -101,14 +94,14 @@ public partial class MainSidebarViewModel : ViewModelBase, IAsyncNavigatedTo
         ActiveItem = ActiveItem.DynamicExecute;
         return _navigationService.NavigateAsync<DynamicExecutionViewModel>(new NavigationContext());
     }
-    
+
     [RelayCommand]
     private Task NavigateToGuidAsync()
     {
         ActiveItem = ActiveItem.Guid;
         return _navigationService.NavigateAsync<GuidViewModel>(new NavigationContext());
     }
-    
+
     [RelayCommand]
     private Task NavigateToEncodingConversionAsync()
     {

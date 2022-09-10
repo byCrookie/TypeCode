@@ -9,7 +9,6 @@ public enum ActiveItem
     Mapper,
     Builder,
     Assembly,
-    Home,
     DynamicExecute,
     Guid,
     Encoding

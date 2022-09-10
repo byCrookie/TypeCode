@@ -37,7 +37,7 @@ public class UnitTestDependencyManuallyTypeCodeGenerator : IUnitTestDependencyMa
 
         if (matches.Length < 2)
         {
-            throw new FormatException("Not valid constructor pattern");
+            throw new FormatException("Not a valid constructor pattern");
         }
             
         var accessorAndName = matches[0];

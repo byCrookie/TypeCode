@@ -42,14 +42,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-
-        <StackPanel Grid.Row="0"
-                    Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.Home}}">
-            <Button
-                Style="{StaticResource TabButtonStyle}"
-                Command="{Binding NavigateToHomeCommand}"
-                Content="Home" />
-        </StackPanel>
+        
         <StackPanel Grid.Row="1"
                     Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.Specflow}}">
             <Button

@@ -12,6 +12,7 @@ using TypeCode.Wpf.Helper.Navigation.Service;
 using TypeCode.Wpf.Helper.ViewModels;
 using TypeCode.Wpf.Main.Content;
 using TypeCode.Wpf.Main.Sidebar;
+using TypeCode.Wpf.Pages.Home;
 
 namespace TypeCode.Wpf.Main;
 
@@ -27,6 +28,7 @@ public partial class MainViewModel :
     private readonly IConfigurationLoader _configurationLoader;
     private readonly ITypeProvider _typeProvider;
     private readonly IInfoLinkViewModelFactory _infoLinkViewModelFactory;
+    private readonly INavigationService _navigationService;
     private bool _isLoading;
 
     public MainViewModel(
@@ -35,13 +37,15 @@ public partial class MainViewModel :
         IConfigurationProvider configurationProvider,
         IConfigurationLoader configurationLoader,
         ITypeProvider typeProvider,
-        IInfoLinkViewModelFactory infoLinkViewModelFactory)
+        IInfoLinkViewModelFactory infoLinkViewModelFactory,
+        INavigationService navigationService)
     {
         _eventAggregator = eventAggregator;
         _configurationProvider = configurationProvider;
         _configurationLoader = configurationLoader;
         _typeProvider = typeProvider;
         _infoLinkViewModelFactory = infoLinkViewModelFactory;
+        _navigationService = navigationService;
 
         _isLoading = true;
 
@@ -82,6 +86,16 @@ public partial class MainViewModel :
     [ObservableProperty]
     [ChildViewModel]
     private InfoLinkViewModel? _infoLink;
+
+    [RelayCommand]
+    private Task NavigateToHomeAsync()
+    {
+        if (MainSidebarViewModel is not null)
+        {
+            MainSidebarViewModel.ActiveItem = ActiveItem.None;
+        }
+        return _navigationService.NavigateAsync<HomeViewModel>(new NavigationContext());
+    }
 
     public Task HandleAsync(VersionLoadedEvent e, CancellationToken? ct = null)
     {

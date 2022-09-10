@@ -41,11 +41,18 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-
-            <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal"
+            
+            <Button Grid.Row="0" Grid.Column="0" WindowChrome.IsHitTestVisibleInChrome="True"
+                    Margin="5,0,0,0" FontWeight="ExtraBold" FontSize="18"
+                    Background="Transparent" Command="{Binding NavigateToHomeCommand}">
+                TypeCode
+            </Button>
+            
+            <StackPanel Grid.Row="0" Grid.Column="2" Orientation="Horizontal"
                         WindowChrome.IsHitTestVisibleInChrome="True">
 
                 <StackPanel.Resources>
@@ -78,7 +85,7 @@
                         x:Name="CloseButton" />
             </StackPanel>
 
-            <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" ZIndex="0" x:Name="Main">
+            <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" ZIndex="0" x:Name="Main">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="160" />
                     <ColumnDefinition Width="*" />
@@ -93,7 +100,7 @@
                                          Grid.Row="0" />
             </Grid>
 
-            <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" ZIndex="2" x:Name="ModalOverlay"
+            <Grid Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="3" ZIndex="2" x:Name="ModalOverlay"
                   Visibility="Collapsed" HorizontalAlignment="Stretch"
                   VerticalAlignment="Stretch">
                 <Frame x:Name="ModalFrame"
@@ -102,7 +109,7 @@
                        NavigationUIVisibility="Hidden" />
             </Grid>
 
-            <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" ZIndex="1" x:Name="WizardOverlay"
+            <Grid Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="3" ZIndex="1" x:Name="WizardOverlay"
                   Visibility="Collapsed" HorizontalAlignment="Stretch"
                   VerticalAlignment="Stretch">
                 <Frame x:Name="WizardFrame"
