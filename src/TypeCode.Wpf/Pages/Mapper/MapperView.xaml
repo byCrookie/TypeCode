@@ -7,6 +7,7 @@
              xmlns:mapper="clr-namespace:TypeCode.Wpf.Pages.Mapper"
              xmlns:inputBox="clr-namespace:TypeCode.Wpf.Components.InputBox"
              xmlns:outputBox="clr-namespace:TypeCode.Wpf.Components.OutputBox"
+             xmlns:checkBox="clr-namespace:TypeCode.Wpf.Controls.CheckBox"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance mapper:MapperViewModel}">
@@ -18,7 +19,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <inputBox:InputBoxView Grid.Row="0" DataContext="{Binding InputBoxViewModel}"></inputBox:InputBoxView> 
+        <inputBox:InputBoxView Grid.Row="0" DataContext="{Binding InputBoxViewModel}"></inputBox:InputBoxView>
 
         <StackPanel Margin="0,5,0,0" Grid.Row="1">
             <RadioButton GroupName="Style" IsChecked="True" Command="{Binding StyleCommand}"
@@ -29,16 +30,13 @@
                          CommandParameter="{x:Static style:MappingStyle.Existing}">
                 Map to existing
             </RadioButton>
-            <CheckBox Content="Recursive"
-                      ToolTip="Maps all complex subtypes of class recursively."
-                      Foreground="{StaticResource PrimaryText}"
-                      IsChecked="{Binding Recursiv}">
-            </CheckBox>
-            <CheckBox Content="Single direction"
-                      ToolTip="Maps single direction only. (Class to OtherClass, not Class from/to OtherClass)"
-                      Foreground="{StaticResource PrimaryText}"
-                      IsChecked="{Binding SingleDirectionOnly}">
-            </CheckBox>
+            <checkBox:CustomCheckBox Content="Recursive"
+                                     ToolTip="Maps all complex subtypes of class recursively."
+                                     IsChecked="{Binding Recursiv}" />
+
+            <checkBox:CustomCheckBox Content="Single direction"
+                                     ToolTip="Maps single direction only. (Class to OtherClass, not Class from/to OtherClass)"
+                                     IsChecked="{Binding SingleDirectionOnly}" />
         </StackPanel>
 
         <outputBox:OutputBoxView Margin="0,5,0,0" Grid.Row="2" DataContext="{Binding OutputBoxViewModel}"></outputBox:OutputBoxView>

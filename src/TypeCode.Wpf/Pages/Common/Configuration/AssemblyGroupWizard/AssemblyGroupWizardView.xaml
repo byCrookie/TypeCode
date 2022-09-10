@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:assemblyGroupWizard="clr-namespace:TypeCode.Wpf.Pages.Common.Configuration.AssemblyGroupWizard"
              xmlns:textBox="clr-namespace:TypeCode.Wpf.Controls.TextBox"
+             xmlns:checkBox="clr-namespace:TypeCode.Wpf.Controls.CheckBox"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance assemblyGroupWizard:AssemblyGroupWizardViewModel}">
@@ -52,12 +53,10 @@
 
 
         <Label Grid.Row="4" Grid.Column="0" Content="Ignore" />
-        <CheckBox Grid.Row="4" Grid.Column="2" Content="Ignore"
-                  VerticalAlignment="Center"
-                  ToolTip="Exclude from being loaded at startup."
-                  Foreground="{StaticResource PrimaryText}"
-                  IsChecked="{Binding Ignore}">
-        </CheckBox>
+        <checkBox:CustomCheckBox Grid.Row="4" Grid.Column="2" Content="Ignore"
+                                 VerticalAlignment="Center"
+                                 ToolTip="Exclude from being loaded at startup."
+                                 IsChecked="{Binding Ignore}" />
 
     </Grid>
 </UserControl>

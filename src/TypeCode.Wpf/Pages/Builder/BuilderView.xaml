@@ -6,6 +6,7 @@
              xmlns:builder="clr-namespace:TypeCode.Wpf.Pages.Builder"
              xmlns:inputBox="clr-namespace:TypeCode.Wpf.Components.InputBox"
              xmlns:outputBox="clr-namespace:TypeCode.Wpf.Components.OutputBox"
+             xmlns:checkBox="clr-namespace:TypeCode.Wpf.Controls.CheckBox"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance builder:BuilderViewModel}">
@@ -16,15 +17,13 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        
-        <inputBox:InputBoxView Grid.Row="0" DataContext="{Binding InputBoxViewModel}"></inputBox:InputBoxView> 
+
+        <inputBox:InputBoxView Grid.Row="0" DataContext="{Binding InputBoxViewModel}"></inputBox:InputBoxView>
 
         <StackPanel Margin="0,5,0,0" Grid.Row="1">
-            <CheckBox Content="Recursive"
-                      ToolTip="Create builders for all complex subtypes of class recursively."
-                      Foreground="{StaticResource PrimaryText}"
-                      IsChecked="{Binding Recursive}">
-            </CheckBox>
+            <checkBox:CustomCheckBox Content="Recursive"
+                                     ToolTip="Create builders for all complex subtypes of class recursively."
+                                     IsChecked="{Binding Recursive}" />
         </StackPanel>
 
         <outputBox:OutputBoxView Margin="0,5,0,0" Grid.Row="2" DataContext="{Binding OutputBoxViewModel}"></outputBox:OutputBoxView>
