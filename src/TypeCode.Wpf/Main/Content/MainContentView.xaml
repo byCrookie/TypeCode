@@ -48,16 +48,18 @@
                    Foreground="{StaticResource PrimaryText}" />
             <TextBlock Grid.Column="4"
                        Foreground="{StaticResource PrimaryText}">
-                <Hyperlink Command="{Binding CloseBannerCommand}" >
+                <Hyperlink Command="{Binding CloseBannerCommand}">
                     <Label Content="Close"></Label>
                 </Hyperlink>
             </TextBlock>
         </Grid>
 
-        <Frame Name="NavigationFrame" Grid.Row="1"
-               Margin="0" Padding="0"
-               Background="{StaticResource Primary}"
-               NavigationUIVisibility="Hidden" />
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+            <Frame Name="NavigationFrame"
+                   Margin="0" Padding="0"
+                   Background="{StaticResource Primary}"
+                   NavigationUIVisibility="Hidden" />
+        </ScrollViewer>
 
         <ProgressBar Grid.Row="2" Height="5" IsIndeterminate="True"
                      Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}" />
