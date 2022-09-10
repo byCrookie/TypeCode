@@ -1,0 +1,63 @@
+﻿<UserControl x:Class="TypeCode.Wpf.Pages.Configuration.Simple.SimpleConfigurationWizardView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:behaviours="clr-namespace:TypeCode.Wpf.Helper.Behaviours"
+             xmlns:advanced="clr-namespace:TypeCode.Wpf.Pages.Configuration.Advanced"
+             xmlns:simple="clr-namespace:TypeCode.Wpf.Pages.Configuration.Simple"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="300"
+             d:DataContext="{d:DesignInstance simple:SimpleConfigurationWizardViewModel}">
+
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+
+        <Grid>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,5,0,5">
+                <Button Margin="5,0,0,0" Command="{Binding AddRootCommand}" Content="Add Root" />
+                <Button Margin="5,0,0,0" Command="{Binding AddIncludePatternCommand}" Content="Add Include Pattern" />
+                <Button Margin="5,0,0,0" Command="{Binding AddGroupCommand}" Content="Add Group" />
+                <Button Margin="5,0,0,0" Command="{Binding AddPathCommand}" Content="Add Path" />
+                <Button Margin="5,0,0,0" Command="{Binding AddSelectorCommand}" Content="Add Selector" />
+            </StackPanel>
+
+            <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,5,0,5">
+                <Button Margin="5,0,0,0" Command="{Binding UpdateCommand}" Content="Update" />
+                <Button Margin="5,0,0,0" Command="{Binding DeleteCommand}" Content="Delete" />
+            </StackPanel>
+
+            <TreeView Grid.Row="3"
+                      Background="{StaticResource Secondary}"
+                      Foreground="{StaticResource PrimaryText}"
+                      BorderThickness="0"
+                      ItemsSource="{Binding TreeViewItems, Mode=OneWay}">
+                <b:Interaction.Behaviors>
+                    <behaviours:BindableSelectedItemBehavior SelectedItem="{Binding SelectedItem, Mode=TwoWay}" />
+                </b:Interaction.Behaviors>
+                <TreeView.Resources>
+                    <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource {x:Type TreeViewItem}}">
+                        <Setter Property="Background" Value="{StaticResource Secondary}" />
+                        <Setter Property="Foreground" Value="{StaticResource PrimaryText}" />
+                    </Style>
+                </TreeView.Resources>
+            </TreeView>
+
+            <Expander Grid.Row="4" Margin="5" Header="Advanced">
+                <advanced:AdvancedConfigurationWizardView DataContext="{Binding AdvancedConfigurationViewModel}" />
+            </Expander>
+
+        </Grid>
+
+    </ScrollViewer>
+
+</UserControl>

@@ -1,8 +1,8 @@
 ﻿using Jab;
 using TypeCode.Wpf.Pages.Assemblies;
 using TypeCode.Wpf.Pages.Builder;
-using TypeCode.Wpf.Pages.Common;
 using TypeCode.Wpf.Pages.Composer;
+using TypeCode.Wpf.Pages.Configuration;
 using TypeCode.Wpf.Pages.DynamicExecution;
 using TypeCode.Wpf.Pages.Encoding;
 using TypeCode.Wpf.Pages.Guid;
@@ -23,7 +23,7 @@ namespace TypeCode.Wpf.Pages;
 [Import(typeof(IBuilderModule))]
 [Import(typeof(IAssembliesModule))]
 [Import(typeof(ITypeSelectionModule))]
-[Import(typeof(ICommonWizardModule))]
+[Import(typeof(IConfigurationWizardModule))]
 [Import(typeof(IHomeModule))]
 [Import(typeof(IDynamicExecutionModule))]
 [Import(typeof(IGuidModule))]

@@ -7,9 +7,8 @@ using TypeCode.Wpf.Helper.Navigation.Wizard;
 using TypeCode.Wpf.Helper.ViewModels;
 using TypeCode.Wpf.Pages.Assemblies;
 using TypeCode.Wpf.Pages.Builder;
-using TypeCode.Wpf.Pages.Common.Configuration;
 using TypeCode.Wpf.Pages.Composer;
-using TypeCode.Wpf.Pages.DynamicExecution;
+using TypeCode.Wpf.Pages.Configuration.Simple;
 using TypeCode.Wpf.Pages.Encoding;
 using TypeCode.Wpf.Pages.Guid;
 using TypeCode.Wpf.Pages.Home;
@@ -123,8 +122,8 @@ public partial class MainSidebarViewModel : ViewModelBase, IAsyncNavigatedTo
         var wizardBuilder = _wizardBuilderFactory.Create();
 
         var wizard = wizardBuilder
-            .Then<SetupWizardViewModel>((options, _) => options.AllowNext(_ => true).Title("Configuration"))
-            .FinishAsync(context => context.GetParameter<SetupConfigurator>().ExportAsync(), "Save")
+            .Then<SimpleConfigurationWizardViewModel>((options, _) => options.AllowNext(_ => true).Title("Configuration"))
+            .FinishAsync(context => context.GetParameter<SimpleConfigurator>().ExportAsync(), "Save")
             .Build();
 
         return _settingsWizardRunner.RunAsync(wizard);
