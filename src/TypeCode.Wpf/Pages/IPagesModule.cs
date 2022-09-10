@@ -9,6 +9,7 @@ using TypeCode.Wpf.Pages.Guid;
 using TypeCode.Wpf.Pages.Home;
 using TypeCode.Wpf.Pages.Mapper;
 using TypeCode.Wpf.Pages.Specflow;
+using TypeCode.Wpf.Pages.String;
 using TypeCode.Wpf.Pages.TypeSelection;
 using TypeCode.Wpf.Pages.UnitTest;
 
@@ -27,6 +28,7 @@ namespace TypeCode.Wpf.Pages;
 [Import(typeof(IDynamicExecutionModule))]
 [Import(typeof(IGuidModule))]
 [Import(typeof(IEncodingModule))]
+[Import(typeof(IStringModule))]
 public interface IPagesModule
 {
 }

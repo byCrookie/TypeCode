@@ -15,6 +15,7 @@ using TypeCode.Wpf.Pages.Guid;
 using TypeCode.Wpf.Pages.Home;
 using TypeCode.Wpf.Pages.Mapper;
 using TypeCode.Wpf.Pages.Specflow;
+using TypeCode.Wpf.Pages.String;
 using TypeCode.Wpf.Pages.UnitTest;
 
 namespace TypeCode.Wpf.Main.Sidebar;
@@ -92,7 +93,7 @@ public partial class MainSidebarViewModel : ViewModelBase, IAsyncNavigatedTo
     private Task NavigateToDynamicExecuteAsync()
     {
         ActiveItem = ActiveItem.DynamicExecute;
-        return _navigationService.NavigateAsync<DynamicExecutionViewModel>(new NavigationContext());
+        return _navigationService.NavigateAsync<StringViewModel>(new NavigationContext());
     }
 
     [RelayCommand]
@@ -103,10 +104,17 @@ public partial class MainSidebarViewModel : ViewModelBase, IAsyncNavigatedTo
     }
 
     [RelayCommand]
-    private Task NavigateToEncodingConversionAsync()
+    private Task NavigateToEncodingAsync()
     {
         ActiveItem = ActiveItem.Encoding;
         return _navigationService.NavigateAsync<EncodingViewModel>(new NavigationContext());
+    }
+    
+    [RelayCommand]
+    private Task NavigateToStringsAsync()
+    {
+        ActiveItem = ActiveItem.String;
+        return _navigationService.NavigateAsync<StringViewModel>(new NavigationContext());
     }
 
     [RelayCommand]
