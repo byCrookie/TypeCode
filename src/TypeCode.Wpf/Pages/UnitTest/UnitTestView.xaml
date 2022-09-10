@@ -9,19 +9,20 @@
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance unitTest:UnitTestViewModel}">
 
-    <Grid Margin="5">
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
+            <RowDefinition MinHeight="100"></RowDefinition>
+            <RowDefinition MinHeight="100"></RowDefinition>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
 
         <navigationCard:NavigationCardView Grid.Row="0" DataContext="{Binding ManuallyCardViewModel}" />
-        <navigationCard:NavigationCardView Margin="5,0,0,0" Grid.Row="0" Grid.Column="1" DataContext="{Binding TypeCardViewModel}" />
+        <navigationCard:NavigationCardView Margin="5,0,0,0" Grid.Row="0" Grid.Column="1"
+                                           DataContext="{Binding TypeCardViewModel}" />
     </Grid>
 </UserControl>

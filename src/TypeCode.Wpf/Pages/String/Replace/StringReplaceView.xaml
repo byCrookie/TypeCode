@@ -14,49 +14,15 @@
         <KeyBinding Key="Enter" Command="{Binding StringReplaceCommand}" />
     </UserControl.InputBindings>
 
-    <Grid Margin="5">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-
-        <Grid Grid.Row="0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-                <ColumnDefinition Width="Auto"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+        <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <textBox:CustomTextBox Grid.Column="0" Grid.Row="0"
-                                   Text="{Binding Input, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                   ShowRegex="False"
-                                   ToolTip="Input any text"
-                                   ShowAutoCompletion="False"
-                                   HorizontalAlignment="Stretch"
-                                   HorizontalContentAlignment="Stretch"
-                                   HorizontalScrollBarVisibility="Auto"
-                                   VerticalScrollBarVisibility="Auto"
-                                   AcceptsReturn="True"
-                                   TextWrapping="NoWrap"
-                                   AcceptsTab="True"
-                                   MinHeight="200"
-                                   MaxHeight="400">
-
-                <TextBox.InputBindings>
-                    <KeyBinding Key="Enter" Command="{Binding StringReplaceCommand}" />
-                </TextBox.InputBindings>
-            </textBox:CustomTextBox>
-
-            <Grid Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1">
-
+            <Grid Grid.Row="0">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"></ColumnDefinition>
                     <ColumnDefinition Width="*"></ColumnDefinition>
                     <ColumnDefinition Width="Auto"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
@@ -64,75 +30,115 @@
                 <Grid.RowDefinitions>
                     <RowDefinition></RowDefinition>
                     <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
                 </Grid.RowDefinitions>
 
-                <TextBlock VerticalAlignment="Center" Margin="0,5,0,0" Grid.Row="0" Grid.Column="0" Text="To replace"></TextBlock>
-                <textBox:CustomTextBox Grid.Row="0" Grid.Column="1" Margin="5,5,0,0"
-                                       Text="{Binding ToReplace, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                <textBox:CustomTextBox Grid.Column="0" Grid.Row="0"
+                                       Text="{Binding Input, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                        ShowRegex="False"
-                                       ToolTip="Input character to replace."
+                                       ToolTip="Input any text"
                                        ShowAutoCompletion="False"
                                        HorizontalAlignment="Stretch"
                                        HorizontalContentAlignment="Stretch"
                                        HorizontalScrollBarVisibility="Auto"
                                        VerticalScrollBarVisibility="Auto"
-                                       TextWrapping="NoWrap">
+                                       AcceptsReturn="True"
+                                       TextWrapping="NoWrap"
+                                       AcceptsTab="True"
+                                       MinHeight="200"
+                                       MaxHeight="400">
+
                     <TextBox.InputBindings>
-                        <KeyBinding Key="Enter" Command="{Binding AddReplaceCommand}" />
+                        <KeyBinding Key="Enter" Command="{Binding StringReplaceCommand}" />
                     </TextBox.InputBindings>
                 </textBox:CustomTextBox>
 
-                <TextBlock VerticalAlignment="Center" Margin="0,5,0,0" Grid.Row="1" Grid.Column="0" Text="Replace with"></TextBlock>
-                <textBox:CustomTextBox
-                    Grid.Row="1" Grid.Column="1"
-                    Margin="5,5,0,0"
-                    Text="{Binding ReplaceWith, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                    ShowRegex="False"
-                    ToolTip="Input character to replace with."
-                    ShowAutoCompletion="False"
-                    HorizontalAlignment="Stretch"
-                    HorizontalContentAlignment="Stretch"
-                    HorizontalScrollBarVisibility="Auto"
-                    VerticalScrollBarVisibility="Auto"
-                    TextWrapping="NoWrap">
-                    <TextBox.InputBindings>
-                        <KeyBinding Key="Enter" Command="{Binding AddReplaceCommand}" />
-                    </TextBox.InputBindings>
-                </textBox:CustomTextBox>
+                <Grid Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1">
 
-                <Button Margin="5,5,0,0" VerticalAlignment="Top" Grid.Column="2" Grid.Row="0"
-                        Command="{Binding AddReplaceCommand}"
-                        Content="Add Escape" />
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock VerticalAlignment="Center" Margin="0,5,0,0" Grid.Row="0" Grid.Column="0"
+                               Text="To replace">
+                    </TextBlock>
+                    <textBox:CustomTextBox Grid.Row="0" Grid.Column="1" Margin="5,5,0,0"
+                                           Text="{Binding ToReplace, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                           ShowRegex="False"
+                                           ToolTip="Input character to replace."
+                                           ShowAutoCompletion="False"
+                                           HorizontalAlignment="Stretch"
+                                           HorizontalContentAlignment="Stretch"
+                                           HorizontalScrollBarVisibility="Auto"
+                                           VerticalScrollBarVisibility="Auto"
+                                           TextWrapping="NoWrap">
+                        <TextBox.InputBindings>
+                            <KeyBinding Key="Enter" Command="{Binding AddReplaceCommand}" />
+                        </TextBox.InputBindings>
+                    </textBox:CustomTextBox>
+
+                    <TextBlock VerticalAlignment="Center" Margin="0,5,0,0" Grid.Row="1" Grid.Column="0"
+                               Text="Replace with">
+                    </TextBlock>
+                    <textBox:CustomTextBox
+                        Grid.Row="1" Grid.Column="1"
+                        Margin="5,5,0,0"
+                        Text="{Binding ReplaceWith, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                        ShowRegex="False"
+                        ToolTip="Input character to replace with."
+                        ShowAutoCompletion="False"
+                        HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Stretch"
+                        HorizontalScrollBarVisibility="Auto"
+                        VerticalScrollBarVisibility="Auto"
+                        TextWrapping="NoWrap">
+                        <TextBox.InputBindings>
+                            <KeyBinding Key="Enter" Command="{Binding AddReplaceCommand}" />
+                        </TextBox.InputBindings>
+                    </textBox:CustomTextBox>
+
+                    <Button Margin="5,5,0,0" VerticalAlignment="Top" Grid.Column="2" Grid.Row="0"
+                            Command="{Binding AddReplaceCommand}"
+                            Content="Add Escape" />
+                </Grid>
+
+                <ScrollViewer Margin="0,5,0,0" Grid.Row="3" Grid.Column="0" MaxHeight="200"
+                              HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                    <ItemsControl ItemsSource="{Binding ReplaceItems}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel></StackPanel>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel VerticalAlignment="Center" Orientation="Horizontal" Margin="5">
+                                    <TextBlock VerticalAlignment="Center" Text="{Binding}"></TextBlock>
+                                    <Button Margin="10,0,0,0"
+                                            Content="Remove"
+                                            Command="{Binding Path=DataContext.RemoveEscapeCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                            CommandParameter="{Binding}">
+                                    </Button>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+
+                <Button Margin="5,0,0,0" VerticalAlignment="Top" Grid.Column="1" Grid.Row="0"
+                        Command="{Binding StringReplaceCommand}"
+                        Content="Escape" />
             </Grid>
 
-            <ScrollViewer Margin="0,5,0,0" Grid.Row="3" Grid.Column="0" MaxHeight="200"
-                          HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                <ItemsControl ItemsSource="{Binding ReplaceItems}">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <StackPanel></StackPanel>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel VerticalAlignment="Center" Orientation="Horizontal" Margin="5">
-                                <TextBlock VerticalAlignment="Center" Text="{Binding}"></TextBlock>
-                                <Button Margin="10,0,0,0"
-                                        Content="Remove"
-                                        Command="{Binding Path=DataContext.RemoveEscapeCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
-                                        CommandParameter="{Binding}">
-                                </Button>
-                            </StackPanel>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </ScrollViewer>
-
-            <Button Margin="5,0,0,0" VerticalAlignment="Top" Grid.Column="1" Grid.Row="0"
-                    Command="{Binding StringReplaceCommand}"
-                    Content="Escape" />
+            <outputBox:OutputBoxView Margin="0,5,0,0" Grid.Row="1" DataContext="{Binding OutputBoxViewModel}" />
         </Grid>
-
-        <outputBox:OutputBoxView Margin="0,5,0,0" Grid.Row="1" DataContext="{Binding OutputBoxViewModel}" />
-    </Grid>
+    </ScrollViewer>
 </UserControl>

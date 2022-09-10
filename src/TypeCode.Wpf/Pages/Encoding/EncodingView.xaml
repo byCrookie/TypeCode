@@ -14,72 +14,74 @@
     <UserControl.InputBindings>
         <KeyBinding Key="Enter" Command="{Binding ConvertCommand}" />
     </UserControl.InputBindings>
-
-    <Grid Margin="5">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-
-        <Grid Grid.Row="0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-                <ColumnDefinition Width="Auto"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-
+    
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+        <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <textBox:CustomTextBox Grid.Column="0"
-                                   Text="{Binding Input, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                   ShowRegex="False"
-                                   ToolTip="Input text"
-                                   ShowAutoCompletion="False"
-                                   HorizontalAlignment="Stretch"
-                                   HorizontalContentAlignment="Stretch"
-                                   HorizontalScrollBarVisibility="Auto"
-                                   VerticalScrollBarVisibility="Auto"
-                                   AcceptsReturn="True"
-                                   TextWrapping="NoWrap"
-                                   AcceptsTab="True"
-                                   MinHeight="200"
-                                   MaxHeight="400">
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
 
-                <TextBox.InputBindings>
-                    <KeyBinding Key="Enter" Command="{Binding ConvertCommand}" />
-                </TextBox.InputBindings>
-            </textBox:CustomTextBox>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
 
-            <comboBox:CustomComboBox Grid.Column="0"
-                                     Grid.Row="1"
-                                     ComboBoxItems="{Binding EncodingsFrom, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                     ToolTip="Encoding Source"
-                                     HorizontalAlignment="Left"
-                                     Width="300"
-                                     MaxWidth="300"
-                                     SelectedComboBoxItem="{Binding EncodingFrom, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                     Margin="0 5 0 0">
-            </comboBox:CustomComboBox>
+                <textBox:CustomTextBox Grid.Column="0"
+                                       Text="{Binding Input, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                       ShowRegex="False"
+                                       ToolTip="Input text"
+                                       ShowAutoCompletion="False"
+                                       HorizontalAlignment="Stretch"
+                                       HorizontalContentAlignment="Stretch"
+                                       HorizontalScrollBarVisibility="Auto"
+                                       VerticalScrollBarVisibility="Auto"
+                                       AcceptsReturn="True"
+                                       TextWrapping="NoWrap"
+                                       AcceptsTab="True"
+                                       MinHeight="200"
+                                       MaxHeight="400">
 
-            <comboBox:CustomComboBox Grid.Column="0"
-                                     Grid.Row="2"
-                                     ComboBoxItems="{Binding EncodingsTo, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                     ToolTip="Encoding Destination"
-                                     HorizontalAlignment="Left"
-                                     Width="300"
-                                     MaxWidth="300"
-                                     SelectedComboBoxItem="{Binding EncodingTo, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                     Margin="0 5 0 0">
-            </comboBox:CustomComboBox>
+                    <TextBox.InputBindings>
+                        <KeyBinding Key="Enter" Command="{Binding ConvertCommand}" />
+                    </TextBox.InputBindings>
+                </textBox:CustomTextBox>
 
-            <Button Margin="5,0,0,0" VerticalAlignment="Top" Grid.Row="0" Grid.Column="1"
-                    Command="{Binding ConvertCommand}"
-                    Content="Convert" />
+                <comboBox:CustomComboBox Grid.Column="0"
+                                         Grid.Row="1"
+                                         ComboBoxItems="{Binding EncodingsFrom, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                         ToolTip="Encoding Source"
+                                         HorizontalAlignment="Left"
+                                         Width="300"
+                                         MaxWidth="300"
+                                         SelectedComboBoxItem="{Binding EncodingFrom, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                         Margin="0 5 0 0">
+                </comboBox:CustomComboBox>
+
+                <comboBox:CustomComboBox Grid.Column="0"
+                                         Grid.Row="2"
+                                         ComboBoxItems="{Binding EncodingsTo, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                         ToolTip="Encoding Destination"
+                                         HorizontalAlignment="Left"
+                                         Width="300"
+                                         MaxWidth="300"
+                                         SelectedComboBoxItem="{Binding EncodingTo, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                         Margin="0 5 0 0">
+                </comboBox:CustomComboBox>
+
+                <Button Margin="5,0,0,0" VerticalAlignment="Top" Grid.Row="0" Grid.Column="1"
+                        Command="{Binding ConvertCommand}"
+                        Content="Convert" />
+            </Grid>
+
+            <outputBox:OutputBoxView Margin="0,5,0,0" Grid.Row="1" DataContext="{Binding OutputBoxViewModel}" />
         </Grid>
-
-        <outputBox:OutputBoxView Margin="0,5,0,0" Grid.Row="1" DataContext="{Binding OutputBoxViewModel}" />
-    </Grid>
+    </ScrollViewer>
 </UserControl>

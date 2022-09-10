@@ -12,33 +12,35 @@
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance mapper:MapperViewModel}">
 
-    <Grid Margin="5">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
 
-        <inputBox:InputBoxView Grid.Row="0" DataContext="{Binding InputBoxViewModel}"></inputBox:InputBoxView>
+            <inputBox:InputBoxView Grid.Row="0" DataContext="{Binding InputBoxViewModel}"></inputBox:InputBoxView>
 
-        <StackPanel Margin="0,5,0,0" Grid.Row="1">
-            <RadioButton GroupName="Style" IsChecked="True" Command="{Binding StyleCommand}"
-                         CommandParameter="{x:Static style:MappingStyle.New}">
-                Map to new
-            </RadioButton>
-            <RadioButton GroupName="Style" Command="{Binding StyleCommand}"
-                         CommandParameter="{x:Static style:MappingStyle.Existing}">
-                Map to existing
-            </RadioButton>
-            <checkBox:CustomCheckBox Content="Recursive"
-                                     ToolTip="Maps all complex subtypes of class recursively."
-                                     IsChecked="{Binding Recursiv}" />
+            <StackPanel Margin="0,5,0,0" Grid.Row="1">
+                <RadioButton GroupName="Style" IsChecked="True" Command="{Binding StyleCommand}"
+                             CommandParameter="{x:Static style:MappingStyle.New}">
+                    Map to new
+                </RadioButton>
+                <RadioButton GroupName="Style" Command="{Binding StyleCommand}"
+                             CommandParameter="{x:Static style:MappingStyle.Existing}">
+                    Map to existing
+                </RadioButton>
+                <checkBox:CustomCheckBox Content="Recursive"
+                                         ToolTip="Maps all complex subtypes of class recursively."
+                                         IsChecked="{Binding Recursiv}" />
 
-            <checkBox:CustomCheckBox Content="Single direction"
-                                     ToolTip="Maps single direction only. (Class to OtherClass, not Class from/to OtherClass)"
-                                     IsChecked="{Binding SingleDirectionOnly}" />
-        </StackPanel>
+                <checkBox:CustomCheckBox Content="Single direction"
+                                         ToolTip="Maps single direction only. (Class to OtherClass, not Class from/to OtherClass)"
+                                         IsChecked="{Binding SingleDirectionOnly}" />
+            </StackPanel>
 
-        <outputBox:OutputBoxView Margin="0,5,0,0" Grid.Row="2" DataContext="{Binding OutputBoxViewModel}"></outputBox:OutputBoxView>
-    </Grid>
+            <outputBox:OutputBoxView Margin="0,5,0,0" Grid.Row="2" DataContext="{Binding OutputBoxViewModel}"></outputBox:OutputBoxView>
+        </Grid>
+    </ScrollViewer>
 </UserControl>

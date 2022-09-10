@@ -9,7 +9,7 @@
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance assemblies:AssemblyViewModel}">
 
-    <Grid Margin="5" Background="{StaticResource Primary}">
+    <Grid Background="{StaticResource Primary}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="5" />
@@ -28,7 +28,9 @@
                       IsReadOnly="True"
                       HeadersVisibility="Column"
                       Width="800"
-                      HorizontalAlignment="Left">
+                      HorizontalAlignment="Left"
+                      HorizontalScrollBarVisibility="Auto"
+                      VerticalScrollBarVisibility="Auto">
                 <DataGrid.Resources>
                     <Style TargetType="{x:Type DataGridRow}">
                         <Setter Property="Background" Value="{StaticResource Primary}" />

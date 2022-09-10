@@ -54,12 +54,11 @@
             </TextBlock>
         </Grid>
 
-        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-            <Frame Name="NavigationFrame"
-                   Margin="0" Padding="0"
-                   Background="{StaticResource Primary}"
-                   NavigationUIVisibility="Hidden" />
-        </ScrollViewer>
+        <Frame Grid.Row="1"
+               Name="NavigationFrame"
+               Margin="0" Padding="5"
+               Background="{StaticResource Primary}"
+               NavigationUIVisibility="Hidden" />
 
         <ProgressBar Grid.Row="2" Height="5" IsIndeterminate="True"
                      Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}" />

@@ -10,30 +10,32 @@
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance specflow:SpecflowViewModel}">
 
-    <Grid Margin="5">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
 
-        <inputBox:InputBoxView Grid.Row="1" DataContext="{Binding InputBoxViewModel}"></inputBox:InputBoxView>
+            <inputBox:InputBoxView Grid.Row="1" DataContext="{Binding InputBoxViewModel}"></inputBox:InputBoxView>
 
-        <StackPanel Margin="0,5,0,5" Grid.Row="2" Orientation="Horizontal">
-            <checkBox:CustomCheckBox Content="Include Strings"
-                                     ToolTip="Nullable strings can't be detected automatically with option required. Decision is yours."
-                                     IsChecked="{Binding IncludeStrings}" />
-            <checkBox:CustomCheckBox Margin="5,0,0,0"
-                                     Content="Only Required"
-                                     ToolTip="Only required properties will be included. Specflow can execute with these properties only."
-                                     IsChecked="{Binding OnlyRequired}" />
-            <checkBox:CustomCheckBox Margin="5,0,0,0"
-                                     Content="Sort Alphabetically"
-                                     ToolTip="Properties can be sorted alphabetically. Default is the order of the properties in the class. Id's or navigation properties are always at the beginning."
-                                     IsChecked="{Binding SortAlphabetically}" />
-        </StackPanel>
+            <StackPanel Margin="0,5,0,0" Grid.Row="2" Orientation="Horizontal">
+                <checkBox:CustomCheckBox Content="Include Strings"
+                                         ToolTip="Nullable strings can't be detected automatically with option required. Decision is yours."
+                                         IsChecked="{Binding IncludeStrings}" />
+                <checkBox:CustomCheckBox Margin="5,0,0,0"
+                                         Content="Only Required"
+                                         ToolTip="Only required properties will be included. Specflow can execute with these properties only."
+                                         IsChecked="{Binding OnlyRequired}" />
+                <checkBox:CustomCheckBox Margin="5,0,0,0"
+                                         Content="Sort Alphabetically"
+                                         ToolTip="Properties can be sorted alphabetically. Default is the order of the properties in the class. Id's or navigation properties are always at the beginning."
+                                         IsChecked="{Binding SortAlphabetically}" />
+            </StackPanel>
 
-        <outputBox:OutputBoxView Margin="0,5,0,0" Grid.Row="3" DataContext="{Binding OutputBoxViewModel}"></outputBox:OutputBoxView>
-    </Grid>
+            <outputBox:OutputBoxView Margin="0,5,0,0" Grid.Row="3" DataContext="{Binding OutputBoxViewModel}"></outputBox:OutputBoxView>
+        </Grid>
+    </ScrollViewer>
 </UserControl>
