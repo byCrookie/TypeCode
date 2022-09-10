@@ -10,13 +10,12 @@ using TypeCode.Wpf.Pages.Builder;
 using TypeCode.Wpf.Pages.Common.Configuration;
 using TypeCode.Wpf.Pages.Composer;
 using TypeCode.Wpf.Pages.DynamicExecution;
-using TypeCode.Wpf.Pages.EncodingConversion;
+using TypeCode.Wpf.Pages.Encoding;
 using TypeCode.Wpf.Pages.Guid;
 using TypeCode.Wpf.Pages.Home;
 using TypeCode.Wpf.Pages.Mapper;
 using TypeCode.Wpf.Pages.Specflow;
 using TypeCode.Wpf.Pages.UnitTest;
-using TypeCode.Wpf.Pages.UnitTest.UnitTestDependencyManually;
 
 namespace TypeCode.Wpf.Main.Sidebar;
 
@@ -113,8 +112,8 @@ public partial class MainSidebarViewModel : ViewModelBase, IAsyncNavigatedTo
     [RelayCommand]
     private Task NavigateToEncodingConversionAsync()
     {
-        ActiveItem = ActiveItem.EncodingConversion;
-        return _navigationService.NavigateAsync<EncodingConversionViewModel>(new NavigationContext());
+        ActiveItem = ActiveItem.Encoding;
+        return _navigationService.NavigateAsync<EncodingViewModel>(new NavigationContext());
     }
 
     [RelayCommand]

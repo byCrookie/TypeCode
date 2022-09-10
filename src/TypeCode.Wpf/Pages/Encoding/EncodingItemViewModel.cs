@@ -1,13 +1,13 @@
 ﻿using System.Text;
 
-namespace TypeCode.Wpf.Pages.EncodingConversion;
+namespace TypeCode.Wpf.Pages.Encoding;
 
-public class EncodingViewModel
+public class EncodingItemViewModel
 {
-    public Encoding Encoding { get; }
+    public System.Text.Encoding Encoding { get; }
     public EncodingInfo EncodingInfo { get; }
 
-    public EncodingViewModel(Encoding encoding, EncodingInfo encodingInfo)
+    public EncodingItemViewModel(System.Text.Encoding encoding, EncodingInfo encodingInfo)
     {
         Encoding = encoding;
         EncodingInfo = encodingInfo;

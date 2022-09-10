@@ -103,11 +103,11 @@
         </StackPanel>
         
         <StackPanel Grid.Row="9"
-                    Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.EncodingConversion}}">
+                    Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.Encoding}}">
             <Button
                 Style="{StaticResource TabButtonStyle}"
                 Command="{Binding NavigateToEncodingConversionCommand}"
-                Content="Encoding Conversion" />
+                Content="Encoding" />
         </StackPanel>
 
         <StackPanel Grid.Row="11"
