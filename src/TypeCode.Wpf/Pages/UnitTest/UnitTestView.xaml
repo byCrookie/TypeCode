@@ -4,10 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:navigationCard="clr-namespace:TypeCode.Wpf.Components.NavigationCard"
-             xmlns:string="clr-namespace:TypeCode.Wpf.Pages.String"
+             xmlns:unitTest="clr-namespace:TypeCode.Wpf.Pages.UnitTest"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
-             d:DataContext="{d:DesignInstance string:StringViewModel}">
+             d:DataContext="{d:DesignInstance unitTest:UnitTestViewModel}">
 
     <Grid Margin="5">
         <Grid.ColumnDefinitions>
