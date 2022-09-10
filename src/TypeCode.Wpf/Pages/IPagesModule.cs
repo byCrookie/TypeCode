@@ -10,15 +10,13 @@ using TypeCode.Wpf.Pages.Home;
 using TypeCode.Wpf.Pages.Mapper;
 using TypeCode.Wpf.Pages.Specflow;
 using TypeCode.Wpf.Pages.TypeSelection;
-using TypeCode.Wpf.Pages.UnitTestDependencyManually;
-using TypeCode.Wpf.Pages.UnitTestDependencyType;
+using TypeCode.Wpf.Pages.UnitTest;
 
 namespace TypeCode.Wpf.Pages;
 
 [ServiceProviderModule]
 [Import(typeof(ISpecflowModule))]
-[Import(typeof(IUnitTestDependencyTypeModule))]
-[Import(typeof(IUnitTestDependencyManuallyModule))]
+[Import(typeof(IUnitTestModule))]
 [Import(typeof(IComposerModule))]
 [Import(typeof(IMapperModule))]
 [Import(typeof(IBuilderModule))]

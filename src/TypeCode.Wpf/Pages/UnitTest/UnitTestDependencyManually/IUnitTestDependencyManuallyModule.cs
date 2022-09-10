@@ -1,6 +1,6 @@
 ﻿using Jab;
 
-namespace TypeCode.Wpf.Pages.UnitTestDependencyManually;
+namespace TypeCode.Wpf.Pages.UnitTest.UnitTestDependencyManually;
 
 [ServiceProviderModule]
 [Transient(typeof(UnitTestDependencyManuallyView))]

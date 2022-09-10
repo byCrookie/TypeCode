@@ -6,7 +6,7 @@ using TypeCode.Business.Mode.UnitTestDependency.Manually;
 using TypeCode.Wpf.Components.OutputBox;
 using TypeCode.Wpf.Helper.ViewModels;
 
-namespace TypeCode.Wpf.Pages.UnitTestDependencyManually;
+namespace TypeCode.Wpf.Pages.UnitTest.UnitTestDependencyManually;
 
 public partial class UnitTestDependencyManuallyViewModel : ViewModelBase
 {

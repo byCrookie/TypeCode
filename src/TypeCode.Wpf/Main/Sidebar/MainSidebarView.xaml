@@ -58,18 +58,11 @@
                 Content="Specflow" />
         </StackPanel>
         <StackPanel Grid.Row="2"
-                    Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.UnitTestType}}">
+                    Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.UnitTest}}">
             <Button
                 Style="{StaticResource TabButtonStyle}"
-                Command="{Binding NavigateToUnitTestDependencyTypeCommand}"
-                Content="Unit-Test (type)" />
-        </StackPanel>
-        <StackPanel Grid.Row="3"
-                    Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.UnitTestManually}}">
-            <Button
-                Style="{StaticResource TabButtonStyle}"
-                Command="{Binding NavigateToUnitTestDependencyManuallyCommand}"
-                Content="Unit-Test (manually)" />
+                Command="{Binding NavigateToUnitTestCommand}"
+                Content="Unit-Test" />
         </StackPanel>
         <StackPanel Grid.Row="4"
                     Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.Composer}}">

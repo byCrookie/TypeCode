@@ -15,8 +15,8 @@ using TypeCode.Wpf.Pages.Guid;
 using TypeCode.Wpf.Pages.Home;
 using TypeCode.Wpf.Pages.Mapper;
 using TypeCode.Wpf.Pages.Specflow;
-using TypeCode.Wpf.Pages.UnitTestDependencyManually;
-using TypeCode.Wpf.Pages.UnitTestDependencyType;
+using TypeCode.Wpf.Pages.UnitTest;
+using TypeCode.Wpf.Pages.UnitTest.UnitTestDependencyManually;
 
 namespace TypeCode.Wpf.Main.Sidebar;
 
@@ -62,17 +62,10 @@ public partial class MainSidebarViewModel : ViewModelBase, IAsyncNavigatedTo
     }
 
     [RelayCommand]
-    private Task NavigateToUnitTestDependencyTypeAsync()
+    private Task NavigateToUnitTestAsync()
     {
-        ActiveItem = ActiveItem.UnitTestType;
-        return _navigationService.NavigateAsync<UnitTestDependencyTypeViewModel>(new NavigationContext());
-    }
-
-    [RelayCommand]
-    private Task NavigateToUnitTestDependencyManuallyAsync()
-    {
-        ActiveItem = ActiveItem.UnitTestManually;
-        return _navigationService.NavigateAsync<UnitTestDependencyManuallyViewModel>(new NavigationContext());
+        ActiveItem = ActiveItem.UnitTest;
+        return _navigationService.NavigateAsync<UnitTestViewModel>(new NavigationContext());
     }
 
     [RelayCommand]

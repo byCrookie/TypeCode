@@ -1,0 +1,51 @@
+﻿<UserControl x:Class="TypeCode.Wpf.Pages.UnitTest.UnitTestView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:unitTest="clr-namespace:TypeCode.Wpf.Pages.UnitTest"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="300"
+             d:DataContext="{d:DesignInstance unitTest:UnitTestViewModel}">
+
+    <Grid Margin="5">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Border BorderBrush="{StaticResource Accent}" BorderThickness="1">
+            <Button Background="Transparent" Command="{Binding NavigateToTypeCommand}">
+                <StackPanel>
+                    <TextBlock Text="Type" FontSize="18" FontWeight="Bold"></TextBlock>
+                    <StackPanel Height="20"></StackPanel>
+                    <TextBlock
+                        Text="Search for a type in your loaded assemblies and let TypeCode generate your unit-test code."
+                        TextWrapping="Wrap"
+                        FontSize="14">
+                    </TextBlock>
+                </StackPanel>
+            </Button>
+        </Border>
+
+        <Border Margin="5,0,0,0" Grid.Row="0" Grid.Column="1" BorderBrush="{StaticResource Accent}" BorderThickness="1">
+            <Button Background="Transparent" Command="{Binding NavigateToManuallyCommand}">
+                <StackPanel>
+                    <TextBlock Text="Manually" FontSize="18" FontWeight="Bold"></TextBlock>
+                    <StackPanel Height="20"></StackPanel>
+                    <TextBlock
+                        Text="Paste the code of your constructor directly, let TypeCode parse it and generate your unit-test code."
+                        TextWrapping="Wrap"
+                        FontSize="14">
+                    </TextBlock>
+                </StackPanel>
+            </Button>
+        </Border>
+    </Grid>
+</UserControl>

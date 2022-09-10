@@ -1,4 +1,4 @@
-﻿namespace TypeCode.Wpf.Pages.UnitTestDependencyManually;
+﻿namespace TypeCode.Wpf.Pages.UnitTest.UnitTestDependencyManually;
 
 public partial class UnitTestDependencyManuallyView
 {

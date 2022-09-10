@@ -4,8 +4,7 @@ public enum ActiveItem
 {
     None,
     Specflow,
-    UnitTestType,
-    UnitTestManually,
+    UnitTest,
     Composer,
     Mapper,
     Builder,

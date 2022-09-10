@@ -1,4 +1,4 @@
-﻿namespace TypeCode.Wpf.Pages.UnitTestDependencyType;
+﻿namespace TypeCode.Wpf.Pages.UnitTest.UnitTestDependencyType;
 
 public partial class UnitTestDependencyTypeView
 {

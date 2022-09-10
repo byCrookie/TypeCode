@@ -7,7 +7,7 @@ using TypeCode.Wpf.Components.OutputBox;
 using TypeCode.Wpf.Helper.ViewModels;
 using TypeCode.Wpf.Pages.TypeSelection;
 
-namespace TypeCode.Wpf.Pages.UnitTestDependencyType;
+namespace TypeCode.Wpf.Pages.UnitTest.UnitTestDependencyType;
 
 public partial class UnitTestDependencyTypeViewModel : ViewModelBase
 {
