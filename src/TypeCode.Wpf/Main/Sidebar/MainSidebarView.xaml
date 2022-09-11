@@ -31,99 +31,86 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        
-        <StackPanel Grid.Row="1"
-                    Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.Specflow}}">
+
+        <StackPanel Grid.Row="0" Margin="0,20,0,0">
             <Button
+                Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.Specflow}}"
                 Style="{StaticResource TabButtonStyle}"
                 Command="{Binding NavigateToSpecflowCommand}"
                 Content="Specflow" />
-        </StackPanel>
-        <StackPanel Grid.Row="2"
-                    Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.UnitTest}}">
+
             <Button
+                Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.UnitTest}}"
                 Style="{StaticResource TabButtonStyle}"
                 Command="{Binding NavigateToUnitTestCommand}"
                 Content="Unit-Test" />
-        </StackPanel>
-        <StackPanel Grid.Row="4"
-                    Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.Composer}}">
+
             <Button
+                Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.Composer}}"
                 Style="{StaticResource TabButtonStyle}"
                 Command="{Binding NavigateToComposerCommand}"
                 Content="Composer" />
-        </StackPanel>
-        <StackPanel Grid.Row="5"
-                    Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.Mapper}}">
+
             <Button
+                Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.Mapper}}"
                 Style="{StaticResource TabButtonStyle}"
                 Command="{Binding NavigateToMapperCommand}"
                 Content="Mapper" />
-        </StackPanel>
-        <StackPanel Grid.Row="6"
-                    Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.Builder}}">
+
+
             <Button
+                Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.Builder}}"
                 Style="{StaticResource TabButtonStyle}"
                 Command="{Binding NavigateToBuilderCommand}"
                 Content="Builder" />
         </StackPanel>
 
-        <StackPanel Grid.Row="7"
-                    Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.DynamicExecute}}">
+        <StackPanel Grid.Row="1" Margin="0,20,0,0">
+
             <Button
-                Style="{StaticResource TabButtonStyle}"
-                Command="{Binding NavigateToDynamicExecuteCommand}"
-                Content="Dynamic Execution" />
-        </StackPanel>
-        
-        <StackPanel Grid.Row="8"
-                    Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.Guid}}">
-            <Button
+                Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.Guid}}"
                 Style="{StaticResource TabButtonStyle}"
                 Command="{Binding NavigateToGuidCommand}"
                 Content="Guid" />
-        </StackPanel>
-        
-        <StackPanel Grid.Row="9"
-                    Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.Encoding}}">
+
+
             <Button
+                Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.Encoding}}"
                 Style="{StaticResource TabButtonStyle}"
                 Command="{Binding NavigateToEncodingCommand}"
                 Content="Encoding" />
-        </StackPanel>
-        
-        <StackPanel Grid.Row="10"
-                    Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.String}}">
+
             <Button
+                Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.String}}"
                 Style="{StaticResource TabButtonStyle}"
                 Command="{Binding NavigateToStringsCommand}"
                 Content="Strings" />
         </StackPanel>
-
-        <StackPanel Grid.Row="12"
-                    Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.Assembly}}">
+        
+        <StackPanel Grid.Row="2" Margin="0,20,0,0">
             <Button
+                Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.DynamicExecute}}"
+                Style="{StaticResource TabButtonStyle}"
+                Command="{Binding NavigateToDynamicExecuteCommand}"
+                Content="Dynamic Execution" />
+        </StackPanel>
+
+        <StackPanel Grid.Row="4">
+
+            <Button
+                Background="{Binding ActiveItem, Converter={StaticResource ToActiveConverter}, ConverterParameter={x:Static sidebar:ActiveItem.Assembly}}"
                 Style="{StaticResource TabButtonStyle}"
                 Command="{Binding NavigateToAssemblyCommand}"
                 Content="Assemblies" />
-        </StackPanel>
 
-        <Button Grid.Row="13"
+            <Button
                 Style="{StaticResource TabButtonStyle}"
                 Command="{Binding OpenSettingsCommand}"
                 Content="Settings" />
+        </StackPanel>
     </Grid>
 
 </UserControl>
