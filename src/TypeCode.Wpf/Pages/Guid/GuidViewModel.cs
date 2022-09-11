@@ -54,13 +54,14 @@ public partial class GuidViewModel : ViewModelBase, IAsyncNavigatedTo
         }
         
         OutputBoxViewModel?.SetOutput(guid);
+        await Task.Delay(TimeSpan.FromSeconds(0.25)).ConfigureAwait(true);
     }
 
     [RelayCommand]
     private async Task GenerateMultipleAsync()
     {
         var guids = new StringBuilder();
-        for (var i = 0; i < 100; i++)
+        for (var i = 0; i < 25; i++)
         {
             var guid = await _guidGenerator.GenerateAsync(new GuidTypeCodeGeneratorParameter(_guidFormat)).ConfigureAwait(true);
             guids.AppendLine(guid);

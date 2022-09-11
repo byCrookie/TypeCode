@@ -54,8 +54,8 @@
                 <Button
                     Margin="5,0,0,0"
                     BorderThickness="0" Command="{Binding GenerateMultipleCommand}"
-                    Content="Generate 100"
-                    ToolTip="Generates 100 guids." />
+                    Content="Generate 25"
+                    ToolTip="Generates 25 guids." />
             </StackPanel>
 
             <outputBox:OutputBoxView Margin="0,5,0,0" Grid.Row="3" DataContext="{Binding OutputBoxViewModel}"></outputBox:OutputBoxView>
