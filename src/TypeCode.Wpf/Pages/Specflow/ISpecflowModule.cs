@@ -3,8 +3,8 @@
 namespace TypeCode.Wpf.Pages.Specflow;
 
 [ServiceProviderModule]
-[Transient(typeof(SpecflowView))]
-[Transient(typeof(SpecflowViewModel))]
+[Singleton(typeof(SpecflowView))]
+[Singleton(typeof(SpecflowViewModel))]
 public interface ISpecflowModule
 {
     

@@ -3,8 +3,8 @@
 namespace TypeCode.Wpf.Pages.Builder;
 
 [ServiceProviderModule]
-[Transient(typeof(BuilderView))]
-[Transient(typeof(BuilderViewModel))]
+[Singleton(typeof(BuilderView))]
+[Singleton(typeof(BuilderViewModel))]
 public interface IBuilderModule
 {
     

@@ -3,8 +3,8 @@
 namespace TypeCode.Wpf.Pages.DynamicExecution;
 
 [ServiceProviderModule]
-[Transient(typeof(DynamicExecutionView))]
-[Transient(typeof(DynamicExecutionViewModel))]
+[Singleton(typeof(DynamicExecutionView))]
+[Singleton(typeof(DynamicExecutionViewModel))]
 public interface IDynamicExecutionModule
 {
     

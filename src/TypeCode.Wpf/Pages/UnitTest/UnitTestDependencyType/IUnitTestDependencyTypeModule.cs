@@ -3,8 +3,8 @@
 namespace TypeCode.Wpf.Pages.UnitTest.UnitTestDependencyType;
 
 [ServiceProviderModule]
-[Transient(typeof(UnitTestDependencyTypeView))]
-[Transient(typeof(UnitTestDependencyTypeViewModel))]
+[Singleton(typeof(UnitTestDependencyTypeView))]
+[Singleton(typeof(UnitTestDependencyTypeViewModel))]
 public interface IUnitTestDependencyTypeModule
 {
     

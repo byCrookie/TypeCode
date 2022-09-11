@@ -3,8 +3,8 @@
 namespace TypeCode.Wpf.Pages.Encoding;
 
 [ServiceProviderModule]
-[Transient(typeof(EncodingView))]
-[Transient(typeof(EncodingViewModel))]
+[Singleton(typeof(EncodingView))]
+[Singleton(typeof(EncodingViewModel))]
 public interface IEncodingModule
 {
     
