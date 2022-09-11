@@ -13,11 +13,13 @@ using TypeCode.Wpf.Pages.TypeSelection;
 
 namespace TypeCode.Wpf.Pages.Mapper;
 
-public partial class MapperViewModel : ViewModelBase, IAsyncNavigatedTo
+public partial class MapperViewModel : ViewModelBase, IAsyncInitialNavigated
 {
     private readonly ITypeCodeGenerator<MapperTypeCodeGeneratorParameter> _mapperGenerator;
     private readonly ITypeProvider _typeProvider;
     private readonly ITypeSelectionWizardStarter _typeSelectionWizardStarter;
+    private readonly IInputBoxViewModelFactory _inputBoxViewModelFactory;
+    private readonly IOutputBoxViewModelFactory _outputBoxViewModelFactory;
     private MappingStyle _mappingStyle;
 
     public MapperViewModel(
@@ -31,18 +33,20 @@ public partial class MapperViewModel : ViewModelBase, IAsyncNavigatedTo
         _mapperGenerator = mapperGenerator;
         _typeProvider = typeProvider;
         _typeSelectionWizardStarter = typeSelectionWizardStarter;
+        _inputBoxViewModelFactory = inputBoxViewModelFactory;
+        _outputBoxViewModelFactory = outputBoxViewModelFactory;
+    }
 
+    public Task OnInititalNavigationAsync(NavigationContext context)
+    {
         var parameter = new InputBoxViewModelParameter("Generate", GenerateAsync)
         {
             ToolTip = "Input two type names seperated by ','."
         };
 
-        InputBoxViewModel = inputBoxViewModelFactory.Create(parameter);
-        OutputBoxViewModel = outputBoxViewModelFactory.Create();
-    }
+        InputBoxViewModel = _inputBoxViewModelFactory.Create(parameter);
+        OutputBoxViewModel = _outputBoxViewModelFactory.Create();
 
-    public Task OnNavigatedToAsync(NavigationContext context)
-    {
         NewStyle = true;
         ExistingStyle = false;
         return Task.CompletedTask;

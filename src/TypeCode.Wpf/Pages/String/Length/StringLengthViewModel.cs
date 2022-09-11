@@ -2,15 +2,25 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using TypeCode.Wpf.Components.OutputBox;
+using TypeCode.Wpf.Helper.Navigation.Contract;
+using TypeCode.Wpf.Helper.Navigation.Service;
 using TypeCode.Wpf.Helper.ViewModels;
 
 namespace TypeCode.Wpf.Pages.String.Length;
 
-public partial class StringLengthViewModel : ViewModelBase
+public partial class StringLengthViewModel : ViewModelBase, IAsyncInitialNavigated
 {
+    private readonly IOutputBoxViewModelFactory _outputBoxViewModelFactory;
+
     public StringLengthViewModel(IOutputBoxViewModelFactory outputBoxViewModelFactory)
     {
-        OutputBoxViewModel = outputBoxViewModelFactory.Create();
+        _outputBoxViewModelFactory = outputBoxViewModelFactory;
+    }
+    
+    public Task OnInititalNavigationAsync(NavigationContext context)
+    {
+        OutputBoxViewModel = _outputBoxViewModelFactory.Create();
+        return Task.CompletedTask;
     }
 
     [RelayCommand(CanExecute = nameof(CanStringLength))]

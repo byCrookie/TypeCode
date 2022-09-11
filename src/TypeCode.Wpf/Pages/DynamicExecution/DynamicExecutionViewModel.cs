@@ -13,8 +13,9 @@ using TypeCode.Wpf.Helper.ViewModels;
 
 namespace TypeCode.Wpf.Pages.DynamicExecution;
 
-public partial class DynamicExecutionViewModel : ViewModelBase, IAsyncNavigatedTo
+public partial class DynamicExecutionViewModel : ViewModelBase, IAsyncInitialNavigated
 {
+    private readonly IOutputBoxViewModelFactory _outputBoxViewModelFactory;
     private readonly ICompiler _compiler;
     private readonly IRunner _runner;
     private readonly IResourceReader _resourceReader;
@@ -26,15 +27,15 @@ public partial class DynamicExecutionViewModel : ViewModelBase, IAsyncNavigatedT
         IResourceReader resourceReader
     )
     {
+        _outputBoxViewModelFactory = outputBoxViewModelFactory;
         _compiler = compiler;
         _runner = runner;
         _resourceReader = resourceReader;
-
-        OutputBoxViewModel = outputBoxViewModelFactory.Create();
     }
 
-    public Task OnNavigatedToAsync(NavigationContext context)
+    public Task OnInititalNavigationAsync(NavigationContext context)
     {
+        OutputBoxViewModel = _outputBoxViewModelFactory.Create();
         Input = _resourceReader.ReadResource(Assembly.GetExecutingAssembly(), "Pages.DynamicExecution.DynamicExecutionTemplate.txt");
         return Task.CompletedTask;
     }
@@ -49,7 +50,7 @@ public partial class DynamicExecutionViewModel : ViewModelBase, IAsyncNavigatedT
         }, DispatcherPriority.Normal);
         return Task.CompletedTask;
     }
-    
+
     private bool CanExecute()
     {
         return !HasErrors && !string.IsNullOrEmpty(Input);

@@ -4,21 +4,17 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using TypeCode.Business.Mode;
 using TypeCode.Business.Mode.Guid;
-using TypeCode.Business.Mode.Mapper.Style;
-using TypeCode.Business.Mode.Specflow;
-using TypeCode.Business.TypeEvaluation;
-using TypeCode.Wpf.Components.InputBox;
 using TypeCode.Wpf.Components.OutputBox;
 using TypeCode.Wpf.Helper.Navigation.Contract;
 using TypeCode.Wpf.Helper.Navigation.Service;
 using TypeCode.Wpf.Helper.ViewModels;
-using TypeCode.Wpf.Pages.TypeSelection;
 
 namespace TypeCode.Wpf.Pages.Guid;
 
-public partial class GuidViewModel : ViewModelBase, IAsyncNavigatedTo
+public partial class GuidViewModel : ViewModelBase, IAsyncInitialNavigated
 {
     private readonly ITypeCodeGenerator<GuidTypeCodeGeneratorParameter> _guidGenerator;
+    private readonly IOutputBoxViewModelFactory _outputBoxViewModelFactory;
 
     public GuidViewModel(
         ITypeCodeGenerator<GuidTypeCodeGeneratorParameter> guidGenerator,
@@ -26,16 +22,16 @@ public partial class GuidViewModel : ViewModelBase, IAsyncNavigatedTo
     )
     {
         _guidGenerator = guidGenerator;
-
-        OutputBoxViewModel = outputBoxViewModelFactory.Create();
+        _outputBoxViewModelFactory = outputBoxViewModelFactory;
     }
-    
-    public Task OnNavigatedToAsync(NavigationContext context)
+
+    public Task OnInititalNavigationAsync(NavigationContext context)
     {
+        OutputBoxViewModel = _outputBoxViewModelFactory.Create();
         GuidFormat = GuidFormat.D;
         return Task.CompletedTask;
     }
-    
+
     [RelayCommand]
     private Task GuidFormatAsync(GuidFormat format)
     {
@@ -52,7 +48,7 @@ public partial class GuidViewModel : ViewModelBase, IAsyncNavigatedTo
         {
             Clipboard.SetText(guid);
         }
-        
+
         OutputBoxViewModel?.SetOutput(guid);
         await Task.Delay(TimeSpan.FromSeconds(0.25)).ConfigureAwait(true);
     }

@@ -29,6 +29,5 @@ public class WizardStepConfiguration
 
     public WizardStepConfiguration? LastStep { get; set; }
     public WizardStepConfiguration? NextStep { get; set; }
-    public bool Initialized { get; set; }
     public string? StepTitle { get; }
 }

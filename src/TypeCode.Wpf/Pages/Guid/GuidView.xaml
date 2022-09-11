@@ -12,8 +12,9 @@
 
     <UserControl.Resources>
         <converters:EnumToDescriptionConverter x:Key="EnumToDescriptionConverter" />
+        <converters:EqualsConverter x:Key="EqualsConverter"></converters:EqualsConverter>
     </UserControl.Resources>
-    
+
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
         <Grid>
             <Grid.RowDefinitions>
@@ -24,23 +25,28 @@
             </Grid.RowDefinitions>
 
             <StackPanel Margin="0,0,0,5" Grid.Row="1">
-                <RadioButton GroupName="Format" IsChecked="True"
+                <RadioButton GroupName="Format"
+                             IsChecked="{Binding GuidFormat, Converter={StaticResource EqualsConverter}, ConverterParameter={x:Static format:GuidFormat.D}}"
                              Content="{Binding ConverterParameter={x:Static format:GuidFormat.D}, Converter={StaticResource EnumToDescriptionConverter}}"
                              Command="{Binding GuidFormatCommand}"
                              CommandParameter="{x:Static format:GuidFormat.D}" />
                 <RadioButton GroupName="Format"
+                             IsChecked="{Binding GuidFormat, Converter={StaticResource EqualsConverter}, ConverterParameter={x:Static format:GuidFormat.N}}"
                              Content="{Binding ConverterParameter={x:Static format:GuidFormat.N}, Converter={StaticResource EnumToDescriptionConverter}}"
                              Command="{Binding GuidFormatCommand}"
                              CommandParameter="{x:Static format:GuidFormat.N}" />
                 <RadioButton GroupName="Format"
+                             IsChecked="{Binding GuidFormat, Converter={StaticResource EqualsConverter}, ConverterParameter={x:Static format:GuidFormat.B}}"
                              Content="{Binding ConverterParameter={x:Static format:GuidFormat.B}, Converter={StaticResource EnumToDescriptionConverter}}"
                              Command="{Binding GuidFormatCommand}"
                              CommandParameter="{x:Static format:GuidFormat.B}" />
                 <RadioButton GroupName="Format"
+                             IsChecked="{Binding GuidFormat, Converter={StaticResource EqualsConverter}, ConverterParameter={x:Static format:GuidFormat.P}}"
                              Content="{Binding ConverterParameter={x:Static format:GuidFormat.P}, Converter={StaticResource EnumToDescriptionConverter}}"
                              Command="{Binding GuidFormatCommand}"
                              CommandParameter="{x:Static format:GuidFormat.P}" />
                 <RadioButton GroupName="Format"
+                             IsChecked="{Binding GuidFormat, Converter={StaticResource EqualsConverter}, ConverterParameter={x:Static format:GuidFormat.X}}"
                              Content="{Binding ConverterParameter={x:Static format:GuidFormat.X}, Converter={StaticResource EnumToDescriptionConverter}}"
                              Command="{Binding GuidFormatCommand}"
                              CommandParameter="{x:Static format:GuidFormat.X}" />

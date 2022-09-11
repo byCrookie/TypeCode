@@ -49,9 +49,10 @@ public class NavigationService : INavigationService
         _lastViewModel = viewModelInstance;
     }
 
-    private static Task CallOnNavigatedToOnCurrentViewModelAsync<T>(NavigationContext context, T viewModelInstance)
+    private static async Task CallOnNavigatedToOnCurrentViewModelAsync<T>(NavigationContext context, T viewModelInstance)
     {
-        return NavigationCaller.CallNavigateToAsync(viewModelInstance, context);
+        await NavigationCaller.CallInitialNavigateAsync(viewModelInstance, context).ConfigureAwait(true);
+        await NavigationCaller.CallNavigateToAsync(viewModelInstance, context).ConfigureAwait(true);
     }
 
     private Task CallNavigatedFromOnLastViewModelAsync(NavigationContext context)

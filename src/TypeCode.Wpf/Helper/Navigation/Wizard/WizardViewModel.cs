@@ -1,5 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 using AsyncAwaitBestPractices;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -34,9 +33,9 @@ public partial class WizardViewModel : ViewModelBase, IWizardHost
         {
             throw new Exception("Not all steps have titles. None or all are allowed.");
         }
-        
+
         CurrentStepTitle = wizard.CurrentStepConfiguration?.StepTitle;
-            
+
         wizard.NavigationContext.AddOrUpdateParameter(navigationAction);
 
         if (wizard.CurrentStepConfiguration is null)
@@ -46,11 +45,7 @@ public partial class WizardViewModel : ViewModelBase, IWizardHost
 
         wizard.NavigationContext.AddOrUpdateParameter(wizard.CurrentStepConfiguration.Instances.ViewModelInstance);
 
-        if (!wizard.CurrentStepConfiguration.Initialized && wizard.CurrentStepConfiguration.Instances.ViewModelInstance is IAsyncInitialNavigated asyncInitialNavigated)
-        {
-            await asyncInitialNavigated.OnInititalNavigationAsync(wizard.NavigationContext).ConfigureAwait(true);
-            wizard.CurrentStepConfiguration.Initialized = true;
-        }
+        await NavigationCaller.CallInitialNavigateAsync(wizard.CurrentStepConfiguration.Instances.ViewModelInstance, wizard.NavigationContext).ConfigureAwait(true);
 
         await wizard.CurrentStepConfiguration.BeforeAction(wizard.NavigationContext).ConfigureAwait(true);
 
@@ -86,9 +81,11 @@ public partial class WizardViewModel : ViewModelBase, IWizardHost
 
         if (wizard.CurrentStepConfiguration.Instances.ViewModelInstance is ViewModelBase observableValidator)
         {
+            observableValidator.OnAllPropertiesChanged();
             observableValidator.ValidateAllProperties();
         }
-        
+
+        OnAllPropertiesChanged();
         ValidateAllProperties();
     }
 
@@ -192,13 +189,13 @@ public partial class WizardViewModel : ViewModelBase, IWizardHost
 
     [ObservableProperty]
     private string? _finishText;
-    
+
     [ObservableProperty]
     private IEnumerable<string?>? _stepTitles;
 
     [ObservableProperty]
     private string? _currentStepTitle;
-    
+
     [ObservableProperty]
     private bool _showStepTitles;
 }

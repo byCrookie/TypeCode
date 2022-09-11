@@ -4,13 +4,16 @@ using CommunityToolkit.Mvvm.Input;
 using TypeCode.Business.Mode;
 using TypeCode.Business.Mode.UnitTestDependency.Manually;
 using TypeCode.Wpf.Components.OutputBox;
+using TypeCode.Wpf.Helper.Navigation.Contract;
+using TypeCode.Wpf.Helper.Navigation.Service;
 using TypeCode.Wpf.Helper.ViewModels;
 
 namespace TypeCode.Wpf.Pages.UnitTest.UnitTestDependencyManually;
 
-public partial class UnitTestDependencyManuallyViewModel : ViewModelBase
+public partial class UnitTestDependencyManuallyViewModel : ViewModelBase, IAsyncInitialNavigated
 {
     private readonly ITypeCodeGenerator<UnitTestDependencyManuallyGeneratorParameter> _unitTestDependencyManuallyGenerator;
+    private readonly IOutputBoxViewModelFactory _outputBoxViewModelFactory;
 
     public UnitTestDependencyManuallyViewModel(
         ITypeCodeGenerator<UnitTestDependencyManuallyGeneratorParameter> unitTestDependencyManuallyGenerator,
@@ -18,8 +21,13 @@ public partial class UnitTestDependencyManuallyViewModel : ViewModelBase
     )
     {
         _unitTestDependencyManuallyGenerator = unitTestDependencyManuallyGenerator;
-
-        OutputBoxViewModel = outputBoxViewModelFactory.Create();
+        _outputBoxViewModelFactory = outputBoxViewModelFactory;
+    }
+    
+    public Task OnInititalNavigationAsync(NavigationContext context)
+    {
+        OutputBoxViewModel = _outputBoxViewModelFactory.Create();
+        return Task.CompletedTask;
     }
 
     [RelayCommand(CanExecute = nameof(CanGenerate))]

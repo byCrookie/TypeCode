@@ -4,16 +4,20 @@ using TypeCode.Business.Mode.Specflow;
 using TypeCode.Business.TypeEvaluation;
 using TypeCode.Wpf.Components.InputBox;
 using TypeCode.Wpf.Components.OutputBox;
+using TypeCode.Wpf.Helper.Navigation.Contract;
+using TypeCode.Wpf.Helper.Navigation.Service;
 using TypeCode.Wpf.Helper.ViewModels;
 using TypeCode.Wpf.Pages.TypeSelection;
 
 namespace TypeCode.Wpf.Pages.Specflow;
 
-public partial class SpecflowViewModel : ViewModelBase
+public partial class SpecflowViewModel : ViewModelBase, IAsyncInitialNavigated
 {
     private readonly ITypeCodeGenerator<SpecflowTypeCodeGeneratorParameter> _specflowGenerator;
     private readonly ITypeProvider _typeProvider;
     private readonly ITypeSelectionWizardStarter _typeSelectionWizardStarter;
+    private readonly IInputBoxViewModelFactory _inputBoxViewModelFactory;
+    private readonly IOutputBoxViewModelFactory _outputBoxViewModelFactory;
 
     public SpecflowViewModel(
         ITypeCodeGenerator<SpecflowTypeCodeGeneratorParameter> specflowGenerator,
@@ -26,7 +30,12 @@ public partial class SpecflowViewModel : ViewModelBase
         _specflowGenerator = specflowGenerator;
         _typeProvider = typeProvider;
         _typeSelectionWizardStarter = typeSelectionWizardStarter;
+        _inputBoxViewModelFactory = inputBoxViewModelFactory;
+        _outputBoxViewModelFactory = outputBoxViewModelFactory;
+    }
 
+    public Task OnInititalNavigationAsync(NavigationContext context)
+    {
         IncludeStrings = true;
 
         var parameter = new InputBoxViewModelParameter("Generate", GenerateAsync)
@@ -34,8 +43,9 @@ public partial class SpecflowViewModel : ViewModelBase
             ToolTip = "Input type name. Multiple type names can be seperated by using ','."
         };
 
-        InputBoxViewModel = inputBoxViewModelFactory.Create(parameter);
-        OutputBoxViewModel = outputBoxViewModelFactory.Create();
+        InputBoxViewModel = _inputBoxViewModelFactory.Create(parameter);
+        OutputBoxViewModel = _outputBoxViewModelFactory.Create();
+        return Task.CompletedTask;
     }
 
     private async Task GenerateAsync(bool regex, string? input)

@@ -9,19 +9,19 @@ using TypeCode.Wpf.Helper.ViewModels;
 
 namespace TypeCode.Wpf.Pages.String.Replace;
 
-public partial class StringReplaceViewModel : ViewModelBase, IAsyncNavigatedTo
+public partial class StringReplaceViewModel : ViewModelBase, IAsyncInitialNavigated
 {
     public StringReplaceViewModel(IOutputBoxViewModelFactory outputBoxViewModelFactory)
     {
         OutputBoxViewModel = outputBoxViewModelFactory.Create();
     }
     
-    public Task OnNavigatedToAsync(NavigationContext context)
+    public Task OnInititalNavigationAsync(NavigationContext context)
     {
         ReplaceItems = new ObservableCollection<ReplaceItemViewModel>();
         return Task.CompletedTask;
     }
-    
+
     [RelayCommand]
     private Task RemoveEscapeAsync(ReplaceItemViewModel replaceItemViewModel)
     {

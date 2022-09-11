@@ -4,16 +4,20 @@ using TypeCode.Business.Mode.UnitTestDependency.Type;
 using TypeCode.Business.TypeEvaluation;
 using TypeCode.Wpf.Components.InputBox;
 using TypeCode.Wpf.Components.OutputBox;
+using TypeCode.Wpf.Helper.Navigation.Contract;
+using TypeCode.Wpf.Helper.Navigation.Service;
 using TypeCode.Wpf.Helper.ViewModels;
 using TypeCode.Wpf.Pages.TypeSelection;
 
 namespace TypeCode.Wpf.Pages.UnitTest.UnitTestDependencyType;
 
-public partial class UnitTestDependencyTypeViewModel : ViewModelBase
+public partial class UnitTestDependencyTypeViewModel : ViewModelBase, IAsyncInitialNavigated
 {
     private readonly ITypeCodeGenerator<UnitTestDependencyTypeGeneratorParameter> _unitTestDependencyTypeGenerator;
     private readonly ITypeProvider _typeProvider;
     private readonly ITypeSelectionWizardStarter _typeSelectionWizardStarter;
+    private readonly IInputBoxViewModelFactory _inputBoxViewModelFactory;
+    private readonly IOutputBoxViewModelFactory _outputBoxViewModelFactory;
 
     public UnitTestDependencyTypeViewModel(
         ITypeCodeGenerator<UnitTestDependencyTypeGeneratorParameter> unitTestDependencyTypeGenerator,
@@ -26,14 +30,20 @@ public partial class UnitTestDependencyTypeViewModel : ViewModelBase
         _unitTestDependencyTypeGenerator = unitTestDependencyTypeGenerator;
         _typeProvider = typeProvider;
         _typeSelectionWizardStarter = typeSelectionWizardStarter;
-
+        _inputBoxViewModelFactory = inputBoxViewModelFactory;
+        _outputBoxViewModelFactory = outputBoxViewModelFactory;
+    }
+    
+    public Task OnInititalNavigationAsync(NavigationContext context)
+    {
         var parameter = new InputBoxViewModelParameter("Generate", GenerateAsync)
         {
             ToolTip = "Input type name. Multiple type names can be seperated by using ','."
         };
 
-        InputBoxViewModel = inputBoxViewModelFactory.Create(parameter);
-        OutputBoxViewModel = outputBoxViewModelFactory.Create();
+        InputBoxViewModel = _inputBoxViewModelFactory.Create(parameter);
+        OutputBoxViewModel = _outputBoxViewModelFactory.Create();
+        return Task.CompletedTask;
     }
 
     private async Task GenerateAsync(bool regex, string? input)

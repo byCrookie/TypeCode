@@ -14,8 +14,9 @@ using TypeCode.Wpf.Helper.ViewModels;
 
 namespace TypeCode.Wpf.Pages.Encoding;
 
-public partial class EncodingViewModel : ViewModelBase, IAsyncNavigatedTo
+public partial class EncodingViewModel : ViewModelBase, IAsyncInitialNavigated
 {
+    private readonly IOutputBoxViewModelFactory _outputBoxViewModelFactory;
     private readonly ITypeCodeGenerator<EncodingTypeCodeGeneratorParameter> _composerTypeGenerator;
 
     public EncodingViewModel(
@@ -23,13 +24,14 @@ public partial class EncodingViewModel : ViewModelBase, IAsyncNavigatedTo
         ITypeCodeGenerator<EncodingTypeCodeGeneratorParameter> composerTypeGenerator
     )
     {
+        _outputBoxViewModelFactory = outputBoxViewModelFactory;
         _composerTypeGenerator = composerTypeGenerator;
-
-        OutputBoxViewModel = outputBoxViewModelFactory.Create();
     }
 
-    public Task OnNavigatedToAsync(NavigationContext context)
+    public Task OnInititalNavigationAsync(NavigationContext context)
     {
+        OutputBoxViewModel = _outputBoxViewModelFactory.Create();
+
         var encodings = GetEncodings();
         EncodingsFrom = new ObservableCollection<EncodingItemViewModel>(encodings);
         EncodingsTo = new ObservableCollection<EncodingItemViewModel>(encodings);

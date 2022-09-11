@@ -7,6 +7,61 @@ namespace TypeCode.Wpf.Helper.ViewModels;
 
 public static class NavigationCaller
 {
+    public static async Task CallInitialNavigateAsync(object? viewModel, NavigationContext navigationContext)
+    {
+        switch (viewModel)
+        {
+            case null:
+                return;
+            case IAsyncInitialNavigated asyncNavigatedTo:
+
+                if (viewModel is ViewModelBase { Initialized: false } uninitializedViewModelBase)
+                {
+                    await asyncNavigatedTo.OnInititalNavigationAsync(navigationContext).ConfigureAwait(true);
+                    uninitializedViewModelBase.Initialized = true;
+                }
+                else if (viewModel is not ViewModelBase)
+                {
+                    throw new ArgumentException($"{nameof(IAsyncInitialNavigated)} only works on {nameof(ViewModelBase)}");
+                }
+
+                break;
+        }
+
+        var fields = viewModel.GetType().GetFields(BindingFlags.Instance | BindingFlags.NonPublic);
+        foreach (var property in fields)
+        {
+            if (property.GetCustomAttribute<ChildViewModelAttribute>() is not null)
+            {
+                var fieldValue = property.GetValue(viewModel);
+
+                switch (fieldValue)
+                {
+                    case null:
+                        continue;
+                    case IEnumerable values:
+                    {
+                        foreach (var value in values)
+                        {
+                            await CallInitialNavigateAsync(value, navigationContext).ConfigureAwait(true);
+                        }
+
+                        break;
+                    }
+                    default:
+                        await CallInitialNavigateAsync(fieldValue, navigationContext).ConfigureAwait(true);
+                        break;
+                }
+            }
+        }
+        
+        if (viewModel is ViewModelBase viewModelBase)
+        {
+            viewModelBase.OnAllPropertiesChanged();
+            viewModelBase.ValidateAllProperties();
+        }
+    }
+
     public static async Task CallNavigateToAsync(object? viewModel, NavigationContext navigationContext)
     {
         switch (viewModel)
@@ -41,10 +96,11 @@ public static class NavigationCaller
         
         if (viewModel is ViewModelBase viewModelBase)
         {
+            viewModelBase.OnAllPropertiesChanged();
             viewModelBase.ValidateAllProperties();
         }
     }
-    
+
     public static async Task CallNavigateFromAsync(object? viewModel, NavigationContext navigationContext)
     {
         switch (viewModel)

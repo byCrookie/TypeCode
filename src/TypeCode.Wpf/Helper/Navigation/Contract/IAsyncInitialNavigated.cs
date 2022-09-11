@@ -1,6 +1,6 @@
 ﻿using TypeCode.Wpf.Helper.Navigation.Service;
 
-namespace TypeCode.Wpf.Helper.Navigation.Wizard;
+namespace TypeCode.Wpf.Helper.Navigation.Contract;
 
 public interface IAsyncInitialNavigated
 {
