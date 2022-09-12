@@ -11,7 +11,7 @@ using TypeCode.Console.Commands.Unit;
 
 namespace TypeCode.Console;
 
-public class Program
+public sealed class Program
 {
     public static async Task<int> Main(string[] args)
     {

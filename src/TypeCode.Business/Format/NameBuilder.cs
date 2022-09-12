@@ -1,6 +1,6 @@
 ﻿namespace TypeCode.Business.Format;
 
-public class NameBuilder
+public sealed class NameBuilder
 {
     public static string VariableNameFromInterface(Type @interface)
     {

@@ -3,7 +3,7 @@ using System.Xml.Serialization;
 
 namespace TypeCode.Business.Configuration;
 
-public class GenericXmlSerializer : IGenericXmlSerializer
+public sealed class GenericXmlSerializer : IGenericXmlSerializer
 {
 	public string Serialize<T>(T objectToParse) where T : class, new()
 	{

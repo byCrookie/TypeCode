@@ -1,6 +1,6 @@
 ﻿namespace TypeCode.Business.Version;
 
-public class SemanticVersionComparer : ISemanticVersionComparer
+public sealed class SemanticVersionComparer : ISemanticVersionComparer
 {
     public bool IsNewer(string current, string newest)
     {

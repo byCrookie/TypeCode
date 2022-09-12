@@ -2,7 +2,7 @@
 
 namespace TypeCode.Test.Library2;
 
-public class TestImplementationLibrary2 : ITestInterface
+public sealed class TestImplementationLibrary2 : ITestInterface
 {
     
 }

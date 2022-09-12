@@ -3,7 +3,7 @@ using TypeCode.Wpf.Main.Sidebar;
 
 namespace TypeCode.Wpf.Main;
 
-public class MainViewProvider : IMainViewProvider
+public sealed class MainViewProvider : IMainViewProvider
 {
     private readonly MainResult _mainResult;
 

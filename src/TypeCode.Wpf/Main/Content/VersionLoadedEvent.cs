@@ -1,6 +1,6 @@
 ﻿namespace TypeCode.Wpf.Main.Content;
 
-public class VersionLoadedEvent
+public sealed class VersionLoadedEvent
 {
     public VersionLoadedEvent(string currentVersion)
     {

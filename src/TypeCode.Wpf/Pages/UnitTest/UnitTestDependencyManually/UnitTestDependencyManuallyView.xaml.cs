@@ -1,6 +1,6 @@
 ﻿namespace TypeCode.Wpf.Pages.UnitTest.UnitTestDependencyManually;
 
-public partial class UnitTestDependencyManuallyView
+public sealed partial class UnitTestDependencyManuallyView
 {
     public UnitTestDependencyManuallyView()
     {

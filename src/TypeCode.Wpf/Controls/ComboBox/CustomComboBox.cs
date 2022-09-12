@@ -4,7 +4,7 @@ using System.Windows.Controls;
 
 namespace TypeCode.Wpf.Controls.ComboBox;
 
-public class CustomComboBox : Control
+public sealed class CustomComboBox : Control
 {
     public CustomComboBox()
     {

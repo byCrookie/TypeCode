@@ -2,7 +2,7 @@
 
 namespace TypeCode.Wpf.Pages.Encoding;
 
-public class EncodingItemViewModel
+public sealed class EncodingItemViewModel
 {
     public System.Text.Encoding Encoding { get; }
     public EncodingInfo EncodingInfo { get; }

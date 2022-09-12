@@ -7,7 +7,7 @@ using TypeCode.Wpf.Helper.ViewModels;
 
 namespace TypeCode.Wpf.Pages.Configuration.Simple.AssemblyPathWizard;
 
-public partial class AssemblyPathWizardViewModel : ViewModelBase
+public sealed partial class AssemblyPathWizardViewModel : ViewModelBase
 {
     [RelayCommand]
     private Task SelectAsync()

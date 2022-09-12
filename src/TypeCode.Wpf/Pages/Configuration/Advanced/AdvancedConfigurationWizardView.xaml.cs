@@ -1,6 +1,6 @@
 ﻿namespace TypeCode.Wpf.Pages.Configuration.Advanced;
 
-public partial class AdvancedConfigurationWizardView
+public sealed partial class AdvancedConfigurationWizardView
 {
     public AdvancedConfigurationWizardView()
     {

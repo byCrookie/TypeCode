@@ -1,6 +1,6 @@
 ﻿namespace TypeCode.Wpf.Components.InfoLink;
 
-public class InfoLinkViewModelFactory : IInfoLinkViewModelFactory
+public sealed class InfoLinkViewModelFactory : IInfoLinkViewModelFactory
 {
     public InfoLinkViewModel Create(InfoLinkViewModelParameter parameter)
     {

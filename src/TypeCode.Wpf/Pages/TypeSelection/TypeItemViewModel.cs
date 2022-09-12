@@ -2,7 +2,7 @@
 
 namespace TypeCode.Wpf.Pages.TypeSelection;
 
-public class TypeItemViewModel : ListBoxItem
+public sealed class TypeItemViewModel : ListBoxItem
 {
     public TypeItemViewModel(Type type)
     {

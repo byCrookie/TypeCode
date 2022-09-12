@@ -1,6 +1,6 @@
 ﻿namespace TypeCode.Wpf.Helper.Navigation.Modal.Service;
 
-public class ModalParameter
+public sealed class ModalParameter
 {
     public ModalParameter()
     {

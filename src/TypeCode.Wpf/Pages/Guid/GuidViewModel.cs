@@ -11,7 +11,7 @@ using TypeCode.Wpf.Helper.ViewModels;
 
 namespace TypeCode.Wpf.Pages.Guid;
 
-public partial class GuidViewModel : ViewModelBase, IAsyncInitialNavigated
+public sealed partial class GuidViewModel : ViewModelBase, IAsyncInitialNavigated
 {
     private readonly ITypeCodeGenerator<GuidTypeCodeGeneratorParameter> _guidGenerator;
     private readonly IOutputBoxViewModelFactory _outputBoxViewModelFactory;

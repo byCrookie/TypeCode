@@ -7,7 +7,7 @@ using TypeCode.Business.Logging;
 
 namespace TypeCode.Business.TypeEvaluation;
 
-public class TypeProvider : ITypeProvider
+public sealed class TypeProvider : ITypeProvider
 {
     private readonly IUserDataLocationProvider _userDataLocationProvider;
 

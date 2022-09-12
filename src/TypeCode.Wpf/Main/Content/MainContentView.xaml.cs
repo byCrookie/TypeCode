@@ -1,6 +1,6 @@
 ﻿namespace TypeCode.Wpf.Main.Content;
 
-public partial class MainContentView
+public sealed partial class MainContentView
 {
     public MainContentView()
     {

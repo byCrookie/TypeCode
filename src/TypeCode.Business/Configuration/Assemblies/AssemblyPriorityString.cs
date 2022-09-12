@@ -1,6 +1,6 @@
 ﻿namespace TypeCode.Business.Configuration.Assemblies;
 
-public class AssemblyPriorityString
+public sealed class AssemblyPriorityString
 {
     public AssemblyPriorityString(string priority, string assembly, bool ignore)
     {

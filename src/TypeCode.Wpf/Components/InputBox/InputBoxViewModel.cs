@@ -12,7 +12,7 @@ using TypeCode.Wpf.Helper.ViewModels;
 
 namespace TypeCode.Wpf.Components.InputBox;
 
-public partial class InputBoxViewModel :
+public sealed partial class InputBoxViewModel :
     ViewModelBase,
     IAsyncEventHandler<LoadStartEvent>,
     IAsyncEventHandler<LoadEndEvent>,

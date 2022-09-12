@@ -3,7 +3,7 @@ using TypeCode.Wpf.Main.Sidebar;
 
 namespace TypeCode.Wpf.Main;
 
-public class MainResult
+public sealed class MainResult
 {
     public MainResult(MainWindow mainWindow, MainContentView mainContent, MainSidebarView mainSidebar)
     {

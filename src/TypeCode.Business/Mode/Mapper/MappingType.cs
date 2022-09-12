@@ -3,7 +3,7 @@ using TypeCode.Business.StringProximity;
 
 namespace TypeCode.Business.Mode.Mapper;
 
-public class MappingType
+public sealed class MappingType
 {
     public MappingType(Type? type)
     {

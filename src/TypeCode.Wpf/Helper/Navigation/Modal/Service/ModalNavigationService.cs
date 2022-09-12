@@ -8,7 +8,7 @@ using TypeCode.Wpf.Main;
 
 namespace TypeCode.Wpf.Helper.Navigation.Modal.Service;
 
-public class ModalNavigationService : IModalNavigationService
+public sealed class ModalNavigationService : IModalNavigationService
 {
     private readonly IMainViewProvider _mainViewProvider;
     private readonly IFactory<ModalViewModel> _modalViewModelFactory;

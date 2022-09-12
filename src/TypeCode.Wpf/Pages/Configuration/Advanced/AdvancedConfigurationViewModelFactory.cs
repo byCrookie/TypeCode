@@ -3,7 +3,7 @@ using TypeCode.Wpf.Helper.Navigation.Service;
 
 namespace TypeCode.Wpf.Pages.Configuration.Advanced;
 
-public class AdvancedConfigurationViewModelFactory : IAdvancedConfigurationViewModelFactory
+public sealed class AdvancedConfigurationViewModelFactory : IAdvancedConfigurationViewModelFactory
 {
     private readonly IUserDataLocationProvider _userDataLocationProvider;
 

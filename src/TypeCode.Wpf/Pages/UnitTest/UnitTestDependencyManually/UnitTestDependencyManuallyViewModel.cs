@@ -10,7 +10,7 @@ using TypeCode.Wpf.Helper.ViewModels;
 
 namespace TypeCode.Wpf.Pages.UnitTest.UnitTestDependencyManually;
 
-public partial class UnitTestDependencyManuallyViewModel : ViewModelBase, IAsyncInitialNavigated
+public sealed partial class UnitTestDependencyManuallyViewModel : ViewModelBase, IAsyncInitialNavigated
 {
     private readonly ITypeCodeGenerator<UnitTestDependencyManuallyGeneratorParameter> _unitTestDependencyManuallyGenerator;
     private readonly IOutputBoxViewModelFactory _outputBoxViewModelFactory;

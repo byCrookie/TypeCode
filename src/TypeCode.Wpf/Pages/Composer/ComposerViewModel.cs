@@ -11,7 +11,7 @@ using TypeCode.Wpf.Pages.TypeSelection;
 
 namespace TypeCode.Wpf.Pages.Composer;
 
-public partial class ComposerViewModel : ViewModelBase, IAsyncInitialNavigated
+public sealed partial class ComposerViewModel : ViewModelBase, IAsyncInitialNavigated
 {
     private readonly ITypeCodeGenerator<ComposerTypeCodeGeneratorParameter> _composerTypeGenerator;
     private readonly ITypeProvider _typeProvider;

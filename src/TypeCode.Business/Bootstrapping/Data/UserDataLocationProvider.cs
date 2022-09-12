@@ -1,6 +1,6 @@
 ﻿namespace TypeCode.Business.Bootstrapping.Data;
 
-public class UserDataLocationProvider : IUserDataLocationProvider, IUserDataLocationInitializer
+public sealed class UserDataLocationProvider : IUserDataLocationProvider, IUserDataLocationInitializer
 {
     private static string? _configurationFilePath;
     private static string? _logsPath;

@@ -3,7 +3,7 @@ using TypeCode.Business.Configuration.Assemblies;
 
 namespace TypeCode.Business.Configuration;
 
-public class AssemblyGroup
+public sealed class AssemblyGroup
 {
     public AssemblyGroup()
     {
@@ -21,7 +21,7 @@ public class AssemblyGroup
     public List<AssemblyPriorityString> PriorityAssemblyList { get; set; }
 }
     
-public class AssemblyRoot
+public sealed class AssemblyRoot
 {
     public AssemblyRoot()
     {
@@ -37,7 +37,7 @@ public class AssemblyRoot
     public bool Ignore { get; set; }
 }
     
-public class TypeCodeConfiguration
+public sealed class TypeCodeConfiguration
 {
     public TypeCodeConfiguration()
     {
@@ -48,7 +48,7 @@ public class TypeCodeConfiguration
     public List<AssemblyRoot> AssemblyRoot { get; set; }
 }
 
-public class AssemblyPath : IAssemblyHolder, IDictionaryHolder
+public sealed class AssemblyPath : IAssemblyHolder, IDictionaryHolder
 {
     public AssemblyPath()
     {
@@ -66,7 +66,7 @@ public class AssemblyPath : IAssemblyHolder, IDictionaryHolder
     public IDictionary<string, List<Type>> TypesByFullNameDictionary { get; set; }
 }
 
-public class AssemblyPathSelector : IAssemblyHolder, IDictionaryHolder
+public sealed class AssemblyPathSelector : IAssemblyHolder, IDictionaryHolder
 {
     public AssemblyPathSelector()
     {

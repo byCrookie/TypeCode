@@ -5,7 +5,7 @@ using TypeCode.Business.TypeEvaluation.Property;
 
 namespace TypeCode.Business.Mode.Builder;
 
-public class BuilderTypeCodeGenerator : IBuilderTypeCodeGenerator
+public sealed class BuilderTypeCodeGenerator : IBuilderTypeCodeGenerator
 {
     public Task<string?> GenerateAsync(BuilderTypeCodeGeneratorParameter parameter)
     {
@@ -53,7 +53,7 @@ public class BuilderTypeCodeGenerator : IBuilderTypeCodeGenerator
         var classFieldName = NameBuilder.FieldNameFromClass(type);
         var classVariableName = NameBuilder.VariableNameFromClass(type);
 
-        stringBuilder.AppendLine($"public class {typeName}Builder");
+        stringBuilder.AppendLine($"public sealed class {typeName}Builder");
         stringBuilder.AppendLine("{");
         stringBuilder.AppendLine($@"{Cuts.Tab()}private static {typeName} {classFieldName};");
         stringBuilder.AppendLine();

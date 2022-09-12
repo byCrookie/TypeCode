@@ -2,7 +2,7 @@ using TypeCode.Wpf.Helper.Navigation.Service;
 
 namespace TypeCode.Wpf.Helper.Navigation.Wizard;
 
-public class WizardStepConfiguration
+public sealed class WizardStepConfiguration
 {
     public WizardStepConfiguration(
         Func<NavigationContext, Task> afterAction,

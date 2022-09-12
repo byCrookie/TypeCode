@@ -3,7 +3,7 @@ using TypeCode.Wpf.Helper.ViewModels;
 
 namespace TypeCode.Wpf.Pages.Assemblies;
 
-public partial class AssemblyItemViewModel : ViewModelBase
+public sealed partial class AssemblyItemViewModel : ViewModelBase
 {
     public AssemblyItemViewModel(string priority, string assembly, bool ignore)
     {

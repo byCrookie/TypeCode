@@ -6,9 +6,9 @@ using TypeCode.Business.TypeEvaluation;
 
 namespace TypeCode.Console.Commands.Specflow;
 
-public class SpecflowCommand : AsyncCommand<SpecflowCommand.Settings>
+public sealed class SpecflowCommand : AsyncCommand<SpecflowCommand.Settings>
 {
-    public class Settings : CommandSettings
+    public sealed class Settings : CommandSettings
     {
         public Settings(string[] typeNames)
         {

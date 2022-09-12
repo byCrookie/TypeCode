@@ -1,6 +1,6 @@
 ﻿namespace TypeCode.Business.Mode.Specflow;
 
-public class SpecflowTypeCodeGeneratorParameter : ITypeCodeGeneratorParameter
+public sealed class SpecflowTypeCodeGeneratorParameter : ITypeCodeGeneratorParameter
 {
     public SpecflowTypeCodeGeneratorParameter()
     {

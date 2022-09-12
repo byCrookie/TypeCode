@@ -1,6 +1,6 @@
 ﻿namespace TypeCode.Wpf.Pages.TypeSelection;
 
-public class TypeSelectionParameter
+public sealed class TypeSelectionParameter
 {
     public TypeSelectionParameter()
     {

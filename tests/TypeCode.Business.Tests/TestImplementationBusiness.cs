@@ -1,6 +1,6 @@
 ﻿namespace TypeCode.Business.Tests;
 
-public class TestImplementationBusiness : ITestInterface
+public sealed class TestImplementationBusiness : ITestInterface
 {
     
 }

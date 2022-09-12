@@ -1,6 +1,6 @@
 ﻿namespace TypeCode.Business.Configuration.Assemblies;
 
-public class AssemblyRootCompound
+public sealed class AssemblyRootCompound
 {
     public AssemblyRootCompound(AssemblyRoot assemblyRoot, AssemblyDirectory assemblyDirectory)
     {

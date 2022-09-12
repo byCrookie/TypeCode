@@ -1,6 +1,6 @@
 ﻿namespace TypeCode.Wpf.Pages.Guid;
 
-public partial class GuidView
+public sealed partial class GuidView
 {
     public GuidView()
     {

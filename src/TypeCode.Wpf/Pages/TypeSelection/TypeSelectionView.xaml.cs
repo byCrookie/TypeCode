@@ -1,6 +1,6 @@
 ﻿namespace TypeCode.Wpf.Pages.TypeSelection;
 
-public partial class TypeSelectionView
+public sealed partial class TypeSelectionView
 {
     public TypeSelectionView()
     {

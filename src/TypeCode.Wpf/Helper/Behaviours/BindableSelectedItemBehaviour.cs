@@ -4,7 +4,7 @@ using Microsoft.Xaml.Behaviors;
 
 namespace TypeCode.Wpf.Helper.Behaviours;
 
-public class BindableSelectedItemBehavior : Behavior<TreeView>
+public sealed class BindableSelectedItemBehavior : Behavior<TreeView>
 {
     public object SelectedItem
     {

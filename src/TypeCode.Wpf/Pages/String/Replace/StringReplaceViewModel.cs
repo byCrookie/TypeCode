@@ -9,7 +9,7 @@ using TypeCode.Wpf.Helper.ViewModels;
 
 namespace TypeCode.Wpf.Pages.String.Replace;
 
-public partial class StringReplaceViewModel : ViewModelBase, IAsyncInitialNavigated
+public sealed partial class StringReplaceViewModel : ViewModelBase, IAsyncInitialNavigated
 {
     public StringReplaceViewModel(IOutputBoxViewModelFactory outputBoxViewModelFactory)
     {

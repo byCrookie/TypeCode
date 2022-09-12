@@ -8,7 +8,7 @@ using TypeCode.Business.TypeEvaluation;
 
 namespace TypeCode.Business.Configuration.Assemblies;
 
-public class AssemblyLoader : IAssemblyLoader
+public sealed class AssemblyLoader : IAssemblyLoader
 {
     private readonly IAssemblyDependencyLoader _assemblyDependencyLoader;
     private readonly IUserDataLocationProvider _userDataLocationProvider;

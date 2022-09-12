@@ -1,6 +1,6 @@
 ﻿namespace TypeCode.Business.Mode.Composer;
 
-public class ComposerTypeCodeGeneratorParameter : ITypeCodeGeneratorParameter
+public sealed class ComposerTypeCodeGeneratorParameter : ITypeCodeGeneratorParameter
 {
     public ComposerTypeCodeGeneratorParameter()
     {

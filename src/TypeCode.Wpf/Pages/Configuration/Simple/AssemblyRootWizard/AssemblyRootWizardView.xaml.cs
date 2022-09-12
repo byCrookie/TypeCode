@@ -1,6 +1,6 @@
 ﻿namespace TypeCode.Wpf.Pages.Configuration.Simple.AssemblyRootWizard;
 
-public partial class AssemblyRootWizardView
+public sealed partial class AssemblyRootWizardView
 {
     public AssemblyRootWizardView()
     {

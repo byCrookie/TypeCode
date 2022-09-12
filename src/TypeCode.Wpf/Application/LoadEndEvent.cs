@@ -1,6 +1,6 @@
 ﻿namespace TypeCode.Wpf.Application;
 
-public class LoadEndEvent
+public sealed class LoadEndEvent
 {
         
 }

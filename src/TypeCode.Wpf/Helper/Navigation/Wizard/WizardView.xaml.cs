@@ -1,6 +1,6 @@
 ﻿namespace TypeCode.Wpf.Helper.Navigation.Wizard;
 
-public partial class WizardView
+public sealed partial class WizardView
 {
     public WizardView()
     {

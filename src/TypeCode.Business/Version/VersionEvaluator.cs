@@ -4,7 +4,7 @@ using System.Text.Json;
 
 namespace TypeCode.Business.Version;
 
-public class VersionEvaluator : IVersionEvaluator
+public sealed class VersionEvaluator : IVersionEvaluator
 {
     private readonly ISemanticVersionComparer _semanticVersionComparer;
 

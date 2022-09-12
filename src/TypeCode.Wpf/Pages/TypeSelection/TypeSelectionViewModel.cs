@@ -7,7 +7,7 @@ using TypeCode.Wpf.Helper.ViewModels;
 
 namespace TypeCode.Wpf.Pages.TypeSelection;
 
-public partial class TypeSelectionViewModel : ViewModelBase, IAsyncNavigatedTo
+public sealed partial class TypeSelectionViewModel : ViewModelBase, IAsyncNavigatedTo
 {
     public TypeSelectionViewModel()
     {

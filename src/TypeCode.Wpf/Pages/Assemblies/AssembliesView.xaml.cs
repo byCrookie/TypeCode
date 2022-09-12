@@ -1,6 +1,6 @@
 ﻿namespace TypeCode.Wpf.Pages.Assemblies;
 
-public partial class AssemblyView
+public sealed partial class AssemblyView
 {
     public AssemblyView()
     {

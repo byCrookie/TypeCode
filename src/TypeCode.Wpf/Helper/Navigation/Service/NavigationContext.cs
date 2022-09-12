@@ -1,6 +1,6 @@
 namespace TypeCode.Wpf.Helper.Navigation.Service;
 
-public class NavigationContext
+public sealed class NavigationContext
 {
     private readonly IDictionary<Type, object> _parameters;
     private readonly IDictionary<string, object> _parametersKey;

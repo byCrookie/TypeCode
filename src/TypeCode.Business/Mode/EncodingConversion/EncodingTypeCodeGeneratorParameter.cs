@@ -2,7 +2,7 @@
 
 namespace TypeCode.Business.Mode.EncodingConversion;
 
-public class EncodingTypeCodeGeneratorParameter : ITypeCodeGeneratorParameter
+public sealed class EncodingTypeCodeGeneratorParameter : ITypeCodeGeneratorParameter
 {
     public EncodingTypeCodeGeneratorParameter(string input, Encoding encodingFrom, Encoding encodingTo)
     {

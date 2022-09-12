@@ -6,9 +6,9 @@ using TypeCode.Business.TypeEvaluation;
 
 namespace TypeCode.Console.Commands.Composer;
 
-public class ComposerCommand : AsyncCommand<ComposerCommand.Settings>
+public sealed class ComposerCommand : AsyncCommand<ComposerCommand.Settings>
 {
-    public class Settings : CommandSettings
+    public sealed class Settings : CommandSettings
     {
         public Settings(string typeName)
         {

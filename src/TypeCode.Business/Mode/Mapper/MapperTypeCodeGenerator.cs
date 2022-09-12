@@ -2,7 +2,7 @@
 
 namespace TypeCode.Business.Mode.Mapper;
 
-public class MapperTypeCodeGenerator : IMapperTypeCodeGenerator
+public sealed class MapperTypeCodeGenerator : IMapperTypeCodeGenerator
 {
     private readonly IMapperStyleComposer _mapperStyleComposer;
 

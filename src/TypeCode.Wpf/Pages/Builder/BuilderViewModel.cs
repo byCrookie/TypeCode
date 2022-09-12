@@ -11,7 +11,7 @@ using TypeCode.Wpf.Pages.TypeSelection;
 
 namespace TypeCode.Wpf.Pages.Builder;
 
-public partial class BuilderViewModel : ViewModelBase, IAsyncInitialNavigated
+public sealed partial class BuilderViewModel : ViewModelBase, IAsyncInitialNavigated
 {
     private readonly ITypeCodeGenerator<BuilderTypeCodeGeneratorParameter> _builderGenerator;
     private readonly ITypeProvider _typeProvider;

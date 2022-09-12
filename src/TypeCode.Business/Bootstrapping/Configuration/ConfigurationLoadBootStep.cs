@@ -5,7 +5,7 @@ using Workflow;
 
 namespace TypeCode.Business.Bootstrapping.Configuration;
 
-public class ConfigurationLoadBootStep<TContext> : IConfigurationLoadBootStep<TContext>
+public sealed class ConfigurationLoadBootStep<TContext> : IConfigurationLoadBootStep<TContext>
     where TContext : WorkflowBaseContext, IBootContext
 {
     private readonly IConfigurationLoader _configurationLoader;

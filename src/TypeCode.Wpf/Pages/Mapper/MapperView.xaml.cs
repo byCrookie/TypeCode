@@ -1,6 +1,6 @@
 ﻿namespace TypeCode.Wpf.Pages.Mapper;
 
-public partial class MapperView
+public sealed partial class MapperView
 {
     public MapperView()
     {

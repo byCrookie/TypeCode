@@ -9,7 +9,7 @@ using TypeCode.Wpf.Pages.String.Replace;
 
 namespace TypeCode.Wpf.Pages.String;
 
-public partial class StringViewModel : ViewModelBase, IAsyncNavigatedTo
+public sealed partial class StringViewModel : ViewModelBase, IAsyncNavigatedTo
 {
     private readonly INavigationService _navigationService;
     private readonly INavigationCardViewModelFactory _navigationCardViewModelFactory;

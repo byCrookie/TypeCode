@@ -1,6 +1,6 @@
 ﻿namespace TypeCode.Business.Mode.Builder;
 
-public class BuilderTypeCodeGeneratorParameter : ITypeCodeGeneratorParameter
+public sealed class BuilderTypeCodeGeneratorParameter : ITypeCodeGeneratorParameter
 {
     public BuilderTypeCodeGeneratorParameter()
     {

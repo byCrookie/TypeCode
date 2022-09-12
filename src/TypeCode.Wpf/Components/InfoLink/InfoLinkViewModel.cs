@@ -3,7 +3,7 @@ using TypeCode.Wpf.Helper.ViewModels;
 
 namespace TypeCode.Wpf.Components.InfoLink;
 
-public partial class InfoLinkViewModel : ViewModelBase
+public sealed partial class InfoLinkViewModel : ViewModelBase
 {
     [ObservableProperty]
     private string? _link;

@@ -2,7 +2,7 @@ using TypeCode.Wpf.Helper.Navigation.Service;
 
 namespace TypeCode.Wpf.Helper.Navigation.Wizard;
 
-public class WizardStepParameter
+public sealed class WizardStepParameter
 {
     public WizardStepParameter()
     {

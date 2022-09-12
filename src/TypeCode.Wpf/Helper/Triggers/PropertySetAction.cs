@@ -4,7 +4,7 @@ using Microsoft.Xaml.Behaviors;
 
 namespace TypeCode.Wpf.Helper.Triggers;
 
-public class SetPropertyActionTrigger : TriggerAction<FrameworkElement>
+public sealed class SetPropertyActionTrigger : TriggerAction<FrameworkElement>
 {
     public string PropertyName
     {

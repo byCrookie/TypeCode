@@ -2,7 +2,7 @@
 
 namespace TypeCode.Wpf.Helper.Navigation.Wizard;
 
-public class InstanceResult
+public sealed class InstanceResult
 {
     public InstanceResult(Type viewType, UserControl viewInstance, Type viewModelType, object viewModelInstance)
     {

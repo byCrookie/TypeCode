@@ -7,8 +7,8 @@
                     xmlns:triggers="clr-namespace:TypeCode.Wpf.Helper.Triggers"
                     xmlns:system="clr-namespace:System;assembly=System.Runtime">
 
-    <converters:BooleanToVisibilityConverterSelf x:Key="BooleanToVisibilityConverter" True="Visible" False="Collapsed" />
-    <converters:BooleanToVisibilityConverterSelf x:Key="InvertedBooleanToVisibilityConverter" True="Collapsed"
+    <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" True="Visible" False="Collapsed" />
+    <converters:BooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" True="Collapsed"
                                                  False="Visible" />
     <converters:ObjectToStringConverter x:Key="ObjectToStringConverter"/>
     <system:Boolean x:Key="False">False</system:Boolean>

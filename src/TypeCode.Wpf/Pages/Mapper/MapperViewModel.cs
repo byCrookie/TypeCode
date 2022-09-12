@@ -13,7 +13,7 @@ using TypeCode.Wpf.Pages.TypeSelection;
 
 namespace TypeCode.Wpf.Pages.Mapper;
 
-public partial class MapperViewModel : ViewModelBase, IAsyncInitialNavigated
+public sealed partial class MapperViewModel : ViewModelBase, IAsyncInitialNavigated
 {
     private readonly ITypeCodeGenerator<MapperTypeCodeGeneratorParameter> _mapperGenerator;
     private readonly ITypeProvider _typeProvider;

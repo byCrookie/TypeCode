@@ -2,7 +2,7 @@
 
 namespace TypeCode.Wpf.Pages.String.Replace;
 
-public class ReplaceItemViewModel : ViewModelBase
+public sealed class ReplaceItemViewModel : ViewModelBase
 {
     public string ToReplace { get; }
     public string ReplaceWith { get; }

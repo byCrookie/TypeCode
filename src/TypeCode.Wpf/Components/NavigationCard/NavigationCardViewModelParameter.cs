@@ -2,7 +2,7 @@
 
 namespace TypeCode.Wpf.Components.NavigationCard;
 
-public class NavigationCardViewModelParameter
+public sealed class NavigationCardViewModelParameter
 {
     public NavigationCardViewModelParameter(string title, string description, ICommand navigateCommand)
     {

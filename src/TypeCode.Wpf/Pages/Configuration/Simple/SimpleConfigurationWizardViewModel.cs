@@ -8,7 +8,7 @@ using TypeCode.Wpf.Pages.Configuration.Advanced;
 
 namespace TypeCode.Wpf.Pages.Configuration.Simple;
 
-public partial class SimpleConfigurationWizardViewModel : ViewModelBase, IAsyncInitialNavigated
+public sealed partial class SimpleConfigurationWizardViewModel : ViewModelBase, IAsyncInitialNavigated
 {
     private readonly ISimpleConfigurator _simpleConfigurator;
     private readonly IAdvancedConfigurationViewModelFactory _advancedConfigurationViewModelFactory;

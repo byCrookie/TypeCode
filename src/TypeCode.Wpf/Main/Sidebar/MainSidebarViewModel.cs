@@ -20,7 +20,7 @@ using TypeCode.Wpf.Pages.UnitTest;
 
 namespace TypeCode.Wpf.Main.Sidebar;
 
-public partial class MainSidebarViewModel : ViewModelBase, IAsyncNavigatedTo
+public sealed partial class MainSidebarViewModel : ViewModelBase, IAsyncNavigatedTo
 {
     private readonly INavigationService _navigationService;
     private readonly IFactory<IWizardBuilder> _wizardBuilderFactory;

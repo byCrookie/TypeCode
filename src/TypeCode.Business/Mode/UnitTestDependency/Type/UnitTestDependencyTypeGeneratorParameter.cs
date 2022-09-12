@@ -1,6 +1,6 @@
 ﻿namespace TypeCode.Business.Mode.UnitTestDependency.Type;
 
-public class UnitTestDependencyTypeGeneratorParameter : ITypeCodeGeneratorParameter
+public sealed class UnitTestDependencyTypeGeneratorParameter : ITypeCodeGeneratorParameter
 {
     public UnitTestDependencyTypeGeneratorParameter()
     {

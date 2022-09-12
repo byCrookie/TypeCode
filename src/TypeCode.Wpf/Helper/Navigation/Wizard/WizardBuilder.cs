@@ -6,7 +6,7 @@ using TypeCode.Wpf.Main;
 
 namespace TypeCode.Wpf.Helper.Navigation.Wizard;
 
-public class WizardBuilder : IWizardAfterInitialBuilder
+public sealed class WizardBuilder : IWizardAfterInitialBuilder
 {
     private readonly IFactory _factory;
     

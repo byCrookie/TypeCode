@@ -8,7 +8,7 @@ using TypeCode.Wpf.Helper.ViewModels;
 
 namespace TypeCode.Wpf.Pages.String.Length;
 
-public partial class StringLengthViewModel : ViewModelBase, IAsyncInitialNavigated
+public sealed partial class StringLengthViewModel : ViewModelBase, IAsyncInitialNavigated
 {
     private readonly IOutputBoxViewModelFactory _outputBoxViewModelFactory;
 

@@ -1,6 +1,6 @@
 ﻿namespace TypeCode.Wpf.Main.Content;
 
-public class BannerOpenEvent
+public sealed class BannerOpenEvent
 {
     public string? Message { get; set; }
     public bool IsLink { get; set; }

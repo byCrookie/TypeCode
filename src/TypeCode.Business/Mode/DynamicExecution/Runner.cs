@@ -3,7 +3,7 @@ using Serilog;
 
 namespace TypeCode.Business.Mode.DynamicExecution;
 
-public class Runner : IRunner
+public sealed class Runner : IRunner
 {
     public string Execute(byte[] compiledAssembly)
     {

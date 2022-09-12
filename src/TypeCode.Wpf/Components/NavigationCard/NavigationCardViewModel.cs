@@ -4,7 +4,7 @@ using TypeCode.Wpf.Helper.ViewModels;
 
 namespace TypeCode.Wpf.Components.NavigationCard;
 
-public partial class NavigationCardViewModel : ViewModelBase
+public sealed partial class NavigationCardViewModel : ViewModelBase
 {
     [ObservableProperty]
     private string? _title;

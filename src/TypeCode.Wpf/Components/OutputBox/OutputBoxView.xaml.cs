@@ -1,6 +1,6 @@
 ﻿namespace TypeCode.Wpf.Components.OutputBox;
 
-public partial class OutputBoxView
+public sealed partial class OutputBoxView
 {
     public OutputBoxView()
     {

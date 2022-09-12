@@ -2,7 +2,7 @@
 
 namespace TypeCode.Business.Embedded;
 
-public class ResourceReader : IResourceReader
+public sealed class ResourceReader : IResourceReader
 {
     public string ReadResource(Assembly assembly, string resourcePath)
     {

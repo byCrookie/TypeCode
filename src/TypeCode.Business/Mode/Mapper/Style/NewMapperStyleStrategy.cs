@@ -5,7 +5,7 @@ using TypeCode.Business.TypeEvaluation.Property;
 
 namespace TypeCode.Business.Mode.Mapper.Style;
 
-public class NewMapperStyleStrategy : INewMapperStyleStrategy
+public sealed class NewMapperStyleStrategy : INewMapperStyleStrategy
 {
     public bool IsResponsibleFor(MappingStyle style)
     {

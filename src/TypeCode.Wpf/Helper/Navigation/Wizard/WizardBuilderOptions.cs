@@ -4,7 +4,7 @@ using TypeCode.Wpf.Helper.Navigation.Service;
 
 namespace TypeCode.Wpf.Helper.Navigation.Wizard;
 
-public class WizardBuilderOptions
+public sealed class WizardBuilderOptions
 {
     public WizardBuilderOptions(NavigationContext context, Frame navigationFrame, UIElement content, UIElement wizardOverlay)
     {

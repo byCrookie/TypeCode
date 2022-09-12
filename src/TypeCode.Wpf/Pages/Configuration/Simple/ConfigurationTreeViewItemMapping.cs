@@ -2,7 +2,7 @@
 
 namespace TypeCode.Wpf.Pages.Configuration.Simple;
 
-public class ConfigurationTreeViewItemMapping<T> where T : class
+public sealed class ConfigurationTreeViewItemMapping<T> where T : class
 {
     public ConfigurationTreeViewItemMapping(TreeViewItem item, TreeViewItem parentItem, T type)
     {

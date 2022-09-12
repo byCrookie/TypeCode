@@ -7,9 +7,9 @@ using TypeCode.Business.TypeEvaluation;
 
 namespace TypeCode.Console.Commands.Mapper;
 
-public class MapperCommand : AsyncCommand<MapperCommand.Settings>
+public sealed class MapperCommand : AsyncCommand<MapperCommand.Settings>
 {
-    public class Settings : CommandSettings
+    public sealed class Settings : CommandSettings
     {
         public Settings(string from, string to)
         {

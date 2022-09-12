@@ -2,7 +2,7 @@
 
 namespace TypeCode.Wpf.Components.InputBox;
 
-public class InputBoxViewModelFactory : IInputBoxViewModelFactory
+public sealed class InputBoxViewModelFactory : IInputBoxViewModelFactory
 {
     private readonly IFactory<InputBoxViewModel> _viewModelFactory;
 

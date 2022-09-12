@@ -1,6 +1,6 @@
 ﻿namespace TypeCode.Business.Mode.Guid;
 
-public class GuidCodeGenerator : IGuidCodeGenerator
+public sealed class GuidCodeGenerator : IGuidCodeGenerator
 {
     public Task<string?> GenerateAsync(GuidTypeCodeGeneratorParameter parameter)
     {

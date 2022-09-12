@@ -1,5 +1,5 @@
 ﻿namespace TypeCode.Wpf.Controls.RadioButton;
 
-public class CustomRadioButton : System.Windows.Controls.RadioButton
+public sealed class CustomRadioButton : System.Windows.Controls.RadioButton
 {
 }

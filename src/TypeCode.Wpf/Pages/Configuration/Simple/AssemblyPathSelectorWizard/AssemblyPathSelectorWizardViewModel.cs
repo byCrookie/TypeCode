@@ -5,7 +5,7 @@ using TypeCode.Wpf.Helper.ViewModels;
 
 namespace TypeCode.Wpf.Pages.Configuration.Simple.AssemblyPathSelectorWizard;
 
-public partial class AssemblyPathSelectorWizardViewModel : ViewModelBase
+public sealed partial class AssemblyPathSelectorWizardViewModel : ViewModelBase
 {
     [ObservableProperty]
     [NotifyDataErrorInfo]

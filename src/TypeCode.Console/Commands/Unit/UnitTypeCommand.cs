@@ -6,9 +6,9 @@ using TypeCode.Business.TypeEvaluation;
 
 namespace TypeCode.Console.Commands.Unit;
 
-public class UnitTypeCommand : AsyncCommand<UnitTypeCommand.Settings>
+public sealed class UnitTypeCommand : AsyncCommand<UnitTypeCommand.Settings>
 {
-    public class Settings : CommandSettings
+    public sealed class Settings : CommandSettings
     {
         public Settings(string[] typeNames)
         {

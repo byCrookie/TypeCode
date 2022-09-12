@@ -4,7 +4,7 @@ using TypeCode.Wpf.Helper.Thread;
 
 namespace TypeCode.Wpf.Helper.Event;
 
-public class EventAggregator : IEventAggregator
+public sealed class EventAggregator : IEventAggregator
 {
     private readonly object _lock = new();
 

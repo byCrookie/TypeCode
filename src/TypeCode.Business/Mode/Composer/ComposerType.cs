@@ -1,6 +1,6 @@
 ﻿namespace TypeCode.Business.Mode.Composer;
 
-public class ComposerType
+public sealed class ComposerType
 {
     public ComposerType(Type type, List<Type> interfaces)
     {

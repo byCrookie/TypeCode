@@ -7,7 +7,7 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace TypeCode.Wpf.Controls.TextBox;
 
-public class CustomTextBox : System.Windows.Controls.TextBox
+public sealed class CustomTextBox : System.Windows.Controls.TextBox
 {
     private readonly List<CancellationTokenSource> _cancellationTokenSources;
 

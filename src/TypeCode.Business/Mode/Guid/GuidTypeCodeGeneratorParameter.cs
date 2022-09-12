@@ -1,6 +1,6 @@
 ﻿namespace TypeCode.Business.Mode.Guid;
 
-public class GuidTypeCodeGeneratorParameter : ITypeCodeGeneratorParameter
+public sealed class GuidTypeCodeGeneratorParameter : ITypeCodeGeneratorParameter
 {
     public GuidTypeCodeGeneratorParameter(GuidFormat format)
     {

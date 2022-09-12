@@ -1,6 +1,6 @@
 ﻿namespace TypeCode.Wpf.Components.InputBox;
 
-public class InputBoxViewModelParameter
+public sealed class InputBoxViewModelParameter
 {
     public InputBoxViewModelParameter(string actionName, Func<bool, string?, Task> actionAsync)
     {

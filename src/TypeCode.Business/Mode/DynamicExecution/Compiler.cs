@@ -7,7 +7,7 @@ using Serilog;
 
 namespace TypeCode.Business.Mode.DynamicExecution;
 
-public class Compiler : ICompiler
+public sealed class Compiler : ICompiler
 {
     public byte[] Compile(string sourceCode)
     {

@@ -1,6 +1,6 @@
 ﻿namespace TypeCode.Wpf.Components.OutputBox;
 
-public class OutputBoxViewModelFactory : IOutputBoxViewModelFactory
+public sealed class OutputBoxViewModelFactory : IOutputBoxViewModelFactory
 {
     public OutputBoxViewModel Create()
     {

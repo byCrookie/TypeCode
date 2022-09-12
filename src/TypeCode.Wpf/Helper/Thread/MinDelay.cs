@@ -2,7 +2,7 @@
 
 namespace TypeCode.Wpf.Helper.Thread;
 
-public class MinDelay : IMinDelay
+public sealed class MinDelay : IMinDelay
 {
     private readonly IDateTimeProvider _dateTimeProvider;
 

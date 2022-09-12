@@ -5,7 +5,7 @@ using TypeCode.Business.TypeEvaluation.Property;
 
 namespace TypeCode.Business.Mode.Specflow;
 
-public class SpecflowTypeCodeGenerator : ISpecflowTypeCodeGenerator
+public sealed class SpecflowTypeCodeGenerator : ISpecflowTypeCodeGenerator
 {
     private readonly ITableGenerator _tableGenerator;
 

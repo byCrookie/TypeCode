@@ -5,7 +5,7 @@ using Workflow;
 
 namespace TypeCode.Wpf.Application.Boot.SetupWpfApplication;
 
-public class SetupWpfApplicationStep<TContext> : ISetupWpfApplicationStep<TContext>
+public sealed class SetupWpfApplicationStep<TContext> : ISetupWpfApplicationStep<TContext>
     where TContext : WorkflowBaseContext, IBootContext
 {
     public Task ExecuteAsync(TContext context)

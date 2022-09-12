@@ -11,7 +11,7 @@ using TypeCode.Wpf.Pages.TypeSelection;
 
 namespace TypeCode.Wpf.Pages.UnitTest.UnitTestDependencyType;
 
-public partial class UnitTestDependencyTypeViewModel : ViewModelBase, IAsyncInitialNavigated
+public sealed partial class UnitTestDependencyTypeViewModel : ViewModelBase, IAsyncInitialNavigated
 {
     private readonly ITypeCodeGenerator<UnitTestDependencyTypeGeneratorParameter> _unitTestDependencyTypeGenerator;
     private readonly ITypeProvider _typeProvider;

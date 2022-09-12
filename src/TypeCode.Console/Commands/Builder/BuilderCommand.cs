@@ -6,9 +6,9 @@ using TypeCode.Business.TypeEvaluation;
 
 namespace TypeCode.Console.Commands.Builder;
 
-public class BuilderCommand : AsyncCommand<BuilderCommand.Settings>
+public sealed class BuilderCommand : AsyncCommand<BuilderCommand.Settings>
 {
-    public class Settings : CommandSettings
+    public sealed class Settings : CommandSettings
     {
         public Settings(string typeName)
         {

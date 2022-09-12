@@ -4,7 +4,7 @@ using TypeCode.Wpf.Helper.ViewModels;
 
 namespace TypeCode.Wpf.Pages.Configuration.Simple.IncludeAssemblyPatternWizard;
 
-public partial class IncludeAssemblyPatternWizardViewModel : ViewModelBase
+public sealed partial class IncludeAssemblyPatternWizardViewModel : ViewModelBase
 {
     [ObservableProperty]
     [NotifyDataErrorInfo]

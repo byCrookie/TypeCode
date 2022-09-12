@@ -5,9 +5,9 @@ using TypeCode.Business.Mode.UnitTestDependency.Manually;
 
 namespace TypeCode.Console.Commands.Unit;
 
-public class UnitManuallyCommand  : AsyncCommand<UnitManuallyCommand.Settings>
+public sealed class UnitManuallyCommand  : AsyncCommand<UnitManuallyCommand.Settings>
 {
-    public class Settings : CommandSettings
+    public sealed class Settings : CommandSettings
     {
         public Settings(string content)
         {

@@ -1,5 +1,5 @@
 ﻿namespace TypeCode.Business.Configuration.Assemblies;
 
-public class LoadLock
+public sealed class LoadLock
 {
 }

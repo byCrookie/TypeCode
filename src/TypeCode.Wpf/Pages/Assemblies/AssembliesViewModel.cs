@@ -11,7 +11,7 @@ using TypeCode.Wpf.Helper.ViewModels;
 
 namespace TypeCode.Wpf.Pages.Assemblies;
 
-public partial class AssemblyViewModel : ViewModelBase, IAsyncNavigatedTo, IAsyncNavigatedFrom, IAsyncEventHandler<LoadEndEvent>
+public sealed partial class AssemblyViewModel : ViewModelBase, IAsyncNavigatedTo, IAsyncNavigatedFrom, IAsyncEventHandler<LoadEndEvent>
 {
     private readonly IModalNavigationService _modalNavigationService;
     private readonly ITypeProvider _typeProvider;

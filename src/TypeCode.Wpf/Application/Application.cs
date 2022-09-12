@@ -16,7 +16,7 @@ using TypeCode.Wpf.Main;
 
 namespace TypeCode.Wpf.Application;
 
-public class Application<TContext> : IApplication<TContext> where TContext : BootContext
+public sealed class Application<TContext> : IApplication<TContext> where TContext : BootContext
 {
     private readonly IFactory<MainViewModel> _mainViewModelFactory;
     private readonly ITypeProvider _typeProvider;

@@ -1,6 +1,6 @@
 ﻿namespace TypeCode.Wpf.Pages.UnitTest;
 
-public partial class UnitTestView
+public sealed partial class UnitTestView
 {
     public UnitTestView()
     {

@@ -4,7 +4,7 @@ using System.Windows.Media;
 
 namespace TypeCode.Wpf.Helper.Converters;
 
-public class StringCompareToForegroundConverter : IMultiValueConverter
+public sealed class StringCompareToForegroundConverter : IMultiValueConverter
 {
 	public StringCompareToForegroundConverter()
 	{

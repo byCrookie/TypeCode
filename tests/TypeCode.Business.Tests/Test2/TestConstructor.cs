@@ -1,6 +1,6 @@
 ﻿namespace TypeCode.Business.Tests.Test2;
 
-public class TestConstructor
+public sealed class TestConstructor
 {
     private readonly ITestInterface _testInterface;
 

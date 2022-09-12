@@ -1,6 +1,6 @@
 ﻿namespace TypeCode.Wpf.Pages.Home;
 
-public partial class HomeView
+public sealed partial class HomeView
 {
     public HomeView()
     {

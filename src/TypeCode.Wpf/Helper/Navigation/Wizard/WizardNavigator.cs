@@ -3,7 +3,7 @@ using TypeCode.Wpf.Helper.Event;
 
 namespace TypeCode.Wpf.Helper.Navigation.Wizard;
 
-public class WizardNavigator : IWizardNavigator
+public sealed class WizardNavigator : IWizardNavigator
 {
     private readonly IEventAggregator _eventAggregator;
     private readonly IWizardRunner _wizardRunner;

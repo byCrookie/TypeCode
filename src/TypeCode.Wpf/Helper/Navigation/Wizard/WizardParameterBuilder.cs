@@ -2,7 +2,7 @@
 
 namespace TypeCode.Wpf.Helper.Navigation.Wizard;
 
-public class WizardParameterBuilder : IWizardParameterBuilder
+public sealed class WizardParameterBuilder : IWizardParameterBuilder
 {
     private readonly WizardStepParameter _parameter;
 

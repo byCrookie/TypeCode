@@ -1,6 +1,6 @@
 ﻿namespace TypeCode.Business.Tests;
 
-public class TestClass
+public sealed class TestClass
 {
     public TestClass()
     {

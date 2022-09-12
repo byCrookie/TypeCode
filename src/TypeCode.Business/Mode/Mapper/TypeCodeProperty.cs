@@ -2,7 +2,7 @@
 
 namespace TypeCode.Business.Mode.Mapper;
 
-public class TypeCodeProperty
+public sealed class TypeCodeProperty
 {
     public TypeCodeProperty(string name, PropertyInfo prop)
     {

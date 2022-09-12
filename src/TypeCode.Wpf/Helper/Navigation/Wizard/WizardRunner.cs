@@ -3,7 +3,7 @@ using TypeCode.Wpf.Helper.Navigation.Service;
 
 namespace TypeCode.Wpf.Helper.Navigation.Wizard;
 
-public class WizardRunner : IWizardRunner
+public sealed class WizardRunner : IWizardRunner
 {
     private Wizard? _lastWizard;
 

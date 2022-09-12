@@ -1,6 +1,6 @@
 ﻿namespace TypeCode.Business.Configuration.Assemblies;
 
-public class AssemblyCompound
+public sealed class AssemblyCompound
 {
     public AssemblyCompound(string file)
     {

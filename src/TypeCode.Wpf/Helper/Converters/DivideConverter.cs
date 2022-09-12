@@ -3,7 +3,7 @@ using System.Windows.Data;
 
 namespace TypeCode.Wpf.Helper.Converters;
 
-public class DivideConverter : IValueConverter
+public sealed class DivideConverter : IValueConverter
 {
     public double DivideValue { get; set; }
     

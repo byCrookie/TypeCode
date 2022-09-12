@@ -11,7 +11,7 @@ using TypeCode.Wpf.Pages.TypeSelection;
 
 namespace TypeCode.Wpf.Pages.Specflow;
 
-public partial class SpecflowViewModel : ViewModelBase, IAsyncInitialNavigated
+public sealed partial class SpecflowViewModel : ViewModelBase, IAsyncInitialNavigated
 {
     private readonly ITypeCodeGenerator<SpecflowTypeCodeGeneratorParameter> _specflowGenerator;
     private readonly ITypeProvider _typeProvider;

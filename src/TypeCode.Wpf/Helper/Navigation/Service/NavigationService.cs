@@ -5,7 +5,7 @@ using TypeCode.Wpf.Main;
 
 namespace TypeCode.Wpf.Helper.Navigation.Service;
 
-public class NavigationService : INavigationService
+public sealed class NavigationService : INavigationService
 {
     private readonly IMainViewProvider _mainViewProvider;
     private readonly IFactory _factory;

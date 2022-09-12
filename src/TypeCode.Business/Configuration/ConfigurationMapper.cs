@@ -2,7 +2,7 @@
 
 namespace TypeCode.Business.Configuration;
 
-public class ConfigurationMapper : IConfigurationMapper
+public sealed class ConfigurationMapper : IConfigurationMapper
 {
     public TypeCodeConfiguration MapToConfiguration(XmlTypeCodeConfiguration xmlConfiguration)
     {

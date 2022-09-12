@@ -5,7 +5,7 @@ using TypeCode.Business.Version;
 namespace TypeCode.Business.Tests.Version;
 
 [TestClass]
-public class SemanticVersionComparerTest
+public sealed class SemanticVersionComparerTest
 {
     private SemanticVersionComparer _testee = null!;
 

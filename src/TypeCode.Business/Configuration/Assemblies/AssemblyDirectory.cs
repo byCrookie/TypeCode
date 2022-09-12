@@ -1,6 +1,6 @@
 ﻿namespace TypeCode.Business.Configuration.Assemblies;
 
-public class AssemblyDirectory
+public sealed class AssemblyDirectory
 {
     public AssemblyDirectory(string relativePath, string absolutPath)
     {

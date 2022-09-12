@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace TypeCode.Business.Version;
 
-public class VersionModule : Module
+public sealed class VersionModule : Module
 {
     public override void Load(IServiceCollection services)
     {

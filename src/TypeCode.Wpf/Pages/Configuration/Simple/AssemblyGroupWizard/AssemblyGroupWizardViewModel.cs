@@ -5,7 +5,7 @@ using TypeCode.Wpf.Helper.ViewModels;
 
 namespace TypeCode.Wpf.Pages.Configuration.Simple.AssemblyGroupWizard;
 
-public partial class AssemblyGroupWizardViewModel : ViewModelBase
+public sealed partial class AssemblyGroupWizardViewModel : ViewModelBase
 {
     [ObservableProperty]
     [NotifyDataErrorInfo]

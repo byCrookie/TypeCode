@@ -5,8 +5,8 @@
                     xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
                     xmlns:behaviours="clr-namespace:TypeCode.Wpf.Helper.Behaviours">
 
-    <converters:BooleanToVisibilityConverterSelf x:Key="BooleanToVisibilityConverter" True="Visible" False="Collapsed" />
-    <converters:BooleanToVisibilityConverterSelf x:Key="InvertedBooleanToVisibilityConverter" True="Collapsed"
+    <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" True="Visible" False="Collapsed" />
+    <converters:BooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" True="Collapsed"
                                                  False="Visible" />
 
     <Style TargetType="{x:Type textBox:CustomTextBox}">

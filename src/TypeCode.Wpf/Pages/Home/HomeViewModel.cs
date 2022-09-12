@@ -6,7 +6,7 @@ using TypeCode.Wpf.Helper.ViewModels;
 
 namespace TypeCode.Wpf.Pages.Home;
 
-public partial class HomeViewModel : ViewModelBase, IAsyncNavigatedTo
+public sealed partial class HomeViewModel : ViewModelBase, IAsyncNavigatedTo
 {
     private readonly IVersionEvaluator _versionEvaluator;
 

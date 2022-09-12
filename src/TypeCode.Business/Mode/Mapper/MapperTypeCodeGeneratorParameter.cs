@@ -2,7 +2,7 @@
 
 namespace TypeCode.Business.Mode.Mapper;
 
-public class MapperTypeCodeGeneratorParameter : ITypeCodeGeneratorParameter
+public sealed class MapperTypeCodeGeneratorParameter : ITypeCodeGeneratorParameter
 {
     public MapperTypeCodeGeneratorParameter(MappingType? mapFrom, MappingType? mapTo)
     {

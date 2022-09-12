@@ -2,7 +2,7 @@
 
 namespace TypeCode.Business.Mode.EncodingConversion;
 
-public class EncodingTypeCodeGenerator : IEncodingTypeCodeGenerator
+public sealed class EncodingTypeCodeGenerator : IEncodingTypeCodeGenerator
 {
     public Task<string?> GenerateAsync(EncodingTypeCodeGeneratorParameter parameter)
     {

@@ -6,7 +6,7 @@ using TypeCode.Wpf.Helper.ViewModels;
 
 namespace TypeCode.Wpf.Helper.Navigation.Wizard;
 
-public partial class WizardViewModel : ViewModelBase, IWizardHost
+public sealed partial class WizardViewModel : ViewModelBase, IWizardHost
 {
     private readonly IWizardNavigator _wizardNavigator;
     private Wizard? _wizard;

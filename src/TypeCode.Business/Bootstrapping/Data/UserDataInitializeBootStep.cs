@@ -7,7 +7,7 @@ using Workflow;
 
 namespace TypeCode.Business.Bootstrapping.Data;
 
-public class UserDataInitializeBootStep<TContext> : IUserDataInitializeBootStep<TContext>
+public sealed class UserDataInitializeBootStep<TContext> : IUserDataInitializeBootStep<TContext>
     where TContext : WorkflowBaseContext, IBootContext
 {
     // ReSharper disable once UnusedMember.Local

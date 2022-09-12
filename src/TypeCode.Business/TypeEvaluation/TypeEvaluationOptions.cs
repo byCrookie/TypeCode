@@ -1,6 +1,6 @@
 ﻿namespace TypeCode.Business.TypeEvaluation;
 
-public class TypeEvaluationOptions
+public sealed class TypeEvaluationOptions
 {
     public bool Regex { get; set; }
     public bool IgnoreCase { get; set; }

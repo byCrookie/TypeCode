@@ -1,6 +1,6 @@
 ﻿namespace TypeCode.Wpf.Pages.Specflow;
 
-public partial class SpecflowView
+public sealed partial class SpecflowView
 {
     public SpecflowView()
     {

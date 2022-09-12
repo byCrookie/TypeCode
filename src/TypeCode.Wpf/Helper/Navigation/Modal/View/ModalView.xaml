@@ -10,7 +10,7 @@
              Background="{StaticResource Secondary}">
 
     <UserControl.Resources>
-        <converters:BooleanToVisibilityConverterSelf x:Key="InverseBooleanToVisibilityConverter" True="Collapsed"
+        <converters:BooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter" True="Collapsed"
                                                      False="Visible" />
     </UserControl.Resources>
 

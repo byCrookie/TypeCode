@@ -6,7 +6,7 @@ using Serilog;
 
 namespace TypeCode.Business.Configuration.Assemblies;
 
-public class AssemblyDependencyLoader : IAssemblyDependencyLoader
+public sealed class AssemblyDependencyLoader : IAssemblyDependencyLoader
 {
     private readonly ConcurrentDictionary<string, LoadLock> _locks = new();
 

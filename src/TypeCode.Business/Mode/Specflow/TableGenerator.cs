@@ -2,7 +2,7 @@
 
 namespace TypeCode.Business.Mode.Specflow;
 
-public class TableGenerator : ITableGenerator
+public sealed class TableGenerator : ITableGenerator
 {
     public string Build(List<List<string?>> rows)
     {

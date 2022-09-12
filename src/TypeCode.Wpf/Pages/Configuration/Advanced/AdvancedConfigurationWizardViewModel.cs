@@ -9,7 +9,7 @@ using TypeCode.Wpf.Helper.ViewModels;
 
 namespace TypeCode.Wpf.Pages.Configuration.Advanced;
 
-public partial class AdvancedConfigurationWizardViewModel : ViewModelBase, IAsyncInitialNavigated
+public sealed partial class AdvancedConfigurationWizardViewModel : ViewModelBase, IAsyncInitialNavigated
 {
     private readonly IUserDataLocationProvider _userDataLocationProvider;
 

@@ -14,7 +14,7 @@ using TypeCode.Wpf.Helper.ViewModels;
 
 namespace TypeCode.Wpf.Pages.Encoding;
 
-public partial class EncodingViewModel : ViewModelBase, IAsyncInitialNavigated
+public sealed partial class EncodingViewModel : ViewModelBase, IAsyncInitialNavigated
 {
     private readonly IOutputBoxViewModelFactory _outputBoxViewModelFactory;
     private readonly ITypeCodeGenerator<EncodingTypeCodeGeneratorParameter> _composerTypeGenerator;

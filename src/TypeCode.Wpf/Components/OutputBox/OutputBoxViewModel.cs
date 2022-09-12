@@ -6,7 +6,7 @@ using TypeCode.Wpf.Helper.ViewModels;
 
 namespace TypeCode.Wpf.Components.OutputBox;
 
-public partial class OutputBoxViewModel : ViewModelBase
+public sealed partial class OutputBoxViewModel : ViewModelBase
 {
     [RelayCommand(CanExecute = nameof(CanCopyToClipboard))]
     private Task CopyToClipboardAsync()

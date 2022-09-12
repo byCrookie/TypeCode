@@ -7,7 +7,7 @@ using TypeCode.Wpf.Helper.ViewModels;
 
 namespace TypeCode.Wpf.Helper.Navigation.Modal.View;
 
-public partial class ModalViewModel : ViewModelBase, IAsyncNavigatedTo
+public sealed partial class ModalViewModel : ViewModelBase, IAsyncNavigatedTo
 {
     private readonly IModalNavigationService _modalNavigationService;
 

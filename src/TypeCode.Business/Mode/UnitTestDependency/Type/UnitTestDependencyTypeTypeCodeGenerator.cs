@@ -3,7 +3,7 @@ using TypeCode.Business.Format;
 
 namespace TypeCode.Business.Mode.UnitTestDependency.Type;
 
-public class UnitTestDependencyTypeTypeCodeGenerator : IUnitTestDependencyTypeTypeCodeGenerator
+public sealed class UnitTestDependencyTypeTypeCodeGenerator : IUnitTestDependencyTypeTypeCodeGenerator
 {
     public Task<string?> GenerateAsync(UnitTestDependencyTypeGeneratorParameter parameter)
     {

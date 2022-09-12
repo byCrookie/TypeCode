@@ -1,6 +1,6 @@
 ﻿namespace TypeCode.Wpf.Components.NavigationCard;
 
-public class NavigationCardViewModelFactory : INavigationCardViewModelFactory
+public sealed class NavigationCardViewModelFactory : INavigationCardViewModelFactory
 {
     public NavigationCardViewModel Create(NavigationCardViewModelParameter parameter)
     {

@@ -9,7 +9,7 @@ using TypeCode.Wpf.Pages.UnitTest.UnitTestDependencyType;
 
 namespace TypeCode.Wpf.Pages.UnitTest;
 
-public partial class UnitTestViewModel : ViewModelBase, IAsyncNavigatedTo
+public sealed partial class UnitTestViewModel : ViewModelBase, IAsyncNavigatedTo
 {
     private readonly INavigationService _navigationService;
     private readonly INavigationCardViewModelFactory _navigationCardViewModelFactory;

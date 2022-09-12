@@ -3,7 +3,7 @@ using System.Xml.Serialization;
 namespace TypeCode.Business.Configuration;
 
 [XmlRoot(ElementName = "AssemblyPathSelector")]
-public class XmlAssemblyPathSelector
+public sealed class XmlAssemblyPathSelector
 {
     public XmlAssemblyPathSelector()
     {
@@ -25,7 +25,7 @@ public class XmlAssemblyPathSelector
 }
 
 [XmlRoot(ElementName = "AssemblyPath")]
-public class XmlAssemblyPath
+public sealed class XmlAssemblyPath
 {
     public XmlAssemblyPath()
     {
@@ -43,7 +43,7 @@ public class XmlAssemblyPath
 }
 
 [XmlRoot(ElementName = "AssemblyGroup")]
-public class XmlAssemblyGroup
+public sealed class XmlAssemblyGroup
 {
     public XmlAssemblyGroup()
     {
@@ -69,7 +69,7 @@ public class XmlAssemblyGroup
 }
 
 [XmlRoot(ElementName = "AssemblyRoot")]
-public class XmlAssemblyRoot
+public sealed class XmlAssemblyRoot
 {
     public XmlAssemblyRoot()
     {
@@ -95,7 +95,7 @@ public class XmlAssemblyRoot
 }
 
 [XmlRoot(ElementName = "TypeCodeConfiguration")]
-public class XmlTypeCodeConfiguration
+public sealed class XmlTypeCodeConfiguration
 {
     public XmlTypeCodeConfiguration()
     {

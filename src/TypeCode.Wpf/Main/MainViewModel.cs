@@ -16,7 +16,7 @@ using TypeCode.Wpf.Pages.Home;
 
 namespace TypeCode.Wpf.Main;
 
-public partial class MainViewModel :
+public sealed partial class MainViewModel :
     ViewModelBase,
     IAsyncNavigatedTo,
     IAsyncNavigatedFrom,

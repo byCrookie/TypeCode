@@ -12,7 +12,7 @@ using TypeCode.Wpf.Helper.ViewModels;
 
 namespace TypeCode.Wpf.Main.Content;
 
-public partial class MainContentViewModel :
+public sealed partial class MainContentViewModel :
     ViewModelBase,
     IAsyncEventHandler<LoadStartEvent>,
     IAsyncEventHandler<LoadEndEvent>,
