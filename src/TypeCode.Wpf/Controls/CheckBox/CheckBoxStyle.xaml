@@ -6,7 +6,7 @@
         
         <Setter Property="Background" Value="{StaticResource PrimaryText}" />
         <Setter Property="Foreground" Value="{StaticResource PrimaryText}" />
-        <Setter Property="BorderBrush" Value="{StaticResource Accent}" />
+        <Setter Property="BorderBrush" Value="{StaticResource Shadow}" />
         <Setter Property="FontFamily" Value="Courier New" />
 
         <Setter Property="Template">
@@ -20,6 +20,8 @@
                         </Grid.ColumnDefinitions>
 
                         <CheckBox
+                            BorderThickness="1"
+                            BorderBrush="{StaticResource Shadow}"
                             ToolTip="{Binding Path=ToolTip, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType={x:Type checkBox:CustomCheckBox}}}"
                             Foreground="{StaticResource PrimaryText}"
                             IsChecked="{Binding Path=IsChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType={x:Type checkBox:CustomCheckBox}}}">

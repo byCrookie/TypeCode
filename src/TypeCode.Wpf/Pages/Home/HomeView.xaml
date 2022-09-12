@@ -27,8 +27,9 @@
         <StackPanel Opacity="0.8" Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right">
             <Label Content="Copyright © 2022 by byCrookie," />
             <TextBlock Margin="-5,0,0,0" Foreground="{StaticResource PrimaryText}">
-                <Hyperlink NavigateUri="https://github.com/byCrookie/TypeCode">
-                    <Label Content="https://github.com/byCrookie/TypeCode"></Label>
+                <Hyperlink NavigateUri="https://github.com/byCrookie/TypeCode" TextDecorations=""
+                           Background="Transparent">
+                    <Label Content="https://github.com/byCrookie/TypeCode" />
                 </Hyperlink>
             </TextBlock>
         </StackPanel>

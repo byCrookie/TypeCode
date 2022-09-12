@@ -27,13 +27,14 @@
             </Button>
             <Button Margin="5,5,0,5"
                 Command="{Binding ClearOuputCommand}"
-                ToolTip="Clear">
+                ToolTip="Clear"
+                Background="{StaticResource Secondary}">
                 X
             </Button>
         </StackPanel>
 
         <Border Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1"
-                BorderBrush="{StaticResource Accent}"
+                BorderBrush="{StaticResource Shadow}"
                 BorderThickness="1"
                 Padding="5"
                 ToolTip="Output">

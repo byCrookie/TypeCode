@@ -20,7 +20,7 @@
         <converters:AddTicknessConverter x:Key="AddValueConverter" Left="4" Top="4" Right="4" Bottom="4" />
     </Window.Resources>
 
-    <Border BorderBrush="{StaticResource Accent}">
+    <Border BorderBrush="{StaticResource Shadow}">
         <Border.Style>
             <Style TargetType="{x:Type Border}">
                 <Setter Property="BorderThickness" Value="1" />

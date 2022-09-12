@@ -7,7 +7,7 @@
 
     <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" True="Visible" False="Collapsed" />
     <converters:BooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" True="Collapsed"
-                                                 False="Visible" />
+                                             False="Visible" />
 
     <Style TargetType="{x:Type textBox:CustomTextBox}">
 
@@ -41,7 +41,7 @@
                                             Binding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(Validation.HasError), UpdateSourceTrigger=PropertyChanged}"
                                             Value="false">
                                             <Setter Property="BorderBrush"
-                                                    Value="{StaticResource Accent}" />
+                                                    Value="{StaticResource Shadow}" />
                                         </DataTrigger>
                                         <DataTrigger
                                             Binding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(Validation.HasError), UpdateSourceTrigger=PropertyChanged}"
@@ -112,7 +112,7 @@
                                     MaxHeight="100"
                                     BorderThickness="1"
                                     Background="{StaticResource Primary}"
-                                    BorderBrush="{StaticResource Accent}"
+                                    BorderBrush="{StaticResource Shadow}"
                                     ItemsSource="{TemplateBinding AutoCompletionItems}"
                                     behaviours:SourceChangedScrollTopBehaviour.ScrollToTop="True">
 

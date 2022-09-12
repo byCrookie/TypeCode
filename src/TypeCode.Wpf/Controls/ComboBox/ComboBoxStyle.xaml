@@ -9,10 +9,10 @@
 
     <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" True="Visible" False="Collapsed" />
     <converters:BooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" True="Collapsed"
-                                                 False="Visible" />
-    <converters:ObjectToStringConverter x:Key="ObjectToStringConverter"/>
+                                             False="Visible" />
+    <converters:ObjectToStringConverter x:Key="ObjectToStringConverter" />
     <system:Boolean x:Key="False">False</system:Boolean>
-    
+
     <Style TargetType="{x:Type comboBox:CustomComboBox}">
 
         <Setter Property="Template">
@@ -43,7 +43,7 @@
                                             Binding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(Validation.HasError), UpdateSourceTrigger=PropertyChanged}"
                                             Value="false">
                                             <Setter Property="BorderBrush"
-                                                    Value="{StaticResource Accent}" />
+                                                    Value="{StaticResource Shadow}" />
                                         </DataTrigger>
                                         <DataTrigger
                                             Binding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(Validation.HasError), UpdateSourceTrigger=PropertyChanged}"
@@ -54,13 +54,20 @@
                                     </Style.Triggers>
                                 </Style>
                             </Border.Style>
-
-                            <TextBlock x:Name="InputTextBox"
-                                       Grid.Column="0"
-                                       Margin="4"
-                                       Validation.ErrorTemplate="{x:Null}"
-                                       Text="{Binding Path=SelectedComboBoxItem, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
-                            </TextBlock>
+                            
+                            <Grid Grid.Column="0" Margin="4">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                
+                                <TextBlock x:Name="InputTextBox"
+                                           Validation.ErrorTemplate="{x:Null}"
+                                           TextTrimming="CharacterEllipsis"
+                                           Text="{Binding Path=SelectedComboBoxItem, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
+                                </TextBlock>
+                                <TextBlock Grid.Column="1" Margin="5,0,5,0" Text="⎯"></TextBlock>
+                            </Grid>
 
                         </Border>
 
@@ -88,7 +95,7 @@
                                 MaxHeight="100"
                                 BorderThickness="1"
                                 Background="{StaticResource Primary}"
-                                BorderBrush="{StaticResource Accent}"
+                                BorderBrush="{StaticResource Shadow}"
                                 ItemsSource="{Binding Path=ComboBoxItems, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource TemplatedParent}}"
                                 behaviours:SourceChangedScrollTopBehaviour.ScrollToTop="True">
 
@@ -111,7 +118,8 @@
 
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
-                                        <TextBlock Text="{Binding Converter={StaticResource ObjectToStringConverter}}" ToolTip="{Binding}"
+                                        <TextBlock Text="{Binding Converter={StaticResource ObjectToStringConverter}}"
+                                                   ToolTip="{Binding}"
                                                    TextTrimming="CharacterEllipsis" />
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>

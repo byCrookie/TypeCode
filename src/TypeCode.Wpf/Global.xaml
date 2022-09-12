@@ -13,7 +13,7 @@
 
     <Color x:Key="SuccessColor">#4bb543</Color>
     <Color x:Key="WarningColor">#eed202</Color>
-    <Color x:Key="ErrorColor">#f70031</Color>
+    <Color x:Key="ErrorColor">#E5f70031</Color>
 
     <Color x:Key="PrimaryTextColor">WhiteSmoke</Color>
     <Color x:Key="SecondaryTextColor">#2F3136</Color>
@@ -107,14 +107,14 @@
     <Style TargetType="{x:Type RadioButton}" BasedOn="{StaticResource {x:Type RadioButton}}">
         <Setter Property="Background" Value="{StaticResource PrimaryText}" />
         <Setter Property="Foreground" Value="{StaticResource PrimaryText}" />
-        <Setter Property="BorderBrush" Value="{StaticResource Accent}" />
+        <Setter Property="BorderBrush" Value="{StaticResource Shadow}" />
         <Setter Property="FontFamily" Value="Courier New" />
     </Style>
 
     <Style TargetType="{x:Type CheckBox}" BasedOn="{StaticResource {x:Type CheckBox}}">
         <Setter Property="Background" Value="{StaticResource PrimaryText}" />
         <Setter Property="Foreground" Value="{StaticResource PrimaryText}" />
-        <Setter Property="BorderBrush" Value="{StaticResource Accent}" />
+        <Setter Property="BorderBrush" Value="{StaticResource Shadow}" />
         <Setter Property="FontFamily" Value="Courier New" />
     </Style>
 
@@ -168,7 +168,7 @@
                     <Grid x:Name="Grid">
                         <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="Auto"
                                    Height="Auto" Fill="Transparent" />
-                        <Border x:Name="Rectangle1" CornerRadius="5" HorizontalAlignment="Stretch"
+                        <Border x:Name="Rectangle1" HorizontalAlignment="Stretch"
                                 VerticalAlignment="Stretch" Width="Auto" Height="Auto"
                                 Background="{TemplateBinding Background}" />
                     </Grid>
@@ -186,7 +186,7 @@
     <!--SCROLLBARS-->
     <Style x:Key="{x:Type ScrollBar}" TargetType="{x:Type ScrollBar}">
         <Setter Property="Stylus.IsFlicksEnabled" Value="False" />
-        <Setter Property="Foreground" Value="{StaticResource Accent}" />
+        <Setter Property="Foreground" Value="{StaticResource Shadow}" />
         <Setter Property="Background" Value="DarkGray" />
         <Setter Property="Width" Value="8" />
         <Setter Property="Template">
