@@ -26,10 +26,23 @@ public sealed partial class OutputBoxViewModel : ViewModelBase
     {
         return !string.IsNullOrEmpty(Output?.Trim());
     }
+    
+    [RelayCommand(CanExecute = nameof(ClearOuput))]
+    private Task ClearOuputAsync()
+    {
+        SetOutput(null);
+        return Task.CompletedTask;
+    }
+    
+    private bool ClearOuput()
+    {
+        return !string.IsNullOrEmpty(Output);
+    }
 
     public void SetOutput(string? output)
     {
         Output = output;
+        ClearOuputCommand.NotifyCanExecuteChanged();
     }
 
     [ObservableProperty]

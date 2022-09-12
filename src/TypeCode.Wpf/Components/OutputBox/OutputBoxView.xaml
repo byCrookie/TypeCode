@@ -10,15 +10,29 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <Border Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0"
+        <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button
+                Style="{StaticResource IconButton}"
+                Command="{Binding CopyToClipboardCommand}"
+                ToolTip="Copy to clipboard">
+                <Image Source="{StaticResource CopyDrawingImage}" />
+            </Button>
+            <Button Margin="5,5,0,5"
+                Command="{Binding ClearOuputCommand}"
+                ToolTip="Clear">
+                X
+            </Button>
+        </StackPanel>
+
+        <Border Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1"
                 BorderBrush="{StaticResource Accent}"
                 BorderThickness="1"
                 Padding="5"
@@ -36,12 +50,5 @@
                 </TextBox>
             </ScrollViewer>
         </Border>
-        
-        <Button Margin="0,5,0,0" Grid.Column="0" Grid.Row="1"
-                Style="{StaticResource IconButton}"
-                Command="{Binding CopyToClipboardCommand}"
-                ToolTip="Copy to clipboard">
-            <Image Source="{StaticResource CopyDrawingImage}" />
-        </Button>
     </Grid>
 </UserControl>

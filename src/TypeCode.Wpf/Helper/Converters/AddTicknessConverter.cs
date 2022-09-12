@@ -4,7 +4,7 @@ using System.Windows.Data;
 
 namespace TypeCode.Wpf.Helper.Converters;
 
-public class AddTicknessConverter : IValueConverter
+public sealed class AddTicknessConverter : IValueConverter
 {
     public double Left { get; set; }
     public double Top { get; set; }
