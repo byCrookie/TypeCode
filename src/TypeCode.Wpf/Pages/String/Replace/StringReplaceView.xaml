@@ -107,7 +107,7 @@
 
                     <Button Margin="5,5,0,0" VerticalAlignment="Top" Grid.Column="2" Grid.Row="0"
                             Command="{Binding AddReplaceCommand}"
-                            Content="Add Escape" />
+                            Content="Add Replace" />
                 </Grid>
 
                 <ScrollViewer Margin="0,5,0,0" Grid.Row="3" Grid.Column="0" MaxHeight="200"
@@ -135,7 +135,7 @@
 
                 <Button Margin="5,0,0,0" VerticalAlignment="Top" Grid.Column="1" Grid.Row="0"
                         Command="{Binding StringReplaceCommand}"
-                        Content="Escape" />
+                        Content="Replace" />
             </Grid>
 
             <outputBox:OutputBoxView Margin="0,5,0,0" Grid.Row="1" DataContext="{Binding OutputBoxViewModel}" />
