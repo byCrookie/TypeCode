@@ -4,11 +4,14 @@
                     xmlns:textBox="clr-namespace:TypeCode.Wpf.Controls.TextBox"
                     xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
                     xmlns:behaviours="clr-namespace:TypeCode.Wpf.Helper.Behaviours"
-                    xmlns:triggers="clr-namespace:TypeCode.Wpf.Helper.Triggers">
+                    xmlns:triggers="clr-namespace:TypeCode.Wpf.Helper.Triggers"
+                    xmlns:system="clr-namespace:System;assembly=System.Runtime">
 
     <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" True="Visible" False="Collapsed" />
     <converters:BooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" True="Collapsed"
                                              False="Visible" />
+    <system:Boolean x:Key="False">False</system:Boolean>
+    <system:Boolean x:Key="True">True</system:Boolean>
 
     <Style TargetType="{x:Type textBox:CustomTextBox}">
 
@@ -76,14 +79,34 @@
                                          MaxHeight="{TemplateBinding MaxHeight}"
                                          Validation.ErrorTemplate="{x:Null}"
                                          Text="{Binding Path=Text, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
+                                    <b:Interaction.Triggers>
+                                        <b:EventTrigger EventName="TextChanged">
+                                            <triggers:SetPropertyActionTrigger
+                                                PropertyName="IsEnabled"
+                                                TargetObject="{Binding ElementName=ClearTextBoxButton}"
+                                                PropertyValue="{StaticResource False}"
+                                                IfPropertyIsNullOrEmptyPropertyName="Text">
+                                            </triggers:SetPropertyActionTrigger>
+                                        </b:EventTrigger>
+                                        <b:EventTrigger EventName="TextChanged">
+                                            <triggers:SetPropertyActionTrigger
+                                                PropertyName="IsEnabled"
+                                                TargetObject="{Binding ElementName=ClearTextBoxButton}"
+                                                PropertyValue="{StaticResource True}"
+                                                IfPropertyIsNotNullOrEmptyPropertyName="Text">
+                                            </triggers:SetPropertyActionTrigger>
+                                        </b:EventTrigger>
+                                    </b:Interaction.Triggers>
                                 </TextBox>
 
                                 <CheckBox Margin="5,0,0,0" Grid.Column="1" ToolTip="Search with Regex"
                                           VerticalAlignment="Center"
                                           IsChecked="{Binding Path=UseRegex, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                          Visibility="{Binding Path=ShowRegex, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                          Visibility="{Binding Path=ShowRegex, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                </CheckBox>
 
-                                <Button MinWidth="30" Width="30" MaxWidth="30" Grid.Column="2" Background="Transparent" Content="X">
+                                <Button MinWidth="30" Width="30" MaxWidth="30" Grid.Column="2" Background="Transparent" Content="X"
+                                        x:Name="ClearTextBoxButton" IsEnabled="False">
                                     <b:Interaction.Triggers>
                                         <b:EventTrigger EventName="PreviewMouseLeftButtonUp">
                                             <triggers:SetPropertyActionTrigger
