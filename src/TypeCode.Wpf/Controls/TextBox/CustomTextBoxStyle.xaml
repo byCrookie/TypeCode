@@ -3,7 +3,8 @@
                     xmlns:converters="clr-namespace:TypeCode.Wpf.Helper.Converters"
                     xmlns:textBox="clr-namespace:TypeCode.Wpf.Controls.TextBox"
                     xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
-                    xmlns:behaviours="clr-namespace:TypeCode.Wpf.Helper.Behaviours">
+                    xmlns:behaviours="clr-namespace:TypeCode.Wpf.Helper.Behaviours"
+                    xmlns:triggers="clr-namespace:TypeCode.Wpf.Helper.Triggers">
 
     <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" True="Visible" False="Collapsed" />
     <converters:BooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" True="Collapsed"
@@ -57,6 +58,7 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                     <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
 
                                 <TextBox x:Name="InputTextBox"
@@ -76,10 +78,22 @@
                                          Text="{Binding Path=Text, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
                                 </TextBox>
 
-                                <CheckBox Margin="5,0,5,0" Grid.Column="1" ToolTip="Search with Regex"
+                                <CheckBox Margin="5,0,0,0" Grid.Column="1" ToolTip="Search with Regex"
                                           VerticalAlignment="Center"
                                           IsChecked="{Binding Path=UseRegex, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                                           Visibility="{Binding Path=ShowRegex, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}" />
+
+                                <Button MinWidth="30" Width="30" MaxWidth="30" Grid.Column="2" Background="Transparent" Content="X">
+                                    <b:Interaction.Triggers>
+                                        <b:EventTrigger EventName="PreviewMouseLeftButtonUp">
+                                            <triggers:SetPropertyActionTrigger
+                                                PropertyName="Text"
+                                                TargetObject="{Binding ElementName=InputTextBox}"
+                                                PropertyValue="{x:Null}">
+                                            </triggers:SetPropertyActionTrigger>
+                                        </b:EventTrigger>
+                                    </b:Interaction.Triggers>
+                                </Button>
                             </Grid>
                         </Border>
 
