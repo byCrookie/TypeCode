@@ -27,15 +27,13 @@
               Opacity="0.9"
               Visibility="{Binding IsBannerVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="5"></ColumnDefinition>
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
-                <ColumnDefinition Width="5"></ColumnDefinition>
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
-                <ColumnDefinition Width="5"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
             </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Column="1"
+            <TextBlock Grid.Column="0"
                        Foreground="{StaticResource PrimaryText}"
                        Visibility="{Binding IsBannerLink, Converter={StaticResource BooleanToVisibilityConverter}}">
                 <Hyperlink NavigateUri="{Binding BannerLink, Mode=OneWay}">
@@ -46,7 +44,8 @@
                    Visibility="{Binding IsBannerLink, Converter={StaticResource InverseBooleanToVisibilityConverter}}"
                    Content="{Binding BannerMessage, Mode=OneWay}"
                    Foreground="{StaticResource PrimaryText}" />
-            <TextBlock Grid.Column="4"
+            <Button Grid.Column="2" Background="Transparent" Command="{Binding UpdateCommand}">Update</Button>
+            <TextBlock Grid.Column="3"
                        Foreground="{StaticResource PrimaryText}">
                 <Hyperlink Command="{Binding CloseBannerCommand}">
                     <Label Content="Close"></Label>

@@ -1,4 +1,8 @@
-﻿using AsyncAwaitBestPractices;
+﻿using System.IO;
+using System.Net.Http;
+using System.Reflection;
+using System.Windows.Threading;
+using AsyncAwaitBestPractices;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Framework.Time;
@@ -8,7 +12,10 @@ using TypeCode.Wpf.Application;
 using TypeCode.Wpf.Helper.Event;
 using TypeCode.Wpf.Helper.Navigation.Contract;
 using TypeCode.Wpf.Helper.Navigation.Service;
+using TypeCode.Wpf.Helper.Thread;
 using TypeCode.Wpf.Helper.ViewModels;
+using System.Diagnostics;
+using TypeCode.Wpf.Helper.Navigation.Modal.Service;
 
 namespace TypeCode.Wpf.Main.Content;
 
@@ -17,33 +24,43 @@ public sealed partial class MainContentViewModel :
     IAsyncEventHandler<LoadStartEvent>,
     IAsyncEventHandler<LoadEndEvent>,
     IAsyncEventHandler<BannerOpenEvent>,
+    IAsyncNavigatedTo,
     IAsyncNavigatedFrom
 {
     private readonly IEventAggregator _eventAggregator;
     private readonly IVersionEvaluator _versionEvaluator;
     private readonly IDateTimeProvider _dateTimeProvider;
+    private readonly IModalNavigationService _modalNavigationService;
 
     private Guid? _currentBanner;
+    private VersionResult? _version;
 
     public MainContentViewModel(
         IEventAggregator eventAggregator,
         IVersionEvaluator versionEvaluator,
-        IDateTimeProvider dateTimeProvider)
+        IDateTimeProvider dateTimeProvider,
+        IModalNavigationService modalNavigationService)
     {
         _eventAggregator = eventAggregator;
         _versionEvaluator = versionEvaluator;
         _dateTimeProvider = dateTimeProvider;
+        _modalNavigationService = modalNavigationService;
+    }
 
+    public Task OnNavigatedToAsync(NavigationContext context)
+    {
         IsLoading = true;
         LoadingStarted = _dateTimeProvider.Now();
 
-        eventAggregator.Subscribe<BannerOpenEvent>(this);
-        eventAggregator.Subscribe<LoadStartEvent>(this);
-        eventAggregator.Subscribe<LoadEndEvent>(this);
+        _eventAggregator.Subscribe<BannerOpenEvent>(this);
+        _eventAggregator.Subscribe<LoadStartEvent>(this);
+        _eventAggregator.Subscribe<LoadEndEvent>(this);
 
         CheckVersionAsync().SafeFireAndForget();
+
+        return Task.CompletedTask;
     }
-    
+
     public Task OnNavigatedFromAsync(NavigationContext context)
     {
         _eventAggregator.Unsubscribe(this);
@@ -55,6 +72,70 @@ public sealed partial class MainContentViewModel :
     {
         IsBannerVisible = false;
         return Task.CompletedTask;
+    }
+
+    [RelayCommand]
+    private Task UpdateAsync()
+    {
+        if (_version is null)
+        {
+            throw new Exception("There is no new version available.");
+        }
+
+        IsBannerVisible = false;
+
+        return _modalNavigationService.OpenModalAsync(new ModalParameter
+        {
+            Title = "WARNING - Update (Installer)",
+            Text = "If you have previously installed TypeCode using the .msi installer just continue." +
+                   $"{Environment.NewLine}" +
+                   $"{Environment.NewLine}" +
+                   "If you used another method to install TypeCode like manual zip installation please note:" +
+                   $"{Environment.NewLine}- installer uses a different default location for application files (installation path can be changed in the installers advanced menu)" +
+                   $"{Environment.NewLine}- no impact on configuration (only if configuration.cfg.xml has same location as .exe, not default)",
+            OnCloseAsync = async () =>
+            {
+                var name = $"TypeCode.Wpf.Setup_{_version?.NewVersion}";
+
+                var url = $"https://github.com/byCrookie/TypeCode/releases/download/{_version?.NewVersion}/{name}.msi";
+                var executingLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? throw new Exception();
+
+                var msi = Path.Combine(executingLocation, $"{name}.msi");
+
+                if (File.Exists(msi))
+                {
+                    File.Delete(msi);
+                }
+
+                using (var client = new HttpClient())
+                {
+                    client.DefaultRequestHeaders.Add("User-Agent", "byCrookie");
+
+                    var uri = new Uri(url);
+
+                    var response = await client.GetAsync(uri).ConfigureAwait(true);
+
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        throw new Exception("Error retrieving update package");
+                    }
+
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(true);
+
+                    await using (var fileStream = new FileStream(msi, FileMode.Create))
+                    {
+                        await stream.CopyToAsync(fileStream).ConfigureAwait(true);
+                    }
+                }
+
+                var process = new Process();
+                process.StartInfo.FileName = "msiexec";
+                process.StartInfo.Arguments = $" /i {msi}";
+                process.StartInfo.Verb = "runas";
+                process.Start();
+                Environment.Exit(0);
+            }
+        });
     }
 
     [ObservableProperty]
@@ -154,6 +235,8 @@ public sealed partial class MainContentViewModel :
                 Message = versionMessage,
                 IsLink = true
             }).ConfigureAwait(false);
+
+            MainThread.BackgroundFireAndForgetAsync(() => _version = version, DispatcherPriority.Normal);
         }
         catch (Exception exception)
         {
