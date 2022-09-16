@@ -21,14 +21,21 @@ public sealed partial class ModalViewModel : ViewModelBase, IAsyncNavigatedTo
         var parameter = context.GetParameter<ModalParameter>();
         Title = parameter.Title;
         Text = parameter.Text;
-        ScrollViewerEnabled = parameter.ScrollViewerDisabled;
+        OkVisible = parameter.Buttons is ModalButtons.Ok or ModalButtons.OkAndCancel;
+        CancelVisible = parameter.Buttons is ModalButtons.OkAndCancel;
         return Task.CompletedTask;
     }
 
     [RelayCommand]
     private Task OkAsync()
     {
-        return _modalNavigationService.CloseModalAsync();
+        return _modalNavigationService.OkAsync();
+    }
+    
+    [RelayCommand]
+    private Task CancelAsync()
+    {
+        return _modalNavigationService.CancelAsync();
     }
 
     [ObservableProperty]
@@ -36,7 +43,10 @@ public sealed partial class ModalViewModel : ViewModelBase, IAsyncNavigatedTo
 
     [ObservableProperty]
     private string? _text;
-
+    
     [ObservableProperty]
-    private bool _scrollViewerEnabled;
+    private bool _okVisible;
+    
+    [ObservableProperty]
+    private bool _cancelVisible;
 }

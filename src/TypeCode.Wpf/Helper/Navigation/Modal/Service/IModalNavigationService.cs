@@ -3,5 +3,6 @@
 public interface IModalNavigationService
 {
 	Task OpenModalAsync(ModalParameter parameter);
-	Task CloseModalAsync();
+	Task OkAsync();
+	Task CancelAsync();
 }

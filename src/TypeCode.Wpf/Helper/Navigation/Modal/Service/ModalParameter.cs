@@ -4,11 +4,14 @@ public sealed class ModalParameter
 {
     public ModalParameter()
     {
-        OnCloseAsync = () => Task.CompletedTask;
+        Buttons = ModalButtons.Ok;
+        OnOkAsync = () => Task.CompletedTask;
+        OnCancelAsync = () => Task.CompletedTask;
     }
     
     public string? Title { get; set; }
     public string? Text { get; set; }
-    public bool ScrollViewerDisabled { get; set; }
-    public Func<Task> OnCloseAsync { get; set; }
+    public ModalButtons Buttons { get; set; }
+    public Func<Task> OnOkAsync { get; set; }
+    public Func<Task> OnCancelAsync { get; set; }
 }

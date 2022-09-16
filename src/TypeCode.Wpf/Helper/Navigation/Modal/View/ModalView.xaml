@@ -19,6 +19,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"></ColumnDefinition>
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"></RowDefinition>
@@ -30,16 +31,23 @@
                    Grid.ColumnSpan="2">
             </TextBlock>
             <ScrollViewer Margin="0,5,0,0" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
-                          HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"
-                          Visibility="{Binding ScrollViewerEnabled, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
+                          HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
                 <TextBlock Padding="2" Background="Transparent"
                          Text="{Binding Text, Mode=OneWay}"
                          TextWrapping="Wrap"
                          VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
             </ScrollViewer>
-
+            
             <Button Margin="0,5,0,0" Grid.Row="2" Grid.Column="1"
+                    Command="{Binding CancelCommand}"
+                    Visibility="{Binding OkVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
+                    Background="{StaticResource Primary}"
+                    BorderBrush="{StaticResource Secondary}"
+                    Content="Cancel" />
+
+            <Button Margin="5,5,0,0" Grid.Row="2" Grid.Column="2"
                     Command="{Binding OkCommand}"
+                    Visibility="{Binding OkVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
                     BorderBrush="{StaticResource Secondary}"
                     Content="Ok" />
         </Grid>

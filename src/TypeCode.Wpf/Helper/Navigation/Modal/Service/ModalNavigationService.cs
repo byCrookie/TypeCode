@@ -54,14 +54,23 @@ public sealed class ModalNavigationService : IModalNavigationService
 
         _lastModalParameter = modalParameter;
     }
-
-    public Task CloseModalAsync()
+    
+    public Task CancelAsync()
     {
         _mainViewProvider.MainWindow().Main.Opacity = 1;
         _mainViewProvider.MainWindow().Main.IsEnabled = true;
         _mainViewProvider.MainWindow().ModalOverlay.Visibility = Visibility.Collapsed;
 
-        return _lastModalParameter?.OnCloseAsync.Invoke() ?? Task.CompletedTask;
+        return _lastModalParameter?.OnCancelAsync.Invoke() ?? Task.CompletedTask;
+    }
+
+    public Task OkAsync()
+    {
+        _mainViewProvider.MainWindow().Main.Opacity = 1;
+        _mainViewProvider.MainWindow().Main.IsEnabled = true;
+        _mainViewProvider.MainWindow().ModalOverlay.Visibility = Visibility.Collapsed;
+
+        return _lastModalParameter?.OnOkAsync.Invoke() ?? Task.CompletedTask;
     }
 
     private static Task CallOnNavigatedToOnCurrentViewModelAsync<T>(NavigationContext context, T viewModelInstance)

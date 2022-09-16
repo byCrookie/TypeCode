@@ -82,15 +82,15 @@ public sealed partial class MainContentViewModel :
             throw new Exception("There is no new version available.");
         }
 
-        IsBannerVisible = false;
-
         return _modalNavigationService.OpenModalAsync(new ModalParameter
         {
             Title = "WARNING - Update (Installer)",
             Text = "The installer uses the location of the current version of TypeCode to install the update." +
                    " You can change the installation path (destination folder) in the advanced menu of the install wizard.",
-            OnCloseAsync = async () =>
+            OnOkAsync = async () =>
             {
+                IsBannerVisible = false;
+                
                 var name = $"TypeCode.Wpf.Setup_{_version?.NewVersion}";
 
                 var url = $"https://github.com/byCrookie/TypeCode/releases/download/{_version?.NewVersion}/{name}.msi";
