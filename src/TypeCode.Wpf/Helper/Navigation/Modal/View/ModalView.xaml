@@ -30,12 +30,10 @@
                    Grid.ColumnSpan="2">
             </TextBlock>
             <ScrollViewer Margin="0,5,0,0" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
-                          HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
+                          HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"
                           Visibility="{Binding ScrollViewerEnabled, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
-                <TextBox Padding="2" Background="Transparent"
-                         BorderThickness="0"
+                <TextBlock Padding="2" Background="Transparent"
                          Text="{Binding Text, Mode=OneWay}"
-                         IsReadOnly="True"
                          TextWrapping="Wrap"
                          VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
             </ScrollViewer>

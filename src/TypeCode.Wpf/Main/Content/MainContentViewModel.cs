@@ -87,12 +87,8 @@ public sealed partial class MainContentViewModel :
         return _modalNavigationService.OpenModalAsync(new ModalParameter
         {
             Title = "WARNING - Update (Installer)",
-            Text = "If you have previously installed TypeCode using the .msi installer just continue." +
-                   $"{Environment.NewLine}" +
-                   $"{Environment.NewLine}" +
-                   "If you used another method to install TypeCode like manual zip installation please note:" +
-                   $"{Environment.NewLine}- installer uses a different default location for application files (installation path can be changed in the installers advanced menu)" +
-                   $"{Environment.NewLine}- no impact on configuration (only if configuration.cfg.xml has same location as .exe, not default)",
+            Text = "The installer uses the location of the current version of TypeCode to install the update." +
+                   " You can change the installation path (destination folder) in the advanced menu of the install wizard.",
             OnCloseAsync = async () =>
             {
                 var name = $"TypeCode.Wpf.Setup_{_version?.NewVersion}";
@@ -130,7 +126,7 @@ public sealed partial class MainContentViewModel :
 
                 var process = new Process();
                 process.StartInfo.FileName = "msiexec";
-                process.StartInfo.Arguments = $" /i {msi}";
+                process.StartInfo.Arguments = $" /i {msi} APPLICATIONFOLDER={executingLocation}";
                 process.StartInfo.Verb = "runas";
                 process.Start();
                 Environment.Exit(0);
