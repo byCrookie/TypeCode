@@ -18,7 +18,8 @@ public sealed class TargetDllsLoadBootStep<TContext, TOptions> : ITargetDllsLoad
 
     public Task ExecuteAsync(TContext context)
     {
-        _lazyTypeProviderFactory.InitializeByDlls(_options!.Value.TargetDllPaths);
+        var options = _options!.Value;
+        _lazyTypeProviderFactory.InitializeByDlls(options.DllPaths, options.DllDeep, options.DllPattern);
         return Task.CompletedTask;
     }
 

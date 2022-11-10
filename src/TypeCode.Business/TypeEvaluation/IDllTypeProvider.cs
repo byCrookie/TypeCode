@@ -2,5 +2,5 @@
 
 public interface IDllTypeProvider : ITypeProvider
 {
-    Task InitalizeAsync(IEnumerable<string> targetDllPaths);
+    Task InitalizeAsync(IReadOnlyList<string> dllPaths, bool dllDeep, string dllPattern);
 }

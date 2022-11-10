@@ -4,8 +4,12 @@ public class TargetDllsBootStepOptions
 {
     public TargetDllsBootStepOptions()
     {
-        TargetDllPaths = new List<string>();
+        DllPaths = new List<string>();
+        DllPattern = "*.dll";
+        DllDeep = false;
     }
     
-    public IEnumerable<string> TargetDllPaths { get; set; }
+    public IEnumerable<string> DllPaths { get; set; }
+    public string DllPattern { get; set; }
+    public bool DllDeep { get; set; }
 }

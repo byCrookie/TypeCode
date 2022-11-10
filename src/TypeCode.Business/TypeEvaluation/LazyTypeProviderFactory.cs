@@ -26,11 +26,11 @@ public class LazyTypeProviderFactory : ILazyTypeProviderFactory
         });
     }
 
-    public void InitializeByDlls(IEnumerable<string> targetDllPaths)
+    public void InitializeByDlls(IEnumerable<string> dllPaths, bool dllDeep, string dllPattern)
     {
         _typeProviderLazy = new Lazy<Task<ITypeProvider>>(async () =>
         {
-            await _dllTypeProvider.InitalizeAsync(targetDllPaths).ConfigureAwait(false);
+            await _dllTypeProvider.InitalizeAsync(dllPaths.ToList(), dllDeep, dllPattern).ConfigureAwait(false);
             return _dllTypeProvider;
         });
     }

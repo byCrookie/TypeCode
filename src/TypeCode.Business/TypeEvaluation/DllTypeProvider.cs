@@ -24,9 +24,9 @@ public class DllTypeProvider : IDllTypeProvider
         _typesByFullNameDictionary = new ConcurrentDictionary<string, ConcurrentBag<Type>>();
     }
 
-    public async Task InitalizeAsync(IEnumerable<string> targetDllPaths)
+    public async Task InitalizeAsync(IReadOnlyList<string> dllPaths, bool dllDeep, string dllPattern)
     {
-        Log.Debug("Initialize Types");
+        Log.Debug("Load dlls: directories '{Paths}', deep: {Deep}, pattern: {Pattern}", string.Join(",", dllPaths), dllDeep, dllPattern);
 
         if (File.Exists(Path.Combine(_userDataLocationProvider.GetLogsPath(), LogFileNames.IndexedTypes)))
         {
@@ -34,13 +34,28 @@ public class DllTypeProvider : IDllTypeProvider
         }
 
         var assemblyLoadContext = new AssemblyLoadContext("dll");
-        var dllPaths = targetDllPaths.Where(Directory.Exists).SelectMany(path => Directory.GetFiles(path, "*.dll", SearchOption.TopDirectoryOnly));
+        var paths = dllPaths
+            .Where(Directory.Exists)
+            .SelectMany(path => Directory.GetFiles(path, dllPattern, dllDeep ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly))
+            .ToList();
 
-        Parallel.ForEach(dllPaths, dllPath =>
+        foreach (var path in paths)
         {
-            using (var fs = new FileStream(dllPath, FileMode.Open, FileAccess.Read))
+            Log.Debug("Load dll '{Dll}'", path);
+        }
+
+        Parallel.ForEach(paths, path =>
+        {
+            try
             {
-                assemblyLoadContext.LoadFromStream(fs);
+                using (var fs = new FileStream(path, FileMode.Open, FileAccess.Read))
+                {
+                    assemblyLoadContext.LoadFromStream(fs);
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Debug("Loading of {DllPath} failed: {Message}", path, e.Message);
             }
         });
 
@@ -81,8 +96,6 @@ public class DllTypeProvider : IDllTypeProvider
 
         await WriteKeysToFileAsync(loadedKeys).ConfigureAwait(false);
         loadedKeys.Clear();
-
-        Log.Debug("Initialized Types");
     }
 
     public bool HasByName(string? name, TypeEvaluationOptions? options = null, CancellationToken? ct = null)

@@ -10,7 +10,13 @@ internal abstract class TypeCodeCommand<TSettings> : AsyncCommand<TSettings> whe
     {
         Log.Debug("Boot");
         var typeCodeCommandSettings = settings as TypeCodeCommandSettings;
-        var serviceProvider = await Bootstrapper.BootAsync(typeCodeCommandSettings.TargetDlls ?? Array.Empty<string>()).ConfigureAwait(false);
+        var options = new TargetDllsBootStepOptions
+        {
+            DllPaths = typeCodeCommandSettings.DllPaths is null ? new List<string>() : typeCodeCommandSettings.DllPaths,
+            DllDeep = typeCodeCommandSettings.DllDeep,
+            DllPattern = typeCodeCommandSettings.DllPattern
+        };
+        var serviceProvider = await Bootstrapper.BootAsync(options).ConfigureAwait(false);
         await RunAsync(serviceProvider, context, settings).ConfigureAwait(false);
         return 0;
     }

@@ -9,7 +9,7 @@ namespace TypeCode.Console.Boot;
 
 public static class Bootstrapper
 {
-    internal static async Task<TypeCodeConsoleServiceProvider> BootAsync(string[] targetDlls)
+    internal static async Task<TypeCodeConsoleServiceProvider> BootAsync(TargetDllsBootStepOptions? dllsBootStepOptions)
     {
         var serviceProvider = new TypeCodeConsoleServiceProvider();
         var bootScope = BootConfiguration.Configure<BootContext>(serviceProvider);
@@ -19,10 +19,12 @@ public static class Bootstrapper
             .ThenAsync<ILoggerBootStep<BootContext, LoggerBootStepOptions>, LoggerBootStepOptions>(
                 options => LoggerConfigurationProvider.Create(options)
             )
-            .IfElseFlow(_ => targetDlls.Any(),
+            .IfElseFlow(_ => dllsBootStepOptions is not null,
                 ifFlow => ifFlow.ThenAsync<ITargetDllsLoadBootStep<BootContext, TargetDllsBootStepOptions>, TargetDllsBootStepOptions>(options =>
                 {
-                    options.TargetDllPaths = targetDlls;
+                    options.DllPaths = dllsBootStepOptions!.DllPaths;
+                    options.DllDeep = dllsBootStepOptions.DllDeep;
+                    options.DllPattern = dllsBootStepOptions.DllPattern;
                 }),
                 elseFlow => elseFlow.ThenAsync<IConfigurationLoadBootStep<BootContext>>()
             )
