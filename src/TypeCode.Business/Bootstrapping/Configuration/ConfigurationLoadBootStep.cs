@@ -10,23 +10,24 @@ public sealed class ConfigurationLoadBootStep<TContext> : IConfigurationLoadBoot
 {
     private readonly IConfigurationLoader _configurationLoader;
     private readonly IConfigurationProvider _configurationProvider;
-    private readonly ITypeProvider _typeProvider;
+    private readonly ILazyTypeProviderFactory _lazyTypeProviderFactory;
 
     public ConfigurationLoadBootStep(
         IConfigurationLoader configurationLoader,
         IConfigurationProvider configurationProvider,
-        ITypeProvider typeProvider
-        )
+        ILazyTypeProviderFactory lazyTypeProviderFactory
+    )
     {
         _configurationLoader = configurationLoader;
         _configurationProvider = configurationProvider;
-        _typeProvider = typeProvider;
+        _lazyTypeProviderFactory = lazyTypeProviderFactory;
     }
 
     public async Task ExecuteAsync(TContext context)
     {
         var configuration = await _configurationLoader.LoadAsync().ConfigureAwait(false);
-        await _typeProvider.InitalizeAsync(configuration).ConfigureAwait(false);
+        _lazyTypeProviderFactory.InitializeByConfiguration(configuration);
+        await _lazyTypeProviderFactory.ValueAsync().ConfigureAwait(false);
         _configurationProvider.Set(configuration);
     }
 

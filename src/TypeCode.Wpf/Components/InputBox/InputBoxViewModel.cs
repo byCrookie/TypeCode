@@ -19,22 +19,22 @@ public sealed partial class InputBoxViewModel :
     IAsyncNavigatedFrom
 {
     private readonly IEventAggregator _eventAggregator;
+    private readonly ILazyTypeProviderFactory _lazyTypeProviderFactory;
     private InputBoxViewModelParameter? _parameter;
     private bool _loaded;
-
-    private readonly ITypeProvider _typeProvider;
+    
     private readonly IDateTimeProvider _dateTimeProvider;
     private readonly IMinDelay _minDelay;
 
     public InputBoxViewModel(
         IEventAggregator eventAggregator,
-        ITypeProvider typeProvider,
+        ILazyTypeProviderFactory lazyTypeProviderFactory,
         IDateTimeProvider dateTimeProvider,
         IMinDelay minDelay
     )
     {
         _eventAggregator = eventAggregator;
-        _typeProvider = typeProvider;
+        _lazyTypeProviderFactory = lazyTypeProviderFactory;
         _dateTimeProvider = dateTimeProvider;
         _minDelay = minDelay;
 
@@ -82,7 +82,8 @@ public sealed partial class InputBoxViewModel :
     {
         var start = _dateTimeProvider.Now();
 
-        var types = _typeProvider.TryGetByName(value, new TypeEvaluationOptions { Regex = true, IgnoreCase = true }, ct);
+        var typeProvider = await _lazyTypeProviderFactory.ValueAsync().ConfigureAwait(false);
+        var types = typeProvider.TryGetByName(value, new TypeEvaluationOptions { Regex = true, IgnoreCase = true }, ct);
 
         var ordered = types
             .Select(type => type.Name)

@@ -26,7 +26,7 @@ public sealed partial class MainViewModel :
     private readonly IEventAggregator _eventAggregator;
     private readonly IConfigurationProvider _configurationProvider;
     private readonly IConfigurationLoader _configurationLoader;
-    private readonly ITypeProvider _typeProvider;
+    private readonly ILazyTypeProviderFactory _lazyTypeProviderFactory;
     private readonly IInfoLinkViewModelFactory _infoLinkViewModelFactory;
     private readonly INavigationService _navigationService;
     private bool _isLoading;
@@ -36,14 +36,14 @@ public sealed partial class MainViewModel :
         IEventAggregator eventAggregator,
         IConfigurationProvider configurationProvider,
         IConfigurationLoader configurationLoader,
-        ITypeProvider typeProvider,
+        ILazyTypeProviderFactory lazyTypeProviderFactory,
         IInfoLinkViewModelFactory infoLinkViewModelFactory,
         INavigationService navigationService)
     {
         _eventAggregator = eventAggregator;
         _configurationProvider = configurationProvider;
         _configurationLoader = configurationLoader;
-        _typeProvider = typeProvider;
+        _lazyTypeProviderFactory = lazyTypeProviderFactory;
         _infoLinkViewModelFactory = infoLinkViewModelFactory;
         _navigationService = navigationService;
 
@@ -120,7 +120,8 @@ public sealed partial class MainViewModel :
         await Task.Run(async () =>
         {
             var configuration = await _configurationLoader.LoadAsync().ConfigureAwait(false);
-            await _typeProvider.InitalizeAsync(configuration).ConfigureAwait(false);
+            _lazyTypeProviderFactory.InitializeByConfiguration(configuration);
+            await _lazyTypeProviderFactory.ValueAsync().ConfigureAwait(false);
             _configurationProvider.Set(configuration);
             await _eventAggregator.PublishAsync(new LoadEndEvent()).ConfigureAwait(false);
         }).ConfigureAwait(false);

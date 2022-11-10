@@ -7,30 +7,23 @@ using TypeCode.Business.TypeEvaluation;
 
 namespace TypeCode.Console.Commands.Mapper;
 
-public sealed class MapperCommand : AsyncCommand<MapperCommand.Settings>
+internal sealed class MapperCommand : TypeCodeCommand<MapperCommand.Settings>
 {
-    public sealed class Settings : CommandSettings
+    public sealed class Settings : TypeCodeCommandSettings
     {
-        public Settings(string from, string to)
-        {
-            From = from;
-            To = to;
-        }
-        
         [Description("Type for left side of mapping.")]
         [CommandOption("-f|--from")]
-        public string From { get; }
-        
+        public string From { get; set; } = null!;
+
         [Description("Type for right side of mapping.")]
         [CommandOption("-t|--to")]
-        public string To { get; }
+        public string To { get; set; } = null!;
     }
 
-    public override async Task<int> ExecuteAsync(CommandContext context, Settings settings)
+    protected override async Task RunAsync(TypeCodeConsoleServiceProvider serviceProvider, CommandContext context, Settings settings)
     {
-        var serviceProvider = new TypeCodeConsoleServiceProvider();
         var mode = serviceProvider.GetService<ITypeCodeGenerator<MapperTypeCodeGeneratorParameter>>();
-        var typeProvider = serviceProvider.GetService<ITypeProvider>();
+        var typeProvider = await serviceProvider.GetService<ILazyTypeProviderFactory>().ValueAsync().ConfigureAwait(false);
         var fromTypes = typeProvider.TryGetByName(settings.From).ToList();
         var toTypes = typeProvider.TryGetByName(settings.To).ToList();
 
@@ -53,7 +46,5 @@ public sealed class MapperCommand : AsyncCommand<MapperCommand.Settings>
             var parameter = new MapperTypeCodeGeneratorParameter(new MappingType(fromTypes.First()), new MappingType(toTypes.First()));
             System.Console.WriteLine(await mode.GenerateAsync(parameter).ConfigureAwait(false));
         }
-
-        return 0;
     }
 }

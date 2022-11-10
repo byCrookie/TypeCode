@@ -7,14 +7,14 @@ using TypeCode.Business.Logging;
 
 namespace TypeCode.Business.TypeEvaluation;
 
-public sealed class TypeProvider : ITypeProvider
+public sealed class ConfigurationTypeProvider : IConfigurationTypeProvider
 {
     private readonly IUserDataLocationProvider _userDataLocationProvider;
 
     private static TypeCodeConfiguration? _configuration;
     private static readonly List<string> LoadedKeys = new();
 
-    public TypeProvider(IUserDataLocationProvider userDataLocationProvider)
+    public ConfigurationTypeProvider(IUserDataLocationProvider userDataLocationProvider)
     {
         _userDataLocationProvider = userDataLocationProvider;
     }

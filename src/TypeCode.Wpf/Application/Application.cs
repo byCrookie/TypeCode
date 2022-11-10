@@ -19,30 +19,30 @@ namespace TypeCode.Wpf.Application;
 public sealed class Application<TContext> : IApplication<TContext> where TContext : BootContext
 {
     private readonly IFactory<MainViewModel> _mainViewModelFactory;
-    private readonly ITypeProvider _typeProvider;
     private readonly IEventAggregator _eventAggregator;
     private readonly IModalNavigationService _modalNavigationService;
     private readonly IConfigurationProvider _configurationProvider;
     private readonly IMainViewProvider _mainViewProvider;
     private readonly IConfigurationLoader _configurationLoader;
+    private readonly ILazyTypeProviderFactory _lazyTypeProviderFactory;
 
     public Application(
         IFactory<MainViewModel> mainViewModelFactory,
-        ITypeProvider typeProvider,
         IEventAggregator eventAggregator,
         IModalNavigationService modalNavigationService,
         IConfigurationProvider configurationProvider,
         IMainViewProvider mainViewProvider,
-        IConfigurationLoader configurationLoader
+        IConfigurationLoader configurationLoader,
+        ILazyTypeProviderFactory lazyTypeProviderFactory
     )
     {
         _mainViewModelFactory = mainViewModelFactory;
-        _typeProvider = typeProvider;
         _eventAggregator = eventAggregator;
         _modalNavigationService = modalNavigationService;
         _configurationProvider = configurationProvider;
         _mainViewProvider = mainViewProvider;
         _configurationLoader = configurationLoader;
+        _lazyTypeProviderFactory = lazyTypeProviderFactory;
     }
 
     public async Task RunAsync(TContext context, CancellationToken ct)
@@ -101,7 +101,8 @@ public sealed class Application<TContext> : IApplication<TContext> where TContex
         try
         {
             var configuration = await _configurationLoader.LoadAsync().ConfigureAwait(false);
-            await _typeProvider.InitalizeAsync(configuration).ConfigureAwait(false);
+            _lazyTypeProviderFactory.InitializeByConfiguration(configuration);
+            await _lazyTypeProviderFactory.ValueAsync().ConfigureAwait(false);
             _configurationProvider.Set(configuration);
         }
         finally

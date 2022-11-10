@@ -14,21 +14,21 @@ namespace TypeCode.Wpf.Pages.Composer;
 public sealed partial class ComposerViewModel : ViewModelBase, IAsyncInitialNavigated
 {
     private readonly ITypeCodeGenerator<ComposerTypeCodeGeneratorParameter> _composerTypeGenerator;
-    private readonly ITypeProvider _typeProvider;
+    private readonly ILazyTypeProviderFactory _lazyTypeProviderFactory;
     private readonly ITypeSelectionWizardStarter _typeSelectionWizardStarter;
     private readonly IInputBoxViewModelFactory _inputBoxViewModelFactory;
     private readonly IOutputBoxViewModelFactory _outputBoxViewModelFactory;
 
     public ComposerViewModel(
         ITypeCodeGenerator<ComposerTypeCodeGeneratorParameter> composerTypeGenerator,
-        ITypeProvider typeProvider,
+        ILazyTypeProviderFactory lazyTypeProviderFactory,
         ITypeSelectionWizardStarter typeSelectionWizardStarter,
         IInputBoxViewModelFactory inputBoxViewModelFactory,
         IOutputBoxViewModelFactory outputBoxViewModelFactory
     )
     {
         _composerTypeGenerator = composerTypeGenerator;
-        _typeProvider = typeProvider;
+        _lazyTypeProviderFactory = lazyTypeProviderFactory;
         _typeSelectionWizardStarter = typeSelectionWizardStarter;
         _inputBoxViewModelFactory = inputBoxViewModelFactory;
         _outputBoxViewModelFactory = outputBoxViewModelFactory;
@@ -48,7 +48,8 @@ public sealed partial class ComposerViewModel : ViewModelBase, IAsyncInitialNavi
 
     private async Task GenerateAsync(bool regex, string? input)
     {
-        var types = _typeProvider.TryGetByName(input?.Trim(), new TypeEvaluationOptions { Regex = regex }).ToList();
+        var typeProvider = await _lazyTypeProviderFactory.ValueAsync().ConfigureAwait(false);
+        var types = typeProvider.TryGetByName(input?.Trim(), new TypeEvaluationOptions { Regex = regex }).ToList();
 
         if (types.Count > 1)
         {
@@ -74,10 +75,11 @@ public sealed partial class ComposerViewModel : ViewModelBase, IAsyncInitialNavi
     {
         if (selectedType is not null)
         {
+            var typeProvider = await _lazyTypeProviderFactory.ValueAsync().ConfigureAwait(false);
             var parameter = new ComposerTypeCodeGeneratorParameter();
             parameter.ComposerTypes.Add(new ComposerType(
                 selectedType,
-                _typeProvider.TryGetTypesByCondition(typ => typ.GetInterface(selectedType.Name) != null).ToList()
+                typeProvider.TryGetTypesByCondition(typ => typ.GetInterface(selectedType.Name) != null).ToList()
             ));
             var result = await _composerTypeGenerator.GenerateAsync(parameter).ConfigureAwait(true);
             OutputBoxViewModel?.SetOutput(result);

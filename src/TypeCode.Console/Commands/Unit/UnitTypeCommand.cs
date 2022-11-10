@@ -6,28 +6,21 @@ using TypeCode.Business.TypeEvaluation;
 
 namespace TypeCode.Console.Commands.Unit;
 
-public sealed class UnitTypeCommand : AsyncCommand<UnitTypeCommand.Settings>
+internal sealed class UnitTypeCommand : TypeCodeCommand<UnitTypeCommand.Settings>
 {
-    public sealed class Settings : CommandSettings
+    public sealed class Settings : TypeCodeCommandSettings
     {
-        public Settings(string[] typeNames)
-        {
-            TypeNames = typeNames;
-        }
-        
         [Description("Typenames for which the tables are generated.")]
         [CommandArgument(0, "[TypeNames]")]
-        public string[] TypeNames { get; }
+        public string[] TypeNames { get; set; } = null!;
     }
 
-    public override async Task<int> ExecuteAsync(CommandContext context, Settings settings)
+    protected override async Task RunAsync(TypeCodeConsoleServiceProvider serviceProvider, CommandContext context, Settings settings)
     {
-        var serviceProvider = new TypeCodeConsoleServiceProvider();
         var mode = serviceProvider.GetService<ITypeCodeGenerator<UnitTestDependencyTypeGeneratorParameter>>();
-        var typeProvider = serviceProvider.GetService<ITypeProvider>();
+        var typeProvider = await serviceProvider.GetService<ILazyTypeProviderFactory>().ValueAsync().ConfigureAwait(false);
         var types = typeProvider.TryGetByNames(settings.TypeNames);
         var parameter = new UnitTestDependencyTypeGeneratorParameter { Types = types.ToList() };
         System.Console.WriteLine(await mode.GenerateAsync(parameter).ConfigureAwait(false));
-        return 0;
     }
 }

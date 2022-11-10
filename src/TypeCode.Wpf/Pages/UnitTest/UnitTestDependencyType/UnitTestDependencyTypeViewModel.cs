@@ -14,21 +14,21 @@ namespace TypeCode.Wpf.Pages.UnitTest.UnitTestDependencyType;
 public sealed partial class UnitTestDependencyTypeViewModel : ViewModelBase, IAsyncInitialNavigated
 {
     private readonly ITypeCodeGenerator<UnitTestDependencyTypeGeneratorParameter> _unitTestDependencyTypeGenerator;
-    private readonly ITypeProvider _typeProvider;
+    private readonly ILazyTypeProviderFactory _lazyTypeProviderFactory;
     private readonly ITypeSelectionWizardStarter _typeSelectionWizardStarter;
     private readonly IInputBoxViewModelFactory _inputBoxViewModelFactory;
     private readonly IOutputBoxViewModelFactory _outputBoxViewModelFactory;
 
     public UnitTestDependencyTypeViewModel(
         ITypeCodeGenerator<UnitTestDependencyTypeGeneratorParameter> unitTestDependencyTypeGenerator,
-        ITypeProvider typeProvider,
+        ILazyTypeProviderFactory lazyTypeProviderFactory,
         ITypeSelectionWizardStarter typeSelectionWizardStarter,
         IInputBoxViewModelFactory inputBoxViewModelFactory,
         IOutputBoxViewModelFactory outputBoxViewModelFactory
     )
     {
         _unitTestDependencyTypeGenerator = unitTestDependencyTypeGenerator;
-        _typeProvider = typeProvider;
+        _lazyTypeProviderFactory = lazyTypeProviderFactory;
         _typeSelectionWizardStarter = typeSelectionWizardStarter;
         _inputBoxViewModelFactory = inputBoxViewModelFactory;
         _outputBoxViewModelFactory = outputBoxViewModelFactory;
@@ -49,7 +49,8 @@ public sealed partial class UnitTestDependencyTypeViewModel : ViewModelBase, IAs
     private async Task GenerateAsync(bool regex, string? input)
     {
         var inputNames = input?.Split(',').Select(name => name.Trim()).ToList() ?? new List<string>();
-        var types = _typeProvider.TryGetByNames(inputNames, new TypeEvaluationOptions { Regex = regex }).ToList();
+        var typeProvider = await _lazyTypeProviderFactory.ValueAsync().ConfigureAwait(false);
+        var types = typeProvider.TryGetByNames(inputNames, new TypeEvaluationOptions { Regex = regex }).ToList();
 
         if (types.Count > 1)
         {

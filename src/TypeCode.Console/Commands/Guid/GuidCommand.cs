@@ -5,29 +5,20 @@ using TypeCode.Business.Mode.Guid;
 
 namespace TypeCode.Console.Commands.Guid;
 
-public sealed class GuidCommand : AsyncCommand<GuidCommand.Settings>
+internal sealed class GuidCommand : TypeCodeCommand<GuidCommand.Settings>
 {
-    public sealed class Settings : CommandSettings
+    public sealed class Settings : TypeCodeCommandSettings
     {
-        public Settings(GuidFormat guidFormat)
-        {
-            GuidFormat = guidFormat;
-        }
-        
         [Description("Type for which the builder is generated.")]
         [CommandOption("-f|--format")]
         [DefaultValue(GuidFormat.D)]
-        public GuidFormat GuidFormat { get; }
+        public GuidFormat GuidFormat { get; set; } = GuidFormat.D;
     }
 
-    public override async Task<int> ExecuteAsync(CommandContext context, Settings settings)
+    protected override async Task RunAsync(TypeCodeConsoleServiceProvider serviceProvider, CommandContext context, Settings settings)
     {
-        var serviceProvider = new TypeCodeConsoleServiceProvider();
         var mode = serviceProvider.GetService<ITypeCodeGenerator<GuidTypeCodeGeneratorParameter>>();
-        
         var parameter = new GuidTypeCodeGeneratorParameter(settings.GuidFormat);
-        System.Console.WriteLine(await mode.GenerateAsync(parameter).ConfigureAwait(false));
-
-        return 0;
+        System.Console.WriteLine(await mode!.GenerateAsync(parameter).ConfigureAwait(false));
     }
 }

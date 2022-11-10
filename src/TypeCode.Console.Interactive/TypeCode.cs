@@ -14,19 +14,19 @@ internal class TypeCode<TContext> : ITypeCode<TContext> where TContext : BootCon
 {
     private readonly IModeComposer _modeComposer;
     private readonly IWorkflowBuilder<TypeCodeContext> _workflowBuilder;
-    private readonly ITypeProvider _typeProvider;
+    private readonly ILazyTypeProviderFactory _lazyTypeProviderFactory;
     private readonly IConfigurationProvider _configurationProvider;
 
     public TypeCode(
         IModeComposer modeComposer,
         IWorkflowBuilder<TypeCodeContext> workflowBuilder,
-        ITypeProvider typeProvider,
+        ILazyTypeProviderFactory lazyTypeProviderFactory,
         IConfigurationProvider configurationProvider
     )
     {
         _modeComposer = modeComposer;
         _workflowBuilder = workflowBuilder;
-        _typeProvider = typeProvider;
+        _lazyTypeProviderFactory = lazyTypeProviderFactory;
         _configurationProvider = configurationProvider;
     }
 
@@ -114,6 +114,7 @@ internal class TypeCode<TContext> : ITypeCode<TContext> where TContext : BootCon
 
     private Task InitializeTypesAsync()
     {
-        return _typeProvider.InitalizeAsync(_configurationProvider.Get());
+        _lazyTypeProviderFactory.InitializeByConfiguration(_configurationProvider.Get());
+        return _lazyTypeProviderFactory.ValueAsync();
     }
 }

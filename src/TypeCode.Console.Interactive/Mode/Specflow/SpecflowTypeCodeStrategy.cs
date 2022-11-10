@@ -10,16 +10,16 @@ namespace TypeCode.Console.Interactive.Mode.Specflow;
 internal class SpecflowTypeCodeStrategy : ISpecflowTypeCodeStrategy
 {
     private readonly IWorkflowBuilder<SpecflowContext> _workflowBuilder;
-    private readonly ITypeProvider _typeProvider;
+    private readonly ILazyTypeProviderFactory _lazyTypeProviderFactory;
     private readonly ITypeCodeGenerator<SpecflowTypeCodeGeneratorParameter> _specflowGenerator;
 
     public SpecflowTypeCodeStrategy(
         IWorkflowBuilder<SpecflowContext> workflowBuilder,
-        ITypeProvider typeProvider,
+        ILazyTypeProviderFactory lazyTypeProviderFactory,
         ITypeCodeGenerator<SpecflowTypeCodeGeneratorParameter> specflowGenerator)
     {
         _workflowBuilder = workflowBuilder;
-        _typeProvider = typeProvider;
+        _lazyTypeProviderFactory = lazyTypeProviderFactory;
         _specflowGenerator = specflowGenerator;
     }
 
@@ -50,6 +50,8 @@ internal class SpecflowTypeCodeStrategy : ISpecflowTypeCodeStrategy
 
     public async Task<string?> GenerateAsync(CancellationToken? ct = null)
     {
+        var typeProvider = await _lazyTypeProviderFactory.ValueAsync().ConfigureAwait(false);
+        
         var workflow = _workflowBuilder
             .WriteLine(_ => $@"{Cuts.Point()} Input types seperated by ,")
             .ReadLine(context => context.Input)
@@ -58,7 +60,7 @@ internal class SpecflowTypeCodeStrategy : ISpecflowTypeCodeStrategy
                 .ReadLine(context => context.Input)
                 .ThenAsync<IExitOrContinueStep<SpecflowContext>>()
             )
-            .Then(context => context.Types, context => _typeProvider.TryGetByNames(context.Input?.Split(',').Select(split => split.Trim()).ToList() ?? new List<string>(), ct: ct))
+            .Then(context => context.Types, context => typeProvider.TryGetByNames(context.Input?.Split(',').Select(split => split.Trim()).ToList() ?? new List<string>(), ct: ct))
             .ThenAsync(context => context.Tables, context => _specflowGenerator.GenerateAsync(new SpecflowTypeCodeGeneratorParameter
             {
                 Types = context.Types.ToList()

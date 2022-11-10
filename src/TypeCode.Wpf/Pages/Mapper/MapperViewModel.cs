@@ -16,7 +16,7 @@ namespace TypeCode.Wpf.Pages.Mapper;
 public sealed partial class MapperViewModel : ViewModelBase, IAsyncInitialNavigated
 {
     private readonly ITypeCodeGenerator<MapperTypeCodeGeneratorParameter> _mapperGenerator;
-    private readonly ITypeProvider _typeProvider;
+    private readonly ILazyTypeProviderFactory _lazyTypeProviderFactory;
     private readonly ITypeSelectionWizardStarter _typeSelectionWizardStarter;
     private readonly IInputBoxViewModelFactory _inputBoxViewModelFactory;
     private readonly IOutputBoxViewModelFactory _outputBoxViewModelFactory;
@@ -24,14 +24,14 @@ public sealed partial class MapperViewModel : ViewModelBase, IAsyncInitialNaviga
 
     public MapperViewModel(
         ITypeCodeGenerator<MapperTypeCodeGeneratorParameter> mapperGenerator,
-        ITypeProvider typeProvider,
+        ILazyTypeProviderFactory lazyTypeProviderFactory,
         ITypeSelectionWizardStarter typeSelectionWizardStarter,
         IInputBoxViewModelFactory inputBoxViewModelFactory,
         IOutputBoxViewModelFactory outputBoxViewModelFactory
     )
     {
         _mapperGenerator = mapperGenerator;
-        _typeProvider = typeProvider;
+        _lazyTypeProviderFactory = lazyTypeProviderFactory;
         _typeSelectionWizardStarter = typeSelectionWizardStarter;
         _inputBoxViewModelFactory = inputBoxViewModelFactory;
         _outputBoxViewModelFactory = outputBoxViewModelFactory;
@@ -62,8 +62,9 @@ public sealed partial class MapperViewModel : ViewModelBase, IAsyncInitialNaviga
     private async Task GenerateAsync(bool regex, string? input)
     {
         var inputNames = input?.Split(',').Select(name => name.Trim()).ToList() ?? new List<string>();
-        var types = _typeProvider.TryGetByName(inputNames.FirstOrDefault(), new TypeEvaluationOptions { Regex = regex })
-            .Union(_typeProvider.TryGetByName(inputNames.LastOrDefault(), new TypeEvaluationOptions { Regex = regex }))
+        var typeProvider = await _lazyTypeProviderFactory.ValueAsync().ConfigureAwait(false);
+        var types = typeProvider.TryGetByName(inputNames.FirstOrDefault(), new TypeEvaluationOptions { Regex = regex })
+            .Union(typeProvider.TryGetByName(inputNames.LastOrDefault(), new TypeEvaluationOptions { Regex = regex }))
             .ToList();
 
         if (types.Any())

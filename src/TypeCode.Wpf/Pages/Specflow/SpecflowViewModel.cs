@@ -14,21 +14,21 @@ namespace TypeCode.Wpf.Pages.Specflow;
 public sealed partial class SpecflowViewModel : ViewModelBase, IAsyncInitialNavigated
 {
     private readonly ITypeCodeGenerator<SpecflowTypeCodeGeneratorParameter> _specflowGenerator;
-    private readonly ITypeProvider _typeProvider;
+    private readonly ILazyTypeProviderFactory _lazyTypeProviderFactory;
     private readonly ITypeSelectionWizardStarter _typeSelectionWizardStarter;
     private readonly IInputBoxViewModelFactory _inputBoxViewModelFactory;
     private readonly IOutputBoxViewModelFactory _outputBoxViewModelFactory;
 
     public SpecflowViewModel(
         ITypeCodeGenerator<SpecflowTypeCodeGeneratorParameter> specflowGenerator,
-        ITypeProvider typeProvider,
+        ILazyTypeProviderFactory lazyTypeProviderFactory,
         ITypeSelectionWizardStarter typeSelectionWizardStarter,
         IInputBoxViewModelFactory inputBoxViewModelFactory,
         IOutputBoxViewModelFactory outputBoxViewModelFactory
     )
     {
         _specflowGenerator = specflowGenerator;
-        _typeProvider = typeProvider;
+        _lazyTypeProviderFactory = lazyTypeProviderFactory;
         _typeSelectionWizardStarter = typeSelectionWizardStarter;
         _inputBoxViewModelFactory = inputBoxViewModelFactory;
         _outputBoxViewModelFactory = outputBoxViewModelFactory;
@@ -51,7 +51,8 @@ public sealed partial class SpecflowViewModel : ViewModelBase, IAsyncInitialNavi
     private async Task GenerateAsync(bool regex, string? input)
     {
         var inputNames = input?.Split(',').Select(name => name.Trim()).ToList() ?? new List<string>();
-        var types = _typeProvider.TryGetByNames(inputNames, new TypeEvaluationOptions { Regex = regex }).ToList();
+        var typeProvider = await _lazyTypeProviderFactory.ValueAsync().ConfigureAwait(false);
+        var types = typeProvider.TryGetByNames(inputNames, new TypeEvaluationOptions { Regex = regex }).ToList();
 
         if (types.Count > 1)
         {

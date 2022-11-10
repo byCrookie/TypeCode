@@ -6,25 +6,19 @@ using TypeCode.Business.TypeEvaluation;
 
 namespace TypeCode.Console.Commands.Builder;
 
-public sealed class BuilderCommand : AsyncCommand<BuilderCommand.Settings>
+internal sealed class BuilderCommand : TypeCodeCommand<BuilderCommand.Settings>
 {
-    public sealed class Settings : CommandSettings
+    public sealed class Settings : TypeCodeCommandSettings
     {
-        public Settings(string typeName)
-        {
-            TypeName = typeName;
-        }
-        
         [Description("Type for which the builder is generated.")]
         [CommandArgument(0, "[TypeName]")]
-        public string TypeName { get; }
+        public string TypeName { get; set; } = null!;
     }
 
-    public override async Task<int> ExecuteAsync(CommandContext context, Settings settings)
+    protected override async Task RunAsync(TypeCodeConsoleServiceProvider serviceProvider, CommandContext context, Settings settings)
     {
-        var serviceProvider = new TypeCodeConsoleServiceProvider();
         var mode = serviceProvider.GetService<ITypeCodeGenerator<BuilderTypeCodeGeneratorParameter>>();
-        var typeProvider = serviceProvider.GetService<ITypeProvider>();
+        var typeProvider = await serviceProvider.GetService<ILazyTypeProviderFactory>().ValueAsync().ConfigureAwait(false);
         var types = typeProvider.TryGetByName(settings.TypeName);
 
         foreach (var type in types)
@@ -32,7 +26,5 @@ public sealed class BuilderCommand : AsyncCommand<BuilderCommand.Settings>
             var parameter = new BuilderTypeCodeGeneratorParameter { Type = type };
             System.Console.WriteLine(await mode.GenerateAsync(parameter).ConfigureAwait(false));
         }
-
-        return 0;
     }
 }

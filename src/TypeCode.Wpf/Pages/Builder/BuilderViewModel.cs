@@ -14,21 +14,21 @@ namespace TypeCode.Wpf.Pages.Builder;
 public sealed partial class BuilderViewModel : ViewModelBase, IAsyncInitialNavigated
 {
     private readonly ITypeCodeGenerator<BuilderTypeCodeGeneratorParameter> _builderGenerator;
-    private readonly ITypeProvider _typeProvider;
+    private readonly ILazyTypeProviderFactory _lazyTypeProviderFactory;
     private readonly ITypeSelectionWizardStarter _typeSelectionWizardStarter;
     private readonly IInputBoxViewModelFactory _inputBoxViewModelFactory;
     private readonly IOutputBoxViewModelFactory _outputBoxViewModelFactory;
 
     public BuilderViewModel(
         ITypeCodeGenerator<BuilderTypeCodeGeneratorParameter> builderGenerator,
-        ITypeProvider typeProvider,
+        ILazyTypeProviderFactory lazyTypeProviderFactory,
         ITypeSelectionWizardStarter typeSelectionWizardStarter,
         IInputBoxViewModelFactory inputBoxViewModelFactory,
         IOutputBoxViewModelFactory outputBoxViewModelFactory
     )
     {
         _builderGenerator = builderGenerator;
-        _typeProvider = typeProvider;
+        _lazyTypeProviderFactory = lazyTypeProviderFactory;
         _typeSelectionWizardStarter = typeSelectionWizardStarter;
         _inputBoxViewModelFactory = inputBoxViewModelFactory;
         _outputBoxViewModelFactory = outputBoxViewModelFactory;
@@ -48,7 +48,8 @@ public sealed partial class BuilderViewModel : ViewModelBase, IAsyncInitialNavig
 
     private async Task GenerateAsync(bool regex, string? input)
     {
-        var types = _typeProvider.TryGetByName(input?.Trim(), new TypeEvaluationOptions { Regex = regex }).ToList();
+        var typeProvider = await _lazyTypeProviderFactory.ValueAsync().ConfigureAwait(false);
+        var types = typeProvider.TryGetByName(input?.Trim(), new TypeEvaluationOptions { Regex = regex }).ToList();
 
         if (types.Count > 1)
         {

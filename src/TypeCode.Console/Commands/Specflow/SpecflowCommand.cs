@@ -6,40 +6,34 @@ using TypeCode.Business.TypeEvaluation;
 
 namespace TypeCode.Console.Commands.Specflow;
 
-public sealed class SpecflowCommand : AsyncCommand<SpecflowCommand.Settings>
+internal sealed class SpecflowCommand : TypeCodeCommand<SpecflowCommand.Settings>
 {
-    public sealed class Settings : CommandSettings
+    public sealed class Settings : TypeCodeCommandSettings
     {
-        public Settings(string[] typeNames)
-        {
-            TypeNames = typeNames;
-        }
-        
         [Description("Typenames for which the tables are generated.")]
         [CommandArgument(0, "[TypeNames]")]
-        public string[] TypeNames { get; }
+        public string[] TypeNames { get; set; } = null!;
         
         [Description("Only use required properties for specflow execution.")]
         [CommandOption("-o|--only-required")]
         [DefaultValue(false)]
-        public bool OnyRequired { get; init; }
+        public bool OnyRequired { get; set; } = false;
         
         [Description("Sort the table columns alphabetically.")]
         [CommandOption("-s|--sort-alphabetically")]
         [DefaultValue(false)]
-        public bool SortAlphabetically { get; init; }
+        public bool SortAlphabetically { get; set; } = false;
         
         [Description("Include properties of type string.")]
         [CommandOption("-i|--include-strings")]
         [DefaultValue(true)]
-        public bool IncludeStrings { get; init; }
+        public bool IncludeStrings { get; set; } = true;
     }
 
-    public override async Task<int> ExecuteAsync(CommandContext context, Settings settings)
+    protected override async Task RunAsync(TypeCodeConsoleServiceProvider serviceProvider, CommandContext context, Settings settings)
     {
-        var serviceProvider = new TypeCodeConsoleServiceProvider();
         var mode = serviceProvider.GetService<ITypeCodeGenerator<SpecflowTypeCodeGeneratorParameter>>();
-        var typeProvider = serviceProvider.GetService<ITypeProvider>();
+        var typeProvider = await serviceProvider.GetService<ILazyTypeProviderFactory>().ValueAsync().ConfigureAwait(false);
         var types = typeProvider.TryGetByNames(settings.TypeNames);
         var parameter = new SpecflowTypeCodeGeneratorParameter
         {
@@ -49,6 +43,5 @@ public sealed class SpecflowCommand : AsyncCommand<SpecflowCommand.Settings>
             IncludeStrings = settings.IncludeStrings
         };
         System.Console.WriteLine(await mode.GenerateAsync(parameter).ConfigureAwait(false));
-        return 0;
     }
 }

@@ -14,20 +14,20 @@ namespace TypeCode.Wpf.Pages.Assemblies;
 public sealed partial class AssemblyViewModel : ViewModelBase, IAsyncNavigatedTo, IAsyncNavigatedFrom, IAsyncEventHandler<LoadEndEvent>
 {
     private readonly IModalNavigationService _modalNavigationService;
-    private readonly ITypeProvider _typeProvider;
+    private readonly ILazyTypeProviderFactory _lazyTypeProviderFactory;
     private readonly IConfigurationProvider _configurationProvider;
     private readonly IEventAggregator _eventAggregator;
 
     public AssemblyViewModel(
         IModalNavigationService modalNavigationService,
-        ITypeProvider typeProvider,
+        ILazyTypeProviderFactory lazyTypeProviderFactory,
         IConfigurationProvider configurationProvider,
         IInputBoxViewModelFactory inputBoxViewModelFactory,
         IEventAggregator eventAggregator
     )
     {
         _modalNavigationService = modalNavigationService;
-        _typeProvider = typeProvider;
+        _lazyTypeProviderFactory = lazyTypeProviderFactory;
         _configurationProvider = configurationProvider;
         _eventAggregator = eventAggregator;
 
@@ -91,7 +91,8 @@ public sealed partial class AssemblyViewModel : ViewModelBase, IAsyncNavigatedTo
 
     private async Task SearchAsync(bool regex, string? input)
     {
-        var types = _typeProvider.TryGetByName(input?.Trim(), new TypeEvaluationOptions { Regex = regex }).ToList();
+        var typeProvider = await _lazyTypeProviderFactory.ValueAsync().ConfigureAwait(false);
+        var types = typeProvider.TryGetByName(input?.Trim(), new TypeEvaluationOptions { Regex = regex }).ToList();
 
         if (types.Any())
         {

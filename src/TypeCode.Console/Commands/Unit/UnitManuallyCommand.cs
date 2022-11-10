@@ -5,26 +5,19 @@ using TypeCode.Business.Mode.UnitTestDependency.Manually;
 
 namespace TypeCode.Console.Commands.Unit;
 
-public sealed class UnitManuallyCommand  : AsyncCommand<UnitManuallyCommand.Settings>
+internal sealed class UnitManuallyCommand  : TypeCodeCommand<UnitManuallyCommand.Settings>
 {
-    public sealed class Settings : CommandSettings
+    public sealed class Settings : TypeCodeCommandSettings
     {
-        public Settings(string content)
-        {
-            Content = content;
-        }
-        
         [Description("Constructor-declaration for which the code is generated.")]
         [CommandArgument(0, "[ConstructorDeclaration]")]
-        public string Content { get; }
+        public string Content { get; set; } = null!;
     }
 
-    public override async Task<int> ExecuteAsync(CommandContext context, Settings settings)
+    protected override async Task RunAsync(TypeCodeConsoleServiceProvider serviceProvider, CommandContext context, Settings settings)
     {
-        var serviceProvider = new TypeCodeConsoleServiceProvider();
         var mode = serviceProvider.GetService<ITypeCodeGenerator<UnitTestDependencyManuallyGeneratorParameter>>();
         var parameter = new UnitTestDependencyManuallyGeneratorParameter { Input = settings.Content };
         System.Console.WriteLine(await mode.GenerateAsync(parameter).ConfigureAwait(false));
-        return 1;
     }
 }

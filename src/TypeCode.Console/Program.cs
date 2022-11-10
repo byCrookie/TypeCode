@@ -20,9 +20,6 @@ public sealed class Program
 
         try
         {
-            Log.Debug("Boot");
-            await Bootstrapper.BootAsync().ConfigureAwait(false);
-            
             var app = new CommandApp();
             app.Configure(config =>
             {

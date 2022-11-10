@@ -3,7 +3,9 @@
 namespace TypeCode.Business.TypeEvaluation;
 
 [ServiceProviderModule]
-[Singleton(typeof(ITypeProvider), typeof(TypeProvider))]
+[Singleton(typeof(ILazyTypeProviderFactory), typeof(LazyTypeProviderFactory))]
+[Transient(typeof(IConfigurationTypeProvider), typeof(ConfigurationTypeProvider))]
+[Transient(typeof(IDllTypeProvider), typeof(DllTypeProvider))]
 public interface ITypeEvaluationModule
 {
 }
