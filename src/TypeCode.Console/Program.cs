@@ -5,6 +5,7 @@ using TypeCode.Console.Boot;
 using TypeCode.Console.Boot.Helper;
 using TypeCode.Console.Commands.Builder;
 using TypeCode.Console.Commands.Composer;
+using TypeCode.Console.Commands.Guid;
 using TypeCode.Console.Commands.Mapper;
 using TypeCode.Console.Commands.Specflow;
 using TypeCode.Console.Commands.Unit;
@@ -31,6 +32,7 @@ public sealed class Program
                 config.AddCommand<BuilderCommand>("builder");
                 config.AddCommand<ComposerCommand>("composer");
                 config.AddCommand<MapperCommand>("mapper");
+                config.AddCommand<GuidCommand>("guid");
             });
             await app.RunAsync(args).ConfigureAwait(false);
         }
