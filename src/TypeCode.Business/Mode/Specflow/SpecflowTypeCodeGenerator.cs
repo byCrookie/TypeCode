@@ -7,11 +7,11 @@ namespace TypeCode.Business.Mode.Specflow;
 
 public sealed class SpecflowTypeCodeGenerator : ISpecflowTypeCodeGenerator
 {
-    private readonly ITableGenerator _tableGenerator;
+    private readonly ITableFormatter _tableFormatter;
 
-    public SpecflowTypeCodeGenerator(ITableGenerator tableGenerator)
+    public SpecflowTypeCodeGenerator(ITableFormatter tableFormatter)
     {
-        _tableGenerator = tableGenerator;
+        _tableFormatter = tableFormatter;
     }
     
     public Task<string?> GenerateAsync(SpecflowTypeCodeGeneratorParameter parameter)
@@ -36,7 +36,7 @@ public sealed class SpecflowTypeCodeGenerator : ISpecflowTypeCodeGenerator
             };
             
             stringBuilder.AppendLine($@"And Entity {key}");
-            stringBuilder.AppendLine(_tableGenerator.Build(rows));
+            stringBuilder.AppendLine(_tableFormatter.Format(rows));
             stringBuilder.AppendLine();
         }
 
