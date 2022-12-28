@@ -1,0 +1,25 @@
+---- DeploymentImport
+
+private DeploymentImport _testee;
+
+private IKeyFactory<string, IDeployerImportStrategy> _importStrategyFactory;
+private IConnectionBlockFactory _connectionBlockFactory;
+private IDateTimeProvider _dateTimeProvider;
+private IRedirectLoggerFactory _redirectLoggerFactory;
+
+[TestInitialize]
+public void TestInitialize()
+{
+	_importStrategyFactory = A.Fake<IKeyFactory<string, IDeployerImportStrategy>>();
+	_connectionBlockFactory = A.Fake<IConnectionBlockFactory>();
+	_dateTimeProvider = A.Fake<IDateTimeProvider>();
+	_redirectLoggerFactory = A.Fake<IRedirectLoggerFactory>();
+
+	_testee = new DeploymentImport(
+		_importStrategyFactory,
+		_connectionBlockFactory,
+		_dateTimeProvider,
+		_redirectLoggerFactory
+	);
+}
+

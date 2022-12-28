@@ -4,7 +4,7 @@ internal class DependencyManually
 {
     public DependencyManually(string dependency)
     {
-        var splitted = dependency.Split(" ");
+        var splitted = new ExclusionSplitter(" ", "<", ">").Split(dependency).ToList();
         TypeName = splitted[0];
         Name = splitted[1];
     }

@@ -1,0 +1,6 @@
+﻿		public DeploymentImport(
+			IKeyFactory<string, IDeployerImportStrategy> importStrategyFactory,
+			IConnectionBlockFactory connectionBlockFactory,
+			IDateTimeProvider dateTimeProvider,
+			IRedirectLoggerFactory redirectLoggerFactory
+		)

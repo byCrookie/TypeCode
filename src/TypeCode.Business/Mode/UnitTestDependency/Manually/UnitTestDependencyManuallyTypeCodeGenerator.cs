@@ -44,7 +44,9 @@ public sealed class UnitTestDependencyManuallyTypeCodeGenerator : IUnitTestDepen
         var dependencies = matches[1];
 
         var className = accessorAndName.Split(" ").Skip(1).Single();
-        var dependenciesCommaSeperated = dependencies.Split(",").Select(dependency => dependency.Trim());
+        var dependenciesCommaSeperated = new ExclusionSplitter(",", "<", ">")
+            .Split(dependencies)
+            .Select(dependency => dependency.Trim());
         var dependenciesByTypeAndName = dependenciesCommaSeperated
             .Select(dependency => new DependencyManually(dependency))
             .ToList();

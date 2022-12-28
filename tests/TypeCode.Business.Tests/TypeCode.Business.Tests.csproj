@@ -20,4 +20,10 @@
       <ProjectReference Include="..\..\src\TypeCode.Business\TypeCode.Business.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <EmbeddedResource Include="Mode\Output.txt" />
+      <None Remove="Mode\Input.txt" />
+      <EmbeddedResource Include="Mode\Input.txt" />
+    </ItemGroup>
+
 </Project>
