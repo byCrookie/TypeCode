@@ -22,7 +22,7 @@ public sealed class TableFormatter : ITableFormatter
             table.AppendLine("| " + string.Join(" | ", CreateTableHeaderBodySeperator(paddedValues)) + " |");
         }
 
-        foreach (var row in paddedValues)
+        foreach (var row in paddedValues.Skip(1))
         {
             table.AppendLine($"| {string.Join(" | ", row)} |");
         }
