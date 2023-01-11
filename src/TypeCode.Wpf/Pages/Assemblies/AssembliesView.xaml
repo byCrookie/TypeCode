@@ -25,7 +25,6 @@
                   AutoGenerateColumns="False"
                   IsReadOnly="True"
                   HeadersVisibility="Column"
-                  Width="800"
                   HorizontalAlignment="Left"
                   HorizontalScrollBarVisibility="Auto"
                   VerticalScrollBarVisibility="Auto">
