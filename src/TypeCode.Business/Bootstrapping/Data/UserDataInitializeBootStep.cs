@@ -16,6 +16,7 @@ public sealed class UserDataInitializeBootStep<TContext> : IUserDataInitializeBo
     // ReSharper disable once UnusedMember.Local
     private const string ConfigurationDevFileName = "Configuration.Development.cfg.xml";
     private const string ConfigurationFileName = "Configuration.cfg.xml";
+    private const string DynamicExecutionFileName = "DynamicExecution.cs";
 
     private readonly IResourceReader _resourceReader;
     private readonly IUserDataLocationInitializer _userDataLocationInitializer;
@@ -65,6 +66,7 @@ public sealed class UserDataInitializeBootStep<TContext> : IUserDataInitializeBo
         _userDataLocationInitializer.InitializeCachePath(Path.Combine(basePath, SubLocationCacheName));
         _userDataLocationInitializer.InitializeLogsPath(Path.Combine(basePath, SubLocationLogsName));
         _userDataLocationInitializer.InitializeConfigurationFilePath(Path.Combine(basePath, ConfigurationFileName));
+        _userDataLocationInitializer.InitializeDynamicExecutionPath(Path.Combine(basePath, DynamicExecutionFileName));
 
         if (File.Exists(Path.Combine(basePath, ConfigurationFileName)))
         {

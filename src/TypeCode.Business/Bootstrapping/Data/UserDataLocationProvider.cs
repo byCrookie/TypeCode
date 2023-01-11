@@ -5,6 +5,7 @@ public sealed class UserDataLocationProvider : IUserDataLocationProvider, IUserD
     private static string? _configurationFilePath;
     private static string? _logsPath;
     private static string? _cachePath;
+    private static string? _dynamicExecutionPath;
 
     public string GetConfigurationFilePath()
     {
@@ -35,6 +36,17 @@ public sealed class UserDataLocationProvider : IUserDataLocationProvider, IUserD
 
         return _cachePath;
     }
+    
+    
+    public string GetDynamicExecutionPath()
+    {
+        if (_dynamicExecutionPath is null)
+        {
+            throw new Exception($"{nameof(UserDataLocationProvider)} not initialized");
+        }
+
+        return _dynamicExecutionPath;
+    }
 
     public void InitializeConfigurationFilePath(string location)
     {
@@ -49,5 +61,10 @@ public sealed class UserDataLocationProvider : IUserDataLocationProvider, IUserD
     public void InitializeCachePath(string location)
     {
         _cachePath = location;
+    }
+    
+    public void InitializeDynamicExecutionPath(string location)
+    {
+        _dynamicExecutionPath = location;
     }
 }

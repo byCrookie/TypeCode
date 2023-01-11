@@ -5,4 +5,5 @@ public interface IUserDataLocationInitializer
     void InitializeConfigurationFilePath(string location);
     void InitializeLogsPath(string location);
     void InitializeCachePath(string location);
+    void InitializeDynamicExecutionPath(string location);
 }
