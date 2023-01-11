@@ -6,6 +6,8 @@ public sealed class TestClass
     {
         String = string.Empty;
         SubTestClasses = new List<Test1.TestClass>();
+        List = new List<string>();
+        Enumerable = System.Linq.Enumerable.Empty<string>();
     }
     
     public string? NullableString { get; set; }
