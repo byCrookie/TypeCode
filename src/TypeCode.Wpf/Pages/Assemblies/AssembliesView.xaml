@@ -18,72 +18,69 @@
 
         <inputBox:InputBoxView DataContext="{Binding InputBoxViewModel}"></inputBox:InputBoxView>
 
-        <ScrollViewer Grid.Row="2"
-                      VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-            <DataGrid ItemsSource="{Binding LoadedAssemblies}"
-                      Background="{StaticResource Primary}"
-                      Foreground="{StaticResource PrimaryText}"
-                      BorderThickness="0"
-                      AutoGenerateColumns="False"
-                      IsReadOnly="True"
-                      HeadersVisibility="Column"
-                      Width="800"
-                      HorizontalAlignment="Left"
-                      HorizontalScrollBarVisibility="Auto"
-                      VerticalScrollBarVisibility="Auto">
-                <DataGrid.Resources>
-                    <Style TargetType="{x:Type DataGridRow}">
-                        <Setter Property="Background" Value="{StaticResource Primary}" />
-                        <Setter Property="Foreground" Value="{StaticResource PrimaryText}" />
-                        <Style.Triggers>
-                            <Trigger Property="IsSelected" Value="True">
-                                <Setter Property="Background" Value="{StaticResource Primary}" />
-                                <Setter Property="Foreground" Value="{StaticResource PrimaryText}" />
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                    <Style TargetType="{x:Type DataGridColumnHeader}">
-                        <Setter Property="Background" Value="{StaticResource Primary}" />
-                        <Setter Property="Foreground" Value="{StaticResource PrimaryText}" />
-                        <Setter Property="Padding" Value="5" />
-                        <Setter Property="Margin" Value="0, 1, 1, 1" />
-                        <Setter Property="BorderThickness" Value="1" />
-                        <Setter Property="BorderBrush" Value="{StaticResource Shadow}" />
-                    </Style>
-                </DataGrid.Resources>
-                <DataGrid.CellStyle>
-                    <Style TargetType="DataGridCell">
-                        <Setter Property="Padding" Value="5" />
-                        <Setter Property="BorderBrush" Value="{StaticResource Shadow}" />
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="{x:Type DataGridCell}">
-                                    <Border Padding="{TemplateBinding Padding}"
-                                            BorderBrush="{TemplateBinding BorderBrush}"
-                                            BorderThickness="{TemplateBinding BorderThickness}"
-                                            Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
-                                        <ContentPresenter
-                                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-                                    </Border>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                        <Style.Triggers>
-                            <Trigger Property="IsSelected" Value="True">
-                                <Setter Property="Background" Value="{StaticResource Primary}" />
-                                <Setter Property="Foreground" Value="{StaticResource PrimaryText}" />
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </DataGrid.CellStyle>
-                <DataGrid.Columns>
-                    <DataGridTextColumn CanUserSort="False" Header="Priority" Binding="{Binding Priority}"></DataGridTextColumn>
-                    <DataGridTextColumn Width="*" CanUserSort="False" Header="Assembly Path"
-                                        Binding="{Binding Assembly}">
-                    </DataGridTextColumn>
-                    <DataGridCheckBoxColumn CanUserSort="False" Header="Ignored" Binding="{Binding Ignore}"></DataGridCheckBoxColumn>
-                </DataGrid.Columns>
-            </DataGrid>
-        </ScrollViewer>
+        <DataGrid Grid.Row="2" ItemsSource="{Binding LoadedAssemblies}"
+                  Background="{StaticResource Primary}"
+                  Foreground="{StaticResource PrimaryText}"
+                  BorderThickness="0"
+                  AutoGenerateColumns="False"
+                  IsReadOnly="True"
+                  HeadersVisibility="Column"
+                  Width="800"
+                  HorizontalAlignment="Left"
+                  HorizontalScrollBarVisibility="Auto"
+                  VerticalScrollBarVisibility="Auto">
+            <DataGrid.Resources>
+                <Style TargetType="{x:Type DataGridRow}">
+                    <Setter Property="Background" Value="{StaticResource Primary}" />
+                    <Setter Property="Foreground" Value="{StaticResource PrimaryText}" />
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="{StaticResource Primary}" />
+                            <Setter Property="Foreground" Value="{StaticResource PrimaryText}" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+                <Style TargetType="{x:Type DataGridColumnHeader}">
+                    <Setter Property="Background" Value="{StaticResource Primary}" />
+                    <Setter Property="Foreground" Value="{StaticResource PrimaryText}" />
+                    <Setter Property="Padding" Value="5" />
+                    <Setter Property="Margin" Value="0, 1, 1, 1" />
+                    <Setter Property="BorderThickness" Value="1" />
+                    <Setter Property="BorderBrush" Value="{StaticResource Shadow}" />
+                </Style>
+            </DataGrid.Resources>
+            <DataGrid.CellStyle>
+                <Style TargetType="DataGridCell">
+                    <Setter Property="Padding" Value="5" />
+                    <Setter Property="BorderBrush" Value="{StaticResource Shadow}" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type DataGridCell}">
+                                <Border Padding="{TemplateBinding Padding}"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                        Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                                    <ContentPresenter
+                                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="{StaticResource Primary}" />
+                            <Setter Property="Foreground" Value="{StaticResource PrimaryText}" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.CellStyle>
+            <DataGrid.Columns>
+                <DataGridTextColumn CanUserSort="False" Header="Priority" Binding="{Binding Priority}"></DataGridTextColumn>
+                <DataGridTextColumn Width="*" CanUserSort="False" Header="Assembly Path"
+                                    Binding="{Binding Assembly}">
+                </DataGridTextColumn>
+                <DataGridCheckBoxColumn CanUserSort="False" Header="Ignored" Binding="{Binding Ignore}"></DataGridCheckBoxColumn>
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </UserControl>

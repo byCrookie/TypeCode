@@ -27,8 +27,8 @@
                                ToolTip="{Binding ToolTip}"
                                LoadAutoCompletionAsync="{Binding LoadAutoCompletionItemsAsync}"
                                ApplyAutoCompletionAsync="{Binding ApplyAutoCompletionItemAsync}"
-                               ShowAutoCompletion="True">
-            
+                               ShowAutoCompletion="True"
+                               HorizontalScrollBarVisibility="Auto">
             <TextBox.InputBindings>
                 <KeyBinding Key="Enter" Command="{Binding ActionCommand}" />
             </TextBox.InputBindings>

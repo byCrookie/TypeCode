@@ -44,14 +44,10 @@ public sealed partial class EncodingViewModel : ViewModelBase, IAsyncInitialNavi
     }
 
     [RelayCommand(CanExecute = nameof(CanConvert))]
-    private Task ConvertAsync()
+    private async Task ConvertAsync()
     {
-        MainThread.BackgroundFireAndForgetAsync(async () =>
-        {
-            var result = await _composerTypeGenerator.GenerateAsync(new EncodingTypeCodeGeneratorParameter(Input!, EncodingFrom!.Encoding, EncodingTo!.Encoding)).ConfigureAwait(true);
-            OutputBoxViewModel?.SetOutput(result);
-        }, DispatcherPriority.Normal);
-        return Task.CompletedTask;
+        var result = await _composerTypeGenerator.GenerateAsync(new EncodingTypeCodeGeneratorParameter(Input!, EncodingFrom!.Encoding, EncodingTo!.Encoding)).ConfigureAwait(true);
+        OutputBoxViewModel?.SetOutput(result);
     }
 
     private bool CanConvert()

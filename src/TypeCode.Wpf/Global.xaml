@@ -186,7 +186,7 @@
     <!--SCROLLBARS-->
     <Style x:Key="{x:Type ScrollBar}" TargetType="{x:Type ScrollBar}">
         <Setter Property="Stylus.IsFlicksEnabled" Value="False" />
-        <Setter Property="Foreground" Value="{StaticResource Shadow}" />
+        <Setter Property="Foreground" Value="{StaticResource Accent}" />
         <Setter Property="Background" Value="DarkGray" />
         <Setter Property="Width" Value="8" />
         <Setter Property="Template">

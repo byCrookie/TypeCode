@@ -10,16 +10,14 @@
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance unitTestDependencyType1:UnitTestDependencyTypeViewModel}">
 
-    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
 
-            <inputBox:InputBoxView Grid.Row="0" DataContext="{Binding InputBoxViewModel}"></inputBox:InputBoxView>
+        <inputBox:InputBoxView Grid.Row="0" DataContext="{Binding InputBoxViewModel}"></inputBox:InputBoxView>
 
-            <outputBox:OutputBoxView Margin="0,5,0,0" Grid.Row="1" DataContext="{Binding OutputBoxViewModel}"></outputBox:OutputBoxView>
-        </Grid>
-    </ScrollViewer>
+        <outputBox:OutputBoxView Margin="0,5,0,0" Grid.Row="1" DataContext="{Binding OutputBoxViewModel}"></outputBox:OutputBoxView>
+    </Grid>
 </UserControl>

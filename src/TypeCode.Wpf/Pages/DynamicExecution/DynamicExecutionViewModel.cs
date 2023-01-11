@@ -41,14 +41,10 @@ public sealed partial class DynamicExecutionViewModel : ViewModelBase, IAsyncIni
     }
 
     [RelayCommand(CanExecute = nameof(CanExecute))]
-    private Task ExecuteAsync()
+    private async Task ExecuteAsync()
     {
-        MainThread.BackgroundFireAndForgetAsync(() =>
-        {
-            var result = _runner.Execute(_compiler.Compile(Input!));
-            OutputBoxViewModel?.SetOutput(result);
-        }, DispatcherPriority.Normal);
-        return Task.CompletedTask;
+        var result = await Task.Run(() => _runner.Execute(_compiler.Compile(Input!)));
+        OutputBoxViewModel?.SetOutput(result);
     }
 
     private bool CanExecute()

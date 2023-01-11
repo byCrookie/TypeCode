@@ -96,9 +96,9 @@
                     <sidebar:MainSidebarView x:Name="MainSidebar" DataContext="{Binding MainSidebarViewModel}" />
                 </ScrollViewer>
 
-                <content:MainContentView x:Name="MainContent" DataContext="{Binding MainContentViewModel}"
-                                         Grid.Column="1"
-                                         Grid.Row="0" />
+                <ScrollViewer Grid.Column="1" Grid.Row="0" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                    <content:MainContentView x:Name="MainContent" DataContext="{Binding MainContentViewModel}"/>
+                </ScrollViewer>
             </Grid>
 
             <Grid Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="3" ZIndex="2" x:Name="ModalOverlay"

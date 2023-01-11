@@ -14,44 +14,42 @@
         <KeyBinding Key="Enter" Command="{Binding StringLengthCommand}" />
     </UserControl.InputBindings>
 
-    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
 
-            <Grid Grid.Row="0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                    <ColumnDefinition Width="Auto"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
 
-                <textBox:CustomTextBox Grid.Column="0"
-                                       Text="{Binding Input, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                       ShowRegex="False"
-                                       ToolTip="Input any text"
-                                       ShowAutoCompletion="False"
-                                       HorizontalAlignment="Stretch"
-                                       HorizontalContentAlignment="Stretch"
-                                       HorizontalScrollBarVisibility="Auto"
-                                       VerticalScrollBarVisibility="Auto"
-                                       AcceptsReturn="True"
-                                       TextWrapping="NoWrap"
-                                       AcceptsTab="True"
-                                       MinHeight="200"
-                                       MaxHeight="400">
+            <textBox:CustomTextBox Grid.Column="0"
+                                   Text="{Binding Input, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                   ShowRegex="False"
+                                   ToolTip="Input any text"
+                                   ShowAutoCompletion="False"
+                                   HorizontalAlignment="Stretch"
+                                   HorizontalContentAlignment="Stretch"
+                                   HorizontalScrollBarVisibility="Auto"
+                                   VerticalScrollBarVisibility="Auto"
+                                   AcceptsReturn="True"
+                                   TextWrapping="NoWrap"
+                                   AcceptsTab="True"
+                                   MinHeight="200"
+                                   MaxHeight="400">
 
-                    <TextBox.InputBindings>
-                        <KeyBinding Key="Enter" Command="{Binding StringLengthCommand}" />
-                    </TextBox.InputBindings>
-                </textBox:CustomTextBox>
+                <TextBox.InputBindings>
+                    <KeyBinding Key="Enter" Command="{Binding StringLengthCommand}" />
+                </TextBox.InputBindings>
+            </textBox:CustomTextBox>
 
-                <Button Margin="5,0,0,0" VerticalAlignment="Top" Grid.Column="1"
-                        Command="{Binding StringLengthCommand}" Content="Length" />
-            </Grid>
-
-            <outputBox:OutputBoxView Margin="0,5,0,0" Grid.Row="1" DataContext="{Binding OutputBoxViewModel}" />
+            <Button Margin="5,0,0,0" VerticalAlignment="Top" Grid.Column="1"
+                    Command="{Binding StringLengthCommand}" Content="Length" />
         </Grid>
-    </ScrollViewer>
+
+        <outputBox:OutputBoxView Margin="0,5,0,0" Grid.Row="1" DataContext="{Binding OutputBoxViewModel}" />
+    </Grid>
 </UserControl>

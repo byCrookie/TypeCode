@@ -11,23 +11,21 @@
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance builder:BuilderViewModel}">
 
-    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
 
-            <inputBox:InputBoxView Grid.Row="0" DataContext="{Binding InputBoxViewModel}"></inputBox:InputBoxView>
+        <inputBox:InputBoxView Grid.Row="0" DataContext="{Binding InputBoxViewModel}"></inputBox:InputBoxView>
 
-            <StackPanel Margin="0,5,0,0" Grid.Row="1">
-                <checkBox:CustomCheckBox Content="Recursive"
-                                         ToolTip="Create builders for all complex subtypes of class recursively."
-                                         IsChecked="{Binding Recursive}" />
-            </StackPanel>
+        <StackPanel Margin="0,5,0,0" Grid.Row="1">
+            <checkBox:CustomCheckBox Content="Recursive"
+                                     ToolTip="Create builders for all complex subtypes of class recursively."
+                                     IsChecked="{Binding Recursive}" />
+        </StackPanel>
 
-            <outputBox:OutputBoxView Margin="0,5,0,0" Grid.Row="2" DataContext="{Binding OutputBoxViewModel}"></outputBox:OutputBoxView>
-        </Grid>
-    </ScrollViewer>
+        <outputBox:OutputBoxView Margin="0,5,0,0" Grid.Row="2" DataContext="{Binding OutputBoxViewModel}"></outputBox:OutputBoxView>
+    </Grid>
 </UserControl>
