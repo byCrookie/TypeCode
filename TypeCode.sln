@@ -25,21 +25,27 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TypeCode.Test.Static", "tes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TypeCode.Wpf.Setup", "src\TypeCode.Wpf.Setup\TypeCode.Wpf.Setup.wixproj", "{2B03ED1E-E150-4427-97B2-798EADBCB728}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_", "_", "{D6B039F0-397D-4492-8CA0-A28193DDCFD6}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_", "_", "{995FFF59-EFFC-4E5E-9C11-0364534F12F1}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
 		Directory.Build.props = Directory.Build.props
+		Directory.Packages.props = Directory.Packages.props
 		LICENSE = LICENSE
 		nuget.config = nuget.config
 		README.md = README.md
-		Directory.Packages.props = Directory.Packages.props
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{8AF636C5-9D4F-442A-A83F-8620630EA87F}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{416EC618-7A16-4960-916D-44B0E25856EE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{098C5713-1C16-4A15-AB39-88FCA2827FE9}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\release.yml = .github\workflows\release.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ISSUE_TEMPLATE", "ISSUE_TEMPLATE", "{505F57B9-59FA-4461-B258-BA4FC32FADE6}"
 	ProjectSection(SolutionItems) = preProject
 		.github\ISSUE_TEMPLATE\bug_report.md = .github\ISSUE_TEMPLATE\bug_report.md
 		.github\ISSUE_TEMPLATE\feature_request.md = .github\ISSUE_TEMPLATE\feature_request.md
-		.github\workflows\release.yml = .github\workflows\release.yml
 	EndProjectSection
 EndProject
 Global
@@ -134,7 +140,9 @@ Global
 		{7C1DC089-E4DA-489C-BCFF-2E78115B0297} = {2823508B-B95C-4909-A4EB-B04225E9C935}
 		{BFF036EE-DA15-4172-92C2-EB77E50F96A3} = {2823508B-B95C-4909-A4EB-B04225E9C935}
 		{2B03ED1E-E150-4427-97B2-798EADBCB728} = {ECFF6A9C-9D23-4986-9A8F-D72E9DC0029C}
-		{8AF636C5-9D4F-442A-A83F-8620630EA87F} = {D6B039F0-397D-4492-8CA0-A28193DDCFD6}
+		{416EC618-7A16-4960-916D-44B0E25856EE} = {995FFF59-EFFC-4E5E-9C11-0364534F12F1}
+		{098C5713-1C16-4A15-AB39-88FCA2827FE9} = {416EC618-7A16-4960-916D-44B0E25856EE}
+		{505F57B9-59FA-4461-B258-BA4FC32FADE6} = {416EC618-7A16-4960-916D-44B0E25856EE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D870D1BE-CB2E-4393-93BE-98BE7FF82BF0}
