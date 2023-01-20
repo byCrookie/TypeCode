@@ -42,7 +42,7 @@ public sealed partial class GuidViewModel : ViewModelBase, IAsyncInitialNavigate
     [RelayCommand]
     private async Task GenerateSingleAsync()
     {
-        var guid = await _guidGenerator.GenerateAsync(new GuidTypeCodeGeneratorParameter(_guidFormat)).ConfigureAwait(true);
+        var guid = await _guidGenerator.GenerateAsync(new GuidTypeCodeGeneratorParameter(GuidFormat)).ConfigureAwait(true);
 
         if (guid is not null)
         {
@@ -59,7 +59,7 @@ public sealed partial class GuidViewModel : ViewModelBase, IAsyncInitialNavigate
         var guids = new StringBuilder();
         for (var i = 0; i < 25; i++)
         {
-            var guid = await _guidGenerator.GenerateAsync(new GuidTypeCodeGeneratorParameter(_guidFormat)).ConfigureAwait(true);
+            var guid = await _guidGenerator.GenerateAsync(new GuidTypeCodeGeneratorParameter(GuidFormat)).ConfigureAwait(true);
             guids.AppendLine(guid);
         }
 
