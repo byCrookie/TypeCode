@@ -2,5 +2,6 @@
 
 public interface IRunner
 {
-    string Execute(byte[] compiledAssembly);
+    string CompileAndExecute(string sourceCode, params string?[] parameters);
+    string Execute(byte[] compiledAssembly, params string?[] parameters);
 }

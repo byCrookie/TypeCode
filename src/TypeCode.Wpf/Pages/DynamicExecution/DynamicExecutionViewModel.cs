@@ -17,7 +17,6 @@ namespace TypeCode.Wpf.Pages.DynamicExecution;
 public sealed partial class DynamicExecutionViewModel : ViewModelBase, IAsyncInitialNavigated
 {
     private readonly IOutputBoxViewModelFactory _outputBoxViewModelFactory;
-    private readonly ICompiler _compiler;
     private readonly IRunner _runner;
     private readonly IResourceReader _resourceReader;
     private readonly IUserDataLocationProvider _userDataLocationProvider;
@@ -28,7 +27,6 @@ public sealed partial class DynamicExecutionViewModel : ViewModelBase, IAsyncIni
 
     public DynamicExecutionViewModel(
         IOutputBoxViewModelFactory outputBoxViewModelFactory,
-        ICompiler compiler,
         IRunner runner,
         IResourceReader resourceReader,
         IUserDataLocationProvider userDataLocationProvider,
@@ -36,7 +34,6 @@ public sealed partial class DynamicExecutionViewModel : ViewModelBase, IAsyncIni
     )
     {
         _outputBoxViewModelFactory = outputBoxViewModelFactory;
-        _compiler = compiler;
         _runner = runner;
         _resourceReader = resourceReader;
         _userDataLocationProvider = userDataLocationProvider;
@@ -94,7 +91,7 @@ public sealed partial class DynamicExecutionViewModel : ViewModelBase, IAsyncIni
         await using (_flagScopeFactory.CreateAsync(_isExecuting, _ => NotifyCommandsAsync()))
         {
             var code = await File.ReadAllTextAsync(_userDataLocationProvider.GetDynamicExecutionPath());
-            var result = await Task.Run(() => _runner.Execute(_compiler.Compile(code)));
+            var result = await Task.Run(() => _runner.CompileAndExecute(code));
             OutputBoxViewModel?.SetOutput(result);
         }
     }
