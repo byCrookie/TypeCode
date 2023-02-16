@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using System.Reflection;
 using System.Text.Json;
 
 namespace TypeCode.Business.Version;
@@ -60,7 +59,7 @@ public sealed class VersionEvaluator : IVersionEvaluator
 
     public Task<VersionResult> ReadCurrentVersionAsync()
     {
-        var versionInfo = FileVersionInfo.GetVersionInfo($"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\\TypeCode.Wpf.exe");
+        var versionInfo = FileVersionInfo.GetVersionInfo($"{Path.GetDirectoryName(AppContext.BaseDirectory)}\\TypeCode.Wpf.exe");
         var result = versionInfo.ProductVersion is null ? new VersionResult() : new VersionResult { CurrentVersion = versionInfo.ProductVersion };
         return Task.FromResult(result);
     }

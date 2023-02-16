@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using System.Net.Http;
-using System.Reflection;
 using System.Windows.Threading;
 using AsyncAwaitBestPractices;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -94,7 +93,7 @@ public sealed partial class MainContentViewModel :
                 var name = $"TypeCode.Wpf.Setup_{_version?.NewVersion}";
 
                 var url = $"https://github.com/byCrookie/TypeCode/releases/download/{_version?.NewVersion}/{name}.msi";
-                var executingLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? throw new Exception();
+                var executingLocation = Path.GetDirectoryName(AppContext.BaseDirectory) ?? throw new Exception();
 
                 var msi = Path.Combine(executingLocation, $"{name}.msi");
 

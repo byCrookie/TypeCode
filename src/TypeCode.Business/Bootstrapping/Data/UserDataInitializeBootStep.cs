@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using Framework.Boot;
-using Framework.Extensions.List;
 using TypeCode.Business.Embedded;
 using TypeCode.Business.Logging;
 using Workflow;
@@ -26,7 +25,7 @@ public sealed class UserDataInitializeBootStep<TContext> : IUserDataInitializeBo
 
     private readonly List<string> _priorityDataBaseLocations = new()
     {
-        $@"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\",
+        $@"{Path.GetDirectoryName(AppContext.BaseDirectory)}\",
         $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\TypeCode\"
     };
 
