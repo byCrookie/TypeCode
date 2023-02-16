@@ -48,6 +48,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ISSUE_TEMPLATE", "ISSUE_TEM
 		.github\ISSUE_TEMPLATE\feature_request.md = .github\ISSUE_TEMPLATE\feature_request.md
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "manifests", "manifests", "{4EFCE3A0-743A-47E0-BBB4-C7DE7F16AFE4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "b", "b", "{B28428BE-3801-4E5E-8BDA-7AC5599BE966}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TypeCode", "TypeCode", "{C9DCF5C5-34AE-4384-A8E3-636348913846}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1.1.8", "1.1.8", "{4B915F96-8905-4643-AA4F-BE814357BAD0}"
+	ProjectSection(SolutionItems) = preProject
+		manifests\b\byCrookie\TypeCode\1.1.8\byCrookie.TypeCode.installer.yaml = manifests\b\byCrookie\TypeCode\1.1.8\byCrookie.TypeCode.installer.yaml
+		manifests\b\byCrookie\TypeCode\1.1.8\byCrookie.TypeCode.locale.en-US.yaml = manifests\b\byCrookie\TypeCode\1.1.8\byCrookie.TypeCode.locale.en-US.yaml
+		manifests\b\byCrookie\TypeCode\1.1.8\byCrookie.TypeCode.yaml = manifests\b\byCrookie\TypeCode\1.1.8\byCrookie.TypeCode.yaml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -143,6 +156,10 @@ Global
 		{416EC618-7A16-4960-916D-44B0E25856EE} = {995FFF59-EFFC-4E5E-9C11-0364534F12F1}
 		{098C5713-1C16-4A15-AB39-88FCA2827FE9} = {416EC618-7A16-4960-916D-44B0E25856EE}
 		{505F57B9-59FA-4461-B258-BA4FC32FADE6} = {416EC618-7A16-4960-916D-44B0E25856EE}
+		{4EFCE3A0-743A-47E0-BBB4-C7DE7F16AFE4} = {995FFF59-EFFC-4E5E-9C11-0364534F12F1}
+		{B28428BE-3801-4E5E-8BDA-7AC5599BE966} = {4EFCE3A0-743A-47E0-BBB4-C7DE7F16AFE4}
+		{C9DCF5C5-34AE-4384-A8E3-636348913846} = {B28428BE-3801-4E5E-8BDA-7AC5599BE966}
+		{4B915F96-8905-4643-AA4F-BE814357BAD0} = {C9DCF5C5-34AE-4384-A8E3-636348913846}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D870D1BE-CB2E-4393-93BE-98BE7FF82BF0}

@@ -121,3 +121,10 @@ jobs:
         asset_path: ./TypeCode.Console.Interactive_${{ steps.previoustag.outputs.tag }}.zip
         asset_name: TypeCode.Console.Interactive_${{ steps.previoustag.outputs.tag }}.zip
         asset_content_type: application/zip
+        
+    - name: Publish to WinGet
+      uses: vedantmgoyal2009/winget-releaser@v2
+      with:
+        identifier: byCrookie.TypeCode
+        max-versions-to-keep: 5
+        token: ${{ secrets.WINGET_TOKEN }}
