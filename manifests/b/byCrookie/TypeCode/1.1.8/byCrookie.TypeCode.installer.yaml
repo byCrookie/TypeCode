@@ -3,16 +3,15 @@
 
 PackageIdentifier: byCrookie.TypeCode
 PackageVersion: 1.1.8
+InstallerType: msi
+InstallModes:
+  - silent
 Installers:
-- InstallerUrl: https://github.com/byCrookie/TypeCode/releases/download/v1.1.8/TypeCode.Wpf_v1.1.8.zip
+- InstallerUrl: https://github.com/byCrookie/TypeCode/releases/download/v1.1.8/TypeCode.Wpf.Setup_v1.1.8.msi
   Architecture: x64
-  InstallerType: zip
-  NestedInstallerType: exe
-  NestedInstallerFiles:
-  - RelativeFilePath: TypeCode.Wpf.exe
-  InstallerSha256: 139FCD714A2A3A465526C6EFB207A9D77EACD314FF386B1A2A066437D6D4A76E
+  InstallerSha256: ef77306a2b24efdc107afae1bd471c165a3d9fb8eab818119b24c9d70417b962
   InstallerSwitches:
-    Silent: --silent
-    SilentWithProgress: --silent-with-progress
+    Silent: /quiet
+    SilentWithProgress: /passive
 ManifestType: installer
 ManifestVersion: 1.4.0
