@@ -43,13 +43,13 @@
                     Visibility="{Binding OkVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
                     Background="{StaticResource Primary}"
                     BorderBrush="{StaticResource Secondary}"
-                    Content="Cancel" />
+                    Content="{Binding CancelText}" />
 
             <Button Margin="5,5,0,0" Grid.Row="2" Grid.Column="2"
                     Command="{Binding OkCommand}"
                     Visibility="{Binding OkVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
                     BorderBrush="{StaticResource Secondary}"
-                    Content="Ok" />
+                    Content="{Binding OkText}" />
         </Grid>
     </Border>
 </UserControl>

@@ -22,7 +22,9 @@ public sealed partial class ModalViewModel : ViewModelBase, IAsyncNavigatedTo
         Title = parameter.Title;
         Text = parameter.Text;
         OkVisible = parameter.Buttons is ModalButtons.Ok or ModalButtons.OkAndCancel;
+        OkText = parameter.OkText;
         CancelVisible = parameter.Buttons is ModalButtons.OkAndCancel;
+        CancelText = parameter.CancelText;
         return Task.CompletedTask;
     }
 
@@ -45,7 +47,13 @@ public sealed partial class ModalViewModel : ViewModelBase, IAsyncNavigatedTo
     private string? _text;
     
     [ObservableProperty]
+    private string? _okText;
+    
+    [ObservableProperty]
     private bool _okVisible;
+    
+    [ObservableProperty]
+    private string? _cancelText;
     
     [ObservableProperty]
     private bool _cancelVisible;

@@ -83,54 +83,68 @@ public sealed partial class MainContentViewModel :
 
         return _modalNavigationService.OpenModalAsync(new ModalParameter
         {
-            Title = "WARNING - Update (Installer)",
-            Text = "The installer uses the location of the current version of TypeCode to install the update." +
-                   " You can change the installation path (destination folder) in the advanced menu of the install wizard.",
-            OnOkAsync = async () =>
+            Title = "WARNING - Installation Source",
+            Text = "Only continue installing if you have installed the program directly from github. Do not continue if you have used winget" +
+                   " or any other way of installing." +
+                   $"{Environment.NewLine}- If you have used winget use the winget update commands." +
+                   $"{Environment.NewLine}- If you have used another tool to install typecode, use it again to update.",
+            Buttons = ModalButtons.OkAndCancel,
+            OkText = "I have installed typecode directly from github previously!",
+            OnOkAsync = () => _modalNavigationService.OpenModalAsync(new ModalParameter
             {
-                IsBannerVisible = false;
-                
-                var name = $"TypeCode.Wpf.Setup_{_version?.NewVersion}";
-
-                var url = $"https://github.com/byCrookie/TypeCode/releases/download/{_version?.NewVersion}/{name}.msi";
-                var executingLocation = Path.GetDirectoryName(AppContext.BaseDirectory) ?? throw new Exception();
-
-                var msi = Path.Combine(executingLocation, $"{name}.msi");
-
-                if (File.Exists(msi))
+                Title = "WARNING - Update (Installer)",
+                Text = "The installer uses the location of the current version of TypeCode to install the update." +
+                       " You can change the installation path (destination folder) in the advanced menu of the install wizard.",
+                OnOkAsync = () =>
                 {
-                    File.Delete(msi);
+                    IsBannerVisible = false;
+                    return InstallMsiAsync();
                 }
-
-                using (var client = new HttpClient())
-                {
-                    client.DefaultRequestHeaders.Add("User-Agent", "byCrookie");
-
-                    var uri = new Uri(url);
-
-                    var response = await client.GetAsync(uri).ConfigureAwait(true);
-
-                    if (!response.IsSuccessStatusCode)
-                    {
-                        throw new Exception("Error retrieving update package");
-                    }
-
-                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(true);
-
-                    await using (var fileStream = new FileStream(msi, FileMode.Create))
-                    {
-                        await stream.CopyToAsync(fileStream).ConfigureAwait(true);
-                    }
-                }
-
-                var process = new Process();
-                process.StartInfo.FileName = "msiexec";
-                process.StartInfo.Arguments = $" /i {msi} APPLICATIONFOLDER={executingLocation}";
-                process.StartInfo.Verb = "runas";
-                process.Start();
-                Environment.Exit(0);
-            }
+            })
         });
+    }
+
+    private async Task InstallMsiAsync()
+    {
+        const string name = "TypeCode.Wpf.Setup.msi";
+
+        var url = $"https://github.com/byCrookie/TypeCode/releases/download/{_version?.NewVersion}/{name}";
+        var executingLocation = Path.GetDirectoryName(AppContext.BaseDirectory) ?? throw new Exception();
+
+        var msi = Path.Combine(executingLocation, name);
+
+        if (File.Exists(msi))
+        {
+            File.Delete(msi);
+        }
+
+        using (var client = new HttpClient())
+        {
+            client.DefaultRequestHeaders.Add("User-Agent", "byCrookie");
+
+            var uri = new Uri(url);
+
+            var response = await client.GetAsync(uri).ConfigureAwait(true);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception("Error retrieving update package");
+            }
+
+            var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(true);
+
+            await using (var fileStream = new FileStream(msi, FileMode.Create))
+            {
+                await stream.CopyToAsync(fileStream).ConfigureAwait(true);
+            }
+        }
+
+        var process = new Process();
+        process.StartInfo.FileName = "msiexec";
+        process.StartInfo.Arguments = $" /i {msi} APPLICATIONFOLDER={executingLocation}";
+        process.StartInfo.Verb = "runas";
+        process.Start();
+        Environment.Exit(0);
     }
 
     [ObservableProperty]
