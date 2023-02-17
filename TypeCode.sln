@@ -55,7 +55,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "b", "b", "{B28428BE-3801-4E
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TypeCode", "TypeCode", "{C9DCF5C5-34AE-4384-A8E3-636348913846}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1.1.8", "1.1.8", "{4B915F96-8905-4643-AA4F-BE814357BAD0}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1.1.9", "1.1.9", "{4B915F96-8905-4643-AA4F-BE814357BAD0}"
 	ProjectSection(SolutionItems) = preProject
 		manifests\b\byCrookie\TypeCode\1.1.8\byCrookie.TypeCode.installer.yaml = manifests\b\byCrookie\TypeCode\1.1.8\byCrookie.TypeCode.installer.yaml
 		manifests\b\byCrookie\TypeCode\1.1.8\byCrookie.TypeCode.locale.en-US.yaml = manifests\b\byCrookie\TypeCode\1.1.8\byCrookie.TypeCode.locale.en-US.yaml
