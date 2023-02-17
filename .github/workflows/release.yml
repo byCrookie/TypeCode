@@ -89,7 +89,7 @@ jobs:
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: ./TypeCode.Wpf_${{ steps.previoustag.outputs.tag }}.zip
-        asset_name: TypeCode.Wpf_${{ steps.previoustag.outputs.tag }}.zip
+        asset_name: TypeCode.Wpf.zip
         asset_content_type: application/zip
         
     - name: Upload Release Assets Wpf Setup
@@ -99,7 +99,7 @@ jobs:
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: ./TypeCode.Wpf.Setup_${{ steps.previoustag.outputs.tag }}.msi
-        asset_name: TypeCode.Wpf.Setup_${{ steps.previoustag.outputs.tag }}.msi
+        asset_name: TypeCode.Wpf.Setup.msi
         asset_content_type: application/octet-stream
         
     - name: Upload Release Assets Console
@@ -109,7 +109,7 @@ jobs:
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: ./TypeCode.Console_${{ steps.previoustag.outputs.tag }}.zip
-        asset_name: TypeCode.Console_${{ steps.previoustag.outputs.tag }}.zip
+        asset_name: TypeCode.Console.zip
         asset_content_type: application/zip
         
     - name: Upload Release Assets Console Interactive
@@ -119,5 +119,5 @@ jobs:
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: ./TypeCode.Console.Interactive_${{ steps.previoustag.outputs.tag }}.zip
-        asset_name: TypeCode.Console.Interactive_${{ steps.previoustag.outputs.tag }}.zip
+        asset_name: TypeCode.Console.Interactive.zip
         asset_content_type: application/zip

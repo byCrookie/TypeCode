@@ -2,12 +2,12 @@
 # yaml-language-server: $schema=https://aka.ms/winget-manifest.installer.1.4.0.schema.json
 
 PackageIdentifier: byCrookie.TypeCode
-PackageVersion: 1.1.8
+PackageVersion: 1.1.9
 InstallerType: msi
 InstallModes:
   - silent
 Installers:
-- InstallerUrl: https://github.com/byCrookie/TypeCode/releases/download/v1.1.8/TypeCode.Wpf.Setup_v1.1.8.msi
+- InstallerUrl: https://github.com/byCrookie/TypeCode/releases/download/v1.1.9/TypeCode.Wpf.Setup.msi
   Architecture: x64
   InstallerSha256: ef77306a2b24efdc107afae1bd471c165a3d9fb8eab818119b24c9d70417b962
   InstallerSwitches:
