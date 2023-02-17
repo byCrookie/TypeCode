@@ -57,9 +57,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TypeCode", "TypeCode", "{C9
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1.1.9", "1.1.9", "{4B915F96-8905-4643-AA4F-BE814357BAD0}"
 	ProjectSection(SolutionItems) = preProject
-		manifests\b\byCrookie\TypeCode\1.1.8\byCrookie.TypeCode.installer.yaml = manifests\b\byCrookie\TypeCode\1.1.8\byCrookie.TypeCode.installer.yaml
-		manifests\b\byCrookie\TypeCode\1.1.8\byCrookie.TypeCode.locale.en-US.yaml = manifests\b\byCrookie\TypeCode\1.1.8\byCrookie.TypeCode.locale.en-US.yaml
-		manifests\b\byCrookie\TypeCode\1.1.8\byCrookie.TypeCode.yaml = manifests\b\byCrookie\TypeCode\1.1.8\byCrookie.TypeCode.yaml
+		manifests\b\byCrookie\TypeCode\1.1.9\byCrookie.TypeCode.installer.yaml = manifests\b\byCrookie\TypeCode\1.1.9\byCrookie.TypeCode.installer.yaml
+		manifests\b\byCrookie\TypeCode\1.1.9\byCrookie.TypeCode.locale.en-US.yaml = manifests\b\byCrookie\TypeCode\1.1.9\byCrookie.TypeCode.locale.en-US.yaml
+		manifests\b\byCrookie\TypeCode\1.1.9\byCrookie.TypeCode.yaml = manifests\b\byCrookie\TypeCode\1.1.9\byCrookie.TypeCode.yaml
 	EndProjectSection
 EndProject
 Global
