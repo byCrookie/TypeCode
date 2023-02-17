@@ -7,11 +7,11 @@ InstallerType: msi
 InstallModes:
   - silent
 Installers:
-- InstallerUrl: https://github.com/byCrookie/TypeCode/releases/download/v1.1.9/TypeCode.Wpf.Setup.msi
-  Architecture: x64
-  InstallerSha256: 990e5ac3688d888d925041793be857eff1b0c1cb9b0bc27bb60fd59228d9083e
-  InstallerSwitches:
-    Silent: /quiet
-    SilentWithProgress: /passive
+  - InstallerUrl: https://github.com/byCrookie/TypeCode/releases/download/v1.1.9/TypeCode.Wpf.Setup.msi
+    Architecture: x64
+    InstallerSha256: 990e5ac3688d888d925041793be857eff1b0c1cb9b0bc27bb60fd59228d9083e
+    InstallerSwitches:
+      Silent: /quiet
+      SilentWithProgress: /passive
 ManifestType: installer
 ManifestVersion: 1.4.0
