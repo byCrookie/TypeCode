@@ -9,7 +9,7 @@ InstallModes:
 Installers:
 - InstallerUrl: https://github.com/byCrookie/TypeCode/releases/download/v1.1.9/TypeCode.Wpf.Setup.msi
   Architecture: x64
-  InstallerSha256: ef77306a2b24efdc107afae1bd471c165a3d9fb8eab818119b24c9d70417b962
+  InstallerSha256: 990e5ac3688d888d925041793be857eff1b0c1cb9b0bc27bb60fd59228d9083e
   InstallerSwitches:
     Silent: /quiet
     SilentWithProgress: /passive
