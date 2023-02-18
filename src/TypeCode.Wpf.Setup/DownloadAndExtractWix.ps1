@@ -25,9 +25,7 @@ try
         Write-Host "Extracting $destination ..."
         Expand-Archive -LiteralPath $destination -DestinationPath $wixFolder
         Write-Host "Extraction finished" -ForegroundColor Green
-        Remove-Item $destination
     }
-
 }
 catch
 {
