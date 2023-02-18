@@ -27,9 +27,12 @@ jobs:
     - name: Add Github NuGet Source
       run: dotnet nuget add source --username byCrookie --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/byCrookie/index.json"
           
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v1.3.1
+      
     - name: Build Wpf Setup
       run: |
         ./src/TypeCode.Wpf.Setup/DownloadAndExtractWix.ps1
-        dotnet build ./src/TypeCode.Wpf.Setup -p:SolutionDir=${{ github.workspace }}
+        msbuild ./src/TypeCode.Wpf.Setup -p:SolutionDir=${{ github.workspace }}
         New-Item -ItemType directory -Path  publish/setup/wpf -Force
         Copy-Item ./src/TypeCode.Wpf.Setup/bin/Release/TypeCode.Wpf.Setup.msi -Destination publish/setup/wpf/TypeCode.Wpf.Setup.msi
