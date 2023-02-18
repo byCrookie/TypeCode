@@ -1,0 +1,38 @@
+name: Test
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: '6.0.300'
+        
+    - name: Install NuGet Client
+      uses: nuget/setup-nuget@v1
+      
+    - name: Remove Github NuGet Source
+      run: dotnet nuget remove source localPackages
+
+    - name: Add Github NuGet Source
+      run: dotnet nuget add source --username byCrookie --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/byCrookie/index.json"
+
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v1.1
+          
+    - name: Build Wpf Setup
+      run: |
+        ./src/TypeCode.Wpf.Setup/DownloadAndExtractWix.ps1
+        msbuild ./src/TypeCode.Wpf.Setup -p:SolutionDir=${{ github.workspace }},Configuration=Release
+        New-Item -ItemType directory -Path  publish/setup/wpf -Force
+        Copy-Item ./src/TypeCode.Wpf.Setup/bin/Release/TypeCode.Wpf.Setup.msi -Destination publish/setup/wpf/TypeCode.Wpf.Setup.msi
