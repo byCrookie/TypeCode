@@ -1,4 +1,4 @@
-﻿$source = "https://wixtoolset.org/downloads/v3.14.0.6526/wix314-binaries.zip"
+﻿$source = "https://github.com/wixtoolset/wix3/releases/download/wix3112rtm/wix311-binaries.zip"
 $destination = Join-Path $PSScriptRoot -ChildPath 'wix.zip'
 $wixFolder = Join-Path $PSScriptRoot -ChildPath 'wix/'
 

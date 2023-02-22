@@ -54,7 +54,7 @@ jobs:
     - name: Build Wpf Setup
       run: |
         ./src/TypeCode.Wpf.Setup/DownloadAndExtractWix.ps1
-        msbuild ./src/TypeCode.Wpf.Setup -p:SolutionDir=${{ github.workspace }}
+        msbuild ./src/TypeCode.Wpf.Setup/TypeCode.Wpf.Setup.wixproj -p:SolutionDir=${{ github.workspace }}
         New-Item -ItemType directory -Path  publish/setup/wpf -Force
         Copy-Item ./src/TypeCode.Wpf.Setup/bin/Release/TypeCode.Wpf.Setup.msi -Destination publish/setup/wpf/TypeCode.Wpf.Setup.msi
       
