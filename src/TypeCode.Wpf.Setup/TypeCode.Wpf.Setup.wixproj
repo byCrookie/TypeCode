@@ -20,7 +20,6 @@
         
         <WixVersion>3.14</WixVersion>
         <WixToolPath>wix</WixToolPath>
-        <TargetDir>M:\Development\Home\TypeCode\src\TypeCode.Wpf.Setup\test.msi</TargetDir>
         
         <DefineConstants>%3bBasePath=..\TypeCode.Wpf.Setup\bin\publish\$(Configuration)%3bProductVersion=$(MajorVersion).$(MinorVersion).$(PatchVersion).0</DefineConstants>
     </PropertyGroup>
