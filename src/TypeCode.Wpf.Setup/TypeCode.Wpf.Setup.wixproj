@@ -18,7 +18,6 @@
         <OutputPath>bin\$(Configuration)\</OutputPath>
         <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
         
-        <WixVersion>3.14</WixVersion>
         <WixToolPath>wix</WixToolPath>
         
         <DefineConstants>%3bBasePath=..\TypeCode.Wpf.Setup\bin\publish\$(Configuration)%3bProductVersion=$(MajorVersion).$(MinorVersion).$(PatchVersion).0</DefineConstants>
@@ -27,7 +26,7 @@
     <Import Project="$(WixToolPath)\wix.targets" />
 
     <Target Name="EnsureWixToolsetInstalled" Condition=" '$(WixTargetsImported)' != 'true' ">
-        <Error Text="CI/CD: Execute DownloadAndExtractWix.ps1 first before building the project. Locally: Install the WiX Toolset, see http://wixtoolset.org/releases/" />
+        <Error Text="Execute DownloadAndExtractWix.ps1 first before building the project." />
     </Target>
 
     <ItemGroup>
