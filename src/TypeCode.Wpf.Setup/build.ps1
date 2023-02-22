@@ -1,0 +1,1 @@
+msbuild M:\Development\Home\TypeCode\src\TypeCode.Wpf.Setup -p:SolutionDir=M:\Development\Home\TypeCode

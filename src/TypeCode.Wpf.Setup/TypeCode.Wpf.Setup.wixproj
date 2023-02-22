@@ -1,44 +1,50 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" InitialTargets="EnsureWixToolsetInstalled" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="Current" DefaultTargets="Build" InitialTargets="EnsureWixToolsetInstalled" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
     <PropertyGroup>
-        <WixToolPath>wix</WixToolPath>
-        <WixTargetsPath>$(WixToolPath)\wix.targets</WixTargetsPath>
-        <DefineConstants>%3bBasePath=..\TypeCode.Wpf.Setup\bin\publish\$(Configuration)%3bProductVersion=$(MajorVersion).$(MinorVersion).$(PatchVersion).0</DefineConstants>
+        <TargetFramework>null</TargetFramework>
     </PropertyGroup>
-
+    
+    <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props'))" Condition="Exists($([MSBuild]::GetPathOfFileAbove('Directory.Build.props')))" />
+    
     <PropertyGroup>
-        <Configuration Condition=" '$(Configuration)' == '' ">Release</Configuration>
-        <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+        <Configuration>Release</Configuration>
+        <Platform>x86</Platform>
         <ProductVersion>3.10</ProductVersion>
         <ProjectGuid>{2B03ED1E-E150-4427-97B2-798EADBCB728}</ProjectGuid>
         <SchemaVersion>2.0</SchemaVersion>
-        <OutputName>TypeCode.Wpf.Setup</OutputName>
         <OutputType>Package</OutputType>
-    </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+        <OutputName>TypeCode.Wpf.Setup</OutputName>
         <OutputPath>bin\$(Configuration)\</OutputPath>
         <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
-        <DefineConstants>Debug</DefineConstants>
+        
+        <WixVersion>3.14</WixVersion>
+        <WixToolPath>wix</WixToolPath>
+        <TargetDir>M:\Development\Home\TypeCode\src\TypeCode.Wpf.Setup\test.msi</TargetDir>
+        
+        <DefineConstants>%3bBasePath=..\TypeCode.Wpf.Setup\bin\publish\$(Configuration)%3bProductVersion=$(MajorVersion).$(MinorVersion).$(PatchVersion).0</DefineConstants>
     </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-        <OutputPath>bin\$(Configuration)\</OutputPath>
-        <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
-    </PropertyGroup>
+    
+    <Import Project="$(WixToolPath)\wix.targets" />
+
+    <Target Name="EnsureWixToolsetInstalled" Condition=" '$(WixTargetsImported)' != 'true' ">
+        <Error Text="CI/CD: Execute DownloadAndExtractWix.ps1 first before building the project. Locally: Install the WiX Toolset, see http://wixtoolset.org/releases/" />
+    </Target>
 
     <ItemGroup>
-        <PackageReference Include="byCrookie.LibrarySdk"/>
+        <PackageReference Include="byCrookie.LibrarySdk" />
     </ItemGroup>
 
     <ItemGroup>
-        <Compile Include="Product.wxs"/>
-        <Compile Include="Binaries.wxs"/>
-        <Content Include="DownloadAndExtractWix.ps1"/>
-        <Content Include="Assets\Banner.bmp"/>
-        <Content Include="Assets\Banner.xcf"/>
-        <Content Include="Assets\Dialog.bmp"/>
-        <Content Include="Assets\Dialog.xcf"/>
-        <Content Include="Assets\License.rtf"/>
+        <Compile Include="Product.wxs" />
+        <Compile Include="Binaries.wxs" />
+        <Content Include="build.ps1" />
+        <Content Include="DownloadAndExtractWix.ps1" />
+        <Content Include="Assets\Banner.bmp" />
+        <Content Include="Assets\Banner.xcf" />
+        <Content Include="Assets\Dialog.bmp" />
+        <Content Include="Assets\Dialog.xcf" />
+        <Content Include="Assets\License.rtf" />
     </ItemGroup>
 
     <ItemGroup>
@@ -52,20 +58,10 @@
         </ProjectReference>
     </ItemGroup>
 
-    <Import Project="$(WixTargetsPath)" Condition=" '$(WixTargetsPath)' != '' "/>
-    <Import Project="$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets" Condition=" '$(WixTargetsPath)' == '' AND Exists('$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets') "/>
-    <Target Name="EnsureWixToolsetInstalled" Condition=" '$(WixTargetsImported)' != 'true' ">
-        <Error Text="The WiX Toolset v3.11 (or newer) build tools must be installed to build this project. To download the WiX Toolset, see http://wixtoolset.org/releases/"/>
-    </Target>
-
     <ItemGroup>
         <WixExtension Include="WixUIExtension">
             <HintPath>$(WixToolPath)\WixUIExtension.dll</HintPath>
             <Name>WixUIExtension</Name>
-        </WixExtension>
-        <WixExtension Include="WixUtilExtension">
-            <HintPath>wix\WixUtilExtension.dll</HintPath>
-            <Name>WixUtilExtension</Name>
         </WixExtension>
     </ItemGroup>
 
@@ -75,8 +71,8 @@
             <Output TaskParameter="Value" PropertyName="DefineConstants" />
         </CreateProperty>
         
-        <Exec Command="rd /s /q ..\TypeCode.Wpf.Setup\bin\publish\$(Configuration)"/>
-        <Exec Command="dotnet publish ..\TypeCode.Wpf\TypeCode.Wpf.csproj -c $(Configuration) -o bin\publish\$(Configuration)"/>
+        <Exec Command="rd /s /q ..\TypeCode.Wpf.Setup\bin\publish\$(Configuration)" />
+        <Exec Command="dotnet publish ..\TypeCode.Wpf\TypeCode.Wpf.csproj -c $(Configuration) -o bin\publish\$(Configuration)" />
 
         <HeatDirectory OutputFile="Binaries.wxs" DirectoryRefId="APPLICATIONFOLDER"
                        ComponentGroupName="Binaries" SuppressCom="true"
@@ -84,6 +80,6 @@
                        SuppressFragments="true" SuppressRegistry="true"
                        SuppressRootDirectory="true" AutoGenerateGuids="false"
                        GenerateGuidsNow="true" ToolPath="$(WixToolPath)"
-                       PreprocessorVariable="var.BasePath"/>
+                       PreprocessorVariable="var.BasePath" />
     </Target>
 </Project>

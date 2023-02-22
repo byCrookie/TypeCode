@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-    <?define TypeCode_TargetDir=$(var.TypeCode.Wpf.TargetDir)?>
-
     <Product Id="*"
              Name="TypeCode"
              Language="1033"
@@ -11,21 +9,9 @@
 
         <Package InstallerVersion="200" Compressed="yes" InstallScope="perUser"/>
 
-        <MajorUpgrade
-                AllowDowngrades="no" DowngradeErrorMessage="!(loc.NewerVersionInstalled)"
-                AllowSameVersionUpgrades="yes"/>
-
-        <Property Id="PREVIOUSVERSIONSINSTALLED" Secure="yes"/>
-        <Upgrade Id="9f57777b-619a-41c8-afec-d7f7412d4047">
-            <UpgradeVersion
-                    Minimum="1.0.0.0" Maximum="99.0.0.0"
-                    Property="PREVIOUSVERSIONSINSTALLED"
-                    IncludeMinimum="yes" IncludeMaximum="no"/>
-        </Upgrade>
-
-        <!--        <InstallExecuteSequence>-->
-        <!--            <RemoveExistingProducts Before="InstallInitialize" />-->
-        <!--        </InstallExecuteSequence>-->
+        <MajorUpgrade AllowDowngrades="no"
+                      DowngradeErrorMessage="A newer version of TypeCode is already installed. Setup will now exit."
+                      AllowSameVersionUpgrades="no"/>
 
         <Icon Id="icon.ico" SourceFile="$(var.SolutionDir)\src\TypeCode.Wpf\Assets\Icons\icon.ico"/>
         <Property Id="ARPPRODUCTICON" Value="icon.ico"/>
