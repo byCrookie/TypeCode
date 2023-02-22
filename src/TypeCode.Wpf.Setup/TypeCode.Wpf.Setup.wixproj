@@ -4,7 +4,7 @@
     <PropertyGroup>
         <WixToolPath>wix</WixToolPath>
         <WixTargetsPath>$(WixToolPath)\wix.targets</WixTargetsPath>
-        <DefineConstants>BasePath=..\TypeCode.Wpf.Setup\bin\publish\$(Configuration),ProductVersion=$(MajorVersion).$(MinorVersion).$(PatchVersion).0</DefineConstants>
+        <DefineConstants>%3bBasePath=..\TypeCode.Wpf.Setup\bin\publish\$(Configuration)%3bProductVersion=$(MajorVersion).$(MinorVersion).$(PatchVersion).0</DefineConstants>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -70,6 +70,10 @@
     </ItemGroup>
 
     <Target Name="BeforeBuild">
+
+        <CreateProperty Value="$([MSBuild]::Unescape($(DefineConstants)))">
+            <Output TaskParameter="Value" PropertyName="DefineConstants" />
+        </CreateProperty>
         
         <Exec Command="rd /s /q ..\TypeCode.Wpf.Setup\bin\publish\$(Configuration)"/>
         <Exec Command="dotnet publish ..\TypeCode.Wpf\TypeCode.Wpf.csproj -c $(Configuration) -o bin\publish\$(Configuration)"/>
