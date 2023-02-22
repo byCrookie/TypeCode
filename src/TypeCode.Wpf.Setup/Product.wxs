@@ -5,20 +5,22 @@
     <Product Id="*"
              Name="TypeCode"
              Language="1033"
-             Version="1.0.0.0"
+             Version="$(var.ProductVersion)"
              Manufacturer="byCrookie"
              UpgradeCode="9f57777b-619a-41c8-afec-d7f7412d4047">
 
         <Package InstallerVersion="200" Compressed="yes" InstallScope="perUser"/>
 
-        <MajorUpgrade AllowDowngrades="yes"/>
+        <MajorUpgrade
+                AllowDowngrades="no" DowngradeErrorMessage="!(loc.NewerVersionInstalled)"
+                AllowSameVersionUpgrades="yes"/>
 
         <Property Id="PREVIOUSVERSIONSINSTALLED" Secure="yes"/>
         <Upgrade Id="9f57777b-619a-41c8-afec-d7f7412d4047">
             <UpgradeVersion
-                    Minimum="1.0.0.0" Maximum="1.0.0.0"
+                    Minimum="1.0.0.0" Maximum="99.0.0.0"
                     Property="PREVIOUSVERSIONSINSTALLED"
-                    IncludeMinimum="yes" IncludeMaximum="yes"/>
+                    IncludeMinimum="yes" IncludeMaximum="no"/>
         </Upgrade>
 
         <!--        <InstallExecuteSequence>-->
