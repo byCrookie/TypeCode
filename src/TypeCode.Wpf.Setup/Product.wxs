@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-    <Product Id="*"
+    <Product Id="C7465337-21EF-45C1-A6CC-2101884FF304"
              Name="TypeCode"
              Language="1033"
              Version="$(var.ProductVersion)"

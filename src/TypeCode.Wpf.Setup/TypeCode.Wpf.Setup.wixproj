@@ -1,9 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="Current" DefaultTargets="Build" InitialTargets="EnsureWixToolsetInstalled" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     
+    <Import Project="$([MSBuild]::GetPathOfFileAbove(directory.build.props))"
+            Condition="Exists('$([MSBuild]::GetPathOfFileAbove(directory.build.props))')" />
+    
     <PropertyGroup>
-        <Configuration>Release</Configuration>
+        <PlatformTarget>x86</PlatformTarget>
         <Platform>x86</Platform>
+        <Configuration>Release</Configuration>
         <ProductVersion>3.10</ProductVersion>
         <ProjectGuid>{2B03ED1E-E150-4427-97B2-798EADBCB728}</ProjectGuid>
         <SchemaVersion>2.0</SchemaVersion>
@@ -16,7 +20,9 @@
         
         <DefineConstants>%3bBasePath=..\TypeCode.Wpf.Setup\bin\publish\$(Configuration)%3bProductVersion=$(MajorVersion).$(MinorVersion).$(PatchVersion).0</DefineConstants>
     </PropertyGroup>
-    
+
+    <Import Project="$([MSBuild]::GetPathOfFileAbove(directory.build.targets))"
+            Condition="Exists('$([MSBuild]::GetPathOfFileAbove(directory.build.targets))')" />
     <Import Project="$(WixToolPath)\wix.targets" />
 
     <Target Name="EnsureWixToolsetInstalled" Condition=" '$(WixTargetsImported)' != 'true' ">
