@@ -32,6 +32,11 @@ Further documentation can be found here: [Wiki](https://github.com/byCrookie/Typ
 > Right-click the exe and select properties.
 > Then enable/allow execution.
 
+### Winget
+
+* Use Microsoft Winget to install
+* winget install byCrookie.TypeCode
+
 ### Zip
 
 * Download wpf or console application zip from releases
